@@ -36,7 +36,7 @@ function make_slides(f) {
       var sentence = stim.name + " is " + stim.adjective + ".";
 
       // FIX ME: many / few will need a special case
-      var promptText = "How " + stim.positive + " do you think the " + stim.name + " is?"
+      var promptText = "<strong>How " + stim.positive + "</strong> do you think the " + stim.name + " is?"
 
       $(".prompt").html("Your friend tells you about their new friend: " + stim.name + ".<br>\"<em>" + sentence +
     "</em>\"<br><br>" + promptText)
@@ -80,6 +80,8 @@ function make_slides(f) {
     present : _.shuffle(exp.stimuli),
 
     present_handle : function(stim) {
+      console.log(exp.stimuli)
+
       $(".err").hide();
       $(".prompt").empty();
       this.stim = stim;
@@ -89,19 +91,17 @@ function make_slides(f) {
       // this.referent = _.isArray(referents[stim.referent].head) ?
         // _.sample(referents[stim.referent].head) :
         // referents[stim.referent].head
-
       var sentences = {
-        positive: this.name + " is " + stim.positive + ".",
-        negative: this.name + " is not " + stim.positive + ".",
-        antonym: this.name + " is " + stim.antonym + ".",
-        negAntonym: this.name + " is not " + stim.antonym + "."
+        positive: stim.name + " is " + stim.positive + ".",
+        neg_positive: stim.name + " is not " + stim.positive + ".",
+        antonym: stim.name + " is " + stim.antonym + ".",
+        neg_antonym: stim.name + " is not " + stim.antonym + "."
       };
 
-
       // FIX ME: many / few will need a special case
-      var promptText = "For each of them, how " + stim.positive + " do you think " + stim.name + " is?"
+      var promptText = "For each of them, <strong>how " + stim.positive + "</strong> do you think " + stim.name + " is?"
 
-      $(".prompt").html("Imagine your friend tells you each of the following about their new friend: " + stim.name + ".<br> "+promptText);
+      $(".prompt").html("Imagine your friend tells you one of the following about their new friend: " + stim.name + ".<br> "+promptText);
 
 
       this.n_sliders = this.sentence_types.length;
@@ -109,7 +109,7 @@ function make_slides(f) {
       for (var i=0; i<this.n_sliders; i++) {
         var sentence_type = this.sentence_types[i];
         var sentence = sentences[sentence_type];
-        $("#multi_slider_table").append('<tr class="slider_row"><td class="slider_target" id="sentence' + i + '">' + sentence + '</td><td colspan="2"><div id="slider' + i + '" class="slider">-------[ ]--------</div></td></tr>');
+        $("#multi_slider_table").append('<tr class="slider_row"><td class="slider_target" id="sentence' + i + '"><em>' + sentence + '</em></td><td colspan="2"><div id="slider' + i + '" class="slider">-------[ ]--------</div></td></tr>');
         utils.match_row_height("#multi_slider_table", ".slider_target");
       }
       $(".left").html("100\% " + stim.antonym)
@@ -199,16 +199,18 @@ function init() {
   ];
 
   exp.condition = _.sample(["all_four_sliders", "one_by_one"]);
-
-  exp.condition = "all_four_sliders"
-  // exp.structure = ["i0", "instructions"];
-  exp.structure = [];
+  // exp.condition = "one_by_one"
+  exp.structure = ["i0"];
+  // exp.structure = [];
 
   var shuffledNames = _.shuffle(characters);
 
   if (exp.condition  == "all_four_sliders")  {
     // add character names to each stimulus
-    exp.stimuli = _.map(_.zip(shuffledNames, stimuli),
+    exp.stimuli = _.map(_.zip(
+        stimuli,
+        shuffledNames.slice(0, stimuli.length)
+      ),
       function(x){return _.extend(x[0], x[1])}
     )
     exp.structure.push("multi_slider")
@@ -225,11 +227,13 @@ function init() {
         var character = stimuli[j].referent == "person" ?
           shuffledNames.pop() : "NA"
 
-        exp.stimuli.push(_.extend(
-          stimuli[j], character, {
+        var stimulus = _.extend(
+          {
             sentence_type: st,
-            adjective: adj,
-          }))
+            adjective: adj
+          }, stimuli[j], character)
+
+        exp.stimuli.push(stimulus)
 
       };
     }
