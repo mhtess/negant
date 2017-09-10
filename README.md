@@ -1,1 +1,1 @@
-# negant
+# Negated antonyms
