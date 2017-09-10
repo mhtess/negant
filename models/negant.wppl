@@ -1,0 +1,121 @@
+// helpers
+var isNegation = function(utt){
+  return (utt.split("_")[0] == "not")
+};
+var round = function(x){
+	return Math.round(x * 100) / 100
+}
+var marginalize = function(dist, key){
+	return Infer({model: function(){ sample(dist)[key] }})
+}
+/////////////////////////////////////////////////////////
+
+//
+// var speaker2 = cache(function(state, informativeness) {
+// 	Infer({model: function(){
+//
+// 	 var utterance = sample(utterancePrior);
+// 	 var intendedGoals = {phi: informativeness}
+//
+//    var L1 = listener1(utterance)
+// 	 var L1_state = marginalize(L1, "state");
+//
+//    factor(speakerOptimality2 * L1.score({"state":state, "goals":intendedGoals}))
+// 	//  factor(speakerOptimality2 * L1_state.score(state))
+//
+//    return isNegation(utterance) ? "negation" : "direct"
+//
+//  }})
+// }, 10000);
+
+
+
+
+var utterances = ["happy","unhappy","not_unhappy","not_happy"];
+var states = [0,1,2,3,4];
+
+var cost_yes = 1;
+var cost_neg = 1;
+var speakerOptimality = 1;
+var speakerOptimality2 = 1;
+var alpha = 1;
+var s = 1;
+var w = 0.1;
+
+
+var weightBins = map(round, _.range(0,1, 0.05))
+var phiWeights = repeat(weightBins.length, function(){1})
+
+var uttCosts = map(function(u) {
+	return isNegation(u) ? Math.exp(-cost_neg) : Math.exp(-cost_yes)
+}, utterances)
+
+var utterancePrior = Infer({model: function(){
+  return utterances[discrete(uttCosts)]
+}});
+
+// taken from literal semantics expt
+var literalSemantics = {
+  "state": [0, 1, 2, 3, 4],
+  "happy": [0, 0, 0, 1, 1],
+  "unhappy": [1, 1, 0, 0, 0],
+  "not_happy": [1, 1, 0, 0, 0],
+  "not_unhappy": [0, 0, 1, 1, 1],
+};
+
+var meaning = function(words, state){
+  return flip(literalSemantics[words][state]);
+};
+///
+
+var listener0 = cache(function(utterance) {
+  Infer({model: function(){
+		var state = uniformDraw(states);
+    var m = meaning(utterance, state);
+    condition(m);
+    return state;
+	}})
+}, 10000);
+
+var speaker1 = cache(function(state, epistemicWeight) {
+	Infer({model: function(){
+
+    var utterance = sample(utterancePrior);
+    var L0 = listener0(utterance);
+
+    var epistemicUtility = L0.score(state),
+        socialUtility = expectation(L0, function(s){return alpha*s}),
+        eUtility = epistemicWeight*epistemicUtility,
+        sUtility = (1-epistemicWeight)*socialUtility,
+        speakerUtility = eUtility+sUtility;
+
+    factor(speakerOptimality*speakerUtility);
+
+    return utterance;
+	}})
+}, 10000);
+
+var listener1 = cache(function(utterance) {
+	Infer({model: function(){
+
+   var epistemicWeight = 1;
+   var state = uniformDraw(states);
+
+   var S1 = speaker1(state, epistemicWeight)
+   observe(S1, utterance)
+
+   return state
+
+ }})
+}, 10000);
+
+
+map(function(u){
+  display(u + " = " + expectation(listener1(u)))
+},utterances)
+
+"";
+
+// things we could do:
+// run a literal semantic task
+// run a listener interpretation task
