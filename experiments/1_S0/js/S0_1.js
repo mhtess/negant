@@ -18,7 +18,7 @@ function make_slides(f) {
 
   slides.one_slider = slide({
     name : "one_slider",
-
+    trial_num: 1,
     /* trial information for this block
      (the variable 'stim' will change between each of these values,
       and for each of these, present_handle will be run.) */
@@ -26,31 +26,34 @@ function make_slides(f) {
 
     //this gets run only at the beginning of the block
     present_handle : function(stim) {
+      $('input[name="semanticJudgment"]').prop('checked', false);
       $(".err").hide();
       $(".prompt").empty()
       this.stim = stim;
 
-      this.referent = _.isArray(referents[stim.referent].head) ?
-        _.sample(referents[stim.referent].head) :
-        referents[stim.referent].head
+      var sentence = stim.name + " is " + stim.adjective + "?";
 
-      var sentence = stim.name + " is " + stim.adjective + ".";
-
-      // FIX ME: many / few will need a special case
-      var promptText = "<strong>How " + stim.positive + "</strong> do you think the " + stim.name + " is?"
-
-      $(".prompt").html("Your friend tells you about their new friend: " + stim.name + ".<br>\"<em>" + sentence +
-    "</em>\"<br><br>" + promptText)
+      $(".prompt").html(stim.name + "'s " +stim.noun+ " is shown below.<br>")
 
       this.init_sliders();
       $(".left").html("100\% " + stim.antonym)
       $(".right").html("100\% " + stim.positive)
 
-      exp.sliderPost = null; //erase current slider value
+      var label = "#single_slider";
+      $(label+ ' .ui-slider-handle').show();
+      $(label).slider({value:stim.point});
+      $(label).css({"background":"#99D6EB"});
+      $(label + ' .ui-slider-handle').css({
+        "background":"#667D94",
+        "border-color": "#001F29"
+      })
+      $(label).unbind("mousedown");
+
+      $(".assessSemantics").html("Do you think that " + sentence)
     },
 
     button : function() {
-      if (exp.sliderPost == null) {
+      if (!$('input[name="semanticJudgment"]:checked').val()) {
         $(".err").show();
       } else {
         this.log_responses();
@@ -68,10 +71,12 @@ function make_slides(f) {
     },
 
     log_responses : function() {
-      exp.data_trials.push({
-        "trial_type" : "one_slider",
-        "response" : exp.sliderPost
-      });
+      exp.data_trials.push(_.extend({
+        "trial_type" : "semantic_judgment",
+        "response" : $('input[name="semanticJudgment"]:checked').val(),
+        "trial_num": this.trial_num
+      }, this.stim));
+      this.trial_num++
     }
   });
 
@@ -90,7 +95,7 @@ function make_slides(f) {
       // FIX ME: many / few will need a special case
       var promptText = "For each of them, <strong>how " + stim[0].positive + "</strong> do you think they are?"
 
-      $(".prompt").html("Imagine your friend tells you about five new friends of theirs.<br> "+promptText);
+      $(".prompt").html("Imagine your friend tells you five new friends of theirs.<br> "+promptText);
 
       this.n_sliders = this.sentence_order.length;
       $(".slider_row").remove();
@@ -99,7 +104,7 @@ function make_slides(f) {
         var single_stim = this.sentence_order[i];
         var sentence =  single_stim.name + " is " + single_stim.adjective + ".";
 
-        $("#multi_slider_table").append('<tr class="slider_row"><td class="slider_target" id="sentence' + i + '"><em>"' + sentence + '"</em></td><td colspan="2"><div id="slider' + i + '" class="slider">-------[ ]--------</div></td></tr>');
+        $("#multi_slider_table").append('<tr class="slider_row"><td class="slider_target" id="sentence' + i + '"><em>' + sentence + '</em></td><td colspan="2"><div id="slider' + i + '" class="slider">-------[ ]--------</div></td></tr>');
         utils.match_row_height("#multi_slider_table", ".slider_target");
       }
       $(".left").html("100\% " + single_stim.antonym)
@@ -136,7 +141,7 @@ function make_slides(f) {
           "trial_type" : "multi_slider",
           "response" : exp.sliderPost[i],
           "trial_num": this.trial_num,
-          "slider_position": i + 1,
+          "slider_position": i + 1
         }, sentence_item));
       }
       this.trial_num++;
@@ -187,42 +192,52 @@ function init() {
   exp.catch_trials = [];
   exp.data_trials = [];
   exp.sentence_types = [
-    "positive", "neg_positive", "antonym", "neg_antonym", "neither_pos_nor_ant"
+    "positive",  "antonym"
   ];
-  exp.n_trials = 5;
-  exp.stimsForParticipant = _.shuffle(stimuli).slice(0, exp.n_trials);
+  exp.n_trials = 20;
 
   // exp.condition = _.sample(["all_four_sliders", "one_by_one"]);
-  exp.condition = "all_four_sliders"
+  exp.condition = "one_slider"
   exp.structure = ["i0"];
   // exp.structure = [];
 
   var shuffledNames = _.shuffle(characters);
 
+  var allStims = [];
   // create negation if necessary, add names
-  for (j=0; j<exp.stimsForParticipant.length; j++){
-    var trial = [];
+  for (j=0; j<stimuli.length; j++){
     for (i=0; i<exp.sentence_types.length; i++){
       var st = exp.sentence_types[i];
       var adj = st.slice(0,3) == "neg" ?
-                "not " + exp.stimsForParticipant[j][st.slice(4)] :
+                "not " + stimuli[j][st.slice(4)] :
                 st.slice(0,3) == "nei" ?
-                "neither " + exp.stimsForParticipant[j].positive + " nor " +  exp.stimsForParticipant[j].antonym :
-                exp.stimsForParticipant[j][st];
+                "neither " + stimuli[j].positive + " nor " +  stimuli[j].antonym :
+                stimuli[j][st];
 
-      var character = exp.stimsForParticipant[j].referent == "person" ?
-        shuffledNames.pop() : "NA"
-
-      var stimulus = _.extend(
-        {
-          sentence_type: st,
-          adjective: adj
-        }, exp.stimsForParticipant[j], character)
-      trial.push(stimulus)
-    };
-    exp.stimuli.push(trial)
+      for (k=0; k<semanticPoints.length; k++){
+        var point = semanticPoints[k];
+        var stimulus = _.extend(
+            {
+              sentence_type: st,
+              adjective: adj,
+              point: point
+            }, stimuli[j])
+          allStims.push(stimulus)
+      }
+    }
   }
 
+  exp.stimuli = _.shuffle(_.map(
+    _.zip(
+      _.shuffle(allStims).slice(0, exp.n_trials),
+      _.shuffle(characters).slice(0, exp.n_trials)
+    ), function(x){
+      return _.extend(x[0],x[1])
+    }
+  ))
+
+  // debugger;
+  console.log(exp.stimuli);
   if (exp.condition  == "all_four_sliders")  {
     exp.structure.push("multi_slider")
   } else {

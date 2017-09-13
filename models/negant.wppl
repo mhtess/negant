@@ -11,22 +11,7 @@ var marginalize = function(dist, key){
 /////////////////////////////////////////////////////////
 
 //
-// var speaker2 = cache(function(state, informativeness) {
-// 	Infer({model: function(){
-//
-// 	 var utterance = sample(utterancePrior);
-// 	 var intendedGoals = {phi: informativeness}
-//
-//    var L1 = listener1(utterance)
-// 	 var L1_state = marginalize(L1, "state");
-//
-//    factor(speakerOptimality2 * L1.score({"state":state, "goals":intendedGoals}))
-// 	//  factor(speakerOptimality2 * L1_state.score(state))
-//
-//    return isNegation(utterance) ? "negation" : "direct"
-//
-//  }})
-// }, 10000);
+
 
 
 
@@ -54,12 +39,11 @@ var utterancePrior = Infer({model: function(){
   return utterances[discrete(uttCosts)]
 }});
 
-// taken from literal semantics expt
 var literalSemantics = {
-  "state": [0, 1, 2, 3, 4],
+  // "state": [0, 1, 2, 3, 4],
   "happy": [0, 0, 0, 1, 1],
   "unhappy": [1, 1, 0, 0, 0],
-  "not_happy": [1, 1, 0, 0, 0],
+  "not_happy": [1, 1, 1, 0, 0],
   "not_unhappy": [0, 0, 1, 1, 1],
 };
 
@@ -109,13 +93,35 @@ var listener1 = cache(function(utterance) {
  }})
 }, 10000);
 
+// var speaker2 = cache(function(state) {
+// 	Infer({model: function(){
+// 	 var utterance = sample(utterancePrior);
+//    var L1 = listener1(utterance)
+//    factor(speakerOptimality2 * L1.score(state))
+//    return utterance
+//  }})
+// }, 10000);
+
 
 map(function(u){
   display(u + " = " + expectation(listener1(u)))
 },utterances)
 
-"";
+map(function(s){
+  display(s + " = " + speaker2(s).MAP().val)
+},states)
 
-// things we could do:
+// speaker2(3)
+
+// "";
+
+// to do:
 // run a literal semantic task
+// - conditions: fix slider to 30 - 70 (by 10)
 // run a listener interpretation task
+// X - add "neither happy nor unhappy"
+// X - different character names for each bar
+// X - new items, each subject does 5 of 10
+// - fix slider error logic
+// RSA model with uncertain thresholds for happy & unhappy
+// - all 4 (possibly 5 with "neither ... nor ...") alternatives for speaker
