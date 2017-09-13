@@ -110,7 +110,14 @@ function make_slides(f) {
     },
 
     button : function() {
-      if (exp.sliderPost.length < this.n_sliders) {
+      error = false;
+      for (var i=0; i<this.n_sliders; i++) {
+        if (typeof exp.sliderPost[i] == 'undefined') {
+          error = true;
+        }
+      }
+
+      if (error) {
         $(".err").show();
       } else {
         this.log_responses();
