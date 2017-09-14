@@ -1,0 +1,126 @@
+// helpers
+var isNegation = function(utt){
+  return (utt.split("_")[0] == "not")
+};
+var round = function(x){
+  return Math.round(x * 100) / 100
+}
+var marginalize = function(dist, key){
+  return Infer({model: function(){ sample(dist)[key] }})
+}
+/////////////////////////////////////////////////////////
+
+var utterances = [
+  "happy",
+  "not_unhappy",
+  "not_happy",
+  "unhappy",
+  // "neither_nor"
+];
+
+var cost_yes = 0;
+var cost_neg = 0;
+var speakerOptimality = 1;
+var speakerOptimality2 = 1;
+
+var uttCosts = map(function(u) {
+  return isNegation(u) ? Math.exp(-cost_neg) : Math.exp(-cost_yes)
+}, utterances)
+
+var utterancePrior = Infer({model: function(){
+  return utterances[discrete(uttCosts)]
+}});
+
+var meaning = function(words, state, thresholds){
+  return words == "happy" ? state > thresholds.happy :
+  words == "not_happy" ? !(state > thresholds.happy) :
+  words == "unhappy" ? state < thresholds.unhappy :
+  words == "not_unhappy" ? !(state < thresholds.unhappy) :
+  words == "neither_nor" ? (
+    !(state > thresholds.happy) &&
+    !(state < thresholds.unhappy)
+  ) :
+  true
+};
+///
+var lb = 0, ub = 1, diff = 0.05;
+
+var DiscreteGaussian = function(mu, sigma, bins){
+  Infer({model: function(){
+    categorical({
+      vs:bins,
+      ps:map(function(x){Math.exp(Gaussian({mu, sigma}).score(x))}, bins)
+    })
+  }})
+}
+
+var DiscreteBeta = function(a, b, bins){
+  Infer({model: function(){
+    categorical({
+      vs:bins,
+      ps:map(function(x){Math.exp(Beta({a, b}).score(x))}, bins)
+    })
+  }})
+}
+
+var listener0 = cache(function(utterance, thresholds) {
+  Infer({model: function(){
+    var state = uniformDraw(_.range(lb, ub + diff, diff));
+    var m = meaning(utterance, state, thresholds);
+    condition(m);
+    return state;
+  }})
+}, 10000);
+
+var speaker1 = cache(function(state, thresholds) {
+  Infer({model: function(){
+    var utterance = sample(utterancePrior);
+    var L0 = listener0(utterance, thresholds);
+    factor(speakerOptimality*L0.score(state));
+    return utterance;
+  }})
+}, 10000);
+
+var listener1 = cache(function(utterance) {
+  Infer({model: function(){
+    var thresholds = {
+      happy: uniformDraw(_.range(lb, ub, diff)),
+      unhappy: uniformDraw(_.range(lb+diff, ub+diff, diff))
+    }
+    // var state = sample(DiscreteGaussian(0, 0.5, _.range(lb, ub + diff, diff)))
+    var state = sample(DiscreteBeta(10, 5, _.range(lb, ub + diff, diff)))
+    // var state = uniformDraw( _.range(lb, ub + diff, diff));
+    var S1 = speaker1(state, thresholds)
+    observe(S1, utterance)
+    return state
+  }})
+}, 10000);
+
+// var speaker2 = cache(function(state) {
+// 	Infer({model: function(){
+// 	 var utterance = sample(utterancePrior);
+//    var L1 = listener1(utterance)
+//    factor(speakerOptimality2 * L1.score(state))
+//    return utterance
+//  }})
+// }, 10000);
+
+
+map(function(u){
+  var post = listener1(u)
+  display(u + " = " + expectation(post))
+  //   viz(post)
+}, utterances)
+
+"";
+
+// to do:
+// run a literal semantic task
+// - [X] conditions: fix slider to 30 - 70 (by 10)
+// run a listener interpretation task
+// - [X] add "neither happy nor unhappy"
+// - [X] different character names for each bar
+// - [X] new items, each subject does 5 of 10
+// - [X] fix slider error logic
+// RSA model with uncertain thresholds for happy & unhappy
+// - [X] all 4 (possibly 5 with "neither ... nor ...") alternatives for speaker
