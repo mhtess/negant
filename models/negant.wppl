@@ -117,11 +117,11 @@ map(function(s){
 
 // to do:
 // run a literal semantic task
-// - conditions: fix slider to 30 - 70 (by 10)
+// - [X] conditions: fix slider to 30 - 70 (by 10)
 // run a listener interpretation task
-// X - add "neither happy nor unhappy"
-// X - different character names for each bar
-// X - new items, each subject does 5 of 10
-// - fix slider error logic
+// - [X] add "neither happy nor unhappy"
+// - [X] different character names for each bar
+// - [X] new items, each subject does 5 of 10
+// - [X] fix slider error logic
 // RSA model with uncertain thresholds for happy & unhappy
-// - all 4 (possibly 5 with "neither ... nor ...") alternatives for speaker
+// - [ ] all 4 (possibly 5 with "neither ... nor ...") alternatives for speaker
