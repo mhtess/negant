@@ -97,7 +97,7 @@ function make_slides(f) {
 
       for (var i=0; i<this.n_sliders; i++) {
         var single_stim = this.sentence_order[i];
-        var sentence =  single_stim.name + " is " + single_stim.adjective + ".";
+        var sentence =  single_stim.name + " is <strong>" + single_stim.adjective + "</strong>.";
 
         $("#multi_slider_table").append('<tr class="slider_row"><td class="slider_target" id="sentence' + i + '"><em>"' + sentence + '"</em></td><td colspan="2"><div id="slider' + i + '" class="slider">-------[ ]--------</div></td></tr>');
         utils.match_row_height("#multi_slider_table", ".slider_target");
@@ -140,7 +140,7 @@ function make_slides(f) {
       for (var i=0; i<this.sentence_order.length; i++) {
         var sentence_item = this.sentence_order[i];
         exp.data_trials.push(_.extend({
-          "trial_type" : "multi_slider",
+          "trial_type" : "interpretation_fiveSliders",
           "response" : exp.sliderPost[i],
           "trial_num": this.trial_num,
           "slider_position": i + 1,
@@ -208,7 +208,7 @@ function init() {
   exp.sentence_types = [
     "positive", "neg_positive", "antonym", "neg_antonym", "neither_pos_nor_ant"
   ];
-  exp.n_trials = 5;
+  exp.n_trials = 6;
   exp.stimsForParticipant = _.shuffle(stimuli).slice(0, exp.n_trials);
 
   // exp.condition = _.sample(["all_four_sliders", "one_by_one"]);

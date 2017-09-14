@@ -74,10 +74,14 @@ function make_slides(f) {
 
     log_responses : function() {
       exp.data_trials.push(_.extend({
-        "trial_type" : "semantic_judgment",
+        "trial_type" : "literal_forcedChoice",
         "response" : $('input[name="semanticJudgment"]:checked').val(),
-        "trial_num": this.trial_num
-      }, this.stim));
+        "trial_num": this.trial_num,
+        "thinkingCharacter_name": this.stim.character1.name,
+        "thinkingCharacter_gender": this.stim.character1.gender,
+        "targetCharacter_name": this.stim.character2.name,
+        "targetCharacter_gender": this.stim.character2.gender,
+      }, _.omit(this.stim, "character1", "character2")));
       this.trial_num++
     }
   });
