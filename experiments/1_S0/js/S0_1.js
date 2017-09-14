@@ -31,9 +31,11 @@ function make_slides(f) {
       $(".prompt").empty()
       this.stim = stim;
 
-      var sentence = stim.name + " is " + stim.adjective + "?";
+      var sentence =  "Does  " +stim.character1.name+ " think " + stim.character2.name +
+      " <strong> is " + stim.adjective + "</strong>?";
 
-      $(".prompt").html(stim.name + "'s " +stim.noun+ " is shown below.<br>")
+      $(".prompt").html(
+        stim.character1.name + " knows " + stim.character2.name + ". " + stim.character1.name  + " thinks " + stim.character2.name + "'s " + stim.noun + " is:<br>")
 
       this.init_sliders();
       $(".left").html("100\% " + stim.antonym)
@@ -49,7 +51,7 @@ function make_slides(f) {
       })
       $(label).unbind("mousedown");
 
-      $(".assessSemantics").html("Do you think that " + sentence)
+      $(".assessSemantics").html(sentence)
     },
 
     button : function() {
@@ -207,7 +209,7 @@ function init() {
   exp.sentence_types = [
     "positive",  "antonym"
   ];
-  exp.n_trials = 20;
+  exp.n_trials = 15;
 
   // exp.condition = _.sample(["all_four_sliders", "one_by_one"]);
   exp.condition = "one_slider"
@@ -240,10 +242,18 @@ function init() {
     }
   }
 
+  var charactersThisGame = _.shuffle(characters).slice(0, exp.n_trials * 2);
+  var pairsOfCharacters = _.map(_.zip(
+      charactersThisGame.slice(0, exp.n_trials),
+      charactersThisGame.slice(exp.n_trials, exp.n_trials * 2)
+    ), function(y){
+      return {character1: y[0], character2: y[1]}
+    })
+
   exp.stimuli = _.shuffle(_.map(
     _.zip(
       _.shuffle(allStims).slice(0, exp.n_trials),
-      _.shuffle(characters).slice(0, exp.n_trials)
+      pairsOfCharacters
     ), function(x){
       return _.extend(x[0],x[1])
     }
