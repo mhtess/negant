@@ -1,0 +1,51 @@
+---
+title: "1_S0"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(langcog)
+```
+
+
+## Literal semantics
+
+```{r}
+d.s0 <- read.csv("../data/1_S0/1_S0-trials.csv")
+d.s0.time <- read.csv("../data/1_S0/1_S0-time.csv")
+d.s0.comments <- read.csv("../data/1_S0/1_S0-subject_information.csv")
+```
+
+```{r}
+table(d.s0$adjective,d.s0$point)
+```
+
+```{r}
+d.s0.summarized.collapsed <- d.s0 %>%
+  group_by(sentence_type, point) %>%
+  multi_boot_standard(column = 'response')
+
+d.s0.summarized.collapsed %>%
+  ggplot(., aes( x = factor(point), y = mean, ymin = summary_ci_lower,
+                 ymax = summary_ci_upper))+
+  geom_col()+
+  geom_errorbar(position = position_dodge())+
+  facet_grid(sentence_type~.)
+```
+
+
+By item
+
+```{r}
+d.s0.summarized <- d.s0 %>%
+  group_by(positive, sentence_type, adjective, point) %>%
+  summarize(prop = sum(response) / n(),
+            n = n())
+
+d.s0.summarized %>%
+  ggplot(., aes( x = factor(point), y = prop))+
+  geom_col()+
+  facet_grid(sentence_type~positive)
+```
+

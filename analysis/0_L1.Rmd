@@ -1,0 +1,23 @@
+---
+title: "0_L1"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(langcog)
+```
+
+```{r}
+d.l1 <- read.csv("../data/0_L1/0_L1-trials.csv")
+d.l1.time <- read.csv("../data/0_L1/0_L1-time.csv")
+d.l1.comments <- read.csv("../data/0_L1/0_L1-subject_information.csv")
+```
+
+```{r}
+d.l1 %>%
+  filter(workerid != 0) %>% 
+  ggplot(., aes( x = response, fill = sentence_type ))+
+  geom_density(position = position_dodge(), alpha = 0.5)+
+  facet_wrap(~positive)
+```
