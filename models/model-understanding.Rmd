@@ -1,0 +1,143 @@
+---
+title: "Understanding the model"
+output: html_notebook
+---
+
+
+```{r}
+library(rwebppl)
+library(jsonlite)
+library(ggthemes)
+library(tidyverse)
+```
+
+```{r utils}
+utils <- '
+var round = function(x){
+  return Math.round(x*100)/100
+}
+
+var isNegation = function(utt){
+  return (utt.split("_")[0] == "not")
+};
+
+var avoidEnds = function(x){
+  return x >= 1 ? 0.99 : x == 0 ? 0.01 : x
+}
+
+var lb = 0, ub = 1, diff = 0.05;
+var bins = _.range(lb, ub + diff, diff)
+
+var DiscreteGaussian = function(mu, sigma){
+  Infer({model: function(){
+    categorical({
+      vs:bins,
+      ps:map(function(x){Math.exp(Gaussian({mu, sigma}).score(x))}, bins)
+    })
+  }})
+}
+
+var DiscreteBeta = function(a, b){
+  Infer({model: function(){
+    categorical({
+      vs:bins,
+      ps:map(function(x){
+        Math.exp(Beta({a, b}).score(avoidEnds(x)))
+      }, bins)
+    })
+  }})
+}
+
+'
+```
+
+
+```{r language}
+language <- '
+var utterances = [
+  "happy",
+  "not_unhappy",
+  "not_happy",
+  "unhappy",
+  // "neither_nor"
+];
+
+var cost_yes = 0;
+var cost_neg = 0;
+
+var uttCosts = map(function(u) {
+  return isNegation(u) ? Math.exp(-cost_neg) : Math.exp(-cost_yes)
+}, utterances)
+
+var utterancePrior = Infer({model: function(){
+  return utterances[discrete(uttCosts)]
+}});
+
+
+var meaning = function(words, state, thresholds){
+  return words == "happy" ? state > thresholds.happy :
+  words == "not_happy" ? !(state > thresholds.happy) :
+  words == "unhappy" ? state < thresholds.unhappy :
+  words == "not_unhappy" ? !(state < thresholds.unhappy) :
+  words == "neither_nor" ? (
+    !(state > thresholds.happy) &&
+    !(state < thresholds.unhappy)
+  ) :
+  true
+};
+'
+```
+
+
+
+```{r}
+rsa <- '
+var speakerOptimality = 1;
+var speakerOptimality2 = 1;
+
+var listener0 = cache(function(utterance, thresholds) {
+  Infer({model: function(){
+    var state = sample(DiscreteBeta(1, 1));
+    // var state = sample(DiscreteGaussian(0, 0.5));
+    var m = meaning(utterance, state, thresholds);
+    condition(m);
+    return state;
+  }})
+}, 10000);
+
+var speaker1 = cache(function(state, thresholds) {
+  Infer({model: function(){
+    var utterance = sample(utterancePrior);
+    var L0 = listener0(utterance, thresholds);
+    factor(speakerOptimality*L0.score(state));
+    return utterance;
+  }})
+}, 10000);
+
+var listener1 = cache(function(utterance) {
+  Infer({model: function(){
+    var thresholds = {
+      happy: uniformDraw(_.range(lb, ub, diff)),
+      unhappy: uniformDraw(_.range(lb+diff, ub+diff, diff))
+    }
+
+    var state = sample(DiscreteBeta(1, 1));
+    // var state = sample(DiscreteGaussian(0, 0.5));
+
+    var S1 = speaker1(state, thresholds)
+    observe(S1, utterance)
+    return state
+  }})
+}, 10000);
+
+_.fromPairs(map(function(u){
+  var post = listener1(u)
+  return [u, expectation(post)]
+}, utterances))
+'
+```
+
+```{r}
+rs.wp <- webppl(paste(utils, language, rsa, sep = '\n'))
+
+```
