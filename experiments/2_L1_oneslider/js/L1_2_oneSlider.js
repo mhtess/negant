@@ -19,6 +19,7 @@ function make_slides(f) {
   slides.one_slider = slide({
     name : "one_slider",
 
+    trial_num: 1,
     /* trial information for this block
      (the variable 'stim' will change between each of these values,
       and for each of these, present_handle will be run.) */
@@ -70,9 +71,15 @@ function make_slides(f) {
     log_responses : function() {
       exp.data_trials.push({
         "trial_type" : "one_slider",
-        "response" : exp.sliderPost
+        "response" : exp.sliderPost,
+        "trial_num": this.trial_num,
+        "stim_name": this.stim.name,
+        "stim_gender": this.stim.gender
       });
+      this.trial_num++;
+
     }
+
   });
 
   slides.multi_slider = slide({
