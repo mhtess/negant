@@ -24,11 +24,11 @@ table(d.s0$adjective,d.s0$point)
 ```{r}
 d.s0.summarized.collapsed <- d.s0 %>%
   group_by(sentence_type, point) %>%
-  multi_boot_standard(column = 'response')
+  multi_boot_standard(col = 'response')
 
 d.s0.summarized.collapsed %>%
-  ggplot(., aes( x = factor(point), y = mean, ymin = summary_ci_lower,
-                 ymax = summary_ci_upper))+
+  ggplot(., aes( x = factor(point), y = mean, ymin = ci_lower,
+                 ymax = ci_upper))+
   geom_col()+
   geom_errorbar(position = position_dodge())+
   facet_grid(sentence_type~.)
