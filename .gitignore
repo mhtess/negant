@@ -1,3 +1,7 @@
 mturk/
 .Rproj.user
 packrat/lib*/
+.Rhistory
+.Rprofile
+*.Rproj
+*.nb.html
