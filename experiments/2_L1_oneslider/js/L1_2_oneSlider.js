@@ -30,7 +30,7 @@ function make_slides(f) {
       $(".err").hide();
       $(".prompt").empty()
       this.stim = stim;
-
+      this.startTime = Date.now();
       this.referent = _.isArray(referents[stim.referent].head) ?
         _.sample(referents[stim.referent].head) :
         referents[stim.referent].head
@@ -54,6 +54,7 @@ function make_slides(f) {
       if (exp.sliderPost == null) {
         $(".err").show();
       } else {
+        this.rt = Date.now() - this.startTime;
         this.log_responses();
 
         /* use _stream.apply(this); if and only if there is
@@ -69,13 +70,12 @@ function make_slides(f) {
     },
 
     log_responses : function() {
-      exp.data_trials.push({
+      exp.data_trials.push(_.extend({
         "trial_type" : "one_slider",
         "response" : exp.sliderPost,
         "trial_num": this.trial_num,
-        "stim_name": this.stim.name,
-        "stim_gender": this.stim.gender
-      });
+        "rt": this.rt
+      }, this.stim));
       this.trial_num++;
 
     }
