@@ -9,6 +9,7 @@ library(rwebppl)
 library(jsonlite)
 library(ggthemes)
 library(tidyverse)
+library(knitr)
 theme_set(theme_few())
 ```
 
@@ -63,11 +64,19 @@ var utterances = [
   // "neither_nor"
 ];
 
+var individualCosts = {
+  happy: 0,
+  unhappy: 0.5,
+  not_happy: 1,
+  not_unhappy: 1.5
+}
+
 var cost_yes = 0;
-var cost_neg = 1;
+var cost_neg = 3;
 
 var uttCosts = map(function(u) {
   return isNegation(u) ? Math.exp(-cost_neg) : Math.exp(-cost_yes)
+  // return Math.exp(-individualCosts[u])
 }, utterances)
 
 var utterancePrior = Infer({model: function(){
@@ -158,6 +167,7 @@ map(function(tH){
           "not_happy": Math.exp(speakProbs.score("not_happy"))
         }
     }, bins)
+//   }, [0.5])
   }, lessThanThresholdBins)
 }, greaterThanThresholdBins)
 ))
@@ -173,9 +183,9 @@ rs.tidy <- data.frame(rs.wp) %>%
 
 
 Faceting by thresholds
-```{r fig.width = 16, fig.height = 3.5}
+```{r}
 ggplot(rs.tidy, aes( x = state, y = prob, color = utt))+
-  geom_line()+
+  geom_line()+#aes(frame = happy_theta))+
   scale_color_solarized()+
   facet_grid(unhappy_theta~happy_theta)+
   scale_x_continuous(breaks = c(0, 0.5, 1))+
@@ -184,13 +194,44 @@ ggplot(rs.tidy, aes( x = state, y = prob, color = utt))+
 #ggsave("figs/S1_uttXstateXthetas_wCost.pdf", width = 20, height = 14)
 ```
 
+with fixed unhappy_theta
+
+```{r}
+fig.theta.marg <- rs.tidy %>%
+      mutate(utt = factor(utt,
+                            levels = c("unhappy",
+                                       "not_happy",
+                                       "not_unhappy",
+                                       "happy"))) %>%
+  ggplot(., aes( x = state, y = prob, color = utt))+
+  geom_line(aes(frame = happy_theta), size = 2)+
+  scale_color_solarized()+
+  scale_x_continuous(breaks = c(0, 0.5, 1))+
+  scale_y_continuous(breaks = c(0, 0.5, 1))+
+  ggtitle("unhappy = x < 0.5; happy threshold = ")+
+  ylab("Speaker production probability")+
+  xlab("Degree of happiness")+
+  theme(text = element_text(size = 16))
+
+gganimate(fig.theta.marg,
+          "figs/S1_unhappyTheta0.5.gif")
+
+#ggsave("figs/S1_uttXstateXthetas_wCost.pdf", width = 20, height = 14)
+```
+
+
 
 Marginalizing out thresholds
 
 ```{r}
 rs.marginal <- rs.tidy %>%
   group_by(state, utt) %>%
-  summarize(marginalProb = mean(prob))
+  summarize(marginalProb = mean(prob)) %>%
+        mutate(utt = factor(utt,
+                            levels = c("unhappy",
+                                       "not_happy",
+                                       "not_unhappy",
+                                       "happy")))
 
 
 ggplot(rs.marginal, aes( x = state, y = marginalProb, color = utt))+
@@ -201,7 +242,7 @@ ggplot(rs.marginal, aes( x = state, y = marginalProb, color = utt))+
   scale_x_continuous(breaks =c(0, 1))+
   scale_y_continuous(breaks = c(0, 0.5))
 
-#ggsave("figs/S1_uttMarginals_wCost.png", width = 6, height = 3.7)
+ggsave("figs/S1_uttMarginals_wCost3_alpha1.png", width = 6, height = 3.7)
 ```
 
 "Not Unhappy" is semantically equivalent to "happy". The higher the state, the more likely "happy" (and "not unhappy") is to be produced by a speaker (because it's more likely to be true, given the uniform priors on thresholdse). 
@@ -224,7 +265,12 @@ rs.listener.wp.tidy <- bind_rows(
 
 
 rs.listener.wp.tidy.samples <- get_samples(
-  rs.listener.wp.tidy %>% rename(prob = probs), 10000)
+  rs.listener.wp.tidy %>% rename(prob = probs), 10000) %>%
+    mutate(utterance = factor(utterance,
+                            levels = c("unhappy",
+                                       "not_happy",
+                                       "not_unhappy",
+                                       "happy")))
 
 ggplot(rs.listener.wp.tidy.samples, 
        aes( x = support,fill = utterance, color = utterance))+
@@ -236,6 +282,39 @@ ggplot(rs.listener.wp.tidy.samples,
   scale_x_continuous(breaks =c(0, 1))+
   scale_y_continuous(breaks = c(0, 2))
 
-#ggsave("figs/L1_posteriors_wCost.png", width = 6, height = 4)
+ggsave("figs/L1_posteriors_wCost3_alpha1.png", width = 6, height = 4)
+```
+
+
+```{r}
+rs.listener.wp.tidy %>%
+  group_by(utterance) %>%
+  summarize(interpretation = sum(probs * support)) %>%
+    mutate(utterance = factor(utterance,
+                            levels = c("unhappy",
+                                       "not_happy",
+                                       "not_unhappy",
+                                       "happy"))) %>%
+  ggplot(., aes( x = utterance, y=interpretation,
+                 fill = utterance, color = utterance))+
+    geom_col(position = position_dodge(0.8), 
+             width = 0.8,
+             alpha =0.8, color = 'black')+
+    #coord_flip()+
+  geom_hline(yintercept = 0.5, lty = 3)+
+  scale_fill_solarized()+
+  guides(fill = F)+
+  scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1))+
+  xlab("")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+ggsave("figs/L1_means_wCost3_alpha1.png", width = 4, height = 3.5)
+```
+
+```{r}
+rs.listener.wp.tidy %>%
+  group_by(utterance) %>%
+  summarize(interpretation = sum(probs * support)) %>%
+  kable()
 ```
 
