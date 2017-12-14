@@ -218,6 +218,7 @@ function init() {
     "positive", "neg_positive", "antonym", "neg_antonym", "neither_pos_nor_ant"
   ];
   exp.n_stims = 6;
+  exp.n_trials = 30;
   exp.stimsForParticipant = _.shuffle(stimuli).slice(0, exp.n_stims);
 
   // exp.condition = _.sample(["all_four_sliders", "one_by_one"]);
@@ -226,36 +227,64 @@ function init() {
   // exp.structure = [];
 
   var shuffledNames = _.shuffle(characters);
+  var expanded_stimuli = [];
 
-  // create negation if necessary, add names
-  for (j=0; j<exp.stimsForParticipant.length; j++){
+  for (j=0; j<stimuli.length; j++){
     var trial = [];
     for (i=0; i<exp.sentence_types.length; i++){
       var st = exp.sentence_types[i];
       var adj = st.slice(0,3) == "neg" ?
-                "not " + exp.stimsForParticipant[j][st.slice(4)] :
+                "not " + stimuli[j][st.slice(4)] :
                 st.slice(0,3) == "nei" ?
-                "neither " + exp.stimsForParticipant[j].positive + " nor " +  exp.stimsForParticipant[j].antonym :
-                exp.stimsForParticipant[j][st];
-
-      var character = exp.stimsForParticipant[j].referent == "person" ?
-        shuffledNames.pop() : "NA"
+                "neither " + stimuli[j].positive + " nor " +  stimuli[j].antonym :
+                stimuli[j][st];
 
       var stimulus = _.extend(
         {
           sentence_type: st,
           adjective: adj
-        }, exp.stimsForParticipant[j], character)
+        }, stimuli[j])
+
       trial.push(stimulus)
     };
-    exp.stimuli.push(trial)
+    expanded_stimuli.push(trial)
   }
+
+  exp.stimuli = _.map(_.zip(
+    _.shuffle(_.flatten(expanded_stimuli)).slice(0, exp.n_trials), shuffledNames
+  ), function(item) {
+      return _.defaults(item[0], item[1]);
+  });
+
+  // create negation if necessary, add names
+  // for (j=0; j<exp.stimsForParticipant.length; j++){
+  //   var trial = [];
+  //   for (i=0; i<exp.sentence_types.length; i++){
+  //     var st = exp.sentence_types[i];
+  //     var adj = st.slice(0,3) == "neg" ?
+  //               "not " + exp.stimsForParticipant[j][st.slice(4)] :
+  //               st.slice(0,3) == "nei" ?
+  //               "neither " + exp.stimsForParticipant[j].positive + " nor " +  exp.stimsForParticipant[j].antonym :
+  //               exp.stimsForParticipant[j][st];
+  //
+  //     var character = exp.stimsForParticipant[j].referent == "person" ?
+  //       shuffledNames.pop() : "NA"
+  //
+  //     var stimulus = _.extend(
+  //       {
+  //         sentence_type: st,
+  //         adjective: adj
+  //       }, exp.stimsForParticipant[j], character)
+  //     trial.push(stimulus)
+  //   };
+  //   exp.stimuli.push(trial)
+  // }
 
   if (exp.condition  == "all_four_sliders")  {
     exp.structure.push("multi_slider")
   } else {
     exp.structure.push("one_slider")
-    exp.stimuli = _.flatten(exp.stimuli);
+    // exp.stimuli = _.flatten(exp.stimuli);
   }
 
   exp.structure.push("subj_info", "thanks");
