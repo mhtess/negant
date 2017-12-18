@@ -1,5 +1,5 @@
 ---
-title: "0_L1"
+title: "2_L1"
 output: github_document
 ---
 
@@ -9,12 +9,12 @@ library(tidyboot)
 library(ggthemes)
 library(ggpirate)
 library(langcog)
-library(lme4)
+library(knitr)
 theme_set(theme_few())
 ```
 
 ```{r}
-d.l1 <- read.csv("../data/0_L1/0_L1-trials.csv") %>%
+d.l1 <- read.csv("../data/2_L1_oneslider/2_L1_oneslider-trials.csv") %>%
   mutate(sentence_type = factor(sentence_type,
                                 levels = c("antonym",
                                            "neg_positive",
@@ -27,15 +27,31 @@ d.l1 <- read.csv("../data/0_L1/0_L1-trials.csv") %>%
                                            "Negated Antonym",
                                            "Positive")))
   
-d.l1.time <- read.csv("../data/0_L1/0_L1-time.csv")
+d.l1.time <- read.csv("../data/2_L1_oneslider/2_L1_oneslider-time.csv")
+
+```
 
 
+
+Time to complete task
+
+```{r}
+ggplot(d.l1.time, aes(x = time)) +
+  geom_histogram()+
+  xlab("time in minutes")
+```
+
+
+```{r}
 d.l1.censored <- left_join(d.l1,
   d.l1.time) %>%
   filter(time > 2)
   
-d.l1.comments <- read.csv("../data/0_L1/0_L1-subject_information.csv")
+d.l1.comments <- read.csv("../data/2_L1_oneslider/2_L1_oneslider-subject_information.csv")
+
+d.l1.comments %>% select(comments) %>% filter(comments != "") %>% kable()
 ```
+
 
 ```{r}
 d.l1 %>%
@@ -48,36 +64,20 @@ ggplot(., aes( x = response,
   scale_fill_solarized()+
   ylab("counts")+
   xlab("degree ratings")+
-  scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
-  guides(fill = F)
+  scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))#+
+ # guides(fill = F)
 
-#ggsave("~/Documents/research/talks/vagueness/negAnt_histograms.pdf", 
-       #width = 6, height = 3)
-```
-
-```{r}
-d.l1 %>%
-  filter(sentence_type != "Neither ... nor ...") %>%
-ggplot(., aes( x = response,
-                       fill = sentence_type))+
-  geom_histogram(position = position_dodge())+
-  #geom_density(alpha = 0.3)+
-  facet_grid(positive~sentence_type)+
-  scale_fill_solarized()+
-  ylab("counts")+
-  xlab("degree ratings")+
-  scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
-  guides(fill = F)
+# ggsave("~/Documents/research/talks/vagueness/negAnt_histograms.pdf", 
+#        width = 6, height = 3)
 ```
 
 
 ```{r}
-lm.0 <- lmer(response ~ sentence_type * positive + 
+lm.2 <- lmer(response ~ sentence_type * positive + 
                (1 | workerid), 
      data = d.l1)
-summary(lm.0)
+summary(lm.2)
 ```
-
 
 ```{r}
 d.l1.boot <- d.l1 %>%
@@ -108,10 +108,10 @@ ggplot(., aes(x = sentence_type,
 #ggsave("~/Documents/research/talks/vagueness/cusp-2017/not-unhappy_bootstrapped.pdf", width = , height = 3.5)
 ```
 
-```{r echo=F, eval=F}
+```{r echo = F, eval = F}
 d.l1.boot %>%
   mutate(x = 1) %>%
-ggplot(., aes(x = x,
+  ggplot(., aes(x = x,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
                        fill = sentence_type,
