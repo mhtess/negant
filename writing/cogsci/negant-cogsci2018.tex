@@ -20,6 +20,10 @@
 
 \documentclass[10pt,letterpaper]{article}
 
+
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+\newcommand{\denote}[1]{\mbox{ $[\![ #1 ]\!]$}}
+
 \usepackage{cogsci}
 \usepackage{pslatex}
 \usepackage{apacite}
@@ -76,9 +80,7 @@ between paragraphs.
 
 \section{Computational model}
 
-First level headings should be in 12~point, initial caps, bold and
-centered. Leave one line space above the heading and 1/4~line space
-below the heading.
+Gradable adjectives (e.g., ``tall'', ``reasonable'') convey the value along a scale (e.g., \emph{height}, \emph{reasonableness}) for some referent $x$ is above or below some contextual standard: $\denote{tall} = \emph{height}(x) > \theta$.
 
 \section{Experiment 1: Lexical antonyms}
 \subsection{Methods}
@@ -89,7 +91,7 @@ We recruited N participants from Amazon?s Mechanical Turk. Participants were res
 \subsubsection{Materials}
 
 We used antonym-pairs of gradable adjectives.
-The adjectives were all individual-level predicates describing persistent properties of an individual. 
+The adjectives were all individual-level predicates describing persistent properties of an individual (e.g., ``tall'', not ``drunk''). 
 Adjective-pairs (positive P, negative N) appeared in one of five forms: ``P'', ``not P'', ``N'', ``not N'', and ``neither P nor N''. 
 
 \subsubsection{Procedure}
