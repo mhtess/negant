@@ -5,3 +5,9 @@ packrat/lib*/
 .Rprofile
 *.Rproj
 *.nb.html
+*.pdf
+*.synctex.gz
+*.log
+*.bbl
+*.blg
+*.aux
