@@ -1,0 +1,17 @@
+.slider {
+  /* default is width 400 and margin 10 */
+	width: 550;
+	margin: 10px;
+}
+
+.err {
+	color: "red"
+}
+
+.slider_table .left {
+	text-align: left
+}
+
+.slider_table .right {
+	text-align: right
+}
