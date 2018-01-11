@@ -1,6 +1,6 @@
 var stimuli = [
   // pilot 1
-  { positive: "happy",  antonym: "unhappy", referent: "person", negation: "morphological"},
+  { positive: "happy",  antonym: "unhappy", referent: "person", negation: "morphological", endpoints: {low: "unhappiest", high: "happiest"}},
   { positive: "intelligent",  antonym: "unintelligent", referent: "person",  negation: "morphological"},
   { positive: "polite",  antonym: "impolite", referent: "person",  negation: "morphological"},
   { positive: "interesting",  antonym: "uninteresting", referent: "person", negation: "morphological"},
@@ -14,7 +14,7 @@ var stimuli = [
   { positive: "educated",  antonym: "uneducated", referent: "person", negation: "morphological"},
   { positive: "tolerant",  antonym: "intolerant", referent: "person",  negation: "morphological"},
 
-  { positive: "friendly",  antonym: "unfriendly", referent: "person", negation: "morphological"},
+  { positive: "friendly",  antonym: "unfriendly", referent: "person", negation: "morphological", endpoints: {low: "unfriendliest", high: "friendliest"}},
   { positive: "moral",  antonym: "immoral", referent: "person", negation: "morphological"},
   { positive: "mature",  antonym: "immature", referent: "person", negation: "morphological"},
 
@@ -24,11 +24,11 @@ var stimuli = [
 
   // lexical antonyms
   // 3_L1
-  { positive: "tall",  antonym: "short", referent: "person", negation: "lexical"},
-  { positive: "rich",  antonym: "poor", referent: "person", negation: "lexical"},
-  { positive: "fat",  antonym: "skinny", referent: "person", negation: "lexical"},
+  { positive: "tall",  antonym: "short", referent: "person", negation: "lexical", endpoints: {low: "shortest", high: "tallest"}},
+  { positive: "rich",  antonym: "poor", referent: "person", negation: "lexical", endpoints: {low: "poorest", high: "richest"}},
+  { positive: "fat",  antonym: "skinny", referent: "person", negation: "lexical", endpoints: {low: "skinniest", high: "fattest"}},
 
-  { positive: "old",  antonym: "young", referent: "person", negation: "lexical"},
+  { positive: "old",  antonym: "young", referent: "person", negation: "lexical", endpoints: {low: "youngest", high: "oldest"}},
   { positive: "hard-working",  antonym: "lazy", referent: "person", negation: "lexical"},
   { positive: "brave",  antonym: "cowardly", referent: "person",  negation: "lexical"},
   //
@@ -39,7 +39,7 @@ var stimuli = [
   { positive: "wise",  antonym: "foolish", referent: "person", negation: "lexical"},
 
   { positive: "proud",  antonym: "humble", referent: "person", negation: "lexical"},
-  { positive: "strong",  antonym: "weak", referent: "person", negation: "lexical"},
+  { positive: "strong",  antonym: "weak", referent: "person", negation: "lexical", endpoints: {low: "weakest", high: "strongest"}},
   { positive: "loud",  antonym: "quiet", referent: "person", negation: "lexical"}
 
   // stage level?

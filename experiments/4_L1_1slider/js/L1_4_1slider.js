@@ -1,3 +1,4 @@
+
 function make_slides(f) {
   var   slides = {};
 
@@ -44,8 +45,13 @@ function make_slides(f) {
     "</em>\"<br><br>" + promptText)
 
       this.init_sliders();
-      $(".left").html("the most<br>" + stim.antonym + " person")
-      $(".right").html("the most<br>" + stim.positive + " person")
+
+      superlative_endpoints = _.contains(_.keys(stim), "endpoints")
+      left_endpoint = !superlative_endpoints ? "most " + stim.antonym : stim.endpoints.low;
+      right_endpoint = !superlative_endpoints ? "most " + stim.positive : stim.endpoints.high;
+
+      $(".left").html("the " +left_endpoint +  " person")
+      $(".right").html("the " + right_endpoint +  " person")
 
       exp.sliderPost = null; //erase current slider value
     },
@@ -70,12 +76,17 @@ function make_slides(f) {
     },
 
     log_responses : function() {
+      superlative_endpoints = _.contains(_.keys(this.stim), "endpoints")
+
       exp.data_trials.push(_.extend({
         "trial_type" : "one_slider",
+        "superlative_endpoints": superlative_endpoints ? 1 : 0,
+        "endpoint_low": superlative_endpoints ? this.stim.endpoints.low : "most " + this.stim.antonym,
+        "endpoint_high": superlative_endpoints ? this.stim.endpoints.high : "most " + this.stim.positive,
         "response" : exp.sliderPost,
         "trial_num": this.trial_num,
         "rt": this.rt
-      }, this.stim));
+      }, _.omit(this.stim, "endpoints")));
       this.trial_num++;
 
     }
@@ -203,7 +214,7 @@ function init() {
 
   repeatWorker = false;
   (function(){
-      var ut_id = "mht-negant-L1-20171214";
+      var ut_id = "mht-negant-L1-20180111";
       if (UTWorkerLimitReached(ut_id)) {
         $('.slide').empty();
         repeatWorker = true;
