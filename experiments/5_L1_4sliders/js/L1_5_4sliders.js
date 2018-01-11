@@ -165,15 +165,15 @@ function make_slides(f) {
       };
     },
     log_responses : function() {
-      superlative_endpoints = _.contains(_.keys(this.stim), "endpoints")
+      superlative_endpoints = _.contains(_.keys(this.stim[0]), "endpoints")
 
       for (var i=0; i<this.sentence_order.length; i++) {
         var sentence_item = this.sentence_order[i];
         exp.data_trials.push(_.extend({
           "trial_type" : "four_sliders",
           "superlative_endpoints": superlative_endpoints ? 1 : 0,
-          "endpoint_low": superlative_endpoints ? this.stim.endpoints.low : "most " + this.stim.antonym,
-          "endpoint_high": superlative_endpoints ? this.stim.endpoints.high : "most " + this.stim.positive,
+          "endpoint_low": superlative_endpoints ? this.stim[0].endpoints.low : "most " + this.stim[0].antonym,
+          "endpoint_high": superlative_endpoints ? this.stim[0].endpoints.high : "most " + this.stim[0].positive,
           "response" : exp.sliderPost[i],
           "trial_num": this.trial_num,
           "rt": this.rt,
@@ -254,10 +254,11 @@ function init() {
   var expanded_stimuli = [];
 
   var lexical_items = _.shuffle(_.where(stimuli, {negation: "lexical"})).slice(0, exp.n_trials / 2)
+  // console.log(lexical_items)
   var morphological_items = _.shuffle(_.where(stimuli, {negation: "morphological"})).slice(0, exp.n_trials / 2)
 
   var stimuli_for_subject = _.flatten([lexical_items, morphological_items])
-
+  // console.log(stimuli_for_subject)
   for (j=0; j<stimuli_for_subject.length; j++){
     var trial = [];
     for (i=0; i<exp.sentence_types.length; i++){
@@ -265,16 +266,16 @@ function init() {
       // console.log(characterName)
       var st = exp.sentence_types[i];
       var adj = st.slice(0,3) == "neg" ?
-                "not " + stimuli[j][st.slice(4)] :
+                "not " + stimuli_for_subject[j][st.slice(4)] :
                 st.slice(0,3) == "nei" ?
-                "neither " + stimuli[j].positive + " nor " +  stimuli[j].antonym :
-                stimuli[j][st];
+                "neither " + stimuli_for_subject[j].positive + " nor " +  stimuli_for_subject[j].antonym :
+                stimuli_for_subject[j][st];
 
       var stimulus = _.extend(
         {
           sentence_type: st,
           adjective: adj
-        }, stimuli[j], characterName)
+        }, stimuli_for_subject[j], characterName)
 
       trial.push(stimulus)
     };
@@ -285,7 +286,7 @@ function init() {
   // var morphological_items = _.pluck(_.where(expanded_stimuli, {negation: "morphological"}), "trials")
 
   exp.stimuli = expanded_stimuli
-
+  // console.log(exp.stimuli)
 
   // _.flatten([
   //   _.shuffle(lexical_items).slice(0, exp.n_trials / 2),
