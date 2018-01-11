@@ -12,10 +12,11 @@ var stimuli = [
   { positive: "successful",  antonym: "unsuccessful", referent: "person",  negation: "morphological"},
   { positive: "honest",  antonym: "dishonest", referent: "person", negation: "morphological"},
   { positive: "educated",  antonym: "uneducated", referent: "person", negation: "morphological"},
-  { positive: "tolerant",  antonym: "intolerant", referent: "person",  negation: "morphological"},
 
-  { positive: "friendly",  antonym: "unfriendly", referent: "person", negation: "morphological", endpoints: {low: "unfriendliest", high: "friendliest"}},
-  { positive: "moral",  antonym: "immoral", referent: "person", negation: "morphological"},
+  // { positive: "tolerant",  antonym: "intolerant", referent: "person",  negation: "morphological"},
+
+  { positive: "friendly",  antonym: "unfriendly", referent: "person", negation: "morphological" },
+  // { positive: "moral",  antonym: "immoral", referent: "person", negation: "morphological"},
   { positive: "mature",  antonym: "immature", referent: "person", negation: "morphological"},
 
   /// overflow
@@ -28,14 +29,14 @@ var stimuli = [
   { positive: "rich",  antonym: "poor", referent: "person", negation: "lexical", endpoints: {low: "poorest", high: "richest"}},
   { positive: "fat",  antonym: "skinny", referent: "person", negation: "lexical", endpoints: {low: "skinniest", high: "fattest"}},
 
-  { positive: "old",  antonym: "young", referent: "person", negation: "lexical", endpoints: {low: "youngest", high: "oldest"}},
+  // { positive: "old",  antonym: "young", referent: "person", negation: "lexical", endpoints: {low: "youngest", high: "oldest"}},
   { positive: "hard-working",  antonym: "lazy", referent: "person", negation: "lexical"},
   { positive: "brave",  antonym: "cowardly", referent: "person",  negation: "lexical"},
   //
 
   // overflow
   { positive: "beautiful",  antonym: "ugly", referent: "person", negation: "lexical"},
-  { positive: "anxious",  antonym: "calm", referent: "person", negation: "lexical"},
+  // { positive: "anxious",  antonym: "calm", referent: "person", negation: "lexical"},
   { positive: "wise",  antonym: "foolish", referent: "person", negation: "lexical"},
 
   { positive: "proud",  antonym: "humble", referent: "person", negation: "lexical"},

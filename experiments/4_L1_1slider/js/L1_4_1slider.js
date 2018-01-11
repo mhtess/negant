@@ -41,8 +41,8 @@ function make_slides(f) {
       // FIX ME: many / few will need a special case
       var promptText = "Where would you place  " + stim.name + " on the following scale?"
 
-      $(".prompt").html("Your friend tells you about their friend: " + stim.name + ".<br>\"<em>" + sentence +
-    "</em>\"<br><br>" + promptText)
+      $(".prompt").html("Your friend tells you about their friend: " + stim.name + ".<br>\"<strong>" + sentence +
+    "</strong>\"<br><br>" + promptText)
 
       this.init_sliders();
 
@@ -226,16 +226,16 @@ function init() {
   exp.catch_trials = [];
   exp.data_trials = [];
   exp.sentence_types = [
-    "positive", "neg_positive", "antonym", "neg_antonym", "neither_pos_nor_ant"
+    "positive", "neg_positive", "antonym", "neg_antonym" //, "neither_pos_nor_ant"
   ];
   exp.n_stims = 6;
-  exp.n_trials = 30;
+  exp.n_trials = 16;
   exp.stimsForParticipant = _.shuffle(stimuli).slice(0, exp.n_stims);
 
   // exp.condition = _.sample(["all_four_sliders", "one_by_one"]);
   exp.condition = "one_by_one"
-  // exp.structure = ["i0"];
-  exp.structure = [];
+  exp.structure = ["i0"];
+  // exp.structure = [];
 
   var shuffledNames = _.shuffle(characters);
   var expanded_stimuli = [];
@@ -258,14 +258,33 @@ function init() {
 
       trial.push(stimulus)
     };
-    expanded_stimuli.push(trial)
+    expanded_stimuli.push({trials: trial, negation: stimuli[j].negation})
   }
 
-  exp.stimuli = _.map(_.zip(
-    _.shuffle(_.flatten(expanded_stimuli)).slice(0, exp.n_trials), shuffledNames
-  ), function(item) {
-      return _.defaults(item[0], item[1]);
-  });
+  var lexical_items = _.pluck(_.where(expanded_stimuli, {negation: "lexical"}), "trials")
+  var morphological_items = _.pluck(_.where(expanded_stimuli, {negation: "morphological"}), "trials")
+
+  for (j=0; j<2; j++){
+    var adj_trials = (j == 0) ? morphological_items : lexical_items
+    var shuffled_adj_trials = _.shuffle(adj_trials);
+
+    // for each adj type (morph, lex), participants see 2 instances of each sentence_type
+    var sentence_types_per_adjType = _.flatten([exp.sentence_types, exp.sentence_types]);
+
+    // loop over 8 stimuli
+    for (i=0; i<(exp.n_trials / 2); i++){
+      var item = _.where(shuffled_adj_trials[i], {sentence_type: sentence_types_per_adjType[i]})[0]
+      var extended_item = _.extend(item, shuffledNames.pop())
+      exp.stimuli.push(extended_item)
+    }
+  }
+  // console.log(exp.stimuli)
+  exp.stimuli = _.shuffle(exp.stimuli)
+  // exp.stimuli = _.map(_.zip(
+  //   _.shuffle(_.flatten(expanded_stimuli)).slice(0, exp.n_trials), shuffledNames
+  // ), function(item) {
+  //     return _.defaults(item[0], item[1]);
+  // });
 
   // create negation if necessary, add names
   // for (j=0; j<exp.stimsForParticipant.length; j++){
