@@ -519,20 +519,45 @@ ggplot(rs.listener.wp.tidy.samples.2,
 
 ```{r rsa-uncertainAlternatives}
 uncertainAlternativesRSA <- '
-// var utterances = [
-//  "happy",
-//  "not_unhappy",
-//  "not_happy",
-//  "unhappy",
-  // "neither_nor"
-// ];
+ var forms = [
+  "pos",
+  "ant",
+  "neg_pos",
+  "neg_ant",
+  "neither_nor"
+ ];
 
-var sets_of_alternatives = [
-  ["happy", "sad", "not_happy", "not_sad"],
-  ["happy", "unhappy", "not_unhappy"],
-  ["happy", "unhappy", "not_happy", "not_unhappy"]
-]
+var form_costs = {
+  pos: 0,
+  ant: 0,
+  neg_pos: 1.5,
+  neg_ant: 1.5
+}
 
+var meaning = function(form, state, thresholds){
+  return form == "pos" ? state > thresholds.pos :
+  form == "neg_pos" ? !(state > thresholds.pos) :
+  form == "ant" ? state < thresholds.ant :
+  form == "neg_ant" ? !(state < thresholds.ant) :
+  form == "neither_nor" ? (
+    !(state > thresholds.pos) &&
+    !(state < thresholds.ant)
+  ) :
+  true
+};
+
+var AlternativesPrior = Categorical({
+  vs :[
+    // {happy: "pos", unhappy: "ant", not_happy: "neg_pos", not_unhappy: "neg_ant"},
+    // {happy: "pos", sad: "ant", not_happy: "neg_pos", not_sad: "neg_ant"},
+    // {happy: "pos", sad: "ant", unhappy: "neg_pos", not_sad: "neg_ant"},
+    {utterances: {pos: "happy", ant: "unhappy", neg_pos: "not_happy", neg_ant: "not_unhappy"},
+name: "alt1"},
+    {utterances: {pos: "happy", ant: "sad", neg_pos: "not_happy", neg_ant: "not_sad"}, name: "alt2"},
+    {utterances: {pos: "happy", ant: "sad", neg_pos: "unhappy", neg_ant: "not_sad"}, name: "alt3"}
+  ],
+  ps: alternativesPriorProbs // [1, 1, 1]
+})
 
 var getThresholds = function(utterances){
   var positiveForms = filter(function(u){
@@ -544,41 +569,53 @@ var getThresholds = function(utterances){
 }
 
 var cost_yes = 0;
-var cost_not = 2;
-var cost_un = 5;
+var cost_not = 3;
+var cost_un = 0;
 
+// cost based on string
+// var uttCosts = function(utterances){
+//  return map(function(u) {
+//    var notCost = hasNegModifier(u) ? cost_not : 0
+//    var unCost = hasNegMorph(u) ? cost_un : 0
+//    var totalCost = notCost + unCost
+//    return Math.exp(-totalCost)
+//  }, utterances)
+//}
 
-var uttCosts = function(utterances){
+// cost based on form
+var uttCosts = function(utterance_forms){
   return map(function(u) {
-    var notCost = hasNegModifier(u) ? cost_not : 0
-    var unCost = hasNegMorph(u) ? cost_un : 0
-    var totalCost = notCost + unCost
-    return Math.exp(-totalCost)
-  }, utterances)
+    return Math.exp(-form_costs[u])
+  }, utterance_forms)
 }
 
-var getUtterancePrior = cache(function(utterances){
+var getUtterancePrior = cache(function(utterance_forms){
+  // var utterances = _.values(utterance_forms); // cost based on string
+  var utterances = _.keys(utterance_forms); // cost based on form
   var uttProbs = uttCosts(utterances);
-  return Categorical({vs: utterances, ps: uttProbs})
+  return Categorical({vs: _.keys(utterance_forms), ps: uttProbs})
 })
 
 var speakerOptimality = 1;
 
-var listener0 = cache(function(utterance, thresholds) {
+var listener0 = cache(function(utterance_form, thresholds) {
   Infer({model: function(){
     var state = sample(DiscreteBeta(1, 1));
     // var state = sample(DiscreteGaussian(0, 0.5));
-    var m = meaning(utterance, state, thresholds);
+    var m = meaning(utterance_form, state, thresholds);
     condition(m);
     return state;
   }})
 }, 10000);
 
-var speaker1 = cache(function(state, thresholds, alternatives) {
+var speaker1 = cache(function(state, thresholds, formToUttMapping) {
   Infer({model: function(){
-    var utterancePrior = getUtterancePrior(alternatives);
-    var utterance = sample(utterancePrior);
-    var L0 = listener0(utterance, thresholds);
+    var UtterancePrior = getUtterancePrior(formToUttMapping);
+    var utterance_form = sample(UtterancePrior);
+    var utterance = formToUttMapping[utterance_form];
+    // console.log(utterance)
+    // console.log(utterance_form)
+    var L0 = listener0(utterance_form, thresholds);
     factor(speakerOptimality*L0.score(state));
     return utterance;
   }})
@@ -587,18 +624,16 @@ var speaker1 = cache(function(state, thresholds, alternatives) {
 var listener1 = cache(function(utterance) {
   Infer({model: function(){
 
-    // var speakerAlternatives = uniformDraw(sets_of_alternatives)
-  // var speakerAlternatives = categorical({vs: sets_of_alternatives, ps:[0,0,1]})
-  var speakerAlternatives = ["happy", "unhappy", "not_happy", "not_unhappy"]
-  // console.log(speakerAlternatives)
-    var thresholds = getThresholds(speakerAlternatives)
-    //console.log(JSON.stringify(thresholds))
+    var formToUttMapping = sample(AlternativesPrior)
+    var thresholds = {pos: uniformDraw(thetaBins), ant: uniformDraw(thetaBins)}
+
     var state = sample(DiscreteBeta(1, 1));
     // var state = sample(DiscreteGaussian(0, 0.5));
 
-    var S1 = speaker1(state, thresholds, speakerAlternatives)
+    var S1 = speaker1(state, thresholds, formToUttMapping.utterances)
     observe(S1, utterance)
-    return state
+     return state
+    // return  {alternativeSet: formToUttMapping.name, state: state}
   }})
 }, 10000);
 '
@@ -611,12 +646,15 @@ _.fromPairs(map(function(u){
   return [u, post]
 }, ["happy", "unhappy", "not_unhappy", "not_happy"]))
 '
-#uncertainAlternativesListenerCall <- 'listener1("not_happy")'
 ```
 
 ```{r runUncertainAlternativesListener}
-rs.listener.wp.2 <- webppl(paste(utils, meaningFn, uncertainAlternativesRSA, uncertainAlternativesListenerCall,  sep = '\n'))
+rs.listener.wp.2 <- webppl(paste(utils, uncertainAlternativesRSA, uncertainAlternativesListenerCall,  sep = '\n'),
+                           data = c(1,5,5), data_var = "alternativesPriorProbs")
+```
 
+
+```{r}
 rs.listener.wp.tidy.2 <- bind_rows(
   data.frame(rs.listener.wp.2$happy) %>% 
     mutate(utterance = "happy"),
@@ -628,7 +666,6 @@ rs.listener.wp.tidy.2 <- bind_rows(
     mutate(utterance = "not_happy")
 )
 
-
 rs.listener.wp.tidy.samples.2 <- get_samples(
   rs.listener.wp.tidy.2 %>% rename(prob = probs), 10000) %>%
     mutate(utterance = factor(utterance,
@@ -636,6 +673,17 @@ rs.listener.wp.tidy.samples.2 <- get_samples(
                                        "not_happy",
                                        "not_unhappy",
                                        "happy")))
+
+# ggplot(rs.listener.wp.tidy.samples.2, 
+#        aes( x = support.state, fill = support.alternativeSet, color = support.alternativeSet))+
+#   geom_density(alpha = 0.4, size = 1.3)+
+#   scale_fill_solarized()+
+#   scale_color_solarized()+
+#   facet_wrap(~utterance)+
+#   xlab("Degree of happiness")+
+#   ylab("Posterior probability density")+
+#   scale_x_continuous(breaks =c(0, 1))+
+#   scale_y_continuous(breaks = c(0, 2))
 
 ggplot(rs.listener.wp.tidy.samples.2, 
        aes( x = support,fill = utterance, color = utterance))+
@@ -650,6 +698,8 @@ ggplot(rs.listener.wp.tidy.samples.2,
 #ggsave("figs/L1_posteriors_wCost3_alpha1.png", width = 6, height = 4)
 #head(rs.listener.wp.2)
 ```
+
+Uncertainty about the alterantive set (and whether or not unhappy has its own threshold), does make "unhappy" have a weaker (negative) interpretation. However, the model infers that the "compositional unhappy" is relatively unlikely, which dampens this effect.
 
 
 ```{r}
@@ -676,6 +726,9 @@ rs.listener.wp.tidy.2 %>%
 
 #ggsave("figs/L1_means_wCost3_alpha1.png", width = 4, height = 3.5)
 ```
+
+
+
 ```{r}
 rs.listener.wp.tidy.2 %>%
   group_by(utterance) %>%
