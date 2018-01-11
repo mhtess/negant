@@ -13,3 +13,7 @@
 - `3_L1`: interpretation, one slider at a time,  30 trials. $0.60
   - total experiment space: 12 adjective pairs (6 morphological negation; 6 lexical negation)
   - target: 18 responses / item --> n = 36 (4 batches) ==> $21.6 + 4.32 = $25.92
+- `3_L1`: interpretation, one slider at a time,  16 trials. $0.40
+  - total experiment space: 24 adjective pairs (12 morphological negation; 12 lexical negation) x 4 forms = 96 items
+  - each subject does 16 trials ( 4 / form)
+  - target: 20 responses / item --> n = 120 ==> $57.60
