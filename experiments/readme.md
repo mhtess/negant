@@ -21,3 +21,6 @@
     - total experiment space: 20 adjective pairs (10 morphological negation; 10 lexical negation)
     - each subject does 10 trials
     - target: 24 responses / item --> n = 50 ==> $42
+- `5_L1a`: same as 5_L1, but changed endpoints to "Xest person in the world"
+  - otherwise, salient interpretation of endpoints as "Xest person in the group" (of 4)
+  - n = 50 ==> $42
