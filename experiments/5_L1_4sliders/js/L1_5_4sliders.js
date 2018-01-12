@@ -123,11 +123,11 @@ function make_slides(f) {
       }
 
       superlative_endpoints = _.contains(_.keys(stim[0]), "endpoints")
-      left_endpoint = !superlative_endpoints ? "most<br>" + stim[0].antonym : stim[0].endpoints.low + "<br>";
-      right_endpoint = !superlative_endpoints ? "most<br>" + stim[0].positive : stim[0].endpoints.high + "<br>";
+      left_endpoint = !superlative_endpoints ? "most " + stim[0].antonym  + "<br>person ": stim[0].endpoints.low + " person<br>";
+      right_endpoint = !superlative_endpoints ? "most " + stim[0].positive  + "<br>person ": stim[0].endpoints.high + " person<br>";
 
-      $(".left").html("the " +left_endpoint +  " person")
-      $(".right").html("the " + right_endpoint +  " person")
+      $(".left").html("the " +left_endpoint +  "in the world")
+      $(".right").html("the " + right_endpoint +  "in the world")
 
       // $(".left").html("100\% " + single_stim.antonym)
       // $(".right").html("100\% " + single_stim.positive)
