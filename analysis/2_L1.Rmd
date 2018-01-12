@@ -29,6 +29,7 @@ d.l1 <- read.csv("../data/2_L1_oneslider/2_L1_oneslider-trials.csv") %>%
   
 d.l1.time <- read.csv("../data/2_L1_oneslider/2_L1_oneslider-time.csv")
 
+summary(d.l1)
 ```
 
 
@@ -58,17 +59,17 @@ d.l1 %>%
   filter(sentence_type != "Neither ... nor ...") %>%
 ggplot(., aes( x = response,
                        fill = sentence_type))+
-  geom_histogram(position = position_dodge())+
+  geom_histogram(position = position_dodge(), bins = 20)+
   #geom_density(alpha = 0.3)+
   facet_wrap(~sentence_type, nrow = 1)+
   scale_fill_solarized()+
   ylab("counts")+
   xlab("degree ratings")+
-  scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))#+
- # guides(fill = F)
+  scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
+  guides(fill = F)
 
-# ggsave("~/Documents/research/talks/vagueness/negAnt_histograms.pdf", 
-#        width = 6, height = 3)
+ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negAnt_morpho2_histograms.pdf",
+       width = 7, height = 3)
 ```
 
 
@@ -87,7 +88,8 @@ d.l1.boot <- d.l1 %>%
 
 ```{r}
 d.l1.boot %>%
-ggplot(., aes(x = sentence_type,
+    filter(sentence_type != "Neither ... nor ...") %>%
+  ggplot(., aes(x = sentence_type,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
                        fill = sentence_type,
@@ -105,7 +107,7 @@ ggplot(., aes(x = sentence_type,
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))+
   guides(fill = F)
 
-#ggsave("~/Documents/research/talks/vagueness/cusp-2017/not-unhappy_bootstrapped.pdf", width = , height = 3.5)
+ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negant_morpho2_bootstrapped.pdf", width = 4, height = 3.5)
 ```
 
 ```{r echo = F, eval = F}
@@ -136,6 +138,7 @@ d.l1.boot.adj <- d.l1 %>%
   multi_boot_standard(col = "response")
 
 d.l1.boot.adj %>%
+      filter(sentence_type != "Neither ... nor ...") %>%
 ggplot(., aes(x = positive,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
@@ -153,6 +156,7 @@ ggplot(., aes(x = positive,
   scale_y_continuous(limits = c(0,1), breaks = c(0, 0.5,1))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 
+ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negant_morpho2_bootstrapped_item.pdf", width = 8, height = 3.5)
 ```
 
 
@@ -182,4 +186,26 @@ ggplot(., aes(x = positive,
 #ggsave("~/Documents/research/talks/vagueness/cusp-2017/explore-items.pdf", width = 5, height = 3.5)
 
 ```
+
+
+First half vs. second half split
+
+```{r}
+d.l1.splithalf <- d.l1 %>%
+  mutate(splitHalf = ifelse(trial_num <= 15, "first", "second")) %>%
+  #filter(negation == "morphological") %>%
+  group_by(workerid, sentence_type) %>%
+  group_by(sentence_type, splitHalf) %>%
+  multi_boot_standard(col = 'response')
+
+
+ggplot(d.l1.splithalf, aes(x = splitHalf, fill = sentence_type,
+                                  y = mean, ymin = ci_lower,
+                                  ymax = ci_upper))+
+  geom_col(position = position_dodge(), color = 'black')+
+  geom_errorbar(position = position_dodge())
+
+ggsave("~/Documents/research/negant/analysis/figs/split_half-2_L1.pdf", width =6 , height = 4)
+```
+
 

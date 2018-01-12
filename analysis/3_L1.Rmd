@@ -12,7 +12,6 @@ library(langcog)
 library(knitr)
 library(lme4)
 library(lmerTest)
-#library()
 theme_set(theme_few())
 ```
 
@@ -31,6 +30,7 @@ d.l1 <- read.csv("../data/3_L1_expandstims/3_L1_expandstims-trials.csv") %>%
                                            "Positive")))
   
 d.l1.time <- read.csv("../data/3_L1_expandstims/3_L1_expandstims-time.csv")
+
 ```
 
 
@@ -55,51 +55,152 @@ d.l1.comments %>% select(comments) %>% filter(comments != "") %>% kable()
 
 ```{r}
 d.l1 %>%
+  filter(negation == "morphological") %>%
   filter(sentence_type != "Neither ... nor ...") %>%
 ggplot(., aes( x = response,
                        fill = sentence_type))+
-  geom_histogram(position = position_dodge())+
+  geom_histogram(position = position_dodge(), bins = 20)+
   #geom_density(alpha = 0.3)+
-  facet_grid(negation~sentence_type)+
+  facet_grid(.~sentence_type)+
   scale_fill_solarized()+
   ylab("counts")+
-  xlab("degree ratings")+
-  scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))#+
- # guides(fill = F)
+  xlab("slider ratings")+
+  scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
+  guides(fill = F)
 
-# ggsave("~/Documents/research/talks/vagueness/negAnt_histograms.pdf", 
-#        width = 6, height = 3)
+ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negAnt_morpho_histograms.pdf",
+       width = 7, height = 3)
 ```
-
-
 
 ```{r}
 d.l1.boot <- d.l1 %>%
+  filter(sentence_type != "Neither ... nor ...") %>%
   group_by(negation, sentence_type) %>%
   multi_boot_standard(col = "response")
 ```
 
 ```{r}
 d.l1.boot %>%
-ggplot(., aes(x = sentence_type,
+ggplot(., aes(x = negation,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = sentence_type,
+              group = sentence_type
+              ))+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_errorbar(position = position_dodge(0.8), color = 'black',
+                width = 0.4)+
+  scale_fill_solarized()+
+  geom_hline(yintercept = 0.5, lty = 3)+
+  #coord_flip()+
+  #guides(fill = F)+
+  xlab("")+
+  ylab("mean rating")+
+  scale_y_continuous(limits = c(0,1), breaks = c(0, 0.5,1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negant_3_l1_bootstrapped.pdf", width = 6, height = 3.75)
+```
+
+
+
+
+RT histograms
+```{r}
+d.l1 %>%
+  mutate(logrt = log(rt)) %>%
+  mutate(splitHalf = ifelse(trial_num <= 10, "first", "second")) %>%
+  filter(sentence_type == "Negated Antonym") %>%
+  ggplot(., aes( x = rt / 1000,
+                       fill = sentence_type))+
+  geom_histogram(position = position_dodge(), bins = 20)+
+  #geom_density(alpha = 0.3)+
+  facet_grid(negation~splitHalf)+
+  scale_fill_solarized()+
+  ylab("counts")+
+  xlab("rt")+
+  scale_x_continuous(limits = c(-0.01, 40))+
+  guides(fill = F)
+```
+
+First trial
+```{r}
+d.l1 %>% 
+  # filter(negation == "morphological", 
+  #        sentence_type %in% c("Negated Positive", "Antonym")) %>%
+  group_by(negation, workerid, sentence_type) %>%
+  slice(1) %>%
+  ungroup() %>% 
+  ggplot(., aes( x = rt / 1000,
+                       fill = sentence_type))+
+  geom_histogram(position = position_dodge(), bins = 20)+
+  #geom_density(alpha = 0.3)+
+  facet_grid(negation~sentence_type)+
+  scale_fill_solarized()+
+  ylab("counts")+
+  xlab("rt")+
+  scale_x_continuous(limits = c(-0.01, 40))+
+  guides(fill = F)
+
+
+d.l1 %>% 
+  filter(rt < 30*1000) %>%
+  mutate(logrt = log(rt)) %>%
+  group_by(negation, workerid, sentence_type) %>%
+  slice(1) %>%
+  ungroup() %>% 
+  group_by(sentence_type, negation) %>%
+  multi_boot_standard(col = 'logrt') %>%
+  ggplot(., aes(x = sentence_type,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
                        fill = negation,
-              group = negation))+
-  geom_hline(yintercept = 0.5, lty = 3)+
+              group = negation
+              ))+
+  #geom_hline(yintercept = 0.5, lty = 3)+
   geom_col(position = position_dodge(0.5), width = 0.5, color = 'black')+
   geom_errorbar(position = position_dodge(0.5), color = 'black',
                 width = 0.3)+
   scale_fill_solarized()+
   #coord_flip()+
-  #guides(fill = F)+
+  #facet_wrap(~, scales = 'free')+
   xlab("")+
-  ylab("interpreted degree")+
-  scale_y_continuous(limits = c(0,1), breaks = c(0, 0.5,1))+
+  ylab("rt")+
+  #scale_y_continuous(limits = c(0,1), breaks = c(0, 0.5,1))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
-
-#ggsave("~/Documents/research/talks/vagueness/cusp-2017/not-unhappy_bootstrapped.pdf", width = , height = 3.5)
 ```
+
+
+RT summaries
+
+```{r}
+d.l1.rt.boot <- d.l1 %>%
+  mutate(logrt = log(rt)) %>%
+  group_by(negation, sentence_type) %>%
+  multi_boot_standard(col = "logrt")
+
+d.l1.rt.boot %>%
+  ggplot(., aes(x = negation,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = negation,
+              group = negation
+              ))+
+  #geom_hline(yintercept = 0.5, lty = 3)+
+  geom_col(position = position_dodge(0.5), width = 0.5, color = 'black')+
+  geom_errorbar(position = position_dodge(0.5), color = 'black',
+                width = 0.3)+
+  scale_fill_solarized()+
+  #coord_flip()+
+  facet_wrap(~sentence_type, scales = 'free')+
+  guides(fill = F)+
+  xlab("")+
+  ylab("rt")+
+  #scale_y_continuous(limits = c(0,1), breaks = c(0, 0.5,1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+```
+
+
 
 ```{r eval = F, echo = F}
 d.l1.boot %>%
@@ -125,11 +226,12 @@ d.l1.boot %>%
 ```{r fig.width = 8}
 
 d.l1.boot.adj <- d.l1 %>%
-  group_by(positive, sentence_type, negation)  %>%
+  filter(negation == "lexical", sentence_type != "Neither ... nor ...") %>%
+  group_by(positive, sentence_type)  %>%
   multi_boot_standard(col = "response")
 
 d.l1.boot.adj %>%
-ggplot(., aes(x = positive,
+  ggplot(., aes(x = positive,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
                        fill = sentence_type,
@@ -139,7 +241,7 @@ ggplot(., aes(x = positive,
   geom_errorbar(position = position_dodge(0.8), color = 'black',
                 width = 0.3)+
   scale_fill_solarized()+
-  facet_wrap(~negation, scales = 'free') + 
+  #facet_wrap(~negation, scales = 'free') + 
   #coord_flip()+
   #guides(fill = F)+
   xlab("")+
@@ -147,6 +249,7 @@ ggplot(., aes(x = positive,
   scale_y_continuous(limits = c(0,1), breaks = c(0, 0.5,1))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 
+#ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negant_lexical_bootstrapped_item.pdf", width = 8, height = 3.5)
 ```
 
 
@@ -159,7 +262,9 @@ d.l1 <- within(d.l1, {
   print(attributes(st))
 })
 
-
+d.l1 <- d.l1 %>% 
+  mutate(negation = factor(negation, 
+                           levels = c("morphological", "lexical")))
 
 rs.3.helmert.0 <- lmer(response ~ negation * st + 
                        (1 | workerid) + 
@@ -196,5 +301,159 @@ rs.3.helmert.2 <- lmer(response ~ negation * st +
 ```
 
 ```{r}
+
+rs.3.helmert.0.simple <- lmer(response ~ st + 
+                       (1 | workerid) + 
+                       (1 | positive),
+                     data = d.l1 %>% 
+                       filter(negation == "morphological")
+                     )
+
+summary(rs.3.helmert.0.simple)
+```
+
+
+# Order effects?
+
+If participants saw "un-" before "not-", do they alter their response for the other?
+
+```{r}
+d.l1 <- d.l1 %>%
+  group_by(workerid) %>%
+  mutate(negOrder = ifelse( min(which(
+              (sentence_type == "Antonym") &
+              (negation == "morphological")
+             )) < min(which(
+              (sentence_type == "Negated Positive") &
+              (negation == "morphological")
+             )), "antonymFirst", 
+             ifelse( min(which(
+              (sentence_type == "Antonym") &
+              (negation == "morphological")
+             )) > min(which(
+              (sentence_type == "Negated Positive") &
+              (negation == "morphological")
+             )), "negationFirst", "error")))
+```
+All responses
+
+```{r}
+d.l1.order.summarized <- d.l1 %>% 
+  filter(negation == "morphological", 
+         sentence_type %in% c("Negated Positive", "Antonym")) %>%
+  group_by(sentence_type, negOrder) %>%
+  multi_boot_standard(col = 'response')
+
+ggplot(d.l1.order.summarized, aes(x = negOrder, fill = sentence_type,
+                                  y = mean, ymin = ci_lower,
+                                  ymax = ci_upper))+
+  geom_col(position = position_dodge(), color = 'black')+
+  geom_errorbar(position = position_dodge())
+```
+
+First response only
+
+```{r}
+d.l1.order.first.summarized <- d.l1 %>% 
+  filter(negation == "morphological", 
+         sentence_type %in% c("Negated Positive", "Antonym")) %>%
+  group_by(workerid, sentence_type) %>%
+  slice(1) %>%
+  ungroup() %>% 
+  group_by(sentence_type, negOrder) %>%
+  multi_boot_standard(col = 'response')
+
+ggplot(d.l1.order.first.summarized, aes(x = negOrder, fill = sentence_type,
+                                  y = mean, ymin = ci_lower,
+                                  ymax = ci_upper))+
+  geom_col(position = position_dodge(), color = 'black')+
+  geom_errorbar(position = position_dodge())
+```
+
+First half vs. second half split
+
+```{r}
+d.l1.splithalf <- d.l1 %>%
+  mutate(splitHalf = ifelse(trial_num <= 15, "first", "second")) %>%
+  #filter(negation == "morphological") %>%
+  group_by(workerid, sentence_type) %>%
+  group_by(negation, sentence_type, splitHalf) %>%
+  multi_boot_standard(col = 'response')
+
+
+ggplot(d.l1.splithalf %>% 
+           filter(sentence_type != "Neither ... nor ..."), 
+       aes(x = splitHalf, fill = sentence_type,
+                                  y = mean, ymin = ci_lower,
+                                  ymax = ci_upper))+
+  geom_col(position = position_dodge(), color = 'black')+
+  scale_fill_solarized()+
+  geom_errorbar(position = position_dodge())+
+  facet_wrap(~negation)
+ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negAnt_splitHalf_histograms.pdf",
+       width = 7, height = 3)
+```
+
+
+First vs. last rating
+
+```{r}
+two.ratings.each <- d.l1  %>%
+  filter(negation == "morphological", 
+         sentence_type %in% c("Negated Positive", "Antonym")) %>%
+  group_by(workerid, sentence_type) %>%
+  summarize(n = n()) %>%
+  ungroup() %>% 
+  spread(sentence_type, n) %>%
+  filter(Antonym > 1, `Negated Positive` > 1) %>%
+  select(workerid)
+
+two.ratings <- d.l1  %>%
+  # filter(negation == "morphological", 
+  #        sentence_type %in% c("Negated Positive", "Antonym")) %>%
+  group_by(workerid, negation, sentence_type) %>%
+  summarize(n = n(),
+            n_ratings = ifelse(n > 1, "two", "one"))%>%
+  ungroup() %>%
+  mutate(workerid_sentence = paste(workerid, as.character(negation), as.character(sentence_type), sep = "_")) %>% 
+  filter(n_ratings == "two") %>%
+  select(workerid_sentence)
+```
+
+
+```{r}
+d.l1.first.last <- bind_rows(
+  d.l1 %>%
+    group_by(workerid, negation, sentence_type) %>%
+    top_n(1, -trial_num) %>%
+    mutate(presentation = 'first'),
+  d.l1 %>%
+    group_by(workerid, negation, sentence_type) %>%
+    top_n(1, trial_num) %>%
+    mutate(presentation = 'last') %>%
+    ungroup() %>%
+    rowwise() %>%
+    mutate(
+      workerid_sentence = 
+             paste(workerid, as.character(negation), as.character(sentence_type), sep = "_"),
+      presentation = ifelse(workerid_sentence %in% two.ratings$workerid_sentence, presentation, "first")
+      ) %>% 
+  select(-workerid_sentence)
+) %>% ungroup() %>% distinct()
+  
+
+d.l1.first.last.summary <- d.l1.first.last %>%
+  group_by(negation, sentence_type, presentation) %>%
+  multi_boot_standard(col = 'response')
+
+
+ggplot(d.l1.first.last.summary, aes(x = presentation, fill = sentence_type,
+                                  y = mean, ymin = ci_lower,
+                                  ymax = ci_upper))+
+  geom_col(position = position_dodge(), color = 'black')+
+  geom_errorbar(position = position_dodge())+
+  facet_wrap(~negation)
+
+#ggsave("~/Documents/research/negant/analysis/figs/split_half-3_L1.pdf", width =6 , height = 4)
 ```
 
