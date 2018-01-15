@@ -44,7 +44,7 @@
 
 \graphicspath{{img/}}
 
-\title{``Not unreasonable'': the pragmatic logic of negated antonyms}
+\title{``Not unreasonable'': The logic of natural language double negation}
  
 \author{{\large \bf Michael Henry Tessler (mhtessler@stanford.edu)} \\
   Department of Psychology, Stanford University 
@@ -60,7 +60,7 @@
 \begin{abstract}
 
 If ``John is not unhappy'', does that mean that he's happy? 
-The rules of logic make clear that two negations cancel each other out, but the same logic does not seem to hold in language. 
+In logic, two negatives make a positive, but the same does not seem to hold in natural language. 
 Instead, antonyms and their negations appear to partition the underlying semantic scale in an ordering: ``unhappy'' $<$ ``not happy'' $<$ ``not unhappy'' $<$ ``happy'' \cite{Horn1989:Natural, Krifka2007:Negated-antonyms}. 
 We show how this semantic ordering falls out of an information-theoretic model of adjective interpretation, without assuming that ``unhappy'' $<$ ``happy''.
 We then empirically investigate the semantic ordering, finding that the ordering appears when participants are fully aware of the utterances a speaker could say for antonym pairs defined by morphological negation (``[un]happy''); the explicit presentation of alternatives is not necessary for the analogous ordering of antonym pairs of distinct lexical items (``tall'' / ``short''). 
@@ -86,10 +86,22 @@ The two negatives do not exactly cancel one another...; the longer expression is
 \end{quote}
 %
 
-Competing intuitions arise concerning the logic of double negation. 
+Competing intuitions arise concerning the logic of double negation in natural language. 
 \citeA{Horn1991:Duplex, Horn1993:Economy} provides an explanation wherein  ``not unhappy'' is provided a restricted interpretation via its literal meaning and pragmatic competition with ``happy''. 
 However, this would result an interpretation of ``not unhappy'' that is neutral or indifferent, which contradicts intuitions that suggest ``not unhappy'' is a slightly positive state \cite<e,g.,>{Krifka2007:Negated-antonyms}.
-Some have suggested that ``not happy'' is an alternative that should enter into the division of pragmatic labor \cite{Blutner2004:pragmatics}, but this pragmatic logic has been deemed underdetermined \cite{Krifka2007:Negated-antonyms}. 
+Some have suggested that ``not happy'' is an alternative that should enter into the division of pragmatic labor \cite{Blutner2004:pragmatics}, but the pragmatic logic would contextually strength ``not happy'' is heretofore unclear \cite{Krifka2007:Negated-antonyms}. 
+
+Theorists' intuitions further conflict on the difference in meaning between ``not happy'' and ``unhappy''.
+\citeA{Jespersen1917:Negation} and \citeA{Blutner2004:pragmatics} believe the two are basically identical in meaning. 
+\citeA{Horn1989:Natural} and \citeA{Krifka2007:Negated-antonyms} disagree, citing examples found on the internet such as ``It's an absolutely horrible feeling to be unhappy, and I don't even think I was unhappy, just not happy, if you know what I mean.''
+
+These two issues motivate our current approach.
+First, competing intuitions concerning the meaning of modifier negation (``not happy'') and morphological negation (``unhappy'') suggest that empirical data should be consulted before further theorizing about pragmatic mechanisms.
+Second, the fact that the logic surrounding the pragmatic strengthening of modifier negation (``not happy'') in the context of alternative utterances is not clear suggests that the logic of double negation may benefit from a formal modeling approach. 
+Thus, we take an empirically-driven, formal modeling approach in this paper.
+We first elaborate a computational model of adjective interpretation to include antonyms and their negations, which we collectively refer to as \emph{antonym quartets}: adjectives (e.g., ``tall''), their antonyms (e.g., ``short''), and the negations of each (``not tall'', ``not short'').
+In Experiments 1 \& 2, we investigate the hypothesized ordering of antonym quartets for antonyms with distinct lexical entries (e.g., ``tall'' and ``short'') and antonyms constructed from a morphological change (e.g., ``happy'' and ``unhappy'').
+We conclude by revising the model in light of the empirical data. 
 
 
 \section{Computational model}
