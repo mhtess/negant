@@ -62,7 +62,7 @@
 If ``John is not unhappy'', does that mean that he's happy? 
 The rules of logic make clear that two negations cancel each other out, but the same logic does not seem to hold in language. 
 Instead, antonyms and their negations appear to partition the underlying semantic scale in an ordering: ``unhappy'' $<$ ``not happy'' $<$ ``not unhappy'' $<$ ``happy'' \cite{Horn1989:Natural, Krifka2007:Negated-antonyms}. 
-We show how this semantic ordering falls out of a minimal elaboration of a probabilistic pragmatics model of adjective interpretation.
+We show how this semantic ordering falls out of an information-theoretic model of adjective interpretation, without assuming that ``unhappy'' $<$ ``happy''.
 We then empirically investigate the semantic ordering, finding that the ordering appears when participants are fully aware of the utterances a speaker could say for antonym pairs defined by morphological negation (``[un]happy''); the explicit presentation of alternatives is not necessary for the analogous ordering of antonym pairs of distinct lexical items (``tall'' / ``short''). 
 These findings suggest a model of interpretation where listeners maintain uncertainty about the parsing of an utterance involving multiple negations.
 
@@ -74,10 +74,36 @@ semantics; pragmatics; Rational Speech Act; Bayesian cognitive model; adjectives
 
 \section{Introduction}
 
+Every introductory logic student understands that two negations cancel each other out: A ``not ungreen'' field is green.
+Yet in natural language, there exist multiple, distinct ways of conveying negation.  
+The morphology of a word can be altered to convey the opposite: ``un-'' + ``happy'' $\rightarrow$ ``unhappy''.
+In addition, a negation-inducing modifier can be employed: ``not happy''.
+Contra logic, however, these two ways of employing negation \emph{do not} cancel each other out: someone ``not unhappy'' is not necessarily happy. 	
+As \citeA{Jespersen1924} noted:
+%
+\begin{quote}
+The two negatives do not exactly cancel one another...; the longer expression is always weaker: ``this is not unknown to me'' or ``I am not ignorant of this'' means \emph{I am to some extent aware of it}, etc.
+\end{quote}
+%
+
+
 
 \section{Computational model}
 
-Gradable adjectives (e.g., ``tall'', ``happy'') convey the value along a scale (e.g., \emph{height}, \emph{happiness}) for some referent $x$ is above or below some contextual standard: $\denote{tall} = \emph{height}(x) > \theta$.
+Gradable adjectives (e.g., ``tall'', ``happy'') convey the value along a scale (e.g., \emph{height}, \emph{happiness}) for some referent $x$ is above or below some contextually-specified threshold: $\denote{tall} = \emph{height}(x) > \theta$; $\denote{short} = \emph{height}(x) < \theta$.
+\citeA{Lassiter2013} provided a probabilistic pragmatics model that constrains the threshold $\theta$ relative to a context, formalized by a prior distribution over the value of the scalar degree $x$.  
+%
+\begin{align}
+L_{1}(x, \theta \mid u) &\propto S_{1}(u \mid x, \theta) \cdot P_(x) \cdot P(\theta) \label{eq:L1} \\
+S_{1}(u \mid x, \theta) &\propto \exp{(\alpha_1 \cdot \ln {L_{0}(x \mid u, \theta)})} \label{eq:S1}\\
+L_{0}(x \mid u, \theta) &\propto {\delta_{[\![u]\!](x, \theta)} \cdot P_{c}(x)} \label{eq:L0}
+\end{align}
+%
+This is a Rational Speech Act (RSA) model, a recursive Bayesian model where speaker $S$ and listener $L$ coordinate on an intended meaning \cite<for a review, see >{Goodman2016:RSA}.
+In this framework, the pragmatic listener $L_1$ tries to resolve the state of the world $x$ (e.g., the height) from the utterance she heard $u$ (e.g., ``tall'').
+She imagines the utterance came from an approximately rational Bayesian speaker $S_1$ trying to inform a naive listener $L_0$, who in turn updates her prior beliefs $P_(x)$ via an utterance's literal meaning $[\![u]\!](x)$.
+$\theta$ comes from an uninformed prior and is resolved by the listener by reasoning about the likely states of the world $P_(x)$ (e.g., possible heights) and the likelihood that a speaker would say the adjective given a state and a threshold $S(u \mid x, \theta)$.
+
 
 \section{Experiment 1: Measuring the ordering}
 \subsection{Methods}
@@ -92,7 +118,28 @@ The experiment took on average N minutes and participants were compensated \$N f
 
 We used adjective quartets composed of positive-form gradable adjectives (\emph{POS}; e.g., ``happy''), their antonym (\emph{ANT}; e.g., ``unhappy''), and their respective negations (\emph{NEG POS}, ``not happy''; \emph{NEG ANT} ``not unhappy''); we refer to these four \emph{sentence types} collectively as an \emph{antonym quartet}.
 Antonyms were either created by morphological negation (\emph{morphological antonyms}; e.g., ``unhappy'' for ``happy'') or were distinct lexical entries (\emph{lexical antonyms}; e.g., ``short'', for ``tall'').
-All adjectives were individual-level predicates that applied to people; items were constructed from an informal survey of the linguistics literature and taken from list of ``common opposites'' available online\footnote{http://www.enchantedlearning.com/wordlist/opposites.shtml}.
+All adjectives were individual-level predicates that applied to people; items were constructed from an informal survey of the linguistics literature and taken from list of ``common opposites'' available online\footnote{http://www.enchantedlearning.com/wordlist/opposites.shtml} (for a full list, see \tableref{tab:items}.
+
+\begin{table}[b]
+\centering
+\begin{tabular}{l|l}
+\emph{Morphological antonyms}     & \emph{Lexical antonyms}    \\ 
+\hline
+happy, unhappy             & tall, short         \\
+intelligent, unintelligent & rich, poor          \\
+polite, impolite           & fat, skinny         \\
+interesting, uninteresting & hard-working, lazy  \\
+attractive, unattractive   & brave, cowardly     \\
+successful, unsuccessful   & beautiful, ugly     \\
+honest, dishonest          & wise, foolish       \\
+educated, uneducated       & proud, humble       \\
+friendly, unfriendly       & strong, weak        \\
+mature, immature           & loud, quiet        
+\end{tabular}
+\caption{Antonym pairs used in Experiments 1 \& 2}
+\label{tab:items}
+\end{table}
+
 
 \subsubsection{Procedure}
 
