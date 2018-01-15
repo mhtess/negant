@@ -110,16 +110,27 @@ Gradable adjectives (e.g., ``tall'', ``happy'') convey the value along a scale (
 \citeA{Lassiter2013} provided a probabilistic pragmatics model that constrains the threshold $\theta$ relative to a context, formalized by a prior distribution over the value of the scalar degree $x$.  
 %
 \begin{align}
-L_{1}(x, \theta \mid u) &\propto S_{1}(u \mid x, \theta) \cdot P_(x) \cdot P(\theta) \label{eq:L1} \\
-S_{1}(u \mid x, \theta) &\propto \exp{(\alpha_1 \cdot \ln {L_{0}(x \mid u, \theta)})} \label{eq:S1}\\
-L_{0}(x \mid u, \theta) &\propto {\delta_{[\![u]\!](x, \theta)} \cdot P_{c}(x)} \label{eq:L0}
+L_{1}(x, \theta \mid u) &\propto S_{1}(u \mid x, \theta) \cdot P(x) \cdot P(\theta) \label{eq:L1} \\
+S_{1}(u \mid x, \theta) &\propto \exp{(\alpha_1 \cdot \ln {L_{0}(x \mid u, \theta)} - \text{cost}(u))} \label{eq:S1}\\
+L_{0}(x \mid u, \theta) &\propto {\delta_{[\![u]\!](x, \theta)} \cdot P(x)} \label{eq:L0}
 \end{align}
 %
-This is a Rational Speech Act (RSA) model, a recursive Bayesian model where speaker $S$ and listener $L$ coordinate on an intended meaning \cite<for a review, see >{Goodman2016:RSA}.
-In this framework, the pragmatic listener $L_1$ tries to resolve the state of the world $x$ (e.g., the height) from the utterance she heard $u$ (e.g., ``tall'').
-She imagines the utterance came from an approximately rational Bayesian speaker $S_1$ trying to inform a naive listener $L_0$, who in turn updates her prior beliefs $P_(x)$ via an utterance's literal meaning $[\![u]\!](x)$.
-$\theta$ comes from an uninformed prior and is resolved by the listener by reasoning about the likely states of the world $P_(x)$ (e.g., possible heights) and the likelihood that a speaker would say the adjective given a state and a threshold $S(u \mid x, \theta)$.
+Equations \ref{eq:L1}-\ref{eq:L0} comprise a Rational Speech Act (RSA) model, a recursive Bayesian model wherein a pragmatic listener $L_1$ tries to resolve the intended meaning of an utterance $u$ by combining their prior beliefs $P(x)$ with the generative process of the utterance, a speaker model $S_1$ \cite<for a review, see>{Goodman2016:RSA}.
+The speaker model $S_1$  is an approximately rational Bayesian agent trying 
+to inform a naive listener $L_0$ (Eq.~\ref{eq:L0}) about the state of the world $x$.
+In the context of adjective interpretation, the state of the world is given by the value of the scalar degree $x$ (e.g., the height of the referent).
+The literal listener updates their prior beliefs $P_(x)$ via an utterance's literal meaning $[\![u]\!](x)$, the threshold function described above.
+The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely states of the world $P_(x)$ (e.g., possible heights) and the likelihood that a speaker would say the adjective given a state and a threshold $S(u \mid x, \theta)$.
 
+The proportionality in Eq.~\ref{eq:S1} implies normalization over a set of alternative utterances. 
+Formal models of adjective interpretation (including an alternative model proposed by \citeNP{Qing2014:Adjectives}) have so far restricted the set of alternative utterances to be only an adjective (e.g., either ``tall'' or ``short'') and an information-less, null utterance. 
+Here, we introduce antonyms in the alternative set, as well as their logical negation glossed as modifier negation (e.g., ``not tall'' and ``not short''). 
+Following standard approaches in formal semantics, antonyms are given their own thresholds ($\theta_-$), so Eq.~\ref{eq:L1} becomes:
+%
+\begin{align}
+L_{1}(x, \theta_+, \theta_- \mid u) &\propto S_{1}(u \mid x, \theta_+, \theta_-)  P(x)  P(\theta_+)  P(\theta_-) \label{eq:L1a}
+\end{align}
+\subsection{Model behavior}
 
 
 \section{Experiment 1: Measuring the ordering}
