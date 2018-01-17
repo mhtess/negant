@@ -44,7 +44,7 @@
 
 \graphicspath{{img/}}
 
-\title{``Not unreasonable'': The logic of natural language double negation}
+\title{``Not unreasonable'': The logic of double negation in natural language}
  
 \author{{\large \bf Michael Henry Tessler (mhtessler@stanford.edu)} \\
   Department of Psychology, Stanford University 
@@ -74,21 +74,22 @@ semantics; pragmatics; Rational Speech Act; Bayesian cognitive model; adjectives
 
 \section{Introduction}
 
-Every introductory logic student understands that two negations cancel each other out: A ``not ungreen'' field is green.
-Yet in natural language, there exist multiple, distinct ways of conveying negation.  
-The morphology of a word can be altered to convey the opposite: ``un-'' + ``happy'' $\rightarrow$ ``unhappy''.
-In addition, a negation-inducing modifier can be employed: ``not happy''.
+Every introductory logic student will tell you that two negations cancel each other out: A ``not ungreen'' field is green.
+Yet in natural language, there exist multiple, seemingly distinct ways of conveying negation.  
+Opposites can be arrived at by altering the morphology of a word: ``un-'' + ``happy'' $\rightarrow$ ``unhappy''.
+In addition, a modifier that induces negation can be employed: ``not happy''.
 Contra logic, however, these two ways of employing negation \emph{do not} cancel each other out: someone ``not unhappy'' is not necessarily happy. 	
 As \citeA{Jespersen1924} noted:
 %
 \begin{quote}
-The two negatives do not exactly cancel one another...; the longer expression is always weaker: ``this is not unknown to me'' or ``I am not ignorant of this'' means \emph{I am to some extent aware of it}, etc.
+%The two negatives do not exactly cancel one another...; 
+the longer expression is always weaker: ``this is not unknown to me'' or ``I am not ignorant of this'' means \emph{I am to some extent aware of it}, etc.
 \end{quote}
 %
 
 Competing intuitions arise concerning the logic of double negation in natural language. 
 \citeA{Horn1991:Duplex, Horn1993:Economy} provides an explanation wherein  ``not unhappy'' is provided a restricted interpretation via its literal meaning and pragmatic competition with ``happy''. 
-However, this would result an interpretation of ``not unhappy'' that is neutral or indifferent, which contradicts intuitions that suggest ``not unhappy'' is a slightly positive state \cite<e,g.,>{Krifka2007:Negated-antonyms}.
+Contra intuition, this would result an interpretation of ``not unhappy'' that is neutral or indifferent, which contradicts intuitions that suggest ``not unhappy'' is a slightly positive state \cite<e,g.,>{Krifka2007:Negated-antonyms}.
 Some have suggested that ``not happy'' is an alternative that should enter into the division of pragmatic labor \cite{Blutner2004:pragmatics}, but the pragmatic logic would contextually strength ``not happy'' is heretofore unclear \cite{Krifka2007:Negated-antonyms}. 
 
 Theorists' intuitions further conflict on the difference in meaning between ``not happy'' and ``unhappy''.
@@ -122,9 +123,9 @@ In the context of adjective interpretation, the state of the world is given by t
 The literal listener updates their prior beliefs $P_(x)$ via an utterance's literal meaning $[\![u]\!](x)$, the threshold function described above.
 The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely states of the world $P_(x)$ (e.g., possible heights) and the likelihood that a speaker would say the adjective given a state and a threshold $S(u \mid x, \theta)$.
 
-The proportionality in Eq.~\ref{eq:S1} implies normalization over a set of alternative utterances. 
+The proportionality in Eq.~\ref{eq:S1} implies normalization over a set of alternative utterances (potentially differentiated by their cost). 
 Formal models of adjective interpretation (including an alternative model proposed by \citeNP{Qing2014:Adjectives}) have so far restricted the set of alternative utterances to be only an adjective (e.g., either ``tall'' or ``short'') and an information-less, null utterance. 
-Here, we introduce antonyms in the alternative set, as well as their logical negation glossed as modifier negation (e.g., ``not tall'' and ``not short''). 
+In order to better understand the information-theoretic, pragmatic logic of antonyms and negation, we eschew the null utterance and introduce antonyms in the alternative set, as well as their logical negation (glossed as modifier negation, e.g., ``not tall'' and ``not short''). 
 Following standard approaches in formal semantics, antonyms are given their own thresholds ($\theta_-$), so Eq.~\ref{eq:L1} becomes:
 %
 \begin{align}
@@ -180,13 +181,13 @@ Throughout the course of the experiment, participants saw 2 of each \emph{senten
 	\centering
 	\begin{subfigure}[t]{0.5\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{expt1.jpeg}
+		\frame{\includegraphics[width=\textwidth]{expt1.jpeg}}
 		\caption{Experiment 1}\label{fig:expt1}		
 	\end{subfigure}%
 	\quad
 	\begin{subfigure}[t]{0.5\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{expt2.jpeg}
+		\frame{\includegraphics[width=\textwidth]{expt2.jpeg}}
 		\caption{Experiment 2}\label{fig:expt2}
 	\end{subfigure}
 	\caption{Example experimental trials.}\label{fig:expt-procedure}
