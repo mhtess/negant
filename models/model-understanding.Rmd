@@ -12,27 +12,42 @@ library(tidyverse)
 library(knitr)
 theme_set(theme_few())
 ```
+```{r rsaBins}
+rsaBinsCoarse <- '
+var lowerBins = [
+	0,
+  0.01,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  0.99
+];
 
-```{r utils}
-utils <- '
-var round = function(x){
-  return Math.round(x*100)/100
-}
+var upperBins = [
+  0.01,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  0.99,
+  1
+];
+'
+```
 
-var isNegation = function(utt){
-  return (utt.split("_")[0] == "not")
-};
-
-var hasNegModifier = function(utt){
-  return (utt.split("_")[0] == "not")
-};
-var hasNegMorph = function(utt){
-  return (utt.indexOf("un") > -1)
-};
-var roundTo3 = function(x){
-  return Math.round(x * 1000) / 1000
-}
-
+```{r rsaBinsFine}
+rsaBinsFine <- '
 var lowerBins = [
 	0,
   0.01,
@@ -82,6 +97,28 @@ var upperBins = [
   0.99,
   1
 ];
+'
+```
+
+```{r utils}
+utils <- '
+var round = function(x){
+  return Math.round(x*100)/100
+}
+
+var isNegation = function(utt){
+  return (utt.split("_")[0] == "not")
+};
+
+var hasNegModifier = function(utt){
+  return (utt.split("_")[0] == "not")
+};
+var hasNegMorph = function(utt){
+  return (utt.indexOf("un") > -1)
+};
+var roundTo3 = function(x){
+  return Math.round(x * 1000) / 1000
+}
 
 var midBins = map2(function(b1,b2){
   return roundTo3((b2 - b1)/2 + b1)
@@ -120,7 +157,6 @@ var DiscreteBeta = cache(function(a, b){
 })
 '
 ```
-
 
 ```{r meaningFn}
 meaningFn <- '
@@ -525,19 +561,22 @@ rs.listener.wp.tidy %>%
 
 # Uncertain "has threshold" RSA
 
+01/16/18: This is being refashioned to be analagous to the "uncertain parsing" model (yet to be implemented)
+
 ```{r rsa-uncertainHasThresholds}
 uncertainHasThresholdsRSA <- '
 var utterances = [
   "happy",
   "not_unhappy",
   "not_happy",
-  "unhappy",
+  "unhappy"
+  // "silence"
   // "neither_nor"
 ];
 
 var cost_yes = 0;
-var cost_not = 3;
-var cost_un = 3;
+var cost_not = 2;
+var cost_un = 2;
 
 var uttCosts = map(function(u) {
   var notCost = hasNegModifier(u) ? cost_not : 0
@@ -553,22 +592,50 @@ var utterancePrior = Infer({model: function(){
 var speakerOptimality = 1;
 var speakerOptimality2 = 1;
 
-var has_an_unhappy_threshold_prior = 0.2;
+var meaning = function(words, state, thresholds, parsing){
+  words == "happy" ? state > thresholds.happy :
+  words == "not_happy" ? parsing.compositional_not ? 
+      !(state > thresholds.happy) :
+      (state < thresholds.not_happy) :
+  words == "unhappy" ? parsing.compositional_un ? 
+      !(state > thresholds.happy) :
+      (state < thresholds.unhappy) :
+  // words == "not_unhappy" ? parsing.compositional_not ? 
+  //    parsing.compositional_un ? (state > thresholds.happy) :
+  //    !(state < thresholds.unhappy) : 
+  //    (state > thresholds.not_unhappy) :
+  words == "not_unhappy" ? parsing.compositional_un ? 
+    (state > thresholds.happy) : !(state < thresholds.unhappy) : 
+  words == "sad" ? state < thresholds.sad :
+  words == "not_sad" ? !(state < thresholds.sad) :
+  words == "neither_nor" ? (
+    !(state > thresholds.happy) &&
+    !(state < thresholds.unhappy)
+  ) :
+  true
+};
 
-var listener0 = cache(function(utterance, thresholds) {
+var compositional_un_prior = 0.5;
+var compositional_not_prior = 0.5;
+// var un_not_lexical_prior = not_lexical_prior*un_lexical_prior;
+
+var listener0 = cache(function(utterance, thresholds, parsing) {
   Infer({model: function(){
     var state = sample(DiscreteBeta(1, 1));
+    // display(JSON.stringify(thresholds))
     // var state = sample(DiscreteGaussian(0, 0.5));
-    var m = meaning(utterance, state, thresholds);
+    var m = meaning(utterance, state, thresholds, parsing);
+   // display("l0 " + state + " " + m + " " + JSON.stringify(parsing))
     condition(m);
     return state;
   }})
 }, 10000);
 
-var speaker1 = cache(function(state, thresholds) {
+var speaker1 = cache(function(state, thresholds, parsing) {
   Infer({model: function(){
     var utterance = sample(utterancePrior);
-    var L0 = listener0(utterance, thresholds);
+    // display(utterance)
+    var L0 = listener0(utterance, thresholds, parsing);
     factor(speakerOptimality*L0.score(state));
     return utterance;
   }})
@@ -577,23 +644,31 @@ var speaker1 = cache(function(state, thresholds) {
 var listener1 = cache(function(utterance) {
   Infer({model: function(){
 
-    var happy_threshold = uniformDraw(thetaBins)
-    var has_an_unhappy_threshold = flip(has_an_unhappy_threshold_prior)
-    var unhappy_threshold = has_an_unhappy_threshold ?
-      uniformDraw(thetaBins) :
-      happy_threshold
+    var happy_threshold = uniformDraw(thetaBins);
+    var compositional_un = flip(compositional_un_prior)
+    var compositional_not = flip(compositional_not_prior)
+
+    var unhappy_threshold = compositional_un ? "happy_threshold" : uniformDraw(thetaBins)
+    var not_happy_threshold = compositional_not ? "happy_threshold" : uniformDraw(thetaBins);
+    var not_unhappy_threshold = -99;
+// compositional_not ? compositional_un ? "happy_threshold" : 
+//  "unhappy_threshold" : uniformDraw(thetaBins)
 
     var thresholds = {
       happy: happy_threshold,
-      unhappy: unhappy_threshold
+      unhappy: unhappy_threshold,
+      not_happy: not_happy_threshold,
+      not_unhappy: not_unhappy_threshold
     }
+
+    var parsing = {compositional_un, compositional_not}
 
     var state = sample(DiscreteBeta(1, 1));
     // var state = sample(DiscreteGaussian(0, 0.5));
 
-    var S1 = speaker1(state, thresholds)
+    var S1 = speaker1(state, thresholds, parsing)
     observe(S1, utterance)
-    return state
+    return extend(parsing, {state})
   }})
 }, 10000);
 '
@@ -602,14 +677,19 @@ var listener1 = cache(function(utterance) {
 ```{r wpplCalls-uncertainHasThresholds}
 uncertainHasThresholdListenerCall <- '
 _.fromPairs(map(function(u){
+  display(u)
   var post = listener1(u)
-  return [u, post]
+  display(u + " __ Comp(un) = " + expectation(post, function(x){return x.compositional_un}))
+  display(u + " __ Comp(not) = " + expectation(post, function(x){return x.compositional_not}))
+  return [u, marginalize(post, "state")]
 }, utterances))
 '
+#uncertainHasThresholdListenerCall<- 'listener1("unhappy")'
 ```
 
 ```{r runUncertainHasThresholdListener}
-rs.listener.wp.2 <- webppl(paste(utils, meaningFn, uncertainHasThresholdsRSA, uncertainHasThresholdListenerCall,  sep = '\n'))
+rs.listener.wp.2 <- webppl(paste(rsaBinsCoarse,
+                                 utils, uncertainHasThresholdsRSA, uncertainHasThresholdListenerCall,  sep = '\n'))
 
 rs.listener.wp.tidy.2 <- bind_rows(
   data.frame(rs.listener.wp.2$happy) %>% 
@@ -633,16 +713,67 @@ rs.listener.wp.tidy.samples.2 <- get_samples(
 
 ggplot(rs.listener.wp.tidy.samples.2, 
        aes( x = support,fill = utterance, color = utterance))+
-  geom_density(alpha = 0.4, size = 1.3)+
+#  geom_density(alpha = 0.4, size = 1.3)+
   scale_fill_solarized()+
+  geom_histogram(alpha = 0.4, size = 1.3)+
   scale_color_solarized()+
   xlab("Degree of happiness")+
+  facet_wrap(~utterance)+
   ylab("Posterior probability density")+
   scale_x_continuous(breaks =c(0, 1))+
   scale_y_continuous(breaks = c(0, 2))
 
 #ggsave("figs/L1_posteriors_wCost3_alpha1.png", width = 6, height = 4)
 ```
+```{r}
+rs.listener.wp.tidy.2 %>%
+  group_by(utterance) %>%
+  summarize(interpretation = sum(probs * support)) %>%
+    mutate(utterance = factor(utterance,
+                            levels = c("unhappy",
+                                       "not_happy",
+                                       "not_unhappy",
+                                       "happy"))) %>%
+  ggplot(., aes( x = utterance, y=interpretation,
+                 fill = utterance, color = utterance))+
+    geom_col(position = position_dodge(0.8), 
+             width = 0.8,
+             alpha =0.8, color = 'black')+
+    #coord_flip()+
+  geom_hline(yintercept = 0.5, lty = 3)+
+  scale_fill_solarized()+
+  guides(fill = F)+
+  scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1))+
+  xlab("")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+#ggsave("figs/L1_means_wCost3_alpha1.png", width = 4, height = 3.5)
+```
+```{r}
+rs.listener.wp.tidy.2 %>%
+  group_by(utterance) %>%
+  summarize(interpretation = sum(probs * support)) %>%
+    mutate(utterance = factor(utterance,
+                            levels = c("unhappy",
+                                       "not_happy",
+                                       "not_unhappy",
+                                       "happy"))) %>% 
+  kable(.)
+```
+
+
+#### parameters
+
+- lower the lexical "un-" probability
+  - the more "unhappy" and "not happy" get squished together, but also "not unhappy" and "happy"
+- including "un" cost
+  - bring "unhappy" and "not happy" closer together than "happy" and "not unhappy"
+  - with speaker opt = 1
+    - "happy" looks kind of weak?
+  - with higher speaker optimality:
+    - "not unhappy" > "happy" (because super costly)
+
+
 
 # Uncertain alternatives RSA
 
@@ -1008,7 +1139,7 @@ var listener1 = cache(function(utterance) {
 '
 ```
 
-```{r wpplCalls-uncertainAlternatives}
+```{r wpplCalls-uncertainParser}
 uncertainAlternativesListenerCall <- '
 _.fromPairs(map(function(u){
   var post = listener1(u)
@@ -1017,7 +1148,7 @@ _.fromPairs(map(function(u){
 '
 ```
 
-```{r runUncertainAlternativesListener}
+```{r runUncertainParseListener}
 rs.listener.wp.2 <- webppl(paste(utils, uncertainAlternativesRSA, uncertainAlternativesListenerCall,  sep = '\n'),
                            data = c(1,5,5), data_var = "alternativesPriorProbs")
 ```
