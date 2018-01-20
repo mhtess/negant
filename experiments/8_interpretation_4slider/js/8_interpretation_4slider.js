@@ -174,7 +174,7 @@ function make_slides(f) {
         var sentence_item = this.sentence_order[i];
         exp.data_trials.push(_.extend({
           "trial_type" : "four_sliders",
-          // "antonym_type": exp.antonym_type,
+          "antonym_type": exp.antonym_type,
           "superlative_endpoints": superlative_endpoints ? 1 : 0,
           // "endpoint_low": superlative_endpoints ? this.stim[0].endpoints.low : "most " + this.stim[0].antonym,
           // "endpoint_high": superlative_endpoints ? this.stim[0].endpoints.high : "most " + this.stim[0].positive,
