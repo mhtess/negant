@@ -1,0 +1,264 @@
+---
+title: "Not unreasonable: Carving vague dimensions with contraries and contradictions"
+bibliography: negant.bib
+csl: apa6.csl
+document-params: "10pt, letterpaper"
+header-includes:
+  - \usepackage{tabularx}
+  - \usepackage{multicol}
+  - \usepackage{wrapfig}
+  - \usepackage{caption}
+  - \usepackage{booktabs}
+  
+author-information: > 
+  \author{{\large \bf Michael Henry Tessler (mhtessler@stanford.edu)} \\ Department of Psychology, Stanford University 
+  \AND {\large \bf Michael Franke (mchfranke@gmail.com)} \\ Department of Linguistics, University of T\"{u}bingen}
+
+abstract: 
+    "To negate is to make true false, but what of statements that are truly vague? When meanings are underspecified, the behavior of negation is not clear. If a person is \"not happy\", does that entail they are \"unhappy\"? Natural language provides two kinds of negation: contrary (e.g., not happy) and contradiction (e.g., sad), yet additional forms exist (e.g., unhappy). Are the additional forms redundent, or do they allow speakers, with the help of context, to more finely carve otherwise vague meanings? We investigate basic inferences from natural language negation and double negation by elaborating a computational model of gradable adjective interpretation to handle different kinds of negation. We hypothesize that communicative reasoning and an uncertain *parsing model* combine for listeners to extract fine-grained meanings within vague dimensions. This hypothesis is borne out in, to our knowledge, the first experimental evidence concerning adult interpretation of different kinds of and double negation."
+
+keywords:
+    "semantics; pragmatics; negation; Rational Speech Act; Bayesian cognitive model"
+    
+output: cogsci2016::cogsci_paper
+---
+
+```{r global_options, include=FALSE}
+rm(list=ls())
+knitr::opts_chunk$set(fig.width=3, fig.height=3, fig.crop = F, fig.pos = "tb", fig.path='figs/',
+                      echo=F, warning=F, cache=F, message=F, sanitize = T)
+```
+
+```{r, libraries}
+library(png)
+library(grid)
+library(ggplot2)
+library(xtable)
+library(cowplot)
+library(magick)
+theme_set(theme_few())
+orange.purple.color.palette <- 
+  c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
+```
+
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+\newcommand{\denote}[1]{\mbox{ $[\![ #1 ]\!]$}}
+\newcommand{\tableref}[1]{Table \ref{#1}}
+\newcommand{\figref}[1]{Figure \ref{#1}}
+\newcommand{\appref}[1]{Appendix \ref{#1}}
+\newcommand{\sectionref}[1]{Section \ref{#1}}
+\definecolor{Red}{RGB}{255,0,0}
+\definecolor{Green}{RGB}{10,200,100}
+\definecolor{Blue}{RGB}{10,100,200}
+
+\newcommand{\red}[1]{\textcolor{Red}{#1}}  
+\newcommand{\mf}[1]{\textcolor{Green}{[mf: #1]}}  
+\newcommand{\mht}[1]{\textcolor{Blue}{[mht: #1]}} 
+
+
+    <!-- Should we parse both types of negation compositionally, then indeed they have same meanings. However, language has the ability to create new lexical entries, with the tokenization of new semantic variables. For instance, \"not tall\" does not imply \"short\" because tall and short have different truth-conditional criteria. -->
+    
+    <!-- In logic, two negatives make a positive, but the same does not seem to hold in natural language. Instead, antonyms and their negations appear to partition the underlying semantic scale in an ordering: *unhappy* $<$ *not happy* $<$ *not unhappy* $<$ *happy* [@Horn1989:Natural; @Krifka2007:Negated-antonyms]. We show how this semantic ordering falls out of an information-theoretic model of adjective interpretation, without assuming that *unhappy* $<$ *happy*. We then empirically investigate the semantic ordering, finding that the ordering appears when participants are fully aware of the utterances a speaker could say for antonym pairs defined by morphological negation (*[un]happy*); the explicit presentation of alternatives is not necessary for the analogous ordering of antonym pairs of distinct lexical items (*tall* / *short*). These findings suggest a model of interpretation where listeners maintain uncertainty about the parsing of an utterance involving multiple negations." -->
+
+
+
+# Introduction
+
+Every introductory logic student will tell you that two negations cancel each other out: A "not ungreen" field is green.
+Yet in natural language, there exist multiple, seemingly distinct ways of conveying negation.  
+Opposites can be arrived at by altering the morphology of a word: "un-" + "happy" $\rightarrow$ "unhappy".
+In addition, a modifier that induces negation can be employed: "not happy".
+Contra logic, however, these two ways of employing negation \emph{do not} cancel each other out: someone "not unhappy" is not necessarily happy. 	
+As @Jespersen1924 noted:
+<!-- The two negatives do not exactly cancel one another...;  -->
+> the longer expression is always weaker: "this is not unknown to me" or "I am not ignorant of this" means \emph{I am to some extent aware of it}, etc.
+
+Competing intuitions arise concerning the logic of double negation in natural language. 
+@Horn1991:Duplex, @Horn1993:Economy provides an explanation wherein  "not unhappy" is provided a restricted interpretation via its literal meaning and pragmatic competition with "happy". 
+Contra intuition, this would result an interpretation of "not unhappy" that is neutral or indifferent, which contradicts intuitions that suggest "not unhappy" is a slightly positive state [e.g., @Krifka2007:Negated-antonyms].
+Some have suggested that "not happy" is an alternative that should enter into the division of pragmatic labor [@Blutner2004:pragmatics], but the pragmatic logic would contextually strength "not happy" is heretofore unclear [@Krifka2007:Negated-antonyms]. 
+
+Theorists' intuitions further conflict on the difference in meaning between "not happy" and "unhappy".
+@Jespersen1917:Negation and @Blutner2004:pragmatics believe the two are basically identical in meaning. 
+@Horn1989:Natural and @Krifka2007:Negated-antonyms disagree, citing examples found on the internet such as "It's an absolutely horrible feeling to be unhappy, and I don't even think I was unhappy, just not happy, if you know what I mean."
+
+These two issues motivate our current approach.
+First, competing intuitions concerning the meaning of modifier negation ("not happy") and morphological negation ("unhappy") suggest that empirical data should be consulted before further theorizing about pragmatic mechanisms.
+Second, the fact that the logic surrounding the pragmatic strengthening of modifier negation ("not happy") in the context of alternative utterances is not clear suggests that the logic of double negation may benefit from a formal modeling approach. 
+Thus, we take an empirically-driven, formal modeling approach in this paper.
+We first elaborate a computational model of adjective interpretation to include antonyms and their negations, which we collectively refer to as \emph{antonym quartets}: adjectives (e.g., "tall"), their antonyms (e.g., "short"), and the negations of each ("not tall", "not short").
+In Experiments 1 \& 2, we investigate the hypothesized ordering of antonym quartets for antonyms with distinct lexical entries (e.g., "tall" and "short") and antonyms constructed from a morphological change (e.g., "happy" and "unhappy").
+We conclude by revising the model in light of the empirical data. 
+
+# Computational model
+
+Gradable adjectives (e.g., "tall", "happy") convey the value along a scale (e.g., *height*, *happiness*) for some referent $x$ is above or below some contextually-specified threshold: $\denote{tall} = height(x) > \theta$; $\denote{short} = height(x) < \theta$.
+@Lassiter2013 provided a probabilistic pragmatics model that constrains the threshold $\theta$ relative to a context, formalized by a prior distribution over the value of the scalar degree $x$.  
+\vspace{-1cm}
+\begin{align}
+L_{1}(x, \theta \mid u) &\propto S_{1}(u \mid x, \theta) \cdot P(x) \cdot P(\theta) \label{eq:L1} \\
+S_{1}(u \mid x, \theta) &\propto \exp{(\alpha_1 \cdot \ln {L_{0}(x \mid u, \theta)} - \text{cost}(u))} \label{eq:S1}\\
+L_{0}(x \mid u, \theta) &\propto {\delta_{[\![u]\!](x, \theta)} \cdot P(x)} \label{eq:L0}
+\end{align}
+
+Equations \ref{eq:L1}-\ref{eq:L0} comprise a Rational Speech Act (RSA) model, a recursive Bayesian model wherein a pragmatic listener $L_1$ tries to resolve the intended meaning of an utterance $u$ by combining their prior beliefs $P(x)$ with the generative process of the utterance, a speaker model $S_1$ [for a review, see @Goodman2016:RSA].
+The speaker model $S_1$  is an approximately rational Bayesian agent trying 
+to inform a naive listener $L_0$ (Eq. \ref{eq:L0}) about the state of the world $x$.
+In the context of adjective interpretation, the state of the world is given by the value of the scalar degree $x$ (e.g., the height of the referent).
+The literal listener updates their prior beliefs $P_(x)$ via an utterance's literal meaning $[\![u]\!](x)$, the threshold function described above.
+The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely states of the world $P_(x)$ (e.g., possible heights) and the likelihood that a speaker would say the adjective given a state and a threshold $S(u \mid x, \theta)$.
+
+The proportionality in Eq. \ref{eq:S1} implies normalization over a set of alternative utterances (potentially differentiated by their cost). 
+Formal models of adjective interpretation [including an alternative model proposed by @Qing2014:Adjectives] have so far restricted the set of alternative utterances to be only an adjective (e.g., either "tall" or "short") and an information-less, null utterance. 
+In order to better understand the information-theoretic properties of antonyms and negation, we eschew the null utterance and introduce antonyms in the alternative set, as well as their logical negation (glossed as modifier negation, e.g., "not tall" and "not short"). 
+Thus the alternatives are:
+\vspace{-0.5cm}
+\begin{align*}
+\denote{\text{POS}} = x > \theta_+, &   \denote{\text{neg POS}} = \neg \denote{\text{POS}}, \\
+\denote{\text{ANT}} = x < \theta_-, &  \denote{\text{neg ANT}} = \neg \denote{\text{ANT}}
+\end{align*}
+Following standard approaches in formal semantics, antonyms are given their own thresholds ($\theta_-$), so Eq. \ref{eq:L1} becomes:
+\vspace{-0.5cm}
+\begin{align}
+L_{1}(x, \theta_+, \theta_- \mid u) &\propto S_{1}(u \mid x, \theta_+, \theta_-)  P(x)  P(\theta_+)  P(\theta_-) \label{eq:L1a}
+\end{align}
+
+## Model behavior
+
+# Experiment 1: Measuring the ordering
+## Methods
+### Participants
+
+We recruited 120 participants from Amazon's Mechanical Turk (MTurk). 
+This number was arrived it with the intention of getting approximately 25 ratings for each unique item in the experiment.
+In all experiments, participants were restricted to those with U.S. IP addresses and who had at least a 95\% work approval rating. 
+The experiment took on average N minutes and participants were compensated \$N for their work.
+
+### Materials
+
+We used adjective quartets composed of positive-form gradable adjectives (\emph{POS}; e.g., "happy"), their antonym (\emph{ANT}; e.g., "unhappy"), and their respective negations (\emph{NEG POS}, "not happy"; \emph{NEG ANT} "not unhappy"); we refer to these four \emph{sentence types} collectively as an \emph{antonym quartet}.
+Antonyms were either created by morphological negation (\emph{morphological antonyms}; e.g., "unhappy" for "happy") or were distinct lexical entries (\emph{lexical antonyms}; e.g., "short", for "tall").
+All adjectives were individual-level predicates that applied to people; items were constructed from an informal survey of the linguistics literature and taken from list of "common opposites" available online\footnote{http://www.enchantedlearning.com/wordlist/opposites.shtml} (for a full list, see \tableref{tab:items}.
+
+\begin{table}[b]
+\centering
+\begin{tabular}{l|l}
+\emph{Morphological antonyms}     & \emph{Lexical antonyms}    \\ 
+\hline
+happy, unhappy             & tall, short         \\
+intelligent, unintelligent & rich, poor          \\
+polite, impolite           & fat, skinny         \\
+interesting, uninteresting & hard-working, lazy  \\
+attractive, unattractive   & brave, cowardly     \\
+successful, unsuccessful   & beautiful, ugly     \\
+honest, dishonest          & wise, foolish       \\
+educated, uneducated       & proud, humble       \\
+friendly, unfriendly       & strong, weak        \\
+mature, immature           & loud, quiet        
+\end{tabular}
+\caption{Antonym pairs used in Experiments 1 \& 2}
+\label{tab:items}
+\end{table}
+
+
+### Procedure
+
+On each trial, participants read a statement introducing a character using a gradable adjective in one of the four \emph{sentence types} (e.g., "Greg is \{POS, ANT, NEG POS, NEG ANT\}").
+Participants were asked to interpret the statement by placing the character on a scale from "the most POS person" to "the most NEG person", using a slider bar (\figref{fig:expt1}).
+Participants completed 16 trials; each used a different adjective quartet.
+Throughout the course of the experiment, participants saw 2 of each \emph{sentence type} with both \emph{lexical} and \emph{morphological} antonym quartets. 
+
+```{r experiment-slides, fig.cap="Example experimental trials."}
+slide.expt.1 <- ggdraw() + draw_image("img/expt1.jpeg", scale = 1) +
+  theme(plot.margin = unit(c(0,0,0,0), "pt")) 
+slide.expt.2 <- ggdraw() + draw_image("img/expt2.jpeg", scale = 1)+
+  theme(plot.margin = unit(c(0,0,0,0), "pt")) 
+
+plot_grid(add_sub(slide.expt.1, "Experiment 1", size = 10), 
+          add_sub(slide.expt.2,"Experiment 2", size = 10), 
+          labels = c("A", "B"), 
+          nrow = 2)
+```
+
+## Results 
+
+X participants were excluded for self-reporting a native language other than English. 
+
+```{r expt-results, fig.cap="Experimental results.", fig.env = "figure*", fig.pos = "h", fig.width=6, fig.height=2.75, fig.align = "center", set.cap.width=T, num.cols.cap=2}
+# load(file = "cached_results/fourSlider_bootstrappedCIs.RData")
+# load(file = "cached_results/oneSlider_bootstrappedCIs.RData")
+# 
+# df.expts.1.2.ci <- bind_rows(
+#   df.oneSlider.ci %>% mutate(src = 'one slider'), 
+#   df.fourSlider.ci %>% mutate(src = 'four slider')
+# )  %>%
+#   mutate(src = factor(src, levels = c("one slider", "four slider"),
+#                       labels= c("expt 1 (one slider)", "expt 2 (four slider)")))
+# save(df.expts.1.2.ci, 
+#      file = "cached_results/bothExpts_bootstrappedCIs.RData")
+
+load(file = "cached_results/bothExpts_bootstrappedCIs.RData")
+ggplot(df.expts.1.2.ci, aes(x = negation,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = sentence_type,
+                      group = sentence_type
+              ))+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_errorbar(position = position_dodge(0.8), color = 'black',
+                width = 0.4)+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=F))+
+  facet_wrap(~src)+
+  xlab("\n antonym type")+
+  ylab("mean normalized rating")+
+  scale_y_continuous(limits = c(-1.3,1.3), breaks = c(-1, 0, 1))+
+  theme(#legend.position = 'bottom',
+        #legend.direction = 'vertical',
+        #axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+        #legend.text = element_text(size = 6),
+        #legend.title = element_blank(),
+        #legend.key.size = unit(0.3, "cm")
+        )
+```
+
+
+
+# Experiment 2: Explicit alternatives
+
+This experiment was designed in order to test the influence of salient alternatives on the hypothesized semantic ordering for antonym quartets.
+
+## Methods
+
+### Participants
+
+We recruited 50 participants MTurk.
+This number was arrived it with the intention of getting approximately 25 ratings for each unique item in the experiment.
+The experiment took on average N minutes and participants were compensated \$N for their work.
+
+### Materials and procedure
+
+The experimental materials were the same as in Expt.~1. 
+The procedure differed in that participants saw and rated all four sentence types simultaneously (\figref{fig:expt2}). 
+In addition, the endpoints of the slider bars were relabeled to "the most \{\emph{POS}, \emph{ANT}\} person \emph{in the world'}'; excluding the "in the world" phrase leads to a salient interpretation of the endpoints as indicating "the most \emph{POS} person (of these four)".
+
+## Results
+
+# Discussion
+
+# Acknowledgements
+
+This work was supported in part by NSF Graduate Research Fellowship DGE-114747 to MHT.
+
+
+# References 
+
+```{r}
+# References will be generated automatically by Pandoc and included here.
+# The following code is some latex to format the bibliography. Do not remove it.
+```
+
+\setlength{\parindent}{-0.1in} 
+\setlength{\leftskip}{0.125in}
+\noindent
