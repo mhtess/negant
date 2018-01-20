@@ -26,9 +26,10 @@
   - n = 50 ==> $42
 
 ## CogSci Experiment Plan
+
 - `6_antonym-elicitation`: Take only morphological negation items, embed them in the same context as the other experiments (“Your friend tells you about a friend of theirs: They say, “John is happy”. “), and have participants generate antonyms (“What is the opposite of “happy”? “).
   - Prediction: We elicit mostly lexical antonyms (e.g., “sad”)… we take the modal 1 or 2 as the “lexical antonym"
-- `7_interpretation-1slider`: same as `4_L1`, using the elicited antonyms, together with the morphological antonyms (and their negation). For example: [happy, unhappy, not happy, not unhappy, sad, not sad]. Again, participants will only rate one of these for each adjective sextet.
+  - Pilot: collect n = 18, $0.60 --> 10.8 + 20% = 12.96
+- `7_interpretation-1slider`: same as `4_L1`, using the elicited antonyms, together with the morphological antonyms (and their negation). For example: [happy, unhappy, not happy, not unhappy, sad]. Again, participants will only rate one of these for each adjective set.
 - `8_interpretation-4slider`: same as `7_interpretation-1slider` but with four sliders at a time
   - between subjects: [..., unhappy, not unhappy] vs. [..., sad, not sad]
-- `9_interpretation-6slider`: same as `8_interpretation-4slider` but with six sliders [..., unhappy, not unhappy, sad, not sad]
