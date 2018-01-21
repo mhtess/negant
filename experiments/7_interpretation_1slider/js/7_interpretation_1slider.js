@@ -86,7 +86,7 @@ function make_slides(f) {
         "endpoint_low": "the " + this.left_endpoint + "in the world",
         "endpoint_high": "the " +this.right_endpoint + "in the world",
         "antonym_type": exp.antonym_type,
-        "superlative_endpoints": 0,//superlative_endpoints ? 1 : 0,
+        // "superlative_endpoints": 0,//superlative_endpoints ? 1 : 0,
         // "endpoint_low": "the " + (superlative_endpoints ? this.stim.endpoints.low : "most " + this.stim.morphant) + " person in the world",
         // "endpoint_high": "the " + (superlative_endpoints ? this.stim.endpoints.high : "most " + this.stim.positive) + " person in the world",
         "response" : exp.sliderPost,
@@ -239,8 +239,8 @@ function init() {
   // ];
 
 
-  // exp.antonym_type = _.sample(["morphant", "lexant"])
-  exp.antonym_type = "lexant"
+  exp.antonym_type = _.sample(["morphant", "lexant"])
+  // exp.antonym_type = "lexant"
 
   exp.adjective_type = [
     "positive", "neg_positive", "antonym", "neg_antonym" //, "neither_pos_nor_ant"

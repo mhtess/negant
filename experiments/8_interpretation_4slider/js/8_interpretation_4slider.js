@@ -115,10 +115,10 @@ function make_slides(f) {
       $(".slider_row").remove();
       $(".slider_center_target").remove();
       for (var i=0; i<this.n_sliders; i++) {
+
         var single_stim = this.sentence_order[i];
         var sentence =  single_stim.name + " is <strong>" + single_stim.adjective + "</strong>.";
-
-
+        $("#sentence" + i).remove();
         $("#multi_slider_table").append('<tr id="sentence' + i + '"><td class="slider_center_target">"' + sentence + '"</td></tr><tr class="slider_row"><td colspan="2" class="multiSliderSlider"><div id="slider' + i + '" class="slider">-------[ ]--------</div></td>');
 
         // $("#multi_slider_table").append('<tr class="slider_row"><td class="slider_target" id="sentence' + i + '">"' + sentence + '"</td><td colspan="2"><div id="slider' + i + '" class="slider">-------[ ]--------</div></td></tr>');
@@ -126,11 +126,11 @@ function make_slides(f) {
       }
 
       superlative_endpoints = _.contains(_.keys(stim[0]), "endpoints")
-      left_endpoint = !superlative_endpoints ? "most " + stim[0].morphant  + "<br>person ": stim[0].endpoints.low + " person<br>";
-      right_endpoint = !superlative_endpoints ? "most " + stim[0].positive  + "<br>person ": stim[0].endpoints.high + " person<br>";
+      this.left_endpoint = "most " + stim[0][exp.antonym_type]  + "<br>person ";
+      this.right_endpoint = "most " + stim[0].positive  + "<br>person ";
 
-      $(".left").html("the " +left_endpoint +  "in the world")
-      $(".right").html("the " + right_endpoint +  "in the world")
+      $(".left").html("the " + this.left_endpoint +  "in the world")
+      $(".right").html("the " + this.right_endpoint +  "in the world")
 
       // $(".left").html("100\% " + single_stim.antonym)
       // $(".right").html("100\% " + single_stim.positive)
@@ -175,12 +175,14 @@ function make_slides(f) {
         exp.data_trials.push(_.extend({
           "trial_type" : "four_sliders",
           "antonym_type": exp.antonym_type,
-          "superlative_endpoints": superlative_endpoints ? 1 : 0,
+          // "superlative_endpoints": superlative_endpoints ? 1 : 0,
           // "endpoint_low": superlative_endpoints ? this.stim[0].endpoints.low : "most " + this.stim[0].antonym,
           // "endpoint_high": superlative_endpoints ? this.stim[0].endpoints.high : "most " + this.stim[0].positive,
+          "endpoint_low": "the " + this.left_endpoint + "in the world",
+          "endpoint_high": "the " +this.right_endpoint + "in the world",
 
-          "endpoint_low": "the " + (superlative_endpoints ? this.stim[0].endpoints.low : "most " + this.stim[0].morphant) + " person in the world",
-          "endpoint_high": "the " + (superlative_endpoints ? this.stim[0].endpoints.high : "most " + this.stim[0].positive) + " person in the world",
+          // "endpoint_low": "the " + (superlative_endpoints ? this.stim[0].endpoints.low : "most " + this.stim[0].morphant) + " person in the world",
+          // "endpoint_high": "the " + (superlative_endpoints ? this.stim[0].endpoints.high : "most " + this.stim[0].positive) + " person in the world",
 
           "response" : exp.sliderPost[i],
           "trial_num": this.trial_num,
