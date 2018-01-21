@@ -31,5 +31,19 @@
   - Prediction: We elicit mostly lexical antonyms (e.g., “sad”)… we take the modal 1 or 2 as the “lexical antonym"
   - Pilot: collect n = 18, $0.60 --> 10.8 + 20% = 12.96
 - `7_interpretation-1slider`: same as `4_L1`, using the elicited antonyms, together with the morphological antonyms (and their negation). For example: [happy, unhappy, not happy, not unhappy, sad]. Again, participants will only rate one of these for each adjective set.
+  - each participant rates 12 individual adjectives (for 1 antonym type)
+  - we have 20 sets x 4 forms = 80 individual adjectives (x 2 antonym types)
+  - pilot: n = 36: $17.28
+  - pilot2 : n = 100; $40 + $8 = $48
+  - pilot3 : n = 18 (lexant) + 18 (morphant) = $17.28
+  - target 45 ratings per item for a single antonym type: n = 300
+    - payment: $0.40 --> $144 (for antonym type 1)
+    - total = $288 (for both antonym types)
 - `8_interpretation-4slider`: same as `7_interpretation-1slider` but with four sliders at a time
   - between subjects: [..., unhappy, not unhappy] vs. [..., sad, not sad]
+  - each participant rates 12 adjective sets
+  - we have 20 sets x 2 antonym types = 40 sets
+  - pilot: n = 18: $8.64
+  - target 45 ratings per set (1 antonym type): n = 75
+    - payment: $0.80 --> $72
+    - total = $144 (for both antonym types)
