@@ -16,7 +16,7 @@ var stimuli = [
 
   { positive: "honest",  morphant: "dishonest", referent: "person", lexant: "deceitful"},
 
-  // { positive: "educated",  morphant: "uneducated", referent: "person", lexant: "morphological"},
+  { positive: "educated",  morphant: "uneducated", referent: "person", lexant: "ignorant"},
 
   { positive: "tolerant",  morphant: "intolerant", referent: "person",  lexant: "bigoted"},
 
@@ -37,7 +37,7 @@ var stimuli = [
 
   { positive: "ambitious",  morphant: "unambitious", referent: "person", lexant: "lazy"},
 
-  { positive: "adventurous",  morphant: "unadventurous", referent: "person", lexant: "cautious"},
+  // { positive: "adventurous",  morphant: "unadventurous", referent: "person", lexant: "cautious"},
 
   // { positive: "compassionate",  morphant: "uncompassionate", referent: "person", lexant: "morphological"},
 
