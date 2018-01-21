@@ -49,11 +49,11 @@ var stimuli = [
 
   // { positive: "inventive",  morphant: "uninventive", referent: "person", lexant: "morphological"},
 
-  { positive: "passionate",  morphant: "dispassionate", referent: "person", lexant: "apathetic"},
+  // { positive: "passionate",  morphant: "dispassionate", referent: "person", lexant: "apathetic"},
 
   // { positive: "practical",  morphant: "impractical", referent: "person", lexant: "morphological"},
 
-  // { positive: "rational",  morphant: "irrational", referent: "person", lexant: "morphological"},
+  { positive: "rational",  morphant: "irrational", referent: "person", lexant: "crazy"},
 
   { positive: "resourceful",  morphant: "unresourceful", referent: "person", lexant: "wasteful"},
 
