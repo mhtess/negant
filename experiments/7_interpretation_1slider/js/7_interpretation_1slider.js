@@ -49,7 +49,7 @@ function make_slides(f) {
       superlative_endpoints = _.contains(_.keys(stim), "endpoints")
 
       // left_endpoint = !superlative_endpoints ? "most " + stim.morphant  + "<br>person ": stim.endpoints.low + " person<br>";
-      this.left_endpoint = "least " + stim.positive  + "<br>person ";
+      this.left_endpoint = "most " + stim[exp.antonym_type]  + "<br>person ";
       this.right_endpoint = "most " + stim.positive  + "<br>person ";
 
       $(".left").html("the " +this.left_endpoint +  "in the world")
@@ -85,7 +85,7 @@ function make_slides(f) {
 
         "endpoint_low": "the " + this.left_endpoint + "in the world",
         "endpoint_high": "the " +this.right_endpoint + "in the world",
-
+        "antonym_type": exp.antonym_type,
         "superlative_endpoints": 0,//superlative_endpoints ? 1 : 0,
         // "endpoint_low": "the " + (superlative_endpoints ? this.stim.endpoints.low : "most " + this.stim.morphant) + " person in the world",
         // "endpoint_high": "the " + (superlative_endpoints ? this.stim.endpoints.high : "most " + this.stim.positive) + " person in the world",
@@ -231,12 +231,22 @@ function init() {
   exp.stimuli = [];
   exp.catch_trials = [];
   exp.data_trials = [];
+
+  // exp.adjective_type = [
+  //   "positive", "neg_positive",
+  //   "lexant", "morphant",
+  //   "neg_lexant", "neg_morphant" //, "neither_pos_nor_ant"
+  // ];
+
+
+  // exp.antonym_type = _.sample(["morphant", "lexant"])
+  exp.antonym_type = "lexant"]
+
   exp.adjective_type = [
-    "positive", "neg_positive",
-    "lexant", "morphant",
-    "neg_lexant", "neg_morphant" //, "neither_pos_nor_ant"
+    "positive", "neg_positive", "antonym", "neg_antonym" //, "neither_pos_nor_ant"
   ];
-  exp.n_stims = exp.adjective_type.length * 2;
+
+  exp.n_stims = exp.adjective_type.length * 3;
   exp.n_trials = stimuli.length;
   exp.stimsForParticipant = _.shuffle(stimuli).slice(0, exp.n_stims);
 
@@ -247,86 +257,76 @@ function init() {
 
   var shuffledNames = _.shuffle(characters);
   var expanded_stimuli = [];
-
+  // console.log(stimuli)
   for (j=0; j<stimuli.length; j++){
     var trial = [];
+    // console.log(j)
     for (i=0; i<exp.adjective_type.length; i++){
+      // console.log(i)
       var st = exp.adjective_type[i];
-      var adj = st.slice(0,3) == "neg" ?
-                "not " + stimuli[j][st.slice(4)] :
-                st.slice(0,3) == "nei" ?
-                "neither " + stimuli[j].positive + " nor " +  stimuli[j].antonym :
-                stimuli[j][st];
+      var isNegation = (st.slice(0,3) == "neg")
+      var isAntonym = (st.indexOf("antonym") > -1)
 
+      var adj = isNegation ?
+                "not " + stimuli[j][
+                  (isAntonym ? exp.antonym_type : "positive")
+                ] : stimuli[j][
+                  (isAntonym ? exp.antonym_type : "positive")
+                ];
+      var adjType = isAntonym ? st.replace("antonym", exp.antonym_type) : st
       var stimulus = _.extend(
         {
-          adjective_type: st,
+          adjective_type: adjType,
           adjective: adj
         }, stimuli[j])
 
+      // var adj = st.slice(0,3) == "neg" ?
+      //           "not " + stimuli[j][st.slice(4)] :
+      //           st.slice(0,3) == "nei" ?
+      //           "neither " + stimuli[j].positive + " nor " +  stimuli[j].antonym :
+      //           stimuli[j][st];
+      //
+      // var stimulus = _.extend(
+      //   {
+      //     adjective_type: st,
+      //     adjective: adj
+      //   }, stimuli[j])
+
       trial.push(stimulus)
     };
+    // console.log(trial)
     expanded_stimuli.push(trial)
     // {trials: trial, negation: stimuli[j].negation})
   }
-
+  // console.log(expanded_stimuli)
   // var lexical_items = _.pluck(_.where(expanded_stimuli, {negation: "lexical"}), "trials")
   // var morphological_items = _.pluck(_.where(expanded_stimuli, {negation: "morphological"}), "trials")
   var shuffled_stimuli = _.shuffle(expanded_stimuli);
   // console.log(shuffled_stimuli)
+
   // participants see exactly 2 instances of each adjective_type
-  for (j=0; j<2; j++){
+  for (j=0; j<3; j++){
     var adjTypes = exp.adjective_type;
     for (i=0; i<exp.adjective_type.length; i++){
       var itemIndex = (j * exp.adjective_type.length) + i;
+
+      var st = adjTypes[i];
+      var isNegation = (st.slice(0,3) == "neg")
+      var isAntonym = (st.indexOf("antonym") > -1)
+
+      var adj = isAntonym ? isNegation ? "neg_" + exp.antonym_type :
+      exp.antonym_type : st
+
       var item = _.where(shuffled_stimuli[itemIndex],
-        {adjective_type: adjTypes[i]})[0]
+        {adjective_type: adj})[0]
       var extended_item = _.extend(item, shuffledNames.pop())
       exp.stimuli.push(extended_item)
     }
   }
 
-  // var adjeciveType_per_antType = _.flatten([exp.adjective_type, exp.adjective_type]);
-  //
-  //   // loop over 8 stimuli
-  //   for (i=0; i<(exp.n_trials / 2); i++){
-  //     var item = _.where(shuffled_adj_trials[i], {sentence_type: sentence_types_per_adjType[i]})[0]
-  //     var extended_item = _.extend(item, shuffledNames.pop())
-  //     exp.stimuli.push(extended_item)
-  //   }
-  // }
-  // console.log(exp.stimuli)
   exp.stimuli = _.shuffle(exp.stimuli)
-  // console.log(exp.stimuli)
-  // exp.stimuli = _.map(_.zip(
-  //   _.shuffle(_.flatten(expanded_stimuli)).slice(0, exp.n_trials), shuffledNames
-  // ), function(item) {
-  //     return _.defaults(item[0], item[1]);
-  // });
-
-  // create negation if necessary, add names
-  // for (j=0; j<exp.stimsForParticipant.length; j++){
-  //   var trial = [];
-  //   for (i=0; i<exp.sentence_types.length; i++){
-  //     var st = exp.sentence_types[i];
-  //     var adj = st.slice(0,3) == "neg" ?
-  //               "not " + exp.stimsForParticipant[j][st.slice(4)] :
-  //               st.slice(0,3) == "nei" ?
-  //               "neither " + exp.stimsForParticipant[j].positive + " nor " +  exp.stimsForParticipant[j].antonym :
-  //               exp.stimsForParticipant[j][st];
-  //
-  //     var character = exp.stimsForParticipant[j].referent == "person" ?
-  //       shuffledNames.pop() : "NA"
-  //
-  //     var stimulus = _.extend(
-  //       {
-  //         sentence_type: st,
-  //         adjective: adj
-  //       }, exp.stimsForParticipant[j], character)
-  //     trial.push(stimulus)
-  //   };
-  //   exp.stimuli.push(trial)
-  // }
+  // console.log(exp.antonym_type)
+  // console.log(exp.stimuli);
 
   if (exp.condition  == "all_four_sliders")  {
     exp.structure.push("multi_slider")
