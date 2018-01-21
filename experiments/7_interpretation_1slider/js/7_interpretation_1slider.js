@@ -240,7 +240,7 @@ function init() {
 
 
   // exp.antonym_type = _.sample(["morphant", "lexant"])
-  exp.antonym_type = "lexant"]
+  exp.antonym_type = "lexant"
 
   exp.adjective_type = [
     "positive", "neg_positive", "antonym", "neg_antonym" //, "neither_pos_nor_ant"
