@@ -1,10 +1,10 @@
 var stimuli = [
   // pilot 1
-  // { positive: "happy",  antonym: "unhappy", referent: "person", negation: "morphological"},
-  // { positive: "intelligent",  antonym: "unintelligent", referent: "person",  negation: "morphological"},
-  // { positive: "polite",  antonym: "impolite", referent: "person",  negation: "morphological"},
-  // { positive: "interesting",  antonym: "uninteresting", referent: "person", negation: "morphological"},
-  // { positive: "attractive",  antonym: "unattractive", referent: "person", negation: "morphological"},
+  { positive: "happy",  antonym: "unhappy", referent: "person", negation: "morphological"},
+  { positive: "intelligent",  antonym: "unintelligent", referent: "person",  negation: "morphological"},
+  { positive: "polite",  antonym: "impolite", referent: "person",  negation: "morphological"},
+  { positive: "interesting",  antonym: "uninteresting", referent: "person", negation: "morphological"},
+  { positive: "attractive",  antonym: "unattractive", referent: "person", negation: "morphological"},
   // { positive: "forgiving",  antonym: "unforgiving", referent: "person", negation: "morphological"},
   // end of initial set
 
@@ -13,9 +13,10 @@ var stimuli = [
   { positive: "honest",  antonym: "dishonest", referent: "person", negation: "morphological"},
   { positive: "educated",  antonym: "uneducated", referent: "person", negation: "morphological"},
   { positive: "tolerant",  antonym: "intolerant", referent: "person",  negation: "morphological"},
+
   { positive: "friendly",  antonym: "unfriendly", referent: "person", negation: "morphological"},
   { positive: "moral",  antonym: "immoral", referent: "person", negation: "morphological"},
-  //
+  { positive: "mature",  antonym: "immature", referent: "person", negation: "morphological"},
 
   /// overflow
   // { positive: "sane",  antonym: "insane", referent: "person", negation: "morphological"},
@@ -26,14 +27,20 @@ var stimuli = [
   { positive: "tall",  antonym: "short", referent: "person", negation: "lexical"},
   { positive: "rich",  antonym: "poor", referent: "person", negation: "lexical"},
   { positive: "fat",  antonym: "skinny", referent: "person", negation: "lexical"},
+
   { positive: "old",  antonym: "young", referent: "person", negation: "lexical"},
   { positive: "hard-working",  antonym: "lazy", referent: "person", negation: "lexical"},
-  { positive: "brave",  antonym: "cowardly", referent: "person", negation: "lexical"}
+  { positive: "brave",  antonym: "cowardly", referent: "person",  negation: "lexical"},
   //
 
   // overflow
-  // { positive: "aggressive",  antonym: "peaceful", referent: "person", negation: "lexical"},
-  // { positive: "anxious",  antonym: "calm", referent: "person", negation: "lexical"},
+  { positive: "beautiful",  antonym: "ugly", referent: "person", negation: "lexical"},
+  { positive: "anxious",  antonym: "calm", referent: "person", negation: "lexical"},
+  { positive: "wise",  antonym: "foolish", referent: "person", negation: "lexical"},
+
+  { positive: "proud",  antonym: "humble", referent: "person", negation: "lexical"},
+  { positive: "strong",  antonym: "weak", referent: "person", negation: "lexical"},
+  { positive: "loud",  antonym: "quiet", referent: "person", negation: "lexical"}
 
   // stage level?
   // { positive: "drunk",  antonym: "sober", referent: "person"},
