@@ -48,11 +48,12 @@ function make_slides(f) {
 
       superlative_endpoints = _.contains(_.keys(stim), "endpoints")
 
-      left_endpoint = !superlative_endpoints ? "most " + stim.morphant  + "<br>person ": stim.endpoints.low + " person<br>";
-      right_endpoint = !superlative_endpoints ? "most " + stim.positive  + "<br>person ": stim.endpoints.high + " person<br>";
+      // left_endpoint = !superlative_endpoints ? "most " + stim.morphant  + "<br>person ": stim.endpoints.low + " person<br>";
+      this.left_endpoint = "least " + stim.positive  + "<br>person ";
+      this.right_endpoint = "most " + stim.positive  + "<br>person ";
 
-      $(".left").html("the " +left_endpoint +  "in the world")
-      $(".right").html("the " + right_endpoint +  "in the world")
+      $(".left").html("the " +this.left_endpoint +  "in the world")
+      $(".right").html("the " + this.right_endpoint +  "in the world")
 
       exp.sliderPost = null; //erase current slider value
     },
@@ -81,9 +82,13 @@ function make_slides(f) {
 
       exp.data_trials.push(_.extend({
         "trial_type" : "one_slider",
-        "superlative_endpoints": superlative_endpoints ? 1 : 0,
-        "endpoint_low": "the " + (superlative_endpoints ? this.stim.endpoints.low : "most " + this.stim.morphant) + " person in the world",
-        "endpoint_high": "the " + (superlative_endpoints ? this.stim.endpoints.high : "most " + this.stim.positive) + " person in the world",
+
+        "endpoint_low": "the " + this.left_endpoint + "in the world",
+        "endpoint_high": "the " +this.right_endpoint + "in the world",
+
+        "superlative_endpoints": 0,//superlative_endpoints ? 1 : 0,
+        // "endpoint_low": "the " + (superlative_endpoints ? this.stim.endpoints.low : "most " + this.stim.morphant) + " person in the world",
+        // "endpoint_high": "the " + (superlative_endpoints ? this.stim.endpoints.high : "most " + this.stim.positive) + " person in the world",
         "response" : exp.sliderPost,
         "trial_num": this.trial_num,
         "rt": this.rt
