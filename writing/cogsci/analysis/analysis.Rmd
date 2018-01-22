@@ -1,0 +1,603 @@
+---
+title: "Analysis for 'Not unreasonable'"
+output: github_document
+---
+
+
+```{r libraries}
+library(tidyverse)
+library(tidyboot)
+library(ggthemes)
+library(ggpirate)
+library(langcog)
+library(knitr)
+library(lme4)
+library(lmerTest)
+theme_set(theme_few())
+
+project.prefix.1slider.morph<- "7_1slider_morph"
+project.prefix.1slider.lex <- "7_1slider_lex"
+project.prefix.4slider.morph <- "8_4slider_morph"
+project.prefix.4slider.lex <- "8_4slider_lex"
+
+loadData <- function(project.prefix){
+  read.csv(paste("../data/",project.prefix,
+        "/",project.prefix,"-trials.csv", 
+        sep = ""))
+}
+
+loadTime <-  function(project.prefix){
+  read.csv(paste("../data/", project.prefix,
+                 "/",project.prefix,"-time.csv", 
+                 sep = ""))
+}
+
+loadSubjComments <- function(project.prefix){
+    read.csv(paste("../data/", project.prefix,
+                   "/",project.prefix,
+                 "-subject_information.csv", sep = "")) %>%
+    mutate(age = as.numeric(as.character(age)))
+}
+
+orange.purple.color.palette <- 
+  c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
+```
+
+```{r loadData}
+d.1s.morph <- loadData("7_1slider_morph") %>%
+  mutate(condition = 'implicit')
+d.1s.lex <- loadData("7_1slider_lex") %>%
+  mutate(workerid = workerid + 1 + max(d.1s.morph$workerid),
+         condition = 'implicit')
+d.4s.morph <- loadData("8_4slider_morph") %>%
+  mutate(workerid = workerid + 1 + max(d.1s.lex$workerid),
+         condition = 'explicit')
+d.4s.lex <- loadData("8_4slider_lex") %>%
+  mutate(workerid = workerid + 1 + max(d.4s.morph$workerid),
+         condition = 'explicit')
+
+d.full <- bind_rows(d.1s.morph, d.1s.lex, d.4s.morph, d.4s.lex) %>%
+  mutate(antonym_type = factor(antonym_type),
+         condition = factor(condition),
+         adjective = factor(adjective))
+```
+
+Table of items
+
+```{r}
+d.items <- d.full %>%
+  select(positive, lexant, morphant) %>%
+  distinct() %>%
+  select(positive, morphant, lexant) 
+
+d.items <- d.items[with(d.items, order(positive)),] %>%
+  rename("Positive adjective" = positive, "Morphological antonym" = morphant,
+         "Lexical antonym" = lexant)
+```
+
+```{r xtable, results="asis"}
+tab1 <- xtable::xtable(d.items, caption = "Adjectives used in experiment.")
+save(tab1, file = "../cached_results/item_table.RData")
+print(tab1, type="latex", comment = F, table.placement = "H",  include.rownames=FALSE)
+```
+
+```{r loadTimeToCompleteTask}
+d.1s.morph.time <- loadTime("7_1slider_morph") %>%
+  mutate(condition = 'implicit')
+d.1s.lex.time <- loadTime("7_1slider_lex") %>%
+  mutate(workerid = workerid + 1 + max(d.1s.morph.time$workerid),
+         condition = 'implicit')
+d.4s.morph.time <- loadTime("8_4slider_morph") %>%
+  mutate(workerid = workerid + 1 + max(d.1s.lex.time$workerid),
+         condition = 'explicit')
+d.4s.lex.time <- loadTime("8_4slider_lex") %>%
+  mutate(workerid = workerid + 1 + max(d.4s.morph.time$workerid),
+         condition = 'explicit')
+
+d.full.time <- bind_rows(d.1s.morph.time, d.1s.lex.time, d.4s.morph.time, d.4s.lex.time)
+
+d.time.summary <- d.full.time %>%
+  mutate(condition = factor(condition)) %>%
+  group_by(condition) %>%
+  summarize(aveTime = mean(time),
+            sdTime = sd(time))
+
+ggplot(d.full.time, aes(x = time)) +
+  geom_histogram()+
+  facet_wrap(~condition, scales = 'free')+
+  xlab("time in minutes")
+```
+
+```{r loadSubjectComments}
+
+d.1s.morph.subj <- loadSubjComments("7_1slider_morph") %>%
+  mutate(condition = 'implicit')
+d.1s.lex.subj <- loadSubjComments("7_1slider_lex") %>%
+  mutate(workerid = workerid + 1 + max(d.1s.morph.subj$workerid),
+         condition = 'implicit')
+d.4s.morph.subj <- loadSubjComments("8_4slider_morph") %>%
+  mutate(workerid = workerid + 1 + max(d.1s.lex.subj$workerid),
+         condition = 'explicit')
+d.4s.lex.subj <- loadSubjComments("8_4slider_lex") %>%
+  mutate(workerid = workerid + 1 + max(d.4s.morph.subj$workerid),
+         condition = 'explicit')
+
+d.full.comments <- bind_rows(d.1s.morph.subj, d.1s.lex.subj, d.4s.morph.subj, d.4s.lex.subj)
+
+d.full.comments %>% select(comments) %>% filter(comments != "") %>% kable()
+```
+
+Self-reported native language
+
+```{r selfReportEnglishNative}
+d.full.nativeEnglish <- d.full.comments %>% 
+  select(workerid ,language) %>% 
+  mutate(englishNative = grepl("eng", tolower(language)))
+
+table(d.full.nativeEnglish$englishNative)
+
+# what do people report for native english that is not english?
+d.full.nativeEnglish %>%
+  filter(!englishNative) %>%
+  select(language) %>%
+  kable(.)
+```
+
+Remove participants who do not self-report English as native language
+
+```{r filterNonNativeEnglish}
+d.full.natEng <- left_join(
+  d.full, 
+  d.full.nativeEnglish
+) %>%
+  filter(englishNative)
+
+## check that i've done the filtering correctly
+length(unique(d.full.natEng$workerid))
+```
+
+
+# Visualize data
+
+Normalize ratings (by subject, subject off mean and divide by SD)
+
+```{r}
+d.full.natEng <- d.full.natEng %>%
+    group_by(workerid) %>%
+    mutate(meanRating = mean(response),
+            sdRating = sd(response)) %>%
+    ungroup() %>%
+    mutate(normalizedResponse = (response - meanRating) / sdRating)
+```
+
+Code antonyms (morpholoigical & lexical) as antonyms (rather than two distinct categories)
+
+```{r}
+d.full.natEng <- d.full.natEng %>%
+  mutate(adjective_type = as.character(adjective_type),
+         adjective_type_rescaled = ifelse( 
+           adjective_type %in% c("lexant", "morphant"), "antonym", 
+           ifelse( 
+             adjective_type %in% c("neg_lexant", "neg_morphant"), "neg_antonym",
+             adjective_type)
+           ),
+         adjective_type_rescaled = factor(adjective_type_rescaled,
+                                     levels = c("antonym",
+                                                "neg_positive",
+                                                "neg_antonym",
+                                                "positive")),
+        antonym_type = factor(antonym_type, levels = c("morphant", "lexant")),
+        condition = factor(condition, levels = c("implicit", "explicit"))
+    )
+```
+
+
+
+Raw histograms
+
+```{r fig_histograms}
+d.full.natEng %>%
+  ggplot(., aes( x = normalizedResponse,
+                       fill = adjective_type_rescaled))+
+  geom_histogram(position = position_dodge(), bins = 25)+
+  facet_grid(condition~antonym_type)+
+  scale_fill_manual(values = orange.purple.color.palette)+
+  ylab("counts")+
+  xlab("slider ratings")+
+  #guides(fill = F)+
+  theme(strip.text.y = element_text(angle = 0),
+        legend.position = 'bottom')+
+  scale_x_continuous(limits = c(-2, 2), breaks = c(-1, 0, 1))
+
+# ggsave(paste(
+#   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_histograms.pdf", sep = ""),
+#        width = 7, height = 3.5)
+```
+
+Bootstrapped CIs
+
+
+```{r boostrapCIs, fig.height=2, fig.width=4}
+d.full.boot <- d.full.natEng %>%
+  group_by(condition, antonym_type, adjective_type_rescaled) %>%
+  multi_boot_standard(col = "normalizedResponse") 
+
+#df.fourSlider.ci <- d.l1.5.boot
+#save(df.fourSlider.ci, file = "../cached_results/fourSlider_bootstrappedCIs.RData")
+
+  
+d.full.boot %>%
+  ggplot(., aes(x = antonym_type,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = adjective_type_rescaled,
+                      group = adjective_type_rescaled
+              ))+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_errorbar(position = position_dodge(0.8), color = 'black',
+                width = 0.4)+
+  coord_flip()+
+  xlab("")+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=TRUE))+
+  facet_wrap(~condition, scales = 'free')+
+  ylab("mean normalized rating")+
+  scale_y_continuous(limits = c(-1.5,1.5), breaks = c(-1, 0, 1))#+
+  #theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+# ggsave(paste(
+#   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_bootstrapped.pdf", sep = ""),
+#        width = 6, height = 3.75)
+```
+
+
+
+# Regression models
+
+Technique: Helmert coding, maximal model, and model comparison to simpler model.
+
+#### Hypothesis 1: When alternatives are implicit, morphological antonyms ("unhappy") do not show difference from negated positives ("not happy"), while lexical antonyms ("sad") do.
+
+```{r regression1}
+# Helmert coding to compare Negated Positive with Antonym
+
+d.full.natEng <- within(d.full.natEng, {
+  adj_type <- C(adjective_type_rescaled, helmert, 3)
+  print(attributes(adj_type))
+}) %>% rename(item = positive)
+
+
+# maximal model (adding "+ antonym_type" by item fails to converge)
+rs1.helmert.implicit <- lmer(response ~ antonym_type * adj_type + 
+                       (1 + adj_type | workerid) + 
+                       (1 + adj_type | item),
+                     data = d.full.natEng %>% filter(condition == "implicit"))
+
+# does the maximal model account for significantly more variance than simpler models?
+rs1.helmert.implicit.simpler1 <- lmer(response ~ antonym_type * adj_type + 
+                       (1 + adj_type | workerid) + 
+                       (1 | item),
+                     data = d.full.natEng %>% filter(condition == "implicit"))
+
+anova(rs1.helmert.implicit.simpler1, rs1.helmert.implicit)
+# extra random effect of adjective_type by item accounts for significantly more variance
+
+## model with alternative random effects structure fails to converge
+# rs1.helmert.implicit.simpler2 <- lmer(response ~ antonym_type * adj_type + 
+#                        (1 | workerid) + 
+#                        (1 + adj_type | item),
+#                      data = d.full.natEng %>% filter(condition == "implicit"))
+
+
+# summarized results of hypothesis 1 mixed-effects model
+summary(rs1.helmert.implicit)
+```
+
+
+
+#### Hypothesis 2: Within morphological antonyms ("unhappy"), is there a difference between antonyms ("unhappy") and negated positives ("not happy") when alternatives are implicit vs. explicit?
+
+```{r}
+## testing for interaction within morphological
+rs2.helmert.morph <- lmer(
+  response ~ condition * adj_type + 
+           (1  | workerid) + 
+           (1 + adj_type | item),
+         data = d.full.natEng %>% filter(antonym_type == "morphant")
+)
+
+
+# does the maximal model account for significantly more variance than simpler models?
+rs2.helmert.morph.simpler1 <- lmer(response ~ condition * adj_type + 
+                       (1 | workerid) + 
+                       (1 | item),
+          data = d.full.natEng %>% filter(antonym_type == "morphant")
+)
+
+anova(rs2.helmert.morph.simpler1, rs2.helmert.morph)
+# extra random effect of adjective_type by item accounts for significantly more variance
+
+
+summary(rs2.helmert.morph)
+```
+## Secondary analyses
+
+### 3-way interaction
+
+```{r}
+
+rs.helmert.3way <- lmer(
+  response ~ adj_type * antonym_type * condition + 
+           (1 | workerid) + 
+           (1 + condition | item),
+         data = d.full.natEng
+)
+
+rs.helmert.3way.2 <- lmer(
+  response ~ adj_type * antonym_type * condition + 
+           (1 | workerid) + 
+           (1 + antonym_type | item),
+         data = d.full.natEng
+)
+
+
+rs.helmert.3way.3 <- lmer(
+  response ~ adj_type * antonym_type * condition + 
+           (1 | workerid) + 
+           (1 + adj_type | item),
+         data = d.full.natEng
+)
+
+rs.helmert.3way.4 <- lmer(
+  response ~ adj_type * antonym_type * condition + 
+           (1 + adj_type | workerid) + 
+           (1 + adj_type | item),
+         data = d.full.natEng
+)
+
+rs.helmert.3way.4a <- lmer(
+  response ~ adj_type * antonym_type * condition + 
+           (1 + adj_type | workerid) + 
+           (1 + condition | item),
+         data = d.full.natEng
+)
+
+rs.helmert.3way.4b <- lmer(
+  response ~ adj_type * antonym_type * condition + 
+           (1 + adj_type | workerid) + 
+           (1 + antonym_type | item),
+         data = d.full.natEng
+)
+
+rs.helmert.3way.5 <- lmer(
+  response ~ adj_type * antonym_type * condition + 
+           (1 + adj_type | workerid) + 
+           (1 + adj_type + condition | item),
+         data = d.full.natEng
+)
+
+rs.helmert.3way.6 <- lmer(
+  response ~ adj_type * antonym_type * condition + 
+           (1 + adj_type | workerid) + 
+           (1 + adj_type + condition + antonym_type | item),
+         data = d.full.natEng
+)
+
+anova(rs.helmert.3way.6, rs.helmert.3way.5)
+# not significantly better than 3way.5
+anova(rs.helmert.3way.6, rs.helmert.3way.4)
+# not significantly better than 3way.4
+anova(rs.helmert.3way.5, rs.helmert.3way.4)
+# 3way.5 not significantly better than 3way.4
+anova(rs.helmert.3way.4, rs.helmert.3way.3)
+# 3way.4 significantly better than 3way.3
+
+summary(rs.helmert.3way.4)
+summary(rs.helmert.3way.4a)
+summary(rs.helmert.3way.4b)
+```
+
+
+```{r}
+# maximal model
+## (adding +st by item fails to converge)
+
+rs.5.helmert.0 <- lmer(response ~ negation * adj_type +
+                       (1 | workerid) +
+                       (1 | positive),
+                     data = d.full.natEng)
+
+# extra random effect of sentence_type by participant accounts for significantly more variance
+anova(rs.5.helmert.0, rs.5.helmert.3)
+
+summary(rs.5.helmert.3)
+```
+
+
+
+
+###  Simple effects
+Testing for "simple effects"
+
+```{r reg.simple.morph.implicit}
+rs1.helmert.implicit.simple.morph <- lmer(response ~ adj_type + 
+                       (1 + adj_type | workerid) + 
+                       (1 + adj_type | item),
+                     data = d.full.natEng %>%
+                       filter(antonym_type == "morphant",
+                              condition == "implicit")
+                     )
+
+summary(rs1.helmert.implicit.simple.morph)
+```
+
+```{r reg.simple.lex.implicit}
+rs.7.helmert.lex.simple <- lmer(response ~ st + 
+                       (1 + st | workerid) + 
+                       (1 | positive),
+                     data = d.l1.natEng.rescaled %>%
+                       filter(antonym_type == "lexant")
+                     )
+
+summary(rs.7.helmert.lex.simple)
+```
+
+
+```{r reg.simple.morph.explicit}
+
+rs.5.helmert.0.simple <- lmer(response ~ st + 
+                       (1 + st | workerid) + 
+                       (1 + st | positive),
+                     data = d.l1.5.natEng %>% 
+                       filter(negation == "morphological")
+                     )
+
+summary(rs.5.helmert.0.simple)
+```
+
+```{r reg.simple.lex.explicit}
+
+rs.5.helmert.0.simple.lex <- lmer(response ~ st + 
+                       (1 + st | workerid) + 
+                       (1 + st | positive),
+                     data = d.l1.5.natEng %>% 
+                       filter(negation == "lexical")
+                     )
+
+summary(rs.4.helmert.0.simple.lex)
+```
+
+
+
+### 3-way interaction with task type?
+
+```{r}
+d.l1.4.5 <- bind_rows(
+  d.l1.5.natEng %>% 
+    mutate(src= '4slider'),
+  d.l1.natEng %>%
+    mutate(src = '1slider')
+) %>% mutate(src = factor(src, levels = c("1slider", "4slider")))
+
+
+d.l1.4.5 <- within(d.l1.4.5, {
+  st <- C(sentence_type, helmert, 3)
+  print(attributes(st))
+})
+
+rs.4.5.helmert.0 <- lmer(response ~ negation * st * src + 
+                       (1 + st | workerid) + 
+                       (1 + st | positive),
+                     data = d.l1.4.5)
+
+summary(rs.4.5.helmert.0)
+```
+## Exploratory stuff
+
+
+### interaction within morphological across tasks
+
+```{r}
+d.l1.4.5.morph <- d.l1.4.5 %>% filter(negation == "morphological")
+
+d.l1.4.5.morph <- within(d.l1.4.5.morph, {
+  st <- C(sentence_type, helmert, 3)
+  print(attributes(st))
+})
+
+rs.4.5.morph.helmert.0 <- lmer(response ~ st * src + 
+                       (1 + st | workerid) + 
+                       (1 + st | positive),
+                     data = d.l1.4.5.morph)
+
+summary(rs.4.5.morph.helmert.0)
+```
+
+By item
+
+```{r fig_byItem, fig.width = 7, fig.height = 5}
+
+d.l1.5.boot.adj <- d.l1.5.natEng %>%
+  mutate(item = paste(antonym, "--", positive, sep = "")) %>% 
+  group_by(negation, item, sentence_type)  %>%
+  multi_boot_standard(col = "normalizedResponse") %>%
+  ungroup() %>%
+  mutate(negation = factor(negation, 
+                           levels = c("lexical", "morphological")))
+d.l1.5.boot.adj %>%
+  ggplot(., aes(x = item,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = sentence_type,
+              group = sentence_type))+
+  #geom_hline(yintercept = 0.5, lty = 3)+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=F))+
+  geom_errorbar(position = position_dodge(0.8), color = 'black',
+                width = 0.3)+
+  facet_wrap(~negation, scales = 'free') + 
+  #coord_flip()+
+  #guides(fill = F)+
+  xlab("")+
+  coord_flip()+
+  ylab("mean normalized rating")+
+  scale_y_continuous(limits = c(-1.5,1.5), breaks = c(-1, 0, 1))+
+  theme(#axis.text.x = 
+        #  element_text(angle = 45, hjust = 1, vjust = 1),
+        legend.position = 'bottom')
+
+#ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negant_lexical_bootstrapped_item.pdf", width = 8, height = 3.5)
+```
+
+
+
+### Spilt half
+
+```{r}
+d.l1.5.splithalf <- d.l1.5.natEng %>%
+  mutate(splitHalf = ifelse(trial_num <= 8, "first", "second")) %>%
+  group_by(negation, sentence_type, splitHalf) %>%
+  multi_boot_standard(col = 'normalizedResponse')
+
+ggplot(d.l1.5.splithalf,
+       aes(x = splitHalf, fill = sentence_type,
+                                  y = mean, ymin = ci_lower,
+                                  ymax = ci_upper))+
+  geom_col(position = position_dodge(), color = 'black')+
+  scale_fill_solarized()+
+  geom_errorbar(position = position_dodge())+
+  facet_wrap(~negation)
+```
+
+### First vs. last rating
+
+```{r}
+
+d.l1.5.first.last <- bind_rows(
+  d.l1.5.natEng %>%
+    group_by(workerid, negation, sentence_type) %>%
+    top_n(1, -trial_num) %>%
+    mutate(presentation = 'first'),
+  d.l1.5.natEng %>%
+    group_by(workerid, negation, sentence_type) %>%
+    top_n(1, trial_num) %>%
+    mutate(presentation = 'last')
+)
+  
+
+d.l1.5.first.last.summary <- d.l1.5.first.last %>%
+  group_by(negation, sentence_type, presentation) %>%
+  multi_boot_standard(col = 'normalizedResponse')
+
+ggplot(d.l1.5.first.last.summary, aes(x = presentation, fill = sentence_type,
+                                  y = mean, ymin = ci_lower,
+                                  ymax = ci_upper))+
+  geom_col(position = position_dodge(), color = 'black')+
+  geom_errorbar(position = position_dodge())+
+  facet_wrap(~negation)
+
+#ggsave("~/Documents/research/negant/analysis/figs/split_half-3_L1.pdf", width =6 , height = 4)
+```
