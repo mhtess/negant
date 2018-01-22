@@ -36,7 +36,7 @@
   - pilot: n = 36: $17.28
   - pilot2 : n = 100; $40 + $8 = $48
   - pilot3 : n = 18 (lexant) + 18 (morphant) = $17.28
-  - target 45 ratings per item for a single antonym type: n = 300
+  - target 45 ratings per item for a single antonym type: n = 300 (33.3 batches)
     - payment: $0.40 --> $144 (for antonym type 1)
     - total = $288 (for both antonym types)
 - `8_interpretation-4slider`: same as `7_interpretation-1slider` but with four sliders at a time
@@ -44,6 +44,6 @@
   - each participant rates 12 adjective sets
   - we have 20 sets x 2 antonym types = 40 sets
   - pilot: n = 18: $8.64
-  - target 45 ratings per set (1 antonym type): n = 75
+  - target 45 ratings per set (1 antonym type): n = 75 (8.3 batches)
     - payment: $0.80 --> $72
     - total = $144 (for both antonym types)
