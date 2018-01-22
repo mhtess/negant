@@ -43,6 +43,8 @@ orange.purple.color.palette <-
   c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
 ```
 
+## Load data
+
 ```{r loadData}
 d.1s.morph <- loadData("7_1slider_morph") %>%
   mutate(condition = 'implicit')
@@ -64,7 +66,7 @@ d.full <- bind_rows(d.1s.morph, d.1s.lex, d.4s.morph, d.4s.lex) %>%
 
 Table of items
 
-```{r}
+```{r itemTable}
 d.items <- d.full %>%
   select(positive, lexant, morphant) %>%
   distinct() %>%
@@ -73,12 +75,10 @@ d.items <- d.full %>%
 d.items <- d.items[with(d.items, order(positive)),] %>%
   rename("Positive adjective" = positive, "Morphological antonym" = morphant,
          "Lexical antonym" = lexant)
-```
 
-```{r xtable, results="asis"}
 tab1 <- xtable::xtable(d.items, caption = "Adjectives used in experiment.")
-save(tab1, file = "../cached_results/item_table.RData")
-print(tab1, type="latex", comment = F, table.placement = "H",  include.rownames=FALSE)
+# save(tab1, file = "../cached_results/item_table.RData")
+# print(tab1, type="latex", comment = F, table.placement = "H",  include.rownames=FALSE)
 ```
 
 ```{r loadTimeToCompleteTask}
@@ -102,6 +102,8 @@ d.time.summary <- d.full.time %>%
   summarize(aveTime = mean(time),
             sdTime = sd(time))
 
+#save(d.time.summary, file = "../cached_results/time_summary.RData")
+
 ggplot(d.full.time, aes(x = time)) +
   geom_histogram()+
   facet_wrap(~condition, scales = 'free')+
@@ -109,7 +111,6 @@ ggplot(d.full.time, aes(x = time)) +
 ```
 
 ```{r loadSubjectComments}
-
 d.1s.morph.subj <- loadSubjComments("7_1slider_morph") %>%
   mutate(condition = 'implicit')
 d.1s.lex.subj <- loadSubjComments("7_1slider_lex") %>%
@@ -134,6 +135,8 @@ d.full.nativeEnglish <- d.full.comments %>%
   select(workerid ,language) %>% 
   mutate(englishNative = grepl("eng", tolower(language)))
 
+#save(d.full.nativeEnglish, file = "../cached_results/english_summary.RData")
+
 table(d.full.nativeEnglish$englishNative)
 
 # what do people report for native english that is not english?
@@ -155,7 +158,6 @@ d.full.natEng <- left_join(
 ## check that i've done the filtering correctly
 length(unique(d.full.natEng$workerid))
 ```
-
 
 # Visualize data
 
@@ -223,10 +225,12 @@ d.full.boot <- d.full.natEng %>%
   multi_boot_standard(col = "normalizedResponse") 
 
 #df.fourSlider.ci <- d.l1.5.boot
-#save(df.fourSlider.ci, file = "../cached_results/fourSlider_bootstrappedCIs.RData")
+save(d.full.boot, file = "../cached_results/bootstrappedCIs.RData")
 
   
 d.full.boot %>%
+  ungroup() %>%
+  mutate(antonym_type = factor(antonym_type, levels = c( "lexant", "morphant"))) %>%
   ggplot(., aes(x = antonym_type,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
@@ -236,14 +240,14 @@ d.full.boot %>%
   geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
   geom_errorbar(position = position_dodge(0.8), color = 'black',
                 width = 0.4)+
-  coord_flip()+
+  #coord_flip()+
   xlab("")+
   scale_fill_manual(name="Adjective type",
                     values = orange.purple.color.palette,
                     guide = guide_legend(reverse=TRUE))+
   facet_wrap(~condition, scales = 'free')+
   ylab("mean normalized rating")+
-  scale_y_continuous(limits = c(-1.5,1.5), breaks = c(-1, 0, 1))#+
+  scale_y_continuous(limits = c(-1.1,1.4), breaks = c(-1, 0, 1))#+
   #theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 
 # ggsave(paste(
@@ -273,6 +277,9 @@ rs1.helmert.implicit <- lmer(response ~ antonym_type * adj_type +
                        (1 + adj_type | workerid) + 
                        (1 + adj_type | item),
                      data = d.full.natEng %>% filter(condition == "implicit"))
+rs1.helmert.implicit.summary <- summary(rs1.helmert.implicit)
+save(rs1.helmert.implicit.summary, file =
+       "../cached_results/regression_antTypeXadjType_implicitCond.RData")
 
 # does the maximal model account for significantly more variance than simpler models?
 rs1.helmert.implicit.simpler1 <- lmer(response ~ antonym_type * adj_type + 

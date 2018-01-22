@@ -35,6 +35,8 @@ library(grid)
 library(ggplot2)
 library(xtable)
 library(cowplot)
+library(tidyr)
+library(dplyr)
 library(magick)
 theme_set(theme_few())
 orange.purple.color.palette <- 
@@ -167,13 +169,20 @@ We designed our experiment in order to confirm this asymmetry between lexical an
 
 ## Methods
 
+```{r loadTime}
+load("cached_results/time_summary.RData") # d.time.summary
+load("cached_results/english_summary.RData") #d.full.nativeEnglish
+```
+
 ### Participants
 
 We recruited 750 participants from Amazon's Mechanical Turk (MTurk).
 The experiment comprised of four between-subjects experimental conditions arranged in a 2x2 Latin Square design: *antonym type: morphological vs. lexical* X *alternatives: explicit vs. implicit*  (described below in more detail).
 300 participants were assigned to each of the *implicit alternatives* conditions, and 75 participants were assigned to each of the *explicit alternatives* conditions.
 These numbers were arrived it with the intention of getting approximately 45 ratings for each unique adjective in the experiment.
+
 Participants were restricted to those with U.S. IP addresses and who had at least a 95\% work approval rating. 
+The *implicit alternatives* task took on average `r round(filter(d.time.summary, condition == "implicit")[[1,"aveTime"]], 1)` minutes and participants were compensated \$0.40; *explicit alternatives* task took on average `r round(filter(d.time.summary, condition == "explicit")[[1,"aveTime"]], 1)` minutes and participants were compensated \$0.80.
 In addition, participants who self-reported a native language other than English were excluded.
 This exclusion criterion and our planned sample size, along with the procedure and analysis described below, were preregistered: \url{osf.io/p7f25/}
 
@@ -234,75 +243,59 @@ cowplot::plot_grid(
 
 ## Results 
 
-X participants were excluded for self-reporting a native language other than English. 
+`r sum(!d.full.nativeEnglish$englishNative)` participants were excluded for self-reporting a native language other than English, leaving a remainder of `r sum(d.full.nativeEnglish$englishNative)` participants for these analyses.
 
-```{r expt-results, fig.cap="Experimental results.", fig.env = "figure*", fig.pos = "h", fig.width=6, fig.height=2.75, fig.align = "center", set.cap.width=T, num.cols.cap=2}
-# load(file = "cached_results/fourSlider_bootstrappedCIs.RData")
-# load(file = "cached_results/oneSlider_bootstrappedCIs.RData")
-# 
-# df.expts.1.2.ci <- bind_rows(
-#   df.oneSlider.ci %>% mutate(src = 'one slider'), 
-#   df.fourSlider.ci %>% mutate(src = 'four slider')
-# )  %>%
-#   mutate(src = factor(src, levels = c("one slider", "four slider"),
-#                       labels= c("expt 1 (one slider)", "expt 2 (four slider)")))
-# save(df.expts.1.2.ci, 
-#      file = "cached_results/bothExpts_bootstrappedCIs.RData")
+One first hypothesis concerns the interpretation of morphological antonyms vs. lexical antonyms in the absence of explicit alternatives (Figure \ref{fig:experiment-slides}A).
+We predict an interaction between type of negation (antonym vs. negated positive) and type of antonym (morphological vs. lexical).
+Specifically, we predict that interpretations of lexical antonyms will be more negative than negated positives (e.g., somebody who is "sad" is less happy than someone who is "not happy"), whereas there will be no difference between morphological antonyms and negated positives (e.g., "unhappy" = "not happy").
+To evaluate this hypothesis, we built a mixed-effects regression model with by-participant and by-item random effects of intercept and adjective type (i.e., POS vs. ANT vs. NEG ANT vs. NEG POS).^[
+  This model was the maximal mixed-effects model that converged for our data set. 
+  In addition, it explained significantly more variance than models with slightly reduced mixed-effects structures.
+]
 
-load(file = "cached_results/bothExpts_bootstrappedCIs.RData")
-ggplot(df.expts.1.2.ci, aes(x = negation,
+negations will be different (lexical antonyms &lt; negations, in terms of the slider ratings with the above defined scale) whereas morphological antonyms and negations should not show a difference (morphological ~= negation). Given our design, we register the following mixed-effects regression model:
+
+```{r expt-results, fig.cap="Experimental results.", fig.env = "figure*", fig.pos = "h", fig.width=6, fig.height=2.5, fig.align = "center", set.cap.width=T, num.cols.cap=2}
+load(file = "cached_results/bootstrappedCIs.RData")
+ 
+d.full.boot %>%
+  ungroup() %>%
+  mutate(antonym_type = factor(antonym_type, levels = c( "lexant", "morphant"),
+                               labels = c("lexical", "morphological")),
+         adjective_type_rescaled = factor(adjective_type_rescaled,
+                                          levels = c("antonym",
+                                                "neg_positive",
+                                                "neg_antonym",
+                                                "positive"),
+                                          labels = c("Antonym",
+                                                     "Negated positive",
+                                                     "Negated antonym",
+                                                     "Positive"))) %>%
+  ggplot(., aes(x = antonym_type,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
-                       fill = sentence_type,
-                      group = sentence_type
+                       fill = adjective_type_rescaled,
+                      group = adjective_type_rescaled
               ))+
   geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
   geom_errorbar(position = position_dodge(0.8), color = 'black',
                 width = 0.4)+
+  #coord_flip()+
+  xlab("Antonym type")+
   scale_fill_manual(name="Adjective type",
                     values = orange.purple.color.palette,
-                    guide = guide_legend(reverse=F))+
-  facet_wrap(~src)+
-  xlab("\n antonym type")+
+                    guide = guide_legend(reverse=TRUE))+
+  facet_wrap(~condition, scales = 'free')+
   ylab("mean normalized rating")+
-  scale_y_continuous(limits = c(-1.3,1.3), breaks = c(-1, 0, 1))+
-  theme(#legend.position = 'bottom',
-        #legend.direction = 'vertical',
-        #axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
-        #legend.text = element_text(size = 6),
-        #legend.title = element_blank(),
-        #legend.key.size = unit(0.3, "cm")
-        )
+  scale_y_continuous(limits = c(-1.1,1.4), breaks = c(-1, 0, 1))
 ```
 
-
-
-# Experiment 2: Explicit alternatives
-
-This experiment was designed in order to test the influence of salient alternatives on the hypothesized semantic ordering for antonym quartets.
-
-## Methods
-
-### Participants
-
-We recruited 50 participants MTurk.
-This number was arrived it with the intention of getting approximately 25 ratings for each unique item in the experiment.
-The experiment took on average N minutes and participants were compensated \$N for their work.
-
-### Materials and procedure
-
-The experimental materials were the same as in Expt.~1. 
-The procedure differed in that participants saw and rated all four sentence types simultaneously (\figref{fig:expt2}). 
-In addition, the endpoints of the slider bars were relabeled to "the most \{\emph{POS}, \emph{ANT}\} person \emph{in the world'}'; excluding the "in the world" phrase leads to a salient interpretation of the endpoints as indicating "the most \emph{POS} person (of these four)".
-
-## Results
 
 # Discussion
 
 # Acknowledgements
 
 This work was supported in part by NSF Graduate Research Fellowship DGE-114747 to MHT.
-
 
 # References 
 
