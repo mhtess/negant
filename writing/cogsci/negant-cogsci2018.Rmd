@@ -161,63 +161,75 @@ That model, as well as an alternative model proposed by @Qing2014:Adjectives, ex
 
 # Experiment
 
-Pilot testing revealed ...?
+Pilot testing revealed a potential asymmetry between lexical and morphological antonyms. Whereas lexical antonyms were clearly distinguished from negated positives (e.g., "not happy"), morphological antonyms were not. 
+We hypothesized that this potential difference could be attributed to an uncertain parsing of "unhappy" (i.e., is it a true antonym or is a negated positive?), which could be resolved by contrasting it with an explicit negated alternative (e.g., the speaker says "unhappy" as opposed to "not happy").
+We designed our experiment in order to confirm this asymmetry between lexical and morphological antonyms and further test to the role of alternatives in the parsing of morphological antonyms.
 
 ## Methods
 
 ### Participants
 
-We recruited 670 participants from Amazon's Mechanical Turk.
-This number was arrived it with the intention of getting approximately 50 ratings for each unique item in the experiment.
+We recruited 750 participants from Amazon's Mechanical Turk (MTurk).
+The experiment comprised of four between-subjects experimental conditions arranged in a 2x2 Latin Square design: *antonym type: morphological vs. lexical* X *alternatives: explicit vs. implicit*  (described below in more detail).
+300 participants were assigned to each of the *implicit alternatives* conditions, and 75 participants were assigned to each of the *explicit alternatives* conditions.
+These numbers were arrived it with the intention of getting approximately 45 ratings for each unique adjective in the experiment.
 Participants were restricted to those with U.S. IP addresses and who had at least a 95\% work approval rating. 
-In addition, participants who self-reported a native language other than English were excluded. 
+In addition, participants who self-reported a native language other than English were excluded.
+This exclusion criterion and our planned sample size, along with the procedure and analysis described below, were preregistered: \url{osf.io/p7f25/}
 
 ### Materials
-To best isolate 
-We used **adjective sets** of size 6 composed of positive-form gradable adjectives (\textsc{POS}; e.g., "happy"), their negation (\textsc{NEG POS}; e.g., "not happy"), antonyms constructed by altering the morphology of the adjective (\textsc{MORPH ANT}; e.g., "unhappy"), anotnyms with a distinct lexical entry (\textsc{LEX ANT}; e.g., "sad") and their respective negations (e.g., "not unhappy", "not sad").
+
+Our pilot testing revealed differences between lexical and morphological antonym sets (e.g., "tall"/"short" and "happy"/"unhappy").
+To best isolate the contribution of lexical vs. morphological antonyms, we curated *adjective sets* that described people for which both lexical and morphological antonyms existed for the same positive-form adjective (e.g., "happy" $\rightarrow$ "unhappy", "sad"; Table 1).
+
+Lexical antonyms were selected from a set of possibilities produced from a small survey (n=18) on MTurk eliciting "opposites" for a list of 30 positive-form adjectives, which had morphological antonyms (asking participants e.g., "What is the opposite of forgiving?").
+From the list of freely-produced opposites (the vast majority of which were not morphological antonyms), the first author chose the one that intuitively best conveyed the same scalar dimension as the positive and morphological antonyms and which was not already used as a lexical antonym for another item (e.g., opposite of "forgiving" $\rightarrow$ "resentful"; opposite of "kind" $\rightarrow$ "cruel", because opposite of "friendly" $\rightarrow$ "mean").
+Ten out of the original 30 items were dropped for not having such a well-suited lexical antonym (e.g., "moral") or that had a well-suited lexical antonym that conflicted with another item (e.g., "compassionate" $\rightarrow$ "cold", but also "affectionate" $\rightarrow$ "cold").
+
+<!-- For a list of the 20 positive-adjectives and their lexical and morphological antonyms used in the experiment, see Table \@ref(tab:items). -->
+
+<!-- We used **adjective sets** of size 6 composed of positive-form gradable adjectives (\textsc{POS}; e.g., "happy"), their negation (\textsc{NEG POS}; e.g., "not happy"), antonyms constructed by altering the morphology of the adjective (\textsc{MORPH ANT}; e.g., "unhappy"), anotnyms with a distinct lexical entry (\textsc{LEX ANT}; e.g., "sad") and their respective negations (e.g., "not unhappy", "not sad"). -->
+<!-- Antonyms were either created by morphological negation (\emph{morphological antonyms}; e.g., "unhappy" for "happy") or were distinct lexical entries (\emph{lexical antonyms}; e.g., "short", for "tall"). -->
+<!-- All adjectives were individual-level predicates that applied to people; items were constructed from an informal survey of the linguistics literature and taken from list of "common opposites" available online\footnote{http://www.enchantedlearning.com/wordlist/opposites.shtml} (for a full list, see \tableref{tab:items}. -->
 
 
-Antonyms were either created by morphological negation (\emph{morphological antonyms}; e.g., "unhappy" for "happy") or were distinct lexical entries (\emph{lexical antonyms}; e.g., "short", for "tall").
-All adjectives were individual-level predicates that applied to people; items were constructed from an informal survey of the linguistics literature and taken from list of "common opposites" available online\footnote{http://www.enchantedlearning.com/wordlist/opposites.shtml} (for a full list, see \tableref{tab:items}.
-
-\begin{table}[b]
-\centering
-\begin{tabular}{l|l}
-\emph{Morphological antonyms}     & \emph{Lexical antonyms}    \\ 
-\hline
-happy, unhappy             & tall, short         \\
-intelligent, unintelligent & rich, poor          \\
-polite, impolite           & fat, skinny         \\
-interesting, uninteresting & hard-working, lazy  \\
-attractive, unattractive   & brave, cowardly     \\
-successful, unsuccessful   & beautiful, ugly     \\
-honest, dishonest          & wise, foolish       \\
-educated, uneducated       & proud, humble       \\
-friendly, unfriendly       & strong, weak        \\
-mature, immature           & loud, quiet        
-\end{tabular}
-\caption{Antonym pairs used in Experiments 1 \& 2}
-\label{tab:items}
-\end{table}
-
+```{r items, results="asis"}
+load(file = "cached_results/item_table.RData")
+print(tab1, type="latex", comment = F, table.placement = "H", size="\\fontsize{9pt}{10pt}\\selectfont", include.rownames=FALSE)
+```
 
 ### Procedure
 
-On each trial, participants read a statement introducing a character using a gradable adjective in one of the four \emph{sentence types} (e.g., "Greg is \{POS, ANT, NEG POS, NEG ANT\}").
-Participants were asked to interpret the statement by placing the character on a scale from "the most POS person" to "the most NEG person", using a slider bar (\figref{fig:expt1}).
-Participants completed 16 trials; each used a different adjective quartet.
-Throughout the course of the experiment, participants saw 2 of each \emph{sentence type} with both \emph{lexical} and \emph{morphological} antonym quartets. 
+<!-- Participants rated adjective sets made with either lexical or morphological antonyms. -->
+<!-- In addition, participants provided ratings with alternative utterances either explicit or implicit.  -->
+
+On each trial, participants read a statement introducing a character using a gradable adjective of one of four **adjective types** (e.g., "Greg is \{POS, ANT, NEG POS, NEG ANT\}").
+Participants were asked rate the character on a scale from "the most POS person in the world" to "the most ANT person in the world", using a slider bar (\figref{fig:expt1}).
+In the *lexical antonyms* conditions, ANT (and NEG ANT) were antonyms with distinct lexical entries (e.g., "sad", "not sad" for POS = "happy").
+In the *morphological antonyms* conditions, ANT (and NEG ANT) were antonyms created by adding a negation-inducing prefix (e.g., "unhappy", "not unhappy" for POS = "happy").
+
+In the *implicit alternatives* conditions, participants rated one sentence at a time (e.g., "Greg is not unhappy").
+In addition, participants provided a rating for only one sentence from an adjective set (e.g., never rated both "unhappy" and "not happy").
+There were a total of 12 trials, with exactly 3 repetitions of each adjective type (POS, ANT, NEG POS, NEG ANT) always with items from distinct adjective sets.
+In the *explicit alternatives* conditions, participants rated four sentences at a time (POS, ANT, NEG POS, NEG ANT) from the same adjective set.
+Again, there were 12 trials.
+
 
 ```{r experiment-slides, fig.cap="Example experimental trials."}
-slide.expt.1 <- ggdraw() + draw_image("img/expt1.jpeg", scale = 1) +
-  theme(plot.margin = unit(c(0,0,0,0), "pt")) 
-slide.expt.2 <- ggdraw() + draw_image("img/expt2.jpeg", scale = 1)+
-  theme(plot.margin = unit(c(0,0,0,0), "pt")) 
+slide.expt.1 <- cowplot::ggdraw() + 
+  cowplot::draw_image("img/expt1.jpeg", scale = 1) +
+  theme(plot.margin = unit(c(0,0,0,0), "pt")) + 
+  cowplot::panel_border()
+slide.expt.2 <- cowplot::ggdraw() + 
+  cowplot::draw_image("img/expt2.jpeg", scale = 1)+
+  theme(plot.margin = unit(c(0,0,0,0), "pt")) + 
+  cowplot::panel_border()
 
-plot_grid(add_sub(slide.expt.1, "Experiment 1", size = 10), 
-          add_sub(slide.expt.2,"Experiment 2", size = 10), 
-          labels = c("A", "B"), 
-          nrow = 2)
+cowplot::plot_grid(
+  cowplot::add_sub(slide.expt.1, "Implicit alternatives condition", size = 10), 
+  cowplot::add_sub(slide.expt.2, "Explicit alternatives condition", size = 10), 
+  labels = c("A", "B"), 
+  nrow = 2)
 ```
 
 ## Results 
