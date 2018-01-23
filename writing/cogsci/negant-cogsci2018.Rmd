@@ -332,7 +332,7 @@ Instead, speakers can use modifiers and alternative utterances to carve more pre
 Someone "not unhappy" is neither "sad" nor truly "happy", but residing in some marginally positive state that is difficult to refer because degrees of happiness lacks precise units.
 
 This work resolves an outstanding puzzle in natural language understanding.
-@Krifka2007:Negated-antonyms critiques outstanding pragmatic theories for either being underdetermined [@Bluter2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex]. 
+@Krifka2007:Negated-antonyms critiques outstanding pragmatic theories for either being underdetermined [@Blutner2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex]. 
 Using state-of-the-art models of pragmatic language understanding, we are able to precisely articulate the division of pragmatic labor between different utterances available to a speaker for conveying negation.
 It is noteworthy that we are able to recover the ordering predicted by @Krifka2007:Negated-antonyms without having to assume that 
 
