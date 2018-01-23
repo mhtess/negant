@@ -6,8 +6,10 @@ packrat/lib*/
 *.Rproj
 *.nb.html
 *.pdf
-*.synctex.gz
+*.synctex.gz*
 *.log
 *.bbl
 *.blg
 *.aux
+*.out
+*.tex
