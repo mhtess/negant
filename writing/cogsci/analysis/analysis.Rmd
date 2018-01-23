@@ -163,7 +163,7 @@ length(unique(d.full.natEng$workerid))
 
 Normalize ratings (by subject, subject off mean and divide by SD)
 
-```{r}
+```{r normalizedRatingsForViz}
 d.full.natEng <- d.full.natEng %>%
     group_by(workerid) %>%
     mutate(meanRating = mean(response),
@@ -174,7 +174,7 @@ d.full.natEng <- d.full.natEng %>%
 
 Code antonyms (morpholoigical & lexical) as antonyms (rather than two distinct categories)
 
-```{r}
+```{r recodeAntonyms}
 d.full.natEng <- d.full.natEng %>%
   mutate(adjective_type = as.character(adjective_type),
          adjective_type_rescaled = ifelse( 
@@ -217,7 +217,6 @@ d.full.natEng %>%
 ```
 
 Bootstrapped CIs
-
 
 ```{r boostrapCIs, fig.height=2, fig.width=4}
 d.full.boot <- d.full.natEng %>%
@@ -278,8 +277,8 @@ rs1.helmert.implicit <- lmer(response ~ antonym_type * adj_type +
                        (1 + adj_type | item),
                      data = d.full.natEng %>% filter(condition == "implicit"))
 rs1.helmert.implicit.summary <- summary(rs1.helmert.implicit)
-save(rs1.helmert.implicit.summary, file =
-       "../cached_results/regression_antTypeXadjType_implicitCond.RData")
+# save(rs1.helmert.implicit.summary, file =
+#        "../cached_results/regression_antTypeXadjType_implicitCond.RData")
 
 # does the maximal model account for significantly more variance than simpler models?
 rs1.helmert.implicit.simpler1 <- lmer(response ~ antonym_type * adj_type + 
@@ -298,7 +297,7 @@ anova(rs1.helmert.implicit.simpler1, rs1.helmert.implicit)
 
 
 # summarized results of hypothesis 1 mixed-effects model
-summary(rs1.helmert.implicit)
+rs1.helmert.implicit.summary
 ```
 
 
