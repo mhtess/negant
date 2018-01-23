@@ -8,11 +8,6 @@ Source: CRAN
 Version: 1.65.0-1
 Hash: 95f62be4d6916aae14a310a8b56a6475
 
-Package: DBI
-Source: CRAN
-Version: 0.6
-Hash: c1a897fa11e50c1f70258830fc50b1f3
-
 Package: Formula
 Source: CRAN
 Version: 1.2-2
@@ -34,12 +29,6 @@ Package: RColorBrewer
 Source: CRAN
 Version: 1.1-2
 Hash: c0d56cd15034f395874c870141870c25
-
-Package: RCurl
-Source: CRAN
-Version: 1.95-4.8
-Hash: 79c7d5a8684e44e0e3426d3093aa7d90
-Requires: bitops
 
 Package: Rcpp
 Source: CRAN
@@ -88,22 +77,11 @@ Version: 0.2
 Hash: 2d69ff431a54f6c4a750754b88c7e0af
 Requires: Rcpp, bindr, plogr
 
-Package: bitops
-Source: CRAN
-Version: 1.0-6
-Hash: 67d0775189fd0041d95abca618c5c07e
-
 Package: broom
 Source: CRAN
 Version: 0.4.2
 Hash: 7ebcffa46afb467e3f3c5687946f6e1a
 Requires: dplyr, plyr, psych, reshape2, stringr, tidyr
-
-Package: caTools
-Source: CRAN
-Version: 1.17.1
-Hash: 97cb6f6293cd18d17df77a6383cc6763
-Requires: bitops
 
 Package: cellranger
 Source: CRAN
@@ -152,13 +130,6 @@ Source: CRAN
 Version: 1.10.4
 Hash: 2c7c47ccb40d01c7b214c8eff818108d
 
-Package: devtools
-Source: CRAN
-Version: 1.13.3
-Hash: 2e91d10786ace8f6258480f576bb91f3
-Requires: digest, git2r, httr, jsonlite, memoise, rstudioapi, whisker,
-    withr
-
 Package: dichromat
 Source: CRAN
 Version: 2.0-0
@@ -200,11 +171,6 @@ Version: 1.4.3
 Hash: cd53ef4cf29dc59ce3f8c5c1af735fd1
 Requires: iterators
 
-Package: formatR
-Source: CRAN
-Version: 1.5
-Hash: 258cf79a8dbeedf1c981cdb53837d2af
-
 Package: gganimate
 Source: github
 Version: 0.1.0.9000
@@ -236,11 +202,6 @@ Source: CRAN
 Version: 3.4.0
 Hash: e9f85417507c5352fc05de654bb6f1ab
 Requires: assertthat, colorspace, ggplot2, scales
-
-Package: git2r
-Source: CRAN
-Version: 0.19.0
-Hash: f4f7966fc357f60dc62dbffcea917eef
 
 Package: glue
 Source: CRAN
@@ -375,12 +336,6 @@ Version: 0.8
 Hash: 045d7c594d503b41f1c28946d076c8aa
 Requires: mime
 
-Package: memoise
-Source: CRAN
-Version: 1.1.0
-Hash: 410fcd334bc626db100237cc1370f2e9
-Requires: digest
-
 Package: mime
 Source: CRAN
 Version: 0.5
@@ -408,16 +363,6 @@ Source: CRAN
 Version: 0.4.3
 Hash: f96d896947fcaf9b6d0074002e9f4f9d
 Requires: colorspace
-
-Package: ngramr
-Source: github
-Version: 1.5.0
-Hash: ff4aef6c76e4ec1a86a291370eb6d4a9
-Requires: RCurl, ggplot2, httr, plyr, reshape2, rjson, scales, stringr
-GithubRepo: ngramr
-GithubUsername: seancarmody
-GithubRef: master
-GithubSha1: a58603b5e0d65c683af1d768af0565d275aff2a9
 
 Package: nloptr
 Source: CRAN
@@ -495,11 +440,6 @@ Version: 1.4.3
 Hash: d97526fe6578cabf71bb7688c601b4ba
 Requires: Rcpp, plyr, stringr
 
-Package: rjson
-Source: CRAN
-Version: 0.2.15
-Hash: def074f38d0cff3b597649ee6f976128
-
 Package: rlang
 Source: CRAN
 Version: 0.1.2
@@ -517,11 +457,6 @@ Source: CRAN
 Version: 1.3-2
 Hash: a25c3f70c166fb3fbabc410eb32b6366
 Requires: backports
-
-Package: rstudioapi
-Source: CRAN
-Version: 0.7
-Hash: e2ebaff8160aff3e6b32e6e78a693c2d
 
 Package: rvest
 Source: CRAN
@@ -611,11 +546,6 @@ Package: viridisLite
 Source: CRAN
 Version: 0.2.0
 Hash: 10f0c25af3dc84eaae10f5854f47efdb
-
-Package: whisker
-Source: CRAN
-Version: 0.3-2
-Hash: 803d662762e532705c2c066a82d066e7
 
 Package: withr
 Source: CRAN
