@@ -38,7 +38,11 @@ library(cowplot)
 library(tidyr)
 library(dplyr)
 library(magick)
-# theme_set(theme_few())
+library(ggthemes)
+library(formatR)
+library(bitops)
+library(caTools)
+theme_set(theme_few())
 orange.purple.color.palette <- 
   c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
 ```
