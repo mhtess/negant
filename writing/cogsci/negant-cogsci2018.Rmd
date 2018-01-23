@@ -15,7 +15,7 @@ author-information: >
   \AND {\large \bf Michael Franke (mchfranke@gmail.com)} \\ Department of Linguistics, University of T\"{u}bingen}
 
 abstract: 
-    "To negate is to make true false, but what of statements that are truly vague? When meanings are underspecified, the behavior of negation is not so obvious. If a person is \"not happy\", does that entail they are \"unhappy\"? Formal logic provides two kinds of negation: contrary (e.g., not happy) and contradiction (e.g., sad), yet additional forms exist in natural language (e.g., unhappy). Are the additional forms redundent, or do they allow speakers, with the help of context, to more finely carve otherwise vague meanings? We investigate basic inferences from natural language negation by elaborating a computational model of gradable adjective interpretation to handle different kinds of negation. We hypothesize that communicative reasoning and an uncertain *parsing model* combine for listeners to extract fine-grained meanings within vague dimensions. This hypothesis is borne out in, to our knowledge, the first experimental evidence concerning adult interpretation of different kinds of negation."
+    "To negate is to make true false, but what of statements that are truly vague? When meanings are underspecified, the behavior of negation is not so obvious. If a person is \"not happy\", does that entail they are \"unhappy\"? Formal logic provides two kinds of negation: contrary (e.g., not happy) and contradiction (e.g., sad), yet additional forms exist in natural language (e.g., unhappy). Are the additional forms redundant, or do they allow speakers, with the help of context, to more finely carve otherwise vague meanings? We investigate basic inferences from natural language negation by elaborating a computational model of gradable adjective interpretation to handle different kinds of negation. We hypothesize that communicative reasoning and an *uncertain parse model* combine for listeners to extract fine-grained meanings within vague dimensions. This hypothesis is borne out in, to our knowledge, the first experimental evidence concerning adult interpretation of different kinds of negation."
 
 keywords:
     "semantics; pragmatics; negation; Rational Speech Act; Bayesian cognitive model"
@@ -38,7 +38,7 @@ library(cowplot)
 library(tidyr)
 library(dplyr)
 library(magick)
-theme_set(theme_few())
+# theme_set(theme_few())
 orange.purple.color.palette <- 
   c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
 ```
@@ -62,10 +62,10 @@ orange.purple.color.palette <-
   
 # Introduction
 
-Two negatives make a positive, or at least that is what is tought in introductory logic.
+Two negatives make a positive, or at least that is what is taught in introductory logic textbooks as classical bivalent logic.
 In natural language, however, there exist multiple, seemingly distinct ways of conveying negation.
 Opposites can be arrived at by altering the morphology of a word: "un-" + "happy" $\rightarrow$ "unhappy", or by employing a negation-inducing modifier: "not happy".
-Contra logic, however, these two ways of employing negation *do not* cancel each other out: someone "not unhappy" is not necessarily happy. 	
+Contra classical logic, however, these two ways of employing negation *do not* cancel each other out: someone "not unhappy" is not necessarily happy.
 As @Jespersen1924 noted:
 
 <!-- The two negatives do not exactly cancel one another...;  -->
@@ -80,19 +80,18 @@ ggdraw() + draw_image("img/happy-scale.pdf") +
 ```
 
 
-Competing intuitions arise concerning the logic of negated antonyms in natural language. 
-@Horn1991:Duplex, @Horn1993:Economy provides an explanation wherein  "not unhappy" is provided a restricted interpretation via its literal meaning and pragmatic competition with "happy". 
-This logic, however, results in interpreting "not unhappy" as neutral or indifferent, contrary to intuitions that suggest "not unhappy" is a slightly positive state [e.g., @Krifka2007:Negated-antonyms].
-"Not happy" could be an alternative that should enter into the division of pragmatic labor [@Blutner2004:pragmatics], but how pragmatics contextually strengthens "not happy" has not been fully spelled out [@Krifka2007:Negated-antonyms], nor are intuitions entirely crisp on differences in meaning between "not happy" and "unhappy" [@Jespersen1917:Negation; @Blutner2004:pragmatics argue the two are basically identical in meaning, while @Horn1989:Natural and @Krifka2007:Negated-antonyms disagree].
+Competing intuitions arise concerning the logic of negated antonyms in natural language. Horn [-@Horn1991:Duplex; -@Horn1993:Economy] provides an explanation wherein  "not unhappy" receives a restricted interpretation via its literal meaning and pragmatic competition with "happy". 
+This interpretation, however, renders "not unhappy" as neutral or indifferent, contrary to intuitions that suggest "not unhappy" is a slightly positive state [e.g., @Krifka2007:Negated-antonyms].
+"Not happy" could be an alternative that should enter into the division of pragmatic labor [@Blutner2004:pragmatics], but how pragmatics contextually strengthens "not happy" has not been fully spelled out [@Krifka2007:Negated-antonyms], nor are intuitions entirely crisp on differences in meaning between "not happy" and "unhappy": while @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning, @Horn1989:Natural and @Krifka2007:Negated-antonyms disagree.
 
 <!-- The plot thickens when we consider that lexically-distinct words also provide antagonistic meanings: "" -->
 
 These two issues motivate our current approach.
-First, competing intuitions concerning the meaning of negated positive statements ("not happy") and morphological antonyms ("unhappy") suggest that empirical data should be consulted before further theorizing about pragmatic mechanisms.
-Second, the fact that the logic surrounding the pragmatic strengthening of modifier negation ("not happy") is not clear suggests a benefit from a formal modeling approach. 
+First, competing intuitions concerning the meaning of what we will here call *particle negation* ("not happy") and *affix negation* ("unhappy") suggest that empirical data should be consulted before further theorizing about pragmatic mechanisms.
+Second, the fact that the mechanisms of pragmatic strengthening of particle negation are not clear suggests a benefit from a formal modeling approach. 
 We first elaborate a computational model of adjective interpretation to include antonyms and their negations: adjectives (e.g., "happy"), their antonyms (e.g., "sad"), and the negations of each ("not happy", "not sad").
 We then formalize a hypothesis that natural language negation passes through a probabilistic parsing model, which provides a novel prediction about the interpretations of different kinds of negation (e.g., "not happy", "unhappy", "sad").
-In a behavioral experiment, we investigate the hypothesized ordering of antonym quartets for antonyms with distinct lexical entries (e.g., "tall" and "short") and antonyms constructed from a morphological change (e.g., "happy" and "unhappy").
+In a behavioral experiment, we investigate the hypothesized ordering of antonym quartets for antonyms with distinct lexical entries (e.g., "tall" and "short") and antonyms constructed by affix negation (e.g., "happy" and "unhappy").
 
 \begin{figure}[h]
 \vspace{-2.5cm}
@@ -103,12 +102,12 @@ In a behavioral experiment, we investigate the hypothesized ordering of antonym 
 
 # Computational model
 
-In classical logic, a contrary claim  (e.g., $P =$ *happy* vs. $Q =$ *sad*) is distinguished from a contradiction (e.g.,  $P =$ *even* vs.  $Q = \neg P =$ *odd*).
-Like contradictions, two contraries cannot exist simultaneously ($P \rightarrow \neg Q$; e.g., *happy* implies *not sad*). 
-With contradictions, however, one of contradictory claims *must* be true; when $P$ is false, $Q$ is true. 
+In classical logic, a contrary claim  (e.g., $Px =$ *x is happy* vs. $Qx =$ *x is sad*) is distinguished from a contradiction (e.g.,  $Px =$ *x is even* vs.  $Qx = \neg Px =$ *x is odd*).
+Like contradictions, two contraries cannot be true simultaneously: $\forall x \thinspace ((Px \rightarrow \neg Qx) \wedge (Qx \rightarrow \neg Px))$; e.g., *happy* implies *not sad*. 
+With contradictions, however, one of two contradictories *must* be true: $\forall x \thinspace (Px \leftrightarrow \neg Qx)$; e.g., when $Px$ is false, $Qx$ is true and vice versa. 
 This is not the case with contrary claims (*not tall* does not imply *short*).
 
-Natural language antonyms (e.g., "happy" and "sad") and negation-inducing modifiers (e.g., "not" + "happy") seem to map well onto the formal devices of contrary and contradiction, respectively.
+Natural language antonyms (e.g., "happy" and "sad") and negation-inducing modifiers (e.g., "not" + "happy") seem to map well onto the formal devices of contrariness and contradictoriness, respectively.
 The mapping is not one-to-one, however. 
 Language provides yet more ways of conveying opposing meanings: "I'm not happy", "I'm unhappy", and "I'm sad" all seemingly convey similar ideas, but the strength of interpretation (how *not happy* a person is) could vary. 
 "Sad" is most likely a contrary to "happy", whereas "not happy" is most likely a contradiction to "happy".
@@ -118,9 +117,8 @@ Negative *affixation* (e.g., with the English prefix "un-" or "in-" and their cr
 
 Computational models of pragmatic reasoning are useful for examining the information-theoretic properties of different utterances in context.
 We examine gradable adjectives (e.g., "tall", "happy"), which are vague decriptions of a quantitative scale (e.g., *height*, *happiness*).
-Their meanings can be modeled using a threshold function [@Kennedy2007] whose threshold variable $\theta$ is uncertain: $\denote{tall} = height(x) > \theta$; $\theta \sim \text{Uniform}(0, 1)$ [@Lassiter2015].
-@Lassiter2015 showed how such an uncertain threshold in a Bayesian model of interpretation can account for key aspects of vagueness: context-sensitivity and the admission of borderline cases (e.g., people who are both tall and not tall).  
-\vspace{-1cm}
+Their meanings can be modeled using a threshold function whose threshold variable $\theta$ standard linguistic analyses assume to be supplied by the context [@Kennedy2007]: $\denote{tall} = height(x) > \theta$. [@Lassiter2015] give a model that derives plausible values for $\theta$ in context from pragmatic reasoning [see also @Potts2008:Interpretive-Ec;@Qing2014:Adjectives], and how such a model can account for key aspects of vagueness: context-sensitivity and the admission of borderline cases (e.g., people who are both tall and not tall).
+\vspace{-0.8cm}
 \begin{align}
 L_{1}(x, \theta \mid u) &\propto S_{1}(u \mid x, \theta) \cdot P(x) \cdot P(\theta) \label{eq:L1} \\
 S_{1}(u \mid x, \theta) &\propto \exp{(\alpha_1 \cdot \ln {L_{0}(x \mid u, \theta)} - \text{cost}(u))} \label{eq:S1}\\
@@ -131,12 +129,12 @@ Equations \ref{eq:L1}-\ref{eq:L0} are the Rational Speech Act (RSA) model of @La
 The speaker model $S_1$  is an approximately rational Bayesian agent trying 
 to inform a naive listener $L_0$ (Eq. \ref{eq:L0}) about the state of the world $x$.
 In the context of adjective interpretation, the state of the world is given by the value of the scalar degree $x$ (e.g., the height of the referent).
-The literal listener updates their prior beliefs $P_(x)$ via an utterance's literal meaning $[\![u]\!](x)$, the threshold function described above.
-The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely states of the world $P_(x)$ (e.g., possible heights) and the likelihood that a speaker would say the adjective given a state and a threshold $S(u \mid x, \theta)$.
+The literal listener updates their prior beliefs $P(x)$ via an utterance's literal meaning $[\![u]\!](x)$, the threshold function described above.
+The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely states of the world $P(x)$ (e.g., possible heights) and the likelihood that a speaker would say the adjective given a state and a threshold $S(u \mid x, \theta)$.
 
 ## Model variants
 
-The proportionality in Eq. \ref{eq:S1} implies normalization over a set of alternative utterances (potentially differentiated by their cost). 
+The proportionality in Eq.~\ref{eq:S1} implies normalization over a set of alternative utterances (potentially differentiated by their cost). 
 We investigate the pragmatic refinement of vague utterances with negation using this model, by introducing antonyms in the alternative set, as well as their logical negation (glossed as modifier negation "not"). 
 Thus, the alternative set is $\{\text{positive},  \text{negated positive}, \text{antonym}, \text{negated antonym}\}$, or $\{\text{POS},  \text{negPOS}, \text{ANT}, \text{negANT}\}$ for short. 
 \mht{$\leftarrow$ should probably say we are modeling morphological negation and modifier negation, rather than "antonyms", because semantics for antonyms we want to just say is independent-threshold}
@@ -355,7 +353,7 @@ This work was supported in part by NSF Graduate Research Fellowship DGE-114747 t
 <!-- In logic, two negatives make a positive, but the same does not seem to hold in natural language. Instead, antonyms and their negations appear to partition the underlying semantic scale in an ordering: *unhappy* $<$ *not happy* $<$ *not unhappy* $<$ *happy* [@Horn1989:Natural; @Krifka2007:Negated-antonyms]. We show how this semantic ordering falls out of an information-theoretic model of adjective interpretation, without assuming that *unhappy* $<$ *happy*. We then empirically investigate the semantic ordering, finding that the ordering appears when participants are fully aware of the utterances a speaker could say for antonym pairs defined by morphological negation (*[un]happy*); the explicit presentation of alternatives is not necessary for the analogous ordering of antonym pairs of distinct lexical items (*tall* / *short*). These findings suggest a model of interpretation where listeners maintain uncertainty about the parsing of an utterance involving multiple negations." -->
 
 
-<!-- To negate is to make true false, but what of statements that are truly vague? When meanings are underspecified, the behavior of negation is not so obvious. If a person is \"not happy\", does that entail they are \"unhappy\"? Natural language provides two kinds of negation: contrary (e.g., not happy) and contradiction (e.g., sad), yet additional forms exist (e.g., unhappy). Are the additional forms redundent, or do they allow speakers, with the help of context, to more finely carve otherwise vague meanings? We investigate basic inferences from natural language negation and double negation by elaborating a computational model of gradable adjective interpretation to handle different kinds of negation. We hypothesize that communicative reasoning and an uncertain *parsing model* combine for listeners to extract fine-grained meanings within vague dimensions. This hypothesis is borne out in, to our knowledge, the first experimental evidence concerning adult interpretation of different kinds of and double negation. -->
+<!-- To negate is to make true false, but what of statements that are truly vague? When meanings are underspecified, the behavior of negation is not so obvious. If a person is \"not happy\", does that entail they are \"unhappy\"? Natural language provides two kinds of negation: contrary (e.g., not happy) and contradiction (e.g., sad), yet additional forms exist (e.g., unhappy). Are the additional forms redundant, or do they allow speakers, with the help of context, to more finely carve otherwise vague meanings? We investigate basic inferences from natural language negation and double negation by elaborating a computational model of gradable adjective interpretation to handle different kinds of negation. We hypothesize that communicative reasoning and an uncertain *parsing model* combine for listeners to extract fine-grained meanings within vague dimensions. This hypothesis is borne out in, to our knowledge, the first experimental evidence concerning adult interpretation of different kinds of and double negation. -->
 
 
 # References 
