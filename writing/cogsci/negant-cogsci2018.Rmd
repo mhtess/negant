@@ -1,5 +1,5 @@
 ---
-title: "Not unreasonable: Carving vague dimensions with contraries and contradictions"
+title: "Not unreasonable: Carving vague dimensions with opposing meanings"
 bibliography: negant.bib
 csl: apa6.csl
 document-params: "10pt, letterpaper"
@@ -15,7 +15,7 @@ author-information: >
   \AND {\large \bf Michael Franke (mchfranke@gmail.com)} \\ Department of Linguistics, University of T\"{u}bingen}
 
 abstract: 
-    "To negate is to make true false, but what of statements that are truly vague? When meanings are underspecified, the behavior of negation is not so obvious. If a person is \"not happy\", does that entail they are \"unhappy\"? Formal logic provides two kinds of negation: contrary (e.g., not happy) and contradiction (e.g., sad), yet additional forms exist in natural language (e.g., unhappy). Are the additional forms redundant, or do they allow speakers, with the help of context, to more finely carve otherwise vague meanings? We investigate basic inferences from natural language negation by elaborating a computational model of gradable adjective interpretation to handle different kinds of negation. We hypothesize that communicative reasoning and an *uncertain parse model* combine for listeners to extract fine-grained meanings within vague dimensions. This hypothesis is borne out in, to our knowledge, the first experimental evidence concerning adult interpretation of different kinds of negation."
+    "Formal logic provides two kinds of opposing meanings: contraries, often expressed linguistically in particle negation (e.g., \"not happy\"), and contradictions expressed as antonyms (e.g., \"sad\"), yet these are not the only options in natural language (e.g., \"unhappy\"). Rather than being redundant, we hypothesize that uncertainty about the intended *parse* of the message creates more precise meanings in context. We elaborate a computational model of gradable adjectives (e.g., \"happy\") to investigate interpretations of antonyms and negations. With a behavioral experiment, we validate consistent orderings of interpretations, with subtle, but predictable differences between different ways of conveying negation. This promising support for our hypothesis suggests that in-the-moment pragmatic reasoning can off-load from grammar...something...something. "
 
 keywords:
     "semantics; pragmatics; negation; Rational Speech Act; Bayesian cognitive model"
@@ -42,9 +42,10 @@ library(ggthemes)
 library(formatR)
 library(bitops)
 library(caTools)
+library(viridis)
 theme_set(theme_few())
 orange.purple.color.palette <- 
-  c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
+  c("#fdb863", "#5e3c99", "#e66101", "#b2abd2")
 ```
 
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
@@ -64,6 +65,8 @@ orange.purple.color.palette <-
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
   
+  
+
 # Introduction
 
 Two negatives make a positive, or at least that is what is taught in introductory logic textbooks as classical bivalent logic.
@@ -248,12 +251,6 @@ slide.expt.2 <- cowplot::ggdraw() +
   cowplot::draw_image("img/expt2.jpeg", scale = 1)+
   theme(plot.margin = unit(c(0,0,0,0), "pt")) + 
   cowplot::panel_border()
-
-cowplot::plot_grid(
-  cowplot::add_sub(slide.expt.1, "Implicit alternatives condition", size = 10), 
-  cowplot::add_sub(slide.expt.2, "Explicit alternatives condition", size = 10), 
-  labels = c("A", "B"), 
-  nrow = 2)
 ```
 
 <!-- Participants rated adjective sets made with either lexical or morphological antonyms. -->
@@ -277,22 +274,20 @@ load("cached_results/regression_antTypeXadjType_implicitCond.RData") # rs1.helme
 rs1.implicit.coef <- rs1.helmert.implicit.summary[["coefficients"]]
 ```
 
-```{r expt-results, fig.cap="Experimental results.", fig.env = "figure*", fig.pos = "h", fig.width=6, fig.height=2.5, fig.align = "center", set.cap.width=T, num.cols.cap=2}
+```{r expt-results, fig.cap="Experimental results.", fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=4, fig.align = "center", set.cap.width=T, num.cols.cap=2}
 load(file = "cached_results/bootstrappedCIs.RData")
  
-d.full.boot %>%
+fig.bs.ci <- d.full.boot %>%
   ungroup() %>%
-  mutate(antonym_type = factor(antonym_type, levels = c( "lexant", "morphant"),
-                               labels = c("lexical", "morphological")),
+  mutate(antonym_type = factor(antonym_type, levels = c(  "morphant", "lexant"),
+                               labels = c( "morphological", "lexical")),
          adjective_type_rescaled = factor(adjective_type_rescaled,
-                                          levels = c("antonym",
-                                                "neg_positive",
+                                          levels = c( "positive",
                                                 "neg_antonym",
-                                                "positive"),
-                                          labels = c("Antonym",
-                                                     "Negated positive",
-                                                     "Negated antonym",
-                                                     "Positive"))) %>%
+                                                "neg_positive",
+                                                "antonym"),
+                                          labels = c("Positive", 
+                                                     "Negated antonym","Negated positive","Antonym"))) %>%
   ggplot(., aes(x = antonym_type,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
@@ -304,14 +299,26 @@ d.full.boot %>%
                 width = 0.4)+
   #coord_flip()+
   xlab("Antonym type")+
+  #scale_fill_viridis(discrete = T, name="Adjective type")+
   scale_fill_manual(name="Adjective type",
                     values = orange.purple.color.palette,
                     guide = guide_legend(reverse=TRUE))+
-  facet_wrap(~condition, scales = 'free')+
+  facet_wrap(~condition, scales = 'free', nrow = 2)+
   ylab("mean normalized rating")+
-  scale_y_continuous(limits = c(-1.1,1.4), breaks = c(-1, 0, 1))
-```
+  scale_y_reverse(limits = c(1.25, -1.1), breaks = c(1, 0, -1))
 
+
+
+plot_grid(
+  cowplot::plot_grid(
+    cowplot::add_sub(slide.expt.1, "Implicit alternatives condition", size = 10), 
+    cowplot::add_sub(slide.expt.2, "Explicit alternatives condition", size = 10), 
+    labels = c("A", "B"), 
+    nrow = 2),
+  labels = c("", "C"),
+  fig.bs.ci, ncol = 2, rel_widths = c(1,2))
+
+```
 
 
 `r sum(!d.full.nativeEnglish$englishNative)` participants were excluded for self-reporting a native language other than English, leaving a remainder of `r sum(d.full.nativeEnglish$englishNative)` participants for these analyses.
