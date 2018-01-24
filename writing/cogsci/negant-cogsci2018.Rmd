@@ -69,36 +69,51 @@ orange.purple.color.palette <-
 
 # Introduction
 
-Two negatives make a positive, or at least that is what is taught in introductory logic textbooks as classical bivalent logic.
-In natural language, however, there exist multiple, seemingly distinct ways of conveying negation.
-Opposites can be arrived at by altering the morphology of a word: "un-" + "happy" $\rightarrow$ "unhappy", or by employing a negation-inducing modifier: "not happy".
-Contra classical logic, however, these two ways of employing negation *do not* cancel each other out: someone "not unhappy" is not necessarily happy.
+Classical, bivalent logic mandates that two negatives make a positive, but natural language provides avenues for double negation (e.g., "not" + "un-" + "reasonable") to have a meaning less than logical.
 As @Jespersen1924 noted:
 
-<!-- The two negatives do not exactly cancel one another...;  -->
+> The two negatives do not exactly cancel one another... the longer expression is always weaker: "this is not unknown to me" or "I am not ignorant of this" means *I am to some extent aware of it*, etc.
 
-> the longer expression is always weaker: "this is not unknown to me" or "I am not ignorant of this" means \emph{I am to some extent aware of it}, etc.
+Jespersen's intuition is not universally shared, however. 
+"Not" and "un-" can be two ways of saying the same thing. 
+"Not unreasonable" might mean "reasonable".
+As @orwell1946politics noted: 
 
+> Banal statements are given an appearance of profundityy by means of the "not un-" formation... It should be possible to laugh the "not un-" formation out of existence by memorizing this sentence: "A not unblack dog was chasing a not unsmall rabbit across a not ungreen field."
 
+Why does language provide multiple, seemingly identical ways of conveying the same meanings?
+Classical logic distinguished statements that are contrary to one another (e.g., *antonyms*; "Sam is happy" vs. "Sam is sad") and those that are contradictory (e.g., using *negation particles*: "Sam is *not* happy").
+For Jespersen's intuition to hold, "unhappy" (*morphene negation*) must be a *contrary*, like "sad". 
+Then, "not unhappy" can receive a restricted interpretation via its literal meaning and pragmatic competition with "happy" [@Horn1991:Duplex; @Horn1993:Economy].
+This model, however, renders "not unhappy" as neutral or indifferent, contrary to the intuition that "not unhappy" is a slightly positive state [@Krifka2007:Negated-antonyms].
+It's been suggested that "not happy" could also be an alternative that competes with "not unhappy" [@Blutner2004:pragmatics], but how pragmatics contextually strengthens "not happy" has not been fully spelled out [@Krifka2007:Negated-antonyms], nor are intuitions entirely crisp on differences in meaning between "not happy" and "unhappy": while @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning, @Horn1989:Natural and @Krifka2007:Negated-antonyms disagree.
+
+The puzzle of *negated antonyms* (e.g., "not unhappy") lies at the intersection between compositional semantics and vague language understanding. 
+\mht{Recent breakthroughs in the probabilistic modeling tradition have put this within grasp.}
+We use the tools of probabilistic pragmatics to formalize how negated and antonymous meanings should produce an ordering on interpretations: *sad* $<$ *not happy* $<$ *not sad* $<$ *happy*.
+We then investigate the ordering with *morpheme negation* (e.g., "unhappy"), providing empirical evidence that it is treated the same as *particle negation* (e.g., "not happy") when the relevant alternative utterances are not salient to the listener.
+We hypothesize that *parsing uncertainty* underlies this interpretative behavior idiosyncractic to morpheme negation.
+
+<!-- \mht{mention ordering?} -->
+
+<!-- underespecified meanings for gradable adjectives interacts with negation to produce  -->
+<!-- Probabilistic models of pragmatic reasoning have proved useful in formalizing the vagueness of gradable adjectives [e.g., "happy"; @GoodmanLassiter2015-handbook], and we adopt this formalism to better understand  -->
+<!-- A speaker can use a particle (e.g., "not happy"), affix a morpheme (e.g., "unhappy"), or say an antonym (e.g., "sad") -->
+<!-- Contra classical logic, however, these two ways of employing negation *do not* cancel each other out: someone "not unhappy" is not necessarily happy. -->
 
 ```{r happy-scale, fig.cap="Hypothesized ordering of sets of antonyms and their negations.", eval=F}
 ggdraw() + draw_image("img/happy-scale.pdf") +
   theme(plot.margin = unit(c(0,0,0,0), "pt")) 
 ```
 
-
-Competing intuitions arise concerning the logic of negated antonyms in natural language. Horn [-@Horn1991:Duplex; -@Horn1993:Economy] provides an explanation wherein  "not unhappy" receives a restricted interpretation via its literal meaning and pragmatic competition with "happy". 
-This interpretation, however, renders "not unhappy" as neutral or indifferent, contrary to intuitions that suggest "not unhappy" is a slightly positive state [e.g., @Krifka2007:Negated-antonyms].
-"Not happy" could be an alternative that should enter into the division of pragmatic labor [@Blutner2004:pragmatics], but how pragmatics contextually strengthens "not happy" has not been fully spelled out [@Krifka2007:Negated-antonyms], nor are intuitions entirely crisp on differences in meaning between "not happy" and "unhappy": while @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning, @Horn1989:Natural and @Krifka2007:Negated-antonyms disagree.
-
 <!-- The plot thickens when we consider that lexically-distinct words also provide antagonistic meanings: "" -->
 
-These two issues motivate our current approach.
-First, competing intuitions concerning the meaning of what we will here call *particle negation* ("not happy") and *affix negation* ("unhappy") suggest that empirical data should be consulted before further theorizing about pragmatic mechanisms.
-Second, the fact that the mechanisms of pragmatic strengthening of particle negation are not clear suggests a benefit from a formal modeling approach. 
-We first elaborate a computational model of adjective interpretation to include antonyms and their negations: adjectives (e.g., "happy"), their antonyms (e.g., "sad"), and the negations of each ("not happy", "not sad").
-We then formalize a hypothesis that natural language negation passes through a probabilistic parsing model, which provides a novel prediction about the interpretations of different kinds of negation (e.g., "not happy", "unhappy", "sad").
-In a behavioral experiment, we investigate the hypothesized ordering of antonym quartets for antonyms with distinct lexical entries (e.g., "tall" and "short") and antonyms constructed by affix negation (e.g., "happy" and "unhappy").
+<!-- These two issues motivate our current approach. -->
+<!-- First, competing intuitions concerning the meaning of what we will here call *particle negation* ("not happy") and *affix negation* ("unhappy") suggest that empirical data should be consulted before further theorizing about pragmatic mechanisms. -->
+<!-- Second, the fact that the mechanisms of pragmatic strengthening of particle negation are not clear suggests a benefit from a formal modeling approach.  -->
+<!-- We first elaborate a computational model of adjective interpretation to include antonyms and their negations: adjectives (e.g., "happy"), their antonyms (e.g., "sad"), and the negations of each ("not happy", "not sad"). -->
+<!-- We then formalize a hypothesis that natural language negation passes through a probabilistic parsing model, which provides a novel prediction about the interpretations of different kinds of negation (e.g., "not happy", "unhappy", "sad"). -->
+<!-- In a behavioral experiment, we investigate the hypothesized ordering of antonym quartets for antonyms with distinct lexical entries (e.g., "tall" and "short") and antonyms constructed by affix negation (e.g., "happy" and "unhappy"). -->
 
 \begin{figure}[h]
 \vspace{-2.5cm}
