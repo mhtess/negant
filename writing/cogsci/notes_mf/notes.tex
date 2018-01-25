@@ -1,0 +1,99 @@
+\documentclass[fleqn,reqno,10pt]{article}
+
+\RequirePackage{txfonts} % for strict implication symbols
+% \RequirePackage{amsmath}            % Formeln
+% \RequirePackage{amsfonts}           % Fonts for Formulas
+% \RequirePackage{amssymb}
+\RequirePackage[ngerman,english]{babel}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc} 
+\RequirePackage[style=authoryear-comp, % Citation marks as [Jef65]
+            natbib=true,      % Natbib-style cite macros \citeauthor &c.
+            hyperref=true,    % Cites in pdf are links to bib
+                              % (hyperref conf.)
+            maxnames=3,       % truncate name lists if more than 2
+                              % names appear
+            doi=false,        % no doi's
+            url=false,        % no url's
+            sortcites=false,  % do NOT sort cites in the style of the
+                              % bibliography 
+            %backref=true     % insert backrefs in reference section
+            ]{biblatex}
+\bibliography{MyRefGlobal}
+\usepackage[margin = 2cm]{geometry}
+
+\title{Notes}
+\author{}
+\date{}
+
+\begin{document}
+
+
+If you hear ``Jones is happy'' you understand that Jones' happiness ---a \emph{gradable
+  property}--- exceeds a certain threshold
+\citep{KennedyMcNally2005:Scale-Structure,Kennedy2007:Vagueness-and-G}. Where exactly this
+threshold lies is a matter of context, in particular prior expectations about usual degrees of
+happiness of a person like Jones, but can be derived formally by considerations of
+goal-oriented cooperative language use
+\citep{LassiterGoodman2015:Adjectival-vagu,QingFranke2014:Gradable-Adject}. The model of
+\citet{LassiterGoodman2015:Adjectival-vagu}, for example, captures a listener's probabilistic
+reasoning about which thresholds would likely explain a speaker's utterance if the speaker
+strives to maximize information flow about the true degree of Jones' happiness. Here, we try to
+extend this line of inquiry to also incorporate compositional expressions involving various
+forms of negation: how happy or sad is an agent who is reported to be \emph{not happy},
+\emph{not sad}, \emph{unhappy} or \emph{not unhappy}? We propose a probabilistic
+speaker-listener pragmatic reasoning model in the Rational Speech Act tradition
+\citep{FrankGoodman2012:Predicting-Prag,FrankeJager2015:Probabilistic-p,GoodmanFrank2016:Pragmatic-Langu}. Our
+model introduces elements of lexical uncertainty
+\citep{BergenLevy2012:Thats-what-she-,BergenLevy2014:Pragmatic-Reaso} in order to model a
+listener's uncertainty about how to interpret overt negation markers.
+
+Negation is the semantic operation of forming an opposite, but there are several kinds of
+semantic opposition \citep{Horn1989:A-Natural-Histo,sep-negation}. A \emph{contrary
+  opposition}, such as between \emph{happy} and \emph{sad}, is one where both predicates cannot
+be true at the same time, but can be false at the same time. A \emph{contradictory opposition},
+such as between \emph{pure} and \emph{impure}, is one where truth of one predicate entails
+falsity of the other. In other words, gradable terms that express contrary opposites allow for
+a neutral middle ground, unlike contradictory opposites. Contrary opposition is thus logically
+stronger than contradictory opposition, but frequently natural language expressions that appear
+to express contradictory opposition are pragmatically strengthened to convey contrary
+opposition instead. For example, today's English adverb \emph{never} derives from Old English
+\emph{n\={\ae}fre}, a combination of \emph{ne} (not) and \emph{\={\ae}fre} (\emph{ever})
+literally meaning \emph{not ever}, but strengthened to mean \emph{never}.
+
+\emph{Lexical antonyms} are pairs like \emph{happy} and \emph{sad} or \emph{polite} and
+\emph{rude}. Intuitively, lexical antonyms normally express contrary opposition: Jones can be
+neither happy nor sad without logical contradiction.
+
+We distinguish two markers of negation in English, \emph{adverbial negation} (e.g., \emph{not
+  happy}, \emph{not polite}) and \emph{affixal negation} (e.g., \emph{unhappy},
+\emph{impolite}). In principle, both types of negation markers could map onto either type of
+semantic opposition relation, contrary or contradictory opposition. If $Hx$ expresses that $x$
+is happy, we denote a contradictory opposition using standard bivalent negation $\neg
+Hx$.
+Contrary opposition is formed by a different kind of negation, which we denote as
+$\tilde{H}x$. The latter is a predicate-forming operation that is not iterable
+\citep{Horn1989:A-Natural-Histo,sep-negation}. So while it makes sense to iterate $\neg \neg
+Hx$, it is impossible to iterated contrary negation. It is, however possible, to have $\neg
+\tilde{H}x$. But it is not possible to have $\neg$ in the scope of $\tilde{H}x$. 
+
+This means that listeners may in principle be uncertain about which of several logical readings
+a speaker has in mind when she uses a negated gradable predicate. In particular, \emph{not
+  happy} and \emph{unhappy} can both be construed as either $\neg Hx$ or $\tilde{H}x$. Given
+the constraints mentioned above, the phrase \emph{not unhappy} can receive two interpretations,
+namely $\neg Hx$ and $\neg \tilde{H}x$. 
+
+In the probabilistic model that combines pragmatic reasoning about the meaning of gradable
+adjectives with reasoning about the meaning of negation markers, we will assume that contrary
+negation $\tilde{H}x$ leads to a new independent threshold (with the right directionality). In
+other words, we leave it to rational pragmatic reasoning to decide optimal meaning assignments
+to predicates, including those formed from predicate-forming contrary negation. 
+
+This leads to the \emph{uncertain parse model} \dots
+
+
+
+
+\printbibliography[heading=bibintoc]
+
+\end{document}
