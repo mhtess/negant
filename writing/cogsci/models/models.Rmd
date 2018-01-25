@@ -8,6 +8,7 @@ output: html_notebook
 library(rwebppl)
 library(jsonlite)
 library(ggthemes)
+library(gganimate)
 library(tidyverse)
 library(knitr)
 theme_set(theme_few())

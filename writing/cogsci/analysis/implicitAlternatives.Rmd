@@ -5,50 +5,84 @@ output: github_document
 
 ```{r libraries}
 library(tidyverse)
-library(tidyboot)
 library(ggthemes)
 library(langcog)
 library(knitr)
 library(lme4)
 library(lmerTest)
 theme_set(theme_few())
-project.prefix <- "7_1slider_morph"
-project.prefix.lex <- "7_1slider_lex"
+project.prefix <- "4_L1_1slider"
+#project.prefix.lex <- "7_1slider_lex"
 
 orange.purple.color.palette <- 
   c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
 ```
 
 ```{r loadDataAndTime}
-d.l1.7.morph <- read.csv(paste("../data/", project.prefix,"/",project.prefix,"-trials.csv",
-   sep = ""))
-
-d.l1.7.lex <- read.csv(paste("../data/", project.prefix.lex,"/",project.prefix.lex,"-trials.csv",
+d.l1.7 <- read.csv(paste("../data/", project.prefix,"/",project.prefix,"-trials.csv",
    sep = "")) %>%
-  mutate(workerid = workerid + 1 + max(unique(d.l1.7.morph$workerid)))
-
-d.l1.7 <- bind_rows(d.l1.7.morph, d.l1.7.lex) %>%
-  mutate(adjective_type = factor(adjective_type),
-         antonym_type  = factor(antonym_type),
-        adjective_type = factor(adjective_type, 
-                           levels = c("lexant",
-                                      "morphant",
+  rename(adjective_type = sentence_type,
+         antonym_type = negation) %>%
+  mutate(adjective_type = factor(adjective_type, 
+                           levels = c("antonym",
                                       "neg_positive",
-                                      "neg_lexant", 
-                                      "neg_morphant",
+                                      "neg_antonym", 
                                       "positive")))
   
-d.l1.7.time <- bind_rows(
-  read.csv(paste("../data/", project.prefix,"/",project.prefix,"-time.csv", sep = "")),
-  read.csv(paste("../data/", project.prefix.lex,"/",project.prefix.lex,"-time.csv", sep = ""))
-)
+d.l1.7.time <- read.csv(paste("../data/", project.prefix,"/",project.prefix,"-time.csv", sep = ""))
+summary(d.l1.7)
 ```
 
+Table of items
+
+```{r itemTable}
+d.items.lex <- d.l1.7 %>%
+  filter(antonym_type == "lexical") %>%
+  mutate(adj_pair = paste(positive, antonym, sep = ", ")) %>%
+  select(adj_pair) %>%
+  distinct()
+
+d.items.lex <- data.frame(adj_pair = d.items.lex[with(d.items.lex, order(adj_pair)), ]) %>%   rename("Lexical antonyms" = adj_pair)
+
+
+d.items.morph <- d.l1.7 %>%
+  filter(antonym_type == "morphological") %>%
+  mutate(adj_pair = paste(positive, antonym, sep = ", ")) %>%
+  select(adj_pair) %>%
+  distinct() 
+
+d.items.morph <- data.frame(adj_pair = d.items.morph[with(d.items.morph, order(adj_pair)), ])%>%
+  rename("Morphological antonyms" = adj_pair)
+
+
+# d.items <- d.items[with(d.items, order(positive)),] %>%
+#   rename("Positive adjective" = positive, "Morphological antonym" = morphant,
+#          "Lexical antonym" = lexant)
+
+tab1 <- xtable::xtable(
+  cbind(as.matrix(d.items.morph), as.matrix(d.items.lex)), 
+  caption = "Items in Experiments 1 and 2")
+save(tab1, file = "../cached_results/item_table_e12.RData")
+#print(tab1, type="latex", comment = F, table.placement = "H",  include.rownames=FALSE)
+#d.items
+#d.items.morph
+
+#tab1
+
+```
 
 
 Time to complete task
 
 ```{r fig_timeInMinutes}
+
+d.expt1.time.summary <- d.l1.7.time %>%
+  summarize(aveTime = mean(time),
+            sdTime = sd(time))
+
+s#ave(d.expt1.time.summary, file = "../cached_results/time_summary_e1.RData")
+#
+
 ggplot(d.l1.7.time, aes(x = time)) +
   geom_histogram()+
   xlab("time in minutes")
@@ -56,17 +90,10 @@ ggplot(d.l1.7.time, aes(x = time)) +
 
 
 ```{r subjectComments}
-d.l1.7.comments <- bind_rows(
-  read.csv(paste("../data/",
+d.l1.7.comments <- read.csv(paste("../data/",
                  project.prefix,"/",project.prefix,
                  "-subject_information.csv", sep = "")) %>%
-    mutate(age = as.numeric(as.character(age))),
-  read.csv(paste("../data/",
-                 project.prefix.lex,"/",project.prefix.lex,
-                 "-subject_information.csv", sep = "")) %>%
-    mutate(age = as.numeric(as.character(age)),
-           workerid = workerid + 1 + max(unique(d.l1.7.morph$workerid)))
-)
+    mutate(age = as.numeric(as.character(age)))
 
 d.l1.7.comments %>% select(comments) %>% filter(comments != "") %>% kable()
 ```
@@ -77,6 +104,8 @@ Self-reported native language
 d.l1.7.nativeEnglish <- d.l1.7.comments %>% 
   select(workerid ,language) %>% 
   mutate(englishNative = grepl("eng", tolower(language)))
+
+#save(d.l1.7.nativeEnglish, file = "../cached_results/english_summary_e1.RData")
 
 table(d.l1.7.nativeEnglish$englishNative)
 
@@ -140,22 +169,24 @@ ggplot(., aes( x = normalizedResponse,
 Bootstrapped CIs
 
 ```{r fig_bootstrappedCIs}
-d.l1.7.boot <- d.l1.natEng %>%
+d.l1.4.boot <- d.l1.natEng %>%
   mutate(adjective_type = factor(adjective_type, 
-                           levels = c("lexant",
-                                      "morphant",
+                           levels = c("antonym",
                                       "neg_positive",
-                                      "neg_lexant", 
-                                      "neg_morphant",
-                                      "positive"))) %>%
+                                      "neg_antonym", 
+                                      "positive"),
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated antonym",
+                                      "Positive"))) %>%
   group_by(antonym_type, adjective_type) %>%
   multi_boot_standard(col = "normalizedResponse")
 
 
-# df.oneSlider.ci <- d.l1.4.boot
-# save(df.oneSlider.ci, file = "../cached_results/oneSlider_bootstrappedCIs.RData")
+df.oneSlider.ci <- d.l1.4.boot
+save(df.oneSlider.ci, file = "../cached_results/oneSlider_bootstrappedCIs.RData")
 
-d.l1.7.boot %>%
+d.l1.4.boot %>%
   ggplot(., aes(x = adjective_type,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,

@@ -42,7 +42,7 @@ library(ggthemes)
 library(formatR)
 library(bitops)
 library(caTools)
-library(viridis)
+#library(viridis)
 theme_set(theme_few())
 orange.purple.color.palette <- 
   c("#fdb863", "#5e3c99", "#e66101", "#b2abd2")
@@ -308,33 +308,54 @@ Participants rated one sentence at a time (e.g., "Greg is not unhappy"), and pro
 Each participant saw items from both **antonym types** (morphological, lexical). 
 There were a total of 16 trials, with exactly 2 repetitions of each adjective type (POS, ANT, NEG POS, NEG ANT) for sets of each antonym type, always with items from distinct adjective sets.
 
+```{r experiment-slides, fig.pos = "hb", fig.cap="Example experimental trials.", fig.height=2.5}
+slide.expt.1 <- cowplot::ggdraw() + 
+  cowplot::draw_image("img/expt1.jpeg", scale = 1) +
+  theme(plot.margin = unit(c(0,0,0,0), "pt")) + 
+  cowplot::panel_border()
+slide.expt.2 <- cowplot::ggdraw() + 
+  cowplot::draw_image("img/expt2.jpeg", scale = 1)+
+  theme(plot.margin = unit(c(0,0,0,0), "pt")) + 
+  cowplot::panel_border()
 
+
+cowplot::plot_grid(
+    cowplot::add_sub(slide.expt.1, "Experiment 1 (implicit alternatives)", size = 8), 
+    cowplot::add_sub(slide.expt.2, "Experiment 2 (explicit alternatives)", size = 8), 
+    labels = c("A", "B"), 
+    nrow = 2)
+```
 #### Materials
 
 We used **adjective sets** composed of four **adjective types** that described properties of people: positive-form gradable adjectives (POS; e.g., "happy", "tall"), antonyms (ANT; e.g., "unhappy", "short"), and their respective negations (NEG POS, NEG ANT; e.g., "not happy", "not unhappy").
 Antonyms were *morphological* (e.g., "unhappy" for "happy") or distinct lexical entries (*lexical antonyms* e.g., "short" for "tall").
-Items were constructed from an informal survey of the linguistics literature and taken from list of ``common opposites'' available online\footnote{http://www.enchantedlearning.com/wordlist/opposites.shtml} (for a full list, see \tableref{tab:items1}).
+Items were constructed from an informal survey of the linguistics literature and taken from list of ``common opposites'' available online\footnote{http://www.enchantedlearning.com/wordlist/opposites.shtml} (for a full list, see \tableref{tab:items12}).
 
 
-\begin{table}[b]
-\centering
-\begin{tabular}{l|l}
-\emph{Morphological antonyms}     & \emph{Lexical antonyms}    \\ 
-\hline
-happy, unhappy             & tall, short         \\
-intelligent, unintelligent & rich, poor          \\
-polite, impolite           & fat, skinny         \\
-interesting, uninteresting & hard-working, lazy  \\
-attractive, unattractive   & brave, cowardly     \\
-successful, unsuccessful   & beautiful, ugly     \\
-honest, dishonest          & wise, foolish       \\
-educated, uneducated       & proud, humble       \\
-friendly, unfriendly       & strong, weak        \\
-mature, immature           & loud, quiet        
-\end{tabular}
-\caption{Antonym pairs used in Experiments 1 \& 2}
-\label{tab:items1}
-\end{table}
+```{r items12, results="asis"}
+load(file = "cached_results/item_table_e12.RData")
+print(tab1, type="latex", comment = F, table.placement = "H", size="\\fontsize{9pt}{10pt}\\selectfont", include.rownames=FALSE)
+```
+
+<!-- \begin{table}[b] -->
+<!-- \centering -->
+<!-- \begin{tabular}{l|l} -->
+<!-- \emph{Morphological antonyms}     & \emph{Lexical antonyms}    \\  -->
+<!-- \hline -->
+<!-- happy, unhappy             & tall, short         \\ -->
+<!-- intelligent, unintelligent & rich, poor          \\ -->
+<!-- polite, impolite           & fat, skinny         \\ -->
+<!-- interesting, uninteresting & hard-working, lazy  \\ -->
+<!-- attractive, unattractive   & brave, cowardly     \\ -->
+<!-- successful, unsuccessful   & beautiful, ugly     \\ -->
+<!-- honest, dishonest          & wise, foolish       \\ -->
+<!-- educated, uneducated       & proud, humble       \\ -->
+<!-- friendly, unfriendly       & strong, weak        \\ -->
+<!-- mature, immature           & loud, quiet         -->
+<!-- \end{tabular} -->
+<!-- \caption{Antonym pairs used in Experiments 1 \& 2} -->
+<!-- \label{tab:items1} -->
+<!-- \end{table} -->
 
 
 
@@ -372,6 +393,110 @@ In addition, the endpoints of the slider bars were relabeled to "the most \{*POS
 
 ### Results
 
+
+```{r expt1results}
+load("cached_results/oneSlider_bootstrappedCIs.RData") # df.oneSlider.ci
+
+fig.expt1 <- ggplot(df.oneSlider.ci %>%
+                      mutate(src = 'implicit'), aes(x = antonym_type,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = adjective_type,
+                      group = adjective_type
+              ))+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_errorbar(position = position_dodge(0.8), color = 'black',
+                width = 0.4)+
+  #coord_flip()+
+  facet_wrap(~src)+
+  xlab("")+
+  #scale_fill_viridis(discrete = T, name="Adjective type")+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=TRUE))+
+  ylab("mean normalized rating")+
+  theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
+  scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
+
+```
+
+```{r expt2results}
+load("cached_results/fourSlider_bootstrappedCIs.RData") # df.fourSlider.ci
+fig.expt2 <- ggplot(df.fourSlider.ci %>%
+                      mutate(src = 'explicit'), aes(x = antonym_type,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = adjective_type,
+                      group = adjective_type
+              ))+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_errorbar(position = position_dodge(0.8), color = 'black',
+                width = 0.4)+
+  #coord_flip()+
+  xlab("Antonym type")+
+  facet_wrap(~src)+
+  xlab("")+
+  #scale_fill_viridis(discrete = T, name="Adjective type")+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=TRUE))+
+  ylab("mean normalized rating")+
+    theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
+  scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
+```
+
+```{r expt-results, fig.cap="Experimental results. A: Expt 1. B: Expt 2. C: Expt 3.", fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=3.3, fig.align = "center", set.cap.width=T, num.cols.cap=2}
+
+load(file = "cached_results/bootstrappedCIs.RData") # d.full.boot
+
+fig.bs.ci <- d.full.boot %>%
+  ungroup() %>%
+  mutate(antonym_type = factor(antonym_type, 
+                               levels = c(  "lexant", "morphant"),
+                               labels = c("lexical", "morphological")),
+         adjective_type_rescaled = 
+           factor(adjective_type_rescaled,
+              levels = c("antonym", "neg_positive", "neg_antonym","positive"),
+              labels = c("Antonym", "Negated positive",
+                         "Negated antonym", "Positive"))) %>%
+  ggplot(., aes(x = antonym_type,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = adjective_type_rescaled,
+                      group = adjective_type_rescaled
+              ))+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_errorbar(position = position_dodge(0.8), color = 'black',
+                width = 0.4)+
+  #coord_flip()+
+  xlab("Antonym type")+
+  #scale_fill_viridis(discrete = T, name="Adjective type")+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=F))+
+  facet_wrap(~condition, scales = 'free', nrow = 1)+
+  ylab("mean normalized rating")+
+  xlab("")+
+    theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
+  #scale_y_reverse(limits = c(1.25, -1.1), breaks = c(1, 0, -1))
+  scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
+
+legend <- get_legend(fig.bs.ci + theme(legend.position="bottom"))
+prow <- plot_grid( fig.expt1 + theme(legend.position="none",
+                                     plot.margin = unit(c(6,0,6,0), "pt")),
+           fig.expt2 + theme(legend.position="none",
+                             plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
+           fig.bs.ci + theme(legend.position="none",
+                             plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
+           align = 'vh',
+           labels = c("A", "B", "C"),
+           hjust = -1,
+           nrow = 1, rel_widths = c(1,1,2)
+           )
+plot_grid( prow, legend, ncol = 1, rel_heights = c(1.2, .1))
+```
+
+
 ## Experiment 3: Large-scale, within-item replication
 
 Experiments 1 \& 2 revealed a potential asymmetry between lexical and morphological antonyms. 
@@ -391,7 +516,7 @@ load("cached_results/english_summary.RData") #d.full.nativeEnglish
 ### Participants
 
 We recruited 750 participants from Amazon's Mechanical Turk (MTurk).
-The experiment comprised of four between-subjects experimental conditions arranged in a 2x2 Latin Square design: *antonym type (morphological vs. lexical)* X *alternatives (explicit vs. implicit)*, as described below.
+The experiment comprised of four between-subjects experimental conditions arranged in a 2x2 Latin Square design: *antonym type (morphological vs. lexical)* X *alternatives (explicit vs. implicit)*.
 300 participants were assigned to each of the *implicit alternatives* conditions, and 75 participants were assigned to each of the *explicit alternatives* conditions.
 These numbers follow from the intention of getting approximately 45 ratings for each unique adjective in the experiment.
 
@@ -402,9 +527,9 @@ This exclusion criterion and our planned sample size, along with the procedure a
 
 ### Materials
 
-Our pilot testing revealed differences between lexical and morphological antonym sets (e.g., "tall"/"short" and "happy"/"unhappy").
-To best isolate the contribution of lexical vs. morphological antonyms, we curated *adjective sets* consisting of words for properties of people, such that both lexical and morphological antonyms exist for the same positive-form adjective (e.g., "happy" $\rightarrow$ "unhappy", "sad"; Table 1).
+<!-- Our pilot testing revealed differences between lexical and morphological antonym sets (e.g., "tall"/"short" and "happy"/"unhappy"). -->
 
+To best isolate the contribution of lexical vs. morphological antonyms, we curated *adjective sets* consisting of words for properties of people, such that both lexical and morphological antonyms exist for the same positive-form adjective (e.g., "happy" $\rightarrow$ "unhappy", "sad"; Table 1).
 Lexical antonyms were selected from a set of possibilities produced from a small survey (n=18) on MTurk eliciting "opposites" for a list of 30 positive-form adjectives, which had morphological antonyms (asking participants e.g., "What is the opposite of *forgiving*?").
 From the list of freely-produced opposites (the vast majority of which were not morphological antonyms), the first author chose the one that intuitively best conveyed the same scalar dimension as the positive and morphological antonyms and which was not already used as a lexical antonym for another item (e.g., opposite of "forgiving" $\rightarrow$ "resentful"; opposite of "kind" $\rightarrow$ "cruel", because opposite of "friendly" $\rightarrow$ "mean").
 Ten out of the original 30 items were dropped for not having such a well-suited lexical antonym (e.g., "moral") or for having a well-suited lexical antonym that conflicted with another item (e.g., "compassionate" $\rightarrow$ "cold", but also "affectionate" $\rightarrow$ "cold").
@@ -423,82 +548,26 @@ print(tab1, type="latex", comment = F, table.placement = "H", size="\\fontsize{9
 
 ### Procedure
 
-```{r experiment-slides, fig.pos = "b", fig.cap="Example experimental trials."}
-slide.expt.1 <- cowplot::ggdraw() + 
-  cowplot::draw_image("img/expt1.jpeg", scale = 1) +
-  theme(plot.margin = unit(c(0,0,0,0), "pt")) + 
-  cowplot::panel_border()
-slide.expt.2 <- cowplot::ggdraw() + 
-  cowplot::draw_image("img/expt2.jpeg", scale = 1)+
-  theme(plot.margin = unit(c(0,0,0,0), "pt")) + 
-  cowplot::panel_border()
-```
+
 
 <!-- Participants rated adjective sets made with either lexical or morphological antonyms. -->
 <!-- In addition, participants provided ratings with alternative utterances either explicit or implicit.  -->
 
-On each trial, participants read a statement introducing a character using a gradable adjective of one of four **adjective types** (e.g., "Greg is \{POS, ANT, NEG POS, NEG ANT\}").
-Participants were asked rate the character on a scale from "the most POS person in the world" to "the most ANT person in the world", using a slider bar (\figref{fig:expt1}).
-In the *lexical antonyms* conditions, ANT (and NEG ANT) were antonyms with distinct lexical entries (e.g., "sad", "not sad" for POS = "happy").
-In the *morphological antonyms* conditions, ANT (and NEG ANT) were antonyms created by adding a negation-inducing prefix (e.g., "unhappy", "not unhappy" for POS = "happy").
-
-In the *implicit alternatives* conditions, participants rated one sentence at a time (e.g., "Greg is not unhappy").
-In addition, participants provided a rating for only one sentence from an adjective set (e.g., never rated both "unhappy" and "not happy").
-There were a total of 12 trials, with exactly 3 repetitions of each adjective type (POS, ANT, NEG POS, NEG ANT) always with items from distinct adjective sets.
-In the *explicit alternatives* conditions, participants rated four sentences at a time (POS, ANT, NEG POS, NEG ANT) from the same adjective set.
-Again, there were 12 trials.
+The procedure was similar to that of Expts. 1 \& 2.
+<!-- On each trial, participants read a statement introducing a character using a gradable adjective of one of four **adjective types** (e.g., "Greg is \{POS, ANT, NEG POS, NEG ANT\}"). -->
+<!-- Participants were asked rate the character on a scale from "the most POS person in the world" to "the most ANT person in the world", using a slider bar (\figref{fig:expt1}). -->
+<!-- In the *lexical antonyms* conditions, ANT (and NEG ANT) were antonyms with distinct lexical entries (e.g., "sad", "not sad" for POS = "happy"). -->
+<!-- In the *morphological antonyms* conditions, ANT (and NEG ANT) were antonyms created by adding a negation-inducing prefix (e.g., "unhappy", "not unhappy" for POS = "happy"). -->
+In the *implicit alternatives* conditions, participants rated one sentence at a time (e.g., "Greg is not unhappy"), each from a unique adjective set (e.g., never rated both "unhappy" and "not happy").
+There were a total of 12 trials, with exactly 3 repetitions of each adjective type (POS, ANT, NEG POS, NEG ANT).
+In the *explicit alternatives* conditions, participants completed 12 trials, rating four sentences at a time (POS, ANT, NEG POS, NEG ANT) from the same adjective set.
+<!-- Again, there were 12 trials. -->
 
 ## Results 
 
 ```{r loadRegressionResults}
 load("cached_results/regression_antTypeXadjType_implicitCond.RData") # rs1.helmert.implicit.summary
 rs1.implicit.coef <- rs1.helmert.implicit.summary[["coefficients"]]
-```
-
-```{r expt-results, fig.cap="Experimental results.", fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=4, fig.align = "center", set.cap.width=T, num.cols.cap=2}
-load(file = "cached_results/bootstrappedCIs.RData")
- 
-fig.bs.ci <- d.full.boot %>%
-  ungroup() %>%
-  mutate(antonym_type = factor(antonym_type, levels = c(  "morphant", "lexant"),
-                               labels = c( "morphological", "lexical")),
-         adjective_type_rescaled = factor(adjective_type_rescaled,
-                                          levels = c( "positive",
-                                                "neg_antonym",
-                                                "neg_positive",
-                                                "antonym"),
-                                          labels = c("Positive", 
-                                                     "Negated antonym","Negated positive","Antonym"))) %>%
-  ggplot(., aes(x = antonym_type,
-                      y = mean,
-                       ymin = ci_lower, ymax = ci_upper,
-                       fill = adjective_type_rescaled,
-                      group = adjective_type_rescaled
-              ))+
-  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
-  geom_errorbar(position = position_dodge(0.8), color = 'black',
-                width = 0.4)+
-  #coord_flip()+
-  xlab("Antonym type")+
-  #scale_fill_viridis(discrete = T, name="Adjective type")+
-  scale_fill_manual(name="Adjective type",
-                    values = orange.purple.color.palette,
-                    guide = guide_legend(reverse=TRUE))+
-  facet_wrap(~condition, scales = 'free', nrow = 2)+
-  ylab("mean normalized rating")+
-  scale_y_reverse(limits = c(1.25, -1.1), breaks = c(1, 0, -1))
-
-
-
-plot_grid(
-  cowplot::plot_grid(
-    cowplot::add_sub(slide.expt.1, "Implicit alternatives condition", size = 10), 
-    cowplot::add_sub(slide.expt.2, "Explicit alternatives condition", size = 10), 
-    labels = c("A", "B"), 
-    nrow = 2),
-  labels = c("", "C"),
-  fig.bs.ci, ncol = 2, rel_widths = c(1,2))
-
 ```
 
 
