@@ -283,13 +283,103 @@ ggplot(rsa.models.expectations, aes( x = src, y = interpretation,
         legend.direction = 'vertical')
 ```
 
-# Experiment
+# Behavioral experiments
 
-Pilot testing revealed a potential asymmetry between lexical and morphological antonyms. Whereas lexical antonyms were clearly distinguished from negated positives (e.g., "not happy"), morphological antonyms were not. 
-We hypothesized that this potential difference could be attributed to an uncertain parsing of "unhappy" (i.e., is it a true antonym or is a negated positive?), which could be resolved by contrasting it with an explicit negated alternative (e.g., the speaker says "unhappy" as opposed to "not happy").
-We designed our experiment in order to confirm this asymmetry between lexical and morphological antonyms and further test to the role of alternatives in the parsing of morphological antonyms.
+The *uncertain parse* model predicts that morphological negation (e.g., "unhappy") and particle negation (e.g., "not happy") will receive similar interpretations, while the negated antonym (e.g., "not unhappy") will be interpreted more weakly than the simple positive form (e.g., "happy").
+When there is no uncertainty about the correct parse of an antonym (e.g., because it has a distinct lexical entry e.g., "sad"), we predict a total ordering on interpretations: ANT $<$ NEGPOS $<$ NEGANT $<$ POS. 
+We designed our experiment in order to confirm this asymmetry between lexical and morphological antonyms.
 
-\mf{How does the modeling (variants) motivate this experimental design? What are the model-driven hypotheses?}
+## Experiment 1
+
+### Methods
+
+#### Participants
+
+We recruited 120 participants from Amazon's Mechanical Turk (MTurk). 
+This number was arrived it with the intention of getting approximately 25 ratings for each unique item in the experiment.
+In all experiments, participants were restricted to those with U.S. IP addresses and who had at least a 95\% work approval rating. 
+The experiment took on average N minutes and participants were compensated \$N for their work.
+
+#### Procedure
+
+On each trial, participants read a statement introducing a character using a gradable adjective of one of four **adjective types** (e.g., "Greg is \{POS, ANT, NEG POS, NEG ANT\}").
+Participants were asked rate the character on a scale from "the most POS person in the world" to "the most ANT person in the world", using a slider bar (\figref{fig:expt1}).
+Participants rated one sentence at a time (e.g., "Greg is not unhappy"), and provided a rating for only one adjective type from an adjective set (e.g., never rated both "unhappy" and "not happy").
+Each participant saw items from both **antonym types** (morphological, lexical). 
+There were a total of 16 trials, with exactly 2 repetitions of each adjective type (POS, ANT, NEG POS, NEG ANT) for sets of each antonym type, always with items from distinct adjective sets.
+
+
+#### Materials
+
+We used **adjective sets** composed of four **adjective types** that described properties of people: positive-form gradable adjectives (POS; e.g., "happy", "tall"), antonyms (ANT; e.g., "unhappy", "short"), and their respective negations (NEG POS, NEG ANT; e.g., "not happy", "not unhappy").
+Antonyms were *morphological* (e.g., "unhappy" for "happy") or distinct lexical entries (*lexical antonyms* e.g., "short" for "tall").
+Items were constructed from an informal survey of the linguistics literature and taken from list of ``common opposites'' available online\footnote{http://www.enchantedlearning.com/wordlist/opposites.shtml} (for a full list, see \tableref{tab:items1}).
+
+
+\begin{table}[b]
+\centering
+\begin{tabular}{l|l}
+\emph{Morphological antonyms}     & \emph{Lexical antonyms}    \\ 
+\hline
+happy, unhappy             & tall, short         \\
+intelligent, unintelligent & rich, poor          \\
+polite, impolite           & fat, skinny         \\
+interesting, uninteresting & hard-working, lazy  \\
+attractive, unattractive   & brave, cowardly     \\
+successful, unsuccessful   & beautiful, ugly     \\
+honest, dishonest          & wise, foolish       \\
+educated, uneducated       & proud, humble       \\
+friendly, unfriendly       & strong, weak        \\
+mature, immature           & loud, quiet        
+\end{tabular}
+\caption{Antonym pairs used in Experiments 1 \& 2}
+\label{tab:items1}
+\end{table}
+
+
+
+### Results
+
+### Discussion
+
+Consistent with the intuition from all but George Orwell, the negated (morphological) antonyms were interpreted as slightly positive, though less-so that purely postive statements.
+This interpretation is predicted by the *bonafide antonyms* model and the *uncertain parser* model. 
+Expt. 1 further confirmed our hypothesized asymmetry between lexical and morphological antonyms. 
+In particular, interpretations of morphological antonyms were indistinguishable from those of negated positive statements, consistent with the intuition of @Jespersen1917:Negation and @Blutner2004:pragmatics as well as our *uncertain parser* model. 
+Lexical antonyms, on the other hand, showed a clear ordering: ANT $<$ NEG POS $<$ NEG ANT $<$ POS. 
+
+@Horn1989:Natural and @Krifka2007:Negated-antonyms predicted differences in meaning between negated positives and morphological antonyms (e.g., "not happy" and "unhappy"), citing examples such as "It's an absolutely horrible feeling to be unhappy, and I don't even think I was unhappy, just not happy, if you know what I mean" [taken from @Krifka2007:Negated-antonyms, taken from internet].
+We think it's not incidental that the speaker in the example utterance chose to use both "unhappy" and "not happy" in the same utterance. 
+We hypothesize that explicit alternative utterances can decrease parsing uncertainty and have "unhappy" fill the role of a bonafide antonym.
+
+## Experiment 2: Explicit alternatives 
+
+This experiment tests the role of explicit alternatives on interpretation of sets of adjectives. 
+
+### Methods
+
+#### Participants
+
+We recruited 50 participants MTurk.
+This number was arrived it with the intention of getting approximately 25 ratings for each unique item in the experiment.
+The experiment took on average N minutes and participants were compensated \$N for their work.
+
+#### Procedure and Materials
+
+The experimental materials were the same as in Expt. 1. 
+The procedure differed in that participants saw and rated all four sentence types simultaneously (\figref{fig:expt2}). 
+In addition, the endpoints of the slider bars were relabeled to "the most \{*POS*, *ANT*\} person *in the world*"; without "in the world'', there is a salient interpretation of the endpoints as indicating "the most *POS* person (of these four)".
+
+### Results
+
+## Experiment 3: Large-scale, within-item replication
+
+Experiments 1 \& 2 revealed a potential asymmetry between lexical and morphological antonyms. 
+Whereas lexical antonyms were clearly distinguished from negated positives (e.g., "not happy"), morphological antonyms were not. 
+In this experiment, we aim to replicate these findings while controlling for the semantic scale under consideration. 
+Specifically, in Expts. 1 \& 2, our items varied both in terms of how antonyms manifested as well as the actual degree scales being described (e.g., height for "tall"/"short" vs. happiness for "happy"/"unhappy").
+Many adjective scales have both lexical and morphological antonyms (e.g., "happy"/"unhappy"/"sad").
+We design this experiment to test our hypothesis within-items. 
 
 ## Methods
 
@@ -434,7 +524,7 @@ This term was estimated using a mixed-effects model with by-participant and by-i
 Though this 3-way interaction term was estimated to be in the right direction, it was not significant. 
 
 
-# Discussion
+# General Discussion
 
 Many dimensional scales are without units.
 Speakers cannot say they are "42 units happy" like they can say they "6'1" tall".
