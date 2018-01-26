@@ -222,6 +222,12 @@ rs.5.helmert.3 <- lmer(response ~ negation * st +
                        (1 | positive),
                      data = d.l1.5.natEng)
 
+rs1.expt2.helmert.summary <- summary(rs.5.helmert.3)
+save(rs1.expt2.helmert.summary, file =
+       "../cached_results/regression_antTypeXadjType_expt2.RData")
+
+
+
 
 rs.5.helmert.0 <- lmer(response ~ negation * st +
                        (1 | workerid) +
@@ -243,6 +249,12 @@ rs.5.helmert.0.simple <- lmer(response ~ st +
                      data = d.l1.5.natEng %>% 
                        filter(negation == "morphological")
                      )
+
+
+rs1.expt2.simpleMorph.summary <- summary(rs.5.helmert.0.simple)
+save(rs1.expt2.simpleMorph.summary, file =
+       "../cached_results/regression_simple_adjType_morph_expt2.RData")
+
 
 summary(rs.5.helmert.0.simple)
 ```

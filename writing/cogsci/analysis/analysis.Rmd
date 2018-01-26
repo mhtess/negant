@@ -216,6 +216,24 @@ d.full.natEng %>%
 #        width = 7, height = 3.5)
 ```
 
+
+```{r}
+d.full.natEng %>%
+  filter(condition == "implicit", antonym_type == "morphant",
+         adjective_type == "neg_morphant") %>%
+  ggplot(., aes( x = normalizedResponse))+
+  geom_histogram(position = position_dodge(), bins = 25)+
+  facet_wrap(~morphant)+
+  scale_fill_manual(values = orange.purple.color.palette)+
+  ylab("counts")+
+  xlab("slider ratings")+
+  #guides(fill = F)+
+  theme(strip.text.y = element_text(angle = 0),
+        legend.position = 'bottom')+
+  scale_x_continuous(limits = c(-2, 2), breaks = c(-1, 0, 1))
+```
+
+
 Bootstrapped CIs
 
 ```{r boostrapCIs, fig.height=2, fig.width=4}
@@ -224,7 +242,7 @@ d.full.boot <- d.full.natEng %>%
   multi_boot_standard(col = "normalizedResponse") 
 
 #df.fourSlider.ci <- d.l1.5.boot
-save(d.full.boot, file = "../cached_results/bootstrappedCIs.RData")
+#save(d.full.boot, file = "../cached_results/bootstrappedCIs.RData")
 
   
 d.full.boot %>%
@@ -253,6 +271,60 @@ d.full.boot %>%
 #   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_bootstrapped.pdf", sep = ""),
 #        width = 6, height = 3.75)
 ```
+
+
+## By item plots
+
+
+```{r fig_byItem, fig.width = 8, fig.height = 6}
+
+
+d.full.boot.item <- d.full.natEng %>%
+  mutate(item = ifelse(antonym_type == "lexant", 
+                       paste(lexant, "--", positive, sep = ""),
+                       paste(morphant, "--", positive, sep = "")),
+         antonym = ifelse(antonym_type == "lexant", as.character(lexant), as.character(morphant))) %>% 
+  group_by(condition, antonym_type, antonym, positive, adjective_type_rescaled) %>%
+  multi_boot_standard(col = "normalizedResponse")# %>%
+  #   ungroup() %>%
+  # mutate(antonym_type = factor(antonym_type, 
+  #                          levels = c("lexical", "morphological")))
+
+
+d.full.boot.item %>%
+  filter(condition == "implicit") %>%
+  ggplot(., aes(x = adjective_type_rescaled, 
+                fill = adjective_type_rescaled, 
+                color = adjective_type_rescaled,
+              group = positive,
+                y = mean, ymin = ci_lower, ymax = ci_upper))+
+  #geom_hline(yintercept = 0.5, lty = 3)+
+  #geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_linerange(position = position_dodge(0.4), size = 1)+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=F))+
+    scale_color_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=F))+
+  geom_line(color = 'black')+
+    #geom_line(inherit.aes = F, aes(group = interaction(adjective_type_rescaled, antonym)))+
+  # geom_errorbar(position = position_dodge(0.8), color = 'black',
+  #               width = 0.3)+
+  facet_wrap(antonym~positive, scales = 'free', nrow = 2) + 
+  #coord_flip()+
+  #guides(fill = F)+
+  xlab("")+
+  #coord_flip()+
+  ylab("mean normalized rating")+
+  scale_y_continuous(limits = c(-1.5,1.5), breaks = c(-1, 0, 1))+
+  theme(axis.text.x = 
+        element_text(angle = 45, hjust = 1, vjust = 1),
+        legend.position = 'bottom')
+
+#ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negant_lexical_bootstrapped_item.pdf", width = 8, height = 3.5)
+```
+
 
 
 
@@ -518,44 +590,6 @@ rs.4.5.morph.helmert.0 <- lmer(response ~ st * src +
                      data = d.l1.4.5.morph)
 
 summary(rs.4.5.morph.helmert.0)
-```
-
-By item
-
-```{r fig_byItem, fig.width = 7, fig.height = 5}
-
-d.l1.5.boot.adj <- d.l1.5.natEng %>%
-  mutate(item = paste(antonym, "--", positive, sep = "")) %>% 
-  group_by(negation, item, sentence_type)  %>%
-  multi_boot_standard(col = "normalizedResponse") %>%
-  ungroup() %>%
-  mutate(negation = factor(negation, 
-                           levels = c("lexical", "morphological")))
-d.l1.5.boot.adj %>%
-  ggplot(., aes(x = item,
-                      y = mean,
-                       ymin = ci_lower, ymax = ci_upper,
-                       fill = sentence_type,
-              group = sentence_type))+
-  #geom_hline(yintercept = 0.5, lty = 3)+
-  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
-  scale_fill_manual(name="Adjective type",
-                    values = orange.purple.color.palette,
-                    guide = guide_legend(reverse=F))+
-  geom_errorbar(position = position_dodge(0.8), color = 'black',
-                width = 0.3)+
-  facet_wrap(~negation, scales = 'free') + 
-  #coord_flip()+
-  #guides(fill = F)+
-  xlab("")+
-  coord_flip()+
-  ylab("mean normalized rating")+
-  scale_y_continuous(limits = c(-1.5,1.5), breaks = c(-1, 0, 1))+
-  theme(#axis.text.x = 
-        #  element_text(angle = 45, hjust = 1, vjust = 1),
-        legend.position = 'bottom')
-
-#ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negant_lexical_bootstrapped_item.pdf", width = 8, height = 3.5)
 ```
 
 

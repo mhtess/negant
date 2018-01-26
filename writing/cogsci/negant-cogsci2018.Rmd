@@ -372,6 +372,17 @@ print(tab1, type="latex", comment = F, table.placement = "H", size="\\fontsize{9
 
 ### Results
 
+```{r}
+load("cached_results/regression_antTypeXadjType_expt1.RData") # rs1.expt1.helmert.summary
+rs1.expt1.coef <- rs1.expt1.helmert.summary[["coefficients"]]
+```
+
+To evaluate this hypothesis, we built a mixed-effects regression model with by-participant and by-item random effects of intercept and adjective type (i.e., POS vs. ANT vs. NEG ANT vs. NEG POS).^[
+  This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with marginally simpler mixed-effects structures.\mf{Cite package used (matters for convergence).}
+]
+Consistent with our hypothesis, the interaction between negation type (antonym vs. negated positive) and type of antonym (morphological vs. lexical) was significant: $\beta = `r round(rs1.expt1.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt1.coef["antonym_typelexical:st1","Std. Error"],4)`$, t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 4)`$.
+
+
 ### Discussion
 
 Consistent with the intuition from all but George Orwell, the negated (morphological) antonyms were interpreted as slightly positive, though less-so that purely postive statements.
@@ -403,6 +414,17 @@ The procedure differed in that participants saw and rated all four sentence type
 In addition, the endpoints of the slider bars were relabeled to "the most \{*POS*, *ANT*\} person *in the world*"; without "in the world'', there is a salient interpretation of the endpoints as indicating "the most *POS* person (of these four)".
 
 ### Results
+
+```{r regressionResultsExpt2}
+load("cached_results/regression_antTypeXadjType_expt2.RData") # rs1.expt2.helmert.summary
+load("cached_results/regression_simple_adjType_morph_expt2.RData") #rs1.expt2.simpleMorph.summary
+rs1.expt2.coef <- rs1.expt2.helmert.summary[["coefficients"]]
+rs1.expt2.simple.morph.coef <- rs1.expt2.simpleMorph.summary[["coefficients"]]
+```
+
+In this experiment, with the alternatives explicit, we find that participants rate morphological antonyms as significantly more negative than negated positives: $\beta = `r round(rs1.expt2.simple.morph.coef["st1","Estimate"],3)`$, $SE =  `r round(rs1.expt2.simple.morph.coef["st1","Std. Error"],4)`$, t$(`r round(rs1.expt2.simple.morph.coef["st1","df"], 1)`) = `r round(rs1.expt2.simple.morph.coef["st1","t value"],2)`, p = `r round(rs1.expt2.simple.morph.coef["st1","Pr(>|t|)"], 4)`$.
+
+The interaction between negation type (antonym vs. negated positive) and type of antonym (morphological vs. lexical) was significant: $\beta = `r round(rs1.expt2.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt2.coef["antonym_typelexical:st1","Std. Error"],4)`$, t$(`r round(rs1.expt2.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt2.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt2.coef["antonym_typelexical:st1","Pr(>|t|)"], 4)`$.
 
 
 ```{r expt1results}
