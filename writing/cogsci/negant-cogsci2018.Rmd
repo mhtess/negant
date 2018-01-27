@@ -207,25 +207,6 @@ ggdraw() + draw_image("img/happy-scale.pdf") +
 
 # Computational model
 
-<!-- In classical logic, a contrary claim  (e.g., $Px =$ *x is happy* vs. $Qx =$ *x is sad*) is distinguished from a contradiction (e.g.,  $Px =$ *x is even* vs.  $Qx = \neg Px =$ *x is odd*).
-Like contradictions, two contraries cannot be true simultaneously: $\forall x \thinspace ((Px \rightarrow \neg Qx) \wedge (Qx \rightarrow \neg Px))$; e.g., *happy* implies *not sad*. 
-With contradictions, however, one of two contradictories *must* be true: $\forall x \thinspace (Px \leftrightarrow \neg Qx)$; e.g., when $Px$ is false, $Qx$ is true and vice versa. 
-This is not the case with contrary claims (*not tall* does not imply *short*).
-
-Natural language antonyms (e.g., "happy" and "sad") and negation-inducing modifiers (e.g., "not" + "happy") seem to map well onto the formal devices of contrariness and contradictoriness, respectively.
-The mapping is not one-to-one, however. 
-Language provides yet more ways of conveying opposing meanings: "I'm not happy", "I'm unhappy", and "I'm sad" all seemingly convey similar ideas, but the strength of interpretation (how *not happy* a person is) could vary. 
-"Sad" is most likely a contrary to "happy", whereas "not happy" is most likely a contradiction to "happy". -->
-
-<!-- We take a radical (but hopefully not unreasonable) starting point: meanings of negated gradable adjectives (including adverbial negations like "not happy") are contextually constructed by pragmatic reasoning about alternative utterances a speaker might have chosen.  -->
-<!-- Our model comprises the possibility that a speaker might treat both *affix negation* (e.g., "un-", "in-") and *adverbial negation* (e.g., "not") as standard two-valued logical negation.  -->
-<!-- However, for each kind of negation, the speaker could assign independent thresholds, not derived compositionally from logical negation, to either adverbial- or affix-negated expressions.  -->
-<!-- A pragmatic listener then uses Bayesian inference, based on the assumption of an informative cooperative speaker, to infer which theory of the speaker's use of adverbial and affix negation best rationalizes a given utterance. -->
-<!-- We introduce this kind of *lexical uncertainty* [@Bergen2016] about negation into a model of gradable adjective interpretation [@Lassiter2015]. \mf{we might even leave out this paragraph?} -->
-
-<!-- Below, we briefly review a computational model of gradable adjectives before deriving predictions about listener's strength of interpretation for different kinds of (and double) negations. -->
-
-<!-- ## Model background -->
 
 Gradable adjectives (e.g., "tall", "happy") are vague decriptions of a quantitative scale (e.g., *height*, *happiness*).
 Their meanings can be modeled using a threshold function whose threshold variable $\theta$ is supplied by the context [@Kennedy2007]: $\denote{happy} = \lambda x \thinspace . \thinspace happiness(x) > \theta$. 
@@ -242,18 +223,6 @@ The speaker model $S_1$  describes an approximately rational Bayesian agent (wit
 <!-- In the context of adjective interpretation, the state of the world is given by the value of the scalar degree $x$ (e.g., the height of the referent). -->
 The literal listener updates their prior beliefs $P(x)$ via an utterance's literal meaning $[\![u]\!](x)$, the threshold function described above.
 The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely states of the world $P(x)$ (e.g., possible degrees of happiness) and the likelihood $S_1(u \mid x, \theta)$ that a speaker would say the adjective given a state $x$ and a threshold $\theta$.
-
-<!-- ## Model extension and prediction -->
-<!-- The proportionality in Eq. \ref{eq:S1} implies normalization over a set of alternative utterances (potentially differentiated by their cost).  -->
-<!-- To model affixal negation (e.g., "unhappy"), we assume the set of alternative utterances is composed of four utterances: \{"happy", "not happy", "unhappy", "not unhappy"\} [@Blutner2004:pragmatics; @Krifka2007:Negated-antonyms]. -->
-<!-- We posit that listeners have uncertainty about the meaning of negation-inducing affixes (e.g., "un") and particles (e.g., "not"), represented as a prior distribution over different lexica $P(\mathcal{L})$.  -->
-<!-- Lexica are differentiated by their truth-functional treatments of these negations; each negation (affixal vs. particle)  -->
-<!-- For negations ("un-" or "not" + "happy"), we assume $r$ can either be compositionally-derived resulting in a logical negation (NEGPOS e.g., $\neg \denote{happy} = \neg (x > \theta_+)$) or a *bonafide antonym* with its own independent threshold (ANT e.g., $\denote{unhappy} = x < \theta_-$). -->
-<!-- In other words, affixal and particle negation may be either contraries or contradictions. -->
-
-<!-- This hypothesis requires further elaboration of the RSA model to resolve the threshold for the bonafide antonym and specify the prior probability of lexica with compositional vs. noncompositional negation for particles ("not") and affixes ("un"). -->
-<!-- Though these probabilities plausibly vary by the kind of negation, for simplicity we assume $P(NEGPOS \mid "not") = P(NEG \mid "un-") = 0.5$. -->
-<!-- Eq. \ref{eq:L1} becomes: -->
 
 The proportionality in Eq.$\thinspace$\ref{eq:S1} implies normalization over a set of alternative utterances (potentially differentiated by their cost).
 We consider two cases, distinguished by what antonym is assumed for a positive form like *happy*.
@@ -318,38 +287,6 @@ Even though the listener is uncertain about the parse for "unhappy" and "not hap
 We design our behavioral experiments to test the predictions of the *uncertain parse* and the *bonafide antonyms* models. 
 In particular, we hypothesize that supposed antonyms created by affixal negation have uncertainty in parsing and thus will produce the partial ordering observed in Figure$\thinspace$\ref{fig:modelPredictions} for the *uncertain parse model*.
 Lexically distinct antonyms, on the other hand, we predict will exhibit the complete ordering predicted by the *bonafide antonyms* model.
-
-<!-- \mht{$\leftarrow$ should probably say we are modeling morphological negation and modifier negation, rather than "antonyms", because semantics for antonyms we want to just say is independent-threshold} -->
-<!-- We formalize the semantics of modifier negation ("not") and morphological negation ("un"- e.g., "unhappy") in three distinct ways and use the RSA model to generate predictions about the resulting listener interpretations. -->
-
-<!-- The first hypothesis is a true "double negation" hypothesis: "not" and "un" are both logical negations; thus $\denote{\text{ANT}} = \denote{\text{negPOS}} = \neg \denote{\text{POS}}$ and $\denote{\text{negANT}} = \denote{\text{POS}}$. -->
-<!-- The second hypothesis is that morphological negation (e.g., "unhappy") are bonafide antonyms, which following standard treatment in formal semantics, receive their own, independent threshold:  -->
-
-<!-- The third hypothesis is that listeners maintain uncertainty about how to parse negation: "unhappy" could be the logical negation of "happy" or it could be an antonym.  -->
-
-<!-- \mf{I don't understand the model variants from this description.} -->
-
-<!-- \mht{insert equation for uncertain parse model} -->
-
-<!-- \mht{consider casting this just as introducing "uncertain parse" model and describing the variants in the model predictions section} -->
-
-<!-- \mf{is it possible to begin this section in a way like this? ""}\footnote{Isn't it lovely how Rmarkdown breaks down inside of \LaTeX~commands?} -->
-
-<!-- \mf{Are the other two model variants *special cases* of the *uncertain parse model*. If so, I would opt of presenting the latter as the starting point (radical, blabla), and then to discuss these special cases as such, using the illustration of their predictions to explain the predictions of the full model.} -->
-
-<!-- We extend this model by including utterances that convey negation, both contradictory and contrary.  -->
-<!-- 
-That model, as well as an alternative model proposed by @Qing2014:Adjectives, examined only  utterances to be only an adjective (e.g., either "tall" or "short") and an information-less, null utterance.  -->
-
-<!-- ## Model predictions -->
-
-
-<!-- Negative *affixation* (e.g., with the English prefix "un-" or "in-" and their cross-linguistic analogues) has been of particular interest because it is seemingly a "contrary in contradictory clothing" [@Horn1989:Natural]. -->
-<!-- \mht{say more about "unhappy", or merge with paragraph above?} -->
-
-<!-- Computational models of pragmatic reasoning are useful for examining the information-theoretic properties of different utterances in context. -->
-
-
 
 ```{r modelPredictions, fig.cap="Predictions for the strengths of adjective interpretations for three model variants.", fig.env = "figure", fig.pos = "h", fig.width=3.5, fig.height=3, fig.align = "center"}
 load('cached_results/rsa_model_predictions.RData') # rs.listener.wp.expectation
