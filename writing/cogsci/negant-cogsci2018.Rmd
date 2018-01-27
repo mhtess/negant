@@ -1,5 +1,5 @@
 ---
-title: "Not unreasonable: Carving vague dimensions with opposing meanings"
+title: "Not unreasonable: Carving vague dimensions with contraries and contradictions"
 bibliography: negant.bib
 csl: apa6.csl
 document-params: "10pt, letterpaper"
@@ -77,7 +77,7 @@ Do the two negatives make a positive (i.e., Jones' happiness exceeds the same th
 
 > The two negatives do not exactly cancel one another... the longer expression is always
 > weaker: "this is not unknown to me" or "I am not ignorant of this" means *I am to some extent
-> aware of it*, etc. \mf{pagerefs}
+> aware of it*, etc. (p.832)
 
 Negation is the semantic operation of forming an opposite, but there are several kinds of semantic opposition [@Horn1989:Natural]. 
 A *contrary opposition*, such as between "happy" and "sad", is one where both predicates cannot be true at the same time, but both can be false. 
@@ -329,6 +329,7 @@ This model predicts a quasi-ordering: "unhappy" $\approx$ "not happy" $<$ "not u
 Even though the listener is uncertain about the parse for "unhappy" and "not happy", when hearing "not unhappy", the model reasons that a truly compositional, double negation is unlikely. 
 \mht{either explain the reasoning behind "parse" or rename model}
 
+\mht{i think we could get a prediction for expt 2 / expt 3 (expl. vs. impl. alternatives) by conditioning the uncertain parsing model on all 4 (or at least more than 1) utterance, while keeping the lexicon fixed. for instance, to interpret "not unhappy", the listener must ascribe "not" as logical negation and "un-" as contrary... if the listener must fit all the utterances to the same lexicon, that should make it more like the bonafide antonyms model...}
 
 To summarize, we hypothesize that supposed antonyms created by affixal negation have uncertainty in parsing and thus will produce the partial ordering observed in Figure$\thinspace$\ref{fig:modelPredictions} for the *uncertain parse model*.
 Lexically distinct antonyms, on the other hand, we predict will exhibit the complete ordering predicted by the *bonafide antonyms* model.^[
@@ -451,7 +452,7 @@ We hypothesize that explicit comparisons between alternative utterances can draw
 
 ## Experiment 2: Explicit alternatives 
 
-This experiment tests the role of explicit alternatives on interpretation of sets of adjectives. 
+This experiment tests the role of explicit alternative utterances on interpretation of sets of adjectives. 
 
 ### Methods
 
@@ -464,8 +465,8 @@ The experiment took on average N minutes and participants were compensated \$N f
 #### Procedure and Materials
 
 The experimental materials were the same as in Expt. 1. 
-The procedure differed in that participants saw and rated all four sentence types simultaneously (\figref{fig:expt2}). 
-In addition, the endpoints of the slider bars were relabeled to "the most \{*POS*, *ANT*\} person *in the world*"; without "in the world'', there is a salient interpretation of the endpoints as indicating "the most *POS* person (of these four)".
+The procedure differed in that participants saw and rated all four sentence types simultaneously (\figref{fig:experiment-slides}B). 
+In addition, the endpoints of the slider bars were relabeled to "the most \{\textsc{pos}, \textsc{ant}\} person *in the world*"; without "in the world'', there is a salient interpretation of the endpoints as indicating "the most \textsc{pos} person (of these four)".
 
 ### Results
 
@@ -475,10 +476,10 @@ load("cached_results/regression_simple_adjType_morph_expt2.RData") #rs1.expt2.si
 rs1.expt2.coef <- rs1.expt2.helmert.summary[["coefficients"]]
 rs1.expt2.simple.morph.coef <- rs1.expt2.simpleMorph.summary[["coefficients"]]
 ```
-
+We hypothesized that attested differences in meaning between negated positives and morphological antonyms can be drawn out with explicit comparisons to alternatives utterances.
 In this experiment, with the alternatives explicit, we find that participants rate morphological antonyms as significantly more negative than negated positives: $\beta = `r round(rs1.expt2.simple.morph.coef["st1","Estimate"],3)`$, $SE =  `r round(rs1.expt2.simple.morph.coef["st1","Std. Error"],4)`$, t$(`r round(rs1.expt2.simple.morph.coef["st1","df"], 1)`) = `r round(rs1.expt2.simple.morph.coef["st1","t value"],2)`, p = `r round(rs1.expt2.simple.morph.coef["st1","Pr(>|t|)"], 4)`$.
-
-The interaction between negation type (antonym vs. negated positive) and type of antonym (morphological vs. lexical) was significant: $\beta = `r round(rs1.expt2.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt2.coef["antonym_typelexical:st1","Std. Error"],4)`$, t$(`r round(rs1.expt2.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt2.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt2.coef["antonym_typelexical:st1","Pr(>|t|)"], 4)`$.
+The interaction between negation type (antonym vs. negated positive) and type of antonym (morphological vs. lexical) was also significant: $\beta = `r round(rs1.expt2.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt2.coef["antonym_typelexical:st1","Std. Error"],4)`$, t$(`r round(rs1.expt2.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt2.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt2.coef["antonym_typelexical:st1","Pr(>|t|)"], 4)`$, suggesting that the explicit alternatives exaggerates differences in interpretation for both kinds of adjective sets.
+We again find a subset of responses to the negated morphological antonym ("not unhappy") are appreciably below the midpoint, suggesting again a small effect of politeness on interpretation. 
 
 
 ```{r expt1results}
@@ -584,14 +585,13 @@ plot_grid( prow, legend, ncol = 1, rel_heights = c(1.2, .1))
 ```
 
 
-## Experiment 3: Large-scale, within-item replication
+## Experiment 3: Large-scale, within-scale replication
 
-Experiments 1 \& 2 revealed a potential asymmetry between lexical and morphological antonyms. 
-Whereas lexical antonyms were clearly distinguished from negated positives (e.g., "not happy"), morphological antonyms were not. 
+Experiments 1 \& 2 revealed an asymmetry between lexical and morphological antonyms. 
+Whereas lexical antonyms are clearly distinguished from negated positives (e.g., "not happy"), morphological antonyms were not. 
 In this experiment, we aim to replicate these findings while controlling for the semantic scale under consideration. 
-Specifically, in Expts. 1 \& 2, our items varied both in terms of how antonyms manifested as well as the actual degree scales being described (e.g., height for "tall"/"short" vs. happiness for "happy"/"unhappy").
-Many adjective scales have both lexical and morphological antonyms (e.g., "happy"/"unhappy"/"sad").
-We design this experiment to test our hypothesis within-items. 
+Specifically, in Expts. 1 \& 2, our items varied both in terms of how antonyms manifested (lexical vs. morphological) as well as the actual degree scales being described (e.g., height for "tall"/"short" vs. happiness for "happy"/"unhappy").
+Many adjective sets have both lexical and morphological antonyms (e.g., "happy"/"unhappy"/"sad") and we use these sets in to test our hypothesis within-scale. 
 
 ## Methods
 
@@ -616,9 +616,9 @@ This exclusion criterion and our planned sample size, along with the procedure a
 
 <!-- Our pilot testing revealed differences between lexical and morphological antonym sets (e.g., "tall"/"short" and "happy"/"unhappy"). -->
 
-To best isolate the contribution of lexical vs. morphological antonyms, we curated *adjective sets* consisting of words for properties of people, such that both lexical and morphological antonyms exist for the same positive-form adjective (e.g., "happy" $\rightarrow$ "unhappy", "sad"; Table 1).
+To best isolate the contribution of lexical vs. morphological antonyms, we curated *adjective sets* consisting of words for properties of people, such that both lexical and morphological antonyms exist for the same positive-form adjective (e.g., "happy" $\rightarrow$ "unhappy", "sad"; Table 3).
 Lexical antonyms were selected from a set of possibilities produced from a small survey (n=18) on MTurk eliciting "opposites" for a list of 30 positive-form adjectives, which had morphological antonyms (asking participants e.g., "What is the opposite of *forgiving*?").
-From the list of freely-produced opposites (the vast majority of which were not morphological antonyms), the first author chose the one that intuitively best conveyed the same scalar dimension as the positive and morphological antonyms and which was not already used as a lexical antonym for another item (e.g., opposite of "forgiving" $\rightarrow$ "resentful"; opposite of "kind" $\rightarrow$ "cruel", because opposite of "friendly" $\rightarrow$ "mean").
+From the list of freely-produced opposites (the vast majority of which were not morphological antonyms), the first author chose the one that intuitively best conveyed the same scalar dimension as the morphological antonym and which was not already used as a lexical antonym for another item (e.g., opposite of "forgiving" $\rightarrow$ "resentful"; opposite of "kind" $\rightarrow$ "cruel", because opposite of "friendly" $\rightarrow$ "mean").
 Ten out of the original 30 items were dropped for not having such a well-suited lexical antonym (e.g., "moral") or for having a well-suited lexical antonym that conflicted with another item (e.g., "compassionate" $\rightarrow$ "cold", but also "affectionate" $\rightarrow$ "cold").
 
 <!-- For a list of the 20 positive-adjectives and their lexical and morphological antonyms used in the experiment, see Table \@ref(tab:items). -->
@@ -645,47 +645,50 @@ The procedure was similar to that of Expts. 1 \& 2.
 <!-- Participants were asked rate the character on a scale from "the most POS person in the world" to "the most ANT person in the world", using a slider bar (\figref{fig:expt1}). -->
 <!-- In the *lexical antonyms* conditions, ANT (and NEG ANT) were antonyms with distinct lexical entries (e.g., "sad", "not sad" for POS = "happy"). -->
 <!-- In the *morphological antonyms* conditions, ANT (and NEG ANT) were antonyms created by adding a negation-inducing prefix (e.g., "unhappy", "not unhappy" for POS = "happy"). -->
-In the *implicit alternatives* conditions, participants rated one sentence at a time (e.g., "Greg is not unhappy"), each from a unique adjective set (e.g., never rated both "unhappy" and "not happy").
-There were a total of 12 trials, with exactly 3 repetitions of each adjective type (POS, ANT, NEG POS, NEG ANT).
-In the *explicit alternatives* conditions, participants completed 12 trials, rating four sentences at a time (POS, ANT, NEG POS, NEG ANT) from the same adjective set.
+In the *implicit alternatives* conditions, participants rated one sentence at a time (e.g., "Greg is not unhappy"), each from a unique adjective set (e.g., never rated both "unhappy" and "not happy"), completing a total of 12 trials, with exactly 3 repetitions of each adjective type (\textsc{pos}, \textsc{ant}, \textsc{neg pos}, \textsc{neg ant}).
+In the *explicit alternatives* conditions, participants completed 12 trials, rating four sentences at a time from the same adjective set.
+In contrast to the first two experiments, *antonym type* (morphological vs. lexical) was a between-participants manipulation.
+As well, the end-points for the slider bars used in the "...*in the world*" label used in Expt. 2.
+
 <!-- Again, there were 12 trials. -->
 
 ## Results 
 
 ```{r loadRegressionResults}
 load("cached_results/regression_antTypeXadjType_implicitCond.RData") # rs1.helmert.implicit.summary
+load("cached_results/regression_adjTypeXcontext_morph.RData") #rs2.helmert.morph.summary
+load("cached_results/regression_antTypeXadjTypeXcontext.RData") # rs3.3way.summary
 rs1.implicit.coef <- rs1.helmert.implicit.summary[["coefficients"]]
+rs2.morph.coef <- rs2.helmert.morph.summary[["coefficients"]]
+rs3.3way.coef <- rs3.3way.summary[["coefficients"]]
 ```
-
 
 `r sum(!d.full.nativeEnglish$englishNative)` participants were excluded for self-reporting a native language other than English, leaving a remainder of `r sum(d.full.nativeEnglish$englishNative)` participants for these analyses.
 
-One first hypothesis concerns the interpretation of morphological antonyms vs. lexical antonyms in the absence of explicit alternatives (Figure$\thinspace$\ref{fig:experiment-slides}A).
-We predict an interaction between type of negation (antonym vs. negated positive) and type of antonym (morphological vs. lexical).
-Specifically, we predict that interpretations of lexical antonyms will be more negative than negated positives (e.g., somebody who is "sad" is less happy than someone who is "not happy"), whereas there will be no difference between morphological antonyms and negated positives (e.g., "unhappy" = "not happy").
-\mf{How do these predictions derive from the models/theory?}
-To evaluate this hypothesis, we built a mixed-effects regression model with by-participant and by-item random effects of intercept and adjective type (i.e., POS vs. ANT vs. NEG ANT vs. NEG POS).^[
-  This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with marginally simpler mixed-effects structures.\mf{Cite package used (matters for convergence).}
-]
-Consistent with our hypothesis, the interaction between negation type (antonym vs. negated positive) and type of antonym (morphological vs. lexical) was significant: $\beta = `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","Estimate"],3)`$, $SE =  `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","Std. Error"],4)`$, t$(`r round(rs1.implicit.coef["antonym_typelexant:adj_type1","df"], 1)`) = `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","t value"],2)`, p = `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","Pr(>|t|)"], 4)`$.
+As we did in Expt. 1, we evaluate our hypothesis that lexical antonyms behave like the *bonafide antonyms* model (i.e., show a true ordering) and morphological antonyms behave like the *uncertain parsing* model (i.e., show a partial ordering), we built a mixed-effects regression model with by-participant and by-item random effects of intercept and adjective type.
+Consistent with this hypothesis, the interaction between negation type (antonym vs. negated positive) and type of antonym (morphological vs. lexical) was significant: $\beta = `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","Estimate"],3)`$, $SE =  `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","Std. Error"],4)`$, t$(`r round(rs1.implicit.coef["antonym_typelexant:adj_type1","df"], 1)`) = `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","t value"],2)`, p = `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","Pr(>|t|)"], 4)`$.
+
+<!-- One first hypothesis concerns the interpretation of morphological antonyms vs. lexical antonyms in the absence of explicit alternatives (Figure$\thinspace$\ref{fig:experiment-slides}A). -->
+<!-- We predict an interaction between type of negation (antonym vs. negated positive) and type of antonym (morphological vs. lexical). -->
+<!-- Specifically, we predict that interpretations of lexical antonyms will be more negative than negated positives (e.g., somebody who is "sad" is less happy than someone who is "not happy"), whereas there will be no difference between morphological antonyms and negated positives (e.g., "unhappy" = "not happy"). -->
 
 
 Our second main hypothesis is that context (implicit vs. explicit alternatives) modulates the interpretive difference between antonyms and negated positives, at least within morphological antonyms (e.g., "unhappy"). 
 Specifically, we predict that morphological antonyms will be interpreted more negatively (i.e., more strongly in the negative direction) than negated positives (e.g., "not happy") when the alternatives are explicit, which would manifest as an interaction between negation type (antonym vs. negated positive) and context (implicit vs. explicit alternatives).
-\mf{How do these predictions derive from the models/theory?}
 To evaluate this hypothesis, we built a mixed-effects regression model with by-participant random effects of intercept and by-item random effects of intercept and adjective type.
+This interaction was also significant: $\beta = `r round(rs2.morph.coef["conditionexplicit:adj_type1","Estimate"],3)`$, $SE =  `r round(rs2.morph.coef["conditionexplicit:adj_type1","Std. Error"],4)`$, t$(`r round(rs2.morph.coef["conditionexplicit:adj_type1","df"], 1)`) = `r round(rs2.morph.coef["conditionexplicit:adj_type1","t value"],2)`, p = `r format(rs2.morph.coef["conditionexplicit:adj_type1","Pr(>|t|)"], digits = 3, scientific = T)`$.
 
-Finally, as an exploratory analysis we test the 3-way interaction between negation type (antonym vs. negated positive), antonym type (morphological vs. lexical), and context (implicit vs. explicit).
-This term was estimated using a mixed-effects model with by-participant and by-item random effects of intercept and adjective type.
-Though this 3-way interaction term was estimated to be in the right direction, it was not significant. 
+Finally, as an exploratory analysis we test the 3-way interaction between negation type (antonym vs. negated positive), antonym type (morphological vs. lexical), and context (implicit vs. explicit), using a mixed-effects model with by-participant and by-item random effects of intercept and adjective type.
+The 3-way interaction was not significant but numerically in the right direction:
+$\beta = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Estimate"],3)`$, $SE =  `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Std. Error"],4)`$, t$(`r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","df"], 1)`) = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","t value"],2)`, p = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Pr(>|t|)"], 4)`$
 
-
-# General Discussion
+# Discussion
 
 Many dimensional scales are without units.
 Speakers cannot say they are "42 units happy" like they can say they "6'1" tall".
 Instead, speakers can use modifiers and alternative utterances to carve more precise meanings from otherwise vague dimensions. 
 Someone said to be *not unhappy* is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer because degrees of happiness lack precise units.
+\mht{$\leftarrow$ well... "somewhat happy" also allows you to refer to that region}
 
 This work resolves an outstanding puzzle in natural language understanding.
 @Krifka2007:Negated-antonyms critiques outstanding pragmatic theories for either being underdetermined [@Blutner2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex]. 
@@ -694,10 +697,10 @@ We hypothesized that uncertainty about the meaning of overt negation markers lea
 It is noteworthy that we are able to recover the ordering predicted by @Krifka2007:Negated-antonyms even when the model has uncertainty about the meaning of adversial negation (e.g., "not happy") when a lexical antonym was an alternative utterance.
 \mht{note also that we don't assume any ordering on interpretations in the semantics for bonafide antonyms. note null utterance?}
 
-Our formalization of lexical uncertainty about the meaning of negation is consistent with a growing movement in theories of language to treat the interface of the lexicon (the meaning of words) as not totally separable from the combinatorial rules of grammar [e.g., @bybee2006usage].
+Our formalization of lexical uncertainty about the meaning of natural language negation is consistent with a growing movement in theories of language to treat the interface of the lexicon (the meaning of words) as not totally separable from the combinatorial rules of grammar [e.g., @bybee2006usage].
 The two types of negation we consider---contrary and contradiction---correspond to a *lexicalized* form of oppositition and a *compositional* rule, respectively. 
-Thus, our model can be seen as an instance of the tension between productivity and reuse [e.g., @Odonnell2015productivity].
-A further test of our negation uncertainty model would be to see if usage-based metrics (e.g., frequency) correlated with the asymmetries explored here, namely the interpretative difference between an affixal negation and adverbial negation.
+Thus, our model can be seen as an instance of the balance between productivity and reuse [e.g., @Odonnell2015productivity].
+A further test of our negation uncertainty model would be to see if usage-based metrics (e.g., frequency) correlated with the asymmetries explored here, namely the interpretative difference between an affixal negation and particle negation.
 
 \mht{politeness, further inferences? (not unhappy -- *normally unhappy in this situation*)}
   
