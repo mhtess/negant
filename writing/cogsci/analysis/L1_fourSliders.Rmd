@@ -211,13 +211,13 @@ d.l1.5.natEng <- within(d.l1.5.natEng, {
   st <- C(sentence_type, helmert, 3)
   print(attributes(st))
 }) %>% 
-  mutate(negation = factor(negation, 
+  mutate(antonym_type = factor(negation, 
                            levels = c("morphological", "lexical")))
 
 # maximal model
 ## (adding +st by item fails to converge)
 
-rs.5.helmert.3 <- lmer(response ~ negation * st + 
+rs.5.helmert.3 <- lmer(response ~ antonym_type * st + 
                        (1 + st | workerid) + 
                        (1 | positive),
                      data = d.l1.5.natEng)
@@ -252,9 +252,9 @@ rs.5.helmert.0.simple <- lmer(response ~ st +
 
 
 rs1.expt2.simpleMorph.summary <- summary(rs.5.helmert.0.simple)
-save(rs1.expt2.simpleMorph.summary, file =
-       "../cached_results/regression_simple_adjType_morph_expt2.RData")
-
+# save(rs1.expt2.simpleMorph.summary, file =
+#        "../cached_results/regression_simple_adjType_morph_expt2.RData")
+# 
 
 summary(rs.5.helmert.0.simple)
 ```

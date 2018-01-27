@@ -201,8 +201,9 @@ Raw histograms
 d.full.natEng %>%
   ggplot(., aes( x = normalizedResponse,
                        fill = adjective_type_rescaled))+
-  geom_histogram(position = position_dodge(), bins = 25)+
-  facet_grid(condition~antonym_type)+
+  #geom_histogram(position = position_dodge(), bins = 25)+
+  geom_density(alpha = 0.5)+
+  facet_grid(condition~antonym_type, scales = 'free')+
   scale_fill_manual(values = orange.purple.color.palette)+
   ylab("counts")+
   xlab("slider ratings")+
@@ -211,9 +212,9 @@ d.full.natEng %>%
         legend.position = 'bottom')+
   scale_x_continuous(limits = c(-2, 2), breaks = c(-1, 0, 1))
 
-# ggsave(paste(
-#   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_histograms.pdf", sep = ""),
-#        width = 7, height = 3.5)
+ggsave(paste(
+  "~/Documents/research/negant/analysis/figs/cogsci_expt3_densities.pdf", sep = ""),
+       width = 6, height = 3.5)
 ```
 
 
@@ -277,13 +278,13 @@ d.full.boot %>%
 
 
 ```{r fig_byItem, fig.width = 8, fig.height = 6}
-
-
-d.full.boot.item <- d.full.natEng %>%
-  mutate(item = ifelse(antonym_type == "lexant", 
+ d.full.natEng <- d.full.natEng %>%
+  mutate(item = ifelse(antonym_type == "lexant",
                        paste(lexant, "--", positive, sep = ""),
                        paste(morphant, "--", positive, sep = "")),
-         antonym = ifelse(antonym_type == "lexant", as.character(lexant), as.character(morphant))) %>% 
+         antonym = ifelse(antonym_type == "lexant", as.character(lexant), as.character(morphant)))
+
+d.full.boot.item <- d.full.natEng %>%
   group_by(condition, antonym_type, antonym, positive, adjective_type_rescaled) %>%
   multi_boot_standard(col = "normalizedResponse")# %>%
   #   ungroup() %>%
@@ -292,26 +293,30 @@ d.full.boot.item <- d.full.natEng %>%
 
 
 d.full.boot.item %>%
-  filter(condition == "implicit") %>%
-  ggplot(., aes(x = adjective_type_rescaled, 
+    filter(condition == "implicit") %>%
+  ggplot(., aes(x = antonym, 
                 fill = adjective_type_rescaled, 
-                color = adjective_type_rescaled,
-              group = positive,
+              group = adjective_type_rescaled,
                 y = mean, ymin = ci_lower, ymax = ci_upper))+
   #geom_hline(yintercept = 0.5, lty = 3)+
-  #geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
-  geom_linerange(position = position_dodge(0.4), size = 1)+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_linerange(position = position_dodge(0.8), size = 1)+
+  # geom_jitter(data =d.full.natEng, inherit.aes = F,
+  #             aes( x = antonym, color = adjective_type_rescaled, 
+  #                  group = adjective_type_rescaled,
+  #                  y = normalizedResponse), position = position_jitterdodge(dodge.width = .8, jitter.width = 0.2), alpha = 0.5)+
+  #geom_pirate(violins = F, bars = F)+
   scale_fill_manual(name="Adjective type",
                     values = orange.purple.color.palette,
                     guide = guide_legend(reverse=F))+
     scale_color_manual(name="Adjective type",
                     values = orange.purple.color.palette,
                     guide = guide_legend(reverse=F))+
-  geom_line(color = 'black')+
+  #geom_line(color = 'black')+
     #geom_line(inherit.aes = F, aes(group = interaction(adjective_type_rescaled, antonym)))+
   # geom_errorbar(position = position_dodge(0.8), color = 'black',
   #               width = 0.3)+
-  facet_wrap(antonym~positive, scales = 'free', nrow = 2) + 
+  facet_wrap(~positive, scales = 'free', nrow = 2) + 
   #coord_flip()+
   #guides(fill = F)+
   xlab("")+
@@ -322,7 +327,11 @@ d.full.boot.item %>%
         element_text(angle = 45, hjust = 1, vjust = 1),
         legend.position = 'bottom')
 
-#ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negant_lexical_bootstrapped_item.pdf", width = 8, height = 3.5)
+
+
+ggsave(paste(
+  "~/Documents/research/negant/analysis/figs/cogsci_expt3_byItem.pdf", sep = ""),
+       width = 12, height = 8)
 ```
 
 
@@ -376,7 +385,7 @@ rs1.helmert.implicit.summary
 
 #### Hypothesis 2: Within morphological antonyms ("unhappy"), is there a difference between antonyms ("unhappy") and negated positives ("not happy") when alternatives are implicit vs. explicit?
 
-```{r}
+```{r regression2}
 ## testing for interaction within morphological
 rs2.helmert.morph <- lmer(
   response ~ condition * adj_type + 
@@ -393,8 +402,16 @@ rs2.helmert.morph.simpler1 <- lmer(response ~ condition * adj_type +
           data = d.full.natEng %>% filter(antonym_type == "morphant")
 )
 
+
+
+
 anova(rs2.helmert.morph.simpler1, rs2.helmert.morph)
 # extra random effect of adjective_type by item accounts for significantly more variance
+
+
+rs2.helmert.morph.summary <- summary(rs2.helmert.morph)
+#save(rs2.helmert.morph.summary, file =
+       "../cached_results/regression_adjTypeXcontext_morph.RData")
 
 
 summary(rs2.helmert.morph)
@@ -474,6 +491,10 @@ anova(rs.helmert.3way.4, rs.helmert.3way.3)
 summary(rs.helmert.3way.4)
 summary(rs.helmert.3way.4a)
 summary(rs.helmert.3way.4b)
+
+rs3.3way.summary <- summary(rs.helmert.3way.4)
+save(rs3.3way.summary, file =
+       "../cached_results/regression_antTypeXadjTypeXcontext.RData")
 ```
 
 

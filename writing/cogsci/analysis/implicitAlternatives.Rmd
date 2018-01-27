@@ -153,18 +153,42 @@ Raw histograms
 d.l1.natEng %>%
 ggplot(., aes( x = normalizedResponse,
                        fill = adjective_type))+
-  geom_histogram(position = position_dodge(), bins = 20)+
-  #geom_density(alpha = 0.3)+
-  facet_grid(.~adjective_type, scales = 'free')+
+  #geom_histogram(position = position_dodge(), bins = 20)+
+  geom_density(alpha = 0.5)+
+  facet_wrap(~antonym_type, scales = 'free')+
+    scale_fill_manual(values = orange.purple.color.palette)+
+  #facet_grid(antonym_type~adjective_type, scales = 'free')+
   #scale_fill_manual(values = orange.purple.color.palette)+
-  ylab("counts")+
-  xlab("slider ratings")+
+  #ylab("counts")+
+  xlab("slider ratings")
+
+ggsave(paste(
+  "~/Documents/research/negant/analysis/figs/cogsci_expt1_densities.pdf", sep = ""),
+       width = 6, height = 3)
+
   ##scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
   guides(fill = F)
 # ggsave(paste(
 #   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_histograms.pdf", sep = ""),
 #        width = 7, height = 3)
 ```
+
+```{r}
+d.l1.natEng %>%
+  filter(adjective_type == "neg_antonym", 
+        antonym_type == "morphological") %>%
+  ggplot(., aes( x = normalizedResponse,
+                       fill = adjective_type))+
+  geom_histogram(position = position_dodge(), bins = 20)+
+  #geom_density(alpha = 0.3)+
+  facet_wrap(~positive, scales = 'free')+
+  #scale_fill_manual(values = orange.purple.color.palette)+
+  ylab("counts")+
+  xlab("slider ratings")+
+  ##scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
+  guides(fill = F)
+```
+
 
 Bootstrapped CIs
 
@@ -183,8 +207,8 @@ d.l1.4.boot <- d.l1.natEng %>%
   multi_boot_standard(col = "normalizedResponse")
 
 
-df.oneSlider.ci <- d.l1.4.boot
-save(df.oneSlider.ci, file = "../cached_results/oneSlider_bootstrappedCIs.RData")
+# df.oneSlider.ci <- d.l1.4.boot
+# save(df.oneSlider.ci, file = "../cached_results/oneSlider_bootstrappedCIs.RData")
 
 d.l1.4.boot %>%
   ggplot(., aes(x = adjective_type,
@@ -288,28 +312,28 @@ summary(lmer(
 ```{r}
 
 
-d.l1.natEng.rescaled <- d.l1.natEng %>%
-  mutate(adjective_type = as.character(adjective_type),
-         adjective_type_rescaled = ifelse(
-      adjective_type %in% c("lexant", "morphant"), 
-      "antonym", ifelse(
-      adjective_type %in% c("neg_lexant", "neg_morphant"),
-       "neg_antonym", adjective_type)
-        ),
-    adjective_type_rescaled = factor(adjective_type_rescaled,
-                                     levels = c("antonym",
-                                                "neg_positive",
-                                                "neg_antonym",
-                                                "positive")))
+# d.l1.natEng.rescaled <- d.l1.natEng %>%
+#   mutate(adjective_type = as.character(adjective_type),
+#          adjective_type_rescaled = ifelse(
+#       adjective_type %in% c("lexant", "morphant"), 
+#       "antonym", ifelse(
+#       adjective_type %in% c("neg_lexant", "neg_morphant"),
+#        "neg_antonym", adjective_type)
+#         ),
+#     adjective_type_rescaled = factor(adjective_type_rescaled,
+#                                      levels = c("antonym",
+#                                                 "neg_positive",
+#                                                 "neg_antonym",
+#                                                 "positive")))
 
 
 # Helmert coding to compare Negated Positive with Antonym
-d.l1.natEng.rescaled <- within(d.l1.natEng.rescaled, {
-  st <- C(adjective_type_rescaled, helmert, 3)
+d.l1.natEng <- within(d.l1.natEng, {
+  st <- C(adjective_type, helmert, 3)
   print(attributes(st))
 }) %>% 
   mutate(antonym_type = factor(antonym_type, 
-                           levels = c("morphant", "lexant")))
+                           levels = c("morphological", "lexical")))
 
 
 # maximal model
@@ -317,8 +341,14 @@ d.l1.natEng.rescaled <- within(d.l1.natEng.rescaled, {
 rs.7.helmert <- lmer(response ~ antonym_type * st + 
                        (1 + st | workerid) + 
                        (1 + st | positive),
-                     data = d.l1.natEng.rescaled)
+                     data = d.l1.natEng)
 summary(rs.7.helmert)
+
+# rs1.expt1.helmert.summary <- summary(rs.7.helmert)
+# save(rs1.expt1.helmert.summary, file =
+#        "../cached_results/regression_antTypeXadjType_expt1.RData")
+
+
 
 
 rs.7.helmert.0 <- lmer(response ~ antonym_type * st + 
