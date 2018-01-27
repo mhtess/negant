@@ -329,18 +329,20 @@ This model predicts a quasi-ordering: "unhappy" $\approx$ "not happy" $<$ "not u
 Even though the listener is uncertain about the parse for "unhappy" and "not happy", when hearing "not unhappy", the model reasons that a truly compositional, double negation is unlikely. 
 \mht{either explain the reasoning behind "parse" or rename model}
 
-We design our behavioral experiments to test the predictions of the three model variants. 
-In particular, we hypothesize that supposed antonyms created by affixal negation have uncertainty in parsing and thus will produce the partial ordering observed in Figure$\thinspace$\ref{fig:modelPredictions} for the *uncertain parse model*.
+
+To summarize, we hypothesize that supposed antonyms created by affixal negation have uncertainty in parsing and thus will produce the partial ordering observed in Figure$\thinspace$\ref{fig:modelPredictions} for the *uncertain parse model*.
 Lexically distinct antonyms, on the other hand, we predict will exhibit the complete ordering predicted by the *bonafide antonyms* model.^[
 For this prediction, we would assume the alternative set includes the lexically-distinct antonym e.g., \{"sad", "not happy", "not sad", "happyy"\}.
 ]
+We design our behavioral experiments to test these predictions. 
 
 
 # Behavioral experiments
 
-The *uncertain parse* model predicts that morphological negation (e.g., "unhappy") and adverbial negation (e.g., "not happy") will receive similar interpretations, while the negated antonym (e.g., "not unhappy") will be interpreted more weakly than the simple positive form (e.g., "happy").
-When there is no uncertainty about the correct parse of an antonym (e.g., because it has a distinct lexical entry e.g., "sad"), we predict a total ordering on interpretations: ANT $<$ NEGPOS $<$ NEGANT $<$ POS. 
-We designed our experiment in order to confirm this asymmetry between lexical and morphological antonyms.
+The *uncertain parse* model predicts that affixal negation (e.g., "unhappy") and particle negation (e.g., "not happy") will receive similar interpretations, while the negated antonym (e.g., "not unhappy") will be interpreted more weakly than the simple positive form (e.g., "happy").
+We contrast this quasi-ordering for *morphological anotnyms* ("unhappy" $\approx$ "not happy" $<$ "not unhappy" $<$ "happy") with a full-ordering predicted for *lexical antonyms* ("short" $<$ "not tall" $<$ "not short" $<$ "tall") by the *bonafide antonyms* model. 
+<!-- When there is no uncertainty about the correct parse of an antonym (e.g., because it has a distinct lexical entry e.g., "sad"), we predict a total ordering on interpretations: ANT $<$ NEGPOS $<$ NEGANT $<$ POS.  -->
+<!-- We designed our experiment in order to confirm this asymmetry between lexical and morphological antonyms. -->
 
 ## Experiment 1
 
@@ -355,13 +357,13 @@ The experiment took on average N minutes and participants were compensated \$N f
 
 #### Procedure
 
-On each trial, participants read a statement introducing a character using a gradable adjective of one of four **adjective types** (e.g., "Greg is \{POS, ANT, NEG POS, NEG ANT\}").
-Participants were asked rate the character on a scale from "the most POS person in the world" to "the most ANT person in the world", using a slider bar (\figref{fig:expt1}).
+On each trial, participants read a statement introducing a character using a gradable adjective of one of four **adjective types** (e.g., "Greg is \{\textsc{POSitive}, \textsc{ANTonym}, \textsc{NEGated POSitive}, \textsc{NEGated ANTonym}\}").
+Participants were asked rate the character on a scale from "the most \textsc{POS} person" to "the most \textsc{ANT } person", using a slider bar (\figref{fig:experiment-slides}A).
 Participants rated one sentence at a time (e.g., "Greg is not unhappy"), and provided a rating for only one adjective type from an adjective set (e.g., never rated both "unhappy" and "not happy").
-Each participant saw items from both **antonym types** (morphological, lexical). 
-There were a total of 16 trials, with exactly 2 repetitions of each adjective type (POS, ANT, NEG POS, NEG ANT) for sets of each antonym type, always with items from distinct adjective sets.
+Each participant saw items for both **antonym types** (morphological, lexical). 
+There were a total of 16 trials, with exactly 2 repetitions of each adjective type (\textsc{POS}, \textsc{ANT}, \textsc{NEG POS}, \textsc{NEG ANT}) for sets of each antonym type, always with items from distinct **adjective sets**.
 
-```{r experiment-slides, fig.pos = "hb", fig.cap="Example experimental trials.", fig.height=2.5}
+```{r experiment-slides, fig.pos = "hb", fig.cap="Example experimental trials.", fig.height=2.75, fig.width = 3.5}
 slide.expt.1 <- cowplot::ggdraw() + 
   cowplot::draw_image("img/expt1.jpeg", scale = 1) +
   theme(plot.margin = unit(c(0,0,0,0), "pt")) + 
@@ -371,17 +373,17 @@ slide.expt.2 <- cowplot::ggdraw() +
   theme(plot.margin = unit(c(0,0,0,0), "pt")) + 
   cowplot::panel_border()
 
-
 cowplot::plot_grid(
     cowplot::add_sub(slide.expt.1, "Experiment 1 (implicit alternatives)", size = 8), 
     cowplot::add_sub(slide.expt.2, "Experiment 2 (explicit alternatives)", size = 8), 
     labels = c("A", "B"), 
     nrow = 2)
 ```
+
 #### Materials
 
-We used **adjective sets** composed of four **adjective types** that described properties of people: positive-form gradable adjectives (POS; e.g., "happy", "tall"), antonyms (ANT; e.g., "unhappy", "short"), and their respective negations (NEG POS, NEG ANT; e.g., "not happy", "not unhappy").
-Antonyms were *morphological* (e.g., "unhappy" for "happy") or distinct lexical entries (*lexical antonyms* e.g., "short" for "tall").
+Adjective sets were constructed by taking antonym pairs that described properties of people and including particle negations (e.g., one adjective set is "happy", "unhappy", "not happy", "not unhappy").
+Antonyms were *morphological* (i.e., affixal negations; e.g., "unhappy" for "happy") or distinct lexical entries (*lexical antonyms* e.g., "short" for "tall").
 Items were constructed from an informal survey of the linguistics literature and taken from list of ``common opposites'' available online\footnote{http://www.enchantedlearning.com/wordlist/opposites.shtml} (for a full list, see \tableref{tab:items12}).
 
 
@@ -419,23 +421,33 @@ load("cached_results/regression_antTypeXadjType_expt1.RData") # rs1.expt1.helmer
 rs1.expt1.coef <- rs1.expt1.helmert.summary[["coefficients"]]
 ```
 
-To evaluate this hypothesis, we built a mixed-effects regression model with by-participant and by-item random effects of intercept and adjective type (i.e., POS vs. ANT vs. NEG ANT vs. NEG POS).^[
-  This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with marginally simpler mixed-effects structures.\mf{Cite package used (matters for convergence).}
+The predictions of our models concern the nature of the ordering of terms within an adjective set (i.e., POS vs. ANT vs. NEG ANT vs. NEG POS).
+To visualize the data, we compute normalized responses on a participant-wise basis (i.e., $r'_{ij} = \frac{r_{ij} - mean_j}{sd_j}$, for normalized response $r'$ for trial $i$ and participant $j$)
+Figure \ref{fig:expt-results}A shows the mean normalized responses and bootstrapped 95\% confidence intervals for the each of the four adjective types for both lexical and morphological antonyms. 
+As predicted by the *bonafide antonyms* set, lexical antonyms show a true ordering: $\textsc{ant} < \textsc{neg pos} < \textsc{neg ant} < \textsc{ant}$.
+Furthermore, as predicted by the *uncertain parsing* model, morphological antonyms show only a partial ordering, critically with antonyms and negated positives getting identical interpretations, consistent with the intuitions of @Jespersen1917:Negation and @Blutner2004:pragmatics.
+
+To confirm these observations, we built a mixed-effects regression model with by-participant and by-item random effects of intercept and adjective type (\textsc{pos}, \textsc{ant}, etc.).^[
+  This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R [@lme4].
 ]
-Consistent with our hypothesis, the interaction between negation type (antonym vs. negated positive) and type of antonym (morphological vs. lexical) was significant: $\beta = `r round(rs1.expt1.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt1.coef["antonym_typelexical:st1","Std. Error"],4)`$, t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 4)`$.
+Consistent with our observations, the interaction between antonym vs. negated positive *adjective type* and type of antonym (morphological vs. lexical) was significant: $\beta = `r round(rs1.expt1.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt1.coef["antonym_typelexical:st1","Std. Error"],4)`$, t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 4)`$.
+
+We additionally note that interpretations of negated antonyms were appreciably weaker for morphological antonyms (e.g., "not unhappy") than for lexical antonyms (e.g., "not tall").
+Interpretations for negated morphological antonyms gave rise to a bimodal distribution of ratings: The vast majority of ratings were slightly positive, while a clearly distinguishable minority distribution of ratings were slightly negative (e.g., "not dishonest" meaning that the person is below average in honesty). 
+This interpretation may be attributable to politeness on behalf of the speaker, a phenomenon noted by @Horn1991:Duplex and predicted formally by a recent model of polite language understanding [@Yoon2017].
+<!-- ### Discussion -->
+<!-- Consistent with the intuition from all but George Orwell, the negated (morphological) antonyms were interpreted as slightly positive, though less-so that purely postive statements. -->
+<!-- This interpretation is predicted by the *bonafide antonyms* model and the *uncertain parser* model.  -->
+<!-- Expt. 1 further confirmed our hypothesized asymmetry between lexical and morphological antonyms.  -->
+<!-- In particular, interpretations of morphological antonyms were indistinguishable from those of negated positive statements, consistent with the intuition of @Jespersen1917:Negation and @Blutner2004:pragmatics as well as our *uncertain parser* model.  -->
+<!-- Lexical antonyms, on the other hand, showed a clear ordering: ANT $<$ NEG POS $<$ NEG ANT $<$ POS.  -->
 
 
-### Discussion
-
-Consistent with the intuition from all but George Orwell, the negated (morphological) antonyms were interpreted as slightly positive, though less-so that purely postive statements.
-This interpretation is predicted by the *bonafide antonyms* model and the *uncertain parser* model. 
-Expt. 1 further confirmed our hypothesized asymmetry between lexical and morphological antonyms. 
-In particular, interpretations of morphological antonyms were indistinguishable from those of negated positive statements, consistent with the intuition of @Jespersen1917:Negation and @Blutner2004:pragmatics as well as our *uncertain parser* model. 
-Lexical antonyms, on the other hand, showed a clear ordering: ANT $<$ NEG POS $<$ NEG ANT $<$ POS. 
-
-@Horn1989:Natural and @Krifka2007:Negated-antonyms predicted differences in meaning between negated positives and morphological antonyms (e.g., "not happy" and "unhappy"), citing examples such as "It's an absolutely horrible feeling to be unhappy, and I don't even think I was unhappy, just not happy, if you know what I mean" [taken from @Krifka2007:Negated-antonyms, taken from internet].
-We think it's not incidental that the speaker in the example utterance chose to use both "unhappy" and "not happy" in the same utterance. 
-We hypothesize that explicit alternative utterances can decrease parsing uncertainty and have "unhappy" fill the role of a bonafide antonym.
+<!-- Differences in meaning between negated positives and morphological antonyms (e.g., "not happy" and "unhappy") were not found.  -->
+<!-- However, differences in meaning have been noted in such naturalistic examples as  -->
+"It's an absolutely horrible feeling to be unhappy, and I don't even think I was unhappy, just not happy, if you know what I mean" [taken from @Krifka2007:Negated-antonyms, taken from internet] is an instance of an attested difference in meaning between negated positives and morphological antonyms (e.g., "not happy" and "unhappy").
+We did not find such a difference in our experiment, but rather than conclude that no differnce exists, we note that the speaker in this example utterance chose to use both "unhappy" and "not happy" in the same utterance. 
+We hypothesize that explicit comparisons between alternative utterances can draw out the difference in meaning between negated positives and morphological antonyms, which leads the morphological antonym to behave more like a bonafide antonym
 
 ## Experiment 2: Explicit alternatives 
 
