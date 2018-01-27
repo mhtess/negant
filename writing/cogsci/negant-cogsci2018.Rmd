@@ -15,7 +15,7 @@ author-information: >
   \AND {\large \bf Michael Franke (mchfranke@gmail.com)} \\ Department of Linguistics, University of T\"{u}bingen}
 
 abstract: 
-    "Formal logic provides two kinds of opposing meanings: contraries, often expressed linguistically in adverbial negation (e.g., \"not happy\"), and contradictions expressed as antonyms (e.g., \"sad\"), yet these are not the only options in natural language (e.g., \"unhappy\"). Rather than being redundant, we hypothesize that uncertainty about the intended *parse* of the message creates more precise meanings in context. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., \"happy\"), and derive, as a special case, an ordering of unambiguous antonyms and their negations (\"sad\" $<$ \"not happy\" $<$ \"not sad\" $<$ \"happy\"). However, when there is uncertainty about how to parse a hypothetical antonym (e.g., \"unhappy\"), we predict interpretations should not be different from pure negations (e.g., \"not happy\"). Across two behavioral experiments and a preregistered replication, we confirm consistent orderings of interpretations that interacts with contexct. This promising support for our hypothesis suggests that in-the-moment pragmatic reasoning can off-load from grammar...something...something. "
+    "Formal logic provides two kinds of opposing meanings: contradictories, often expressed linguistically in adverbial negation (e.g., \"not happy\"), and contraries expressed as antonyms (e.g., \"sad\"), yet these are not the only options in natural language (e.g., \"unhappy\"). Rather than being redundant, we hypothesize that uncertainty about the intended *parse* of the message creates more precise meanings in context. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., \"happy\"), and derive, as a special case, an ordering of unambiguous antonyms and their negations (\"sad\" $<$ \"not happy\" $<$ \"not sad\" $<$ \"happy\"). However, when there is uncertainty about how to parse a hypothetical antonym (e.g., \"unhappy\"), we predict interpretations should not be different from pure negations (e.g., \"not happy\"). Across two behavioral experiments and a preregistered replication, we confirm consistent orderings of interpretations that interacts with contexct. This promising support for our hypothesis suggests that in-the-moment pragmatic reasoning can off-load from grammar...something...something. "
 
 keywords:
     "semantics; pragmatics; negation; Rational Speech Act; Bayesian cognitive model"
@@ -70,11 +70,13 @@ orange.purple.color.palette <-
 # Introduction
 
 If you hear "Jones is happy" you understand that Jones' happiness ---a *gradable property*--- exceeds a certain threshold [@kennedy2005scale; @Kennedy2007].
-But what if "Jones is not unhappy"? 
+But what about "Jones is not unhappy"? 
 Do the two negatives make a positive and Jones' happiness exceed the same threshold?
 @Jespersen1924 believed not:
 
-> The two negatives do not exactly cancel one another... the longer expression is always weaker: "this is not unknown to me" or "I am not ignorant of this" means *I am to some extent aware of it*, etc.
+> The two negatives do not exactly cancel one another... the longer expression is always
+> weaker: "this is not unknown to me" or "I am not ignorant of this" means *I am to some extent
+> aware of it*, etc. \mf{pagerefs}
 
 Negation is the semantic operation of forming an opposite, but there are several kinds of semantic opposition [@Horn1989:Natural]. 
 A *contrary opposition*, such as between "happy" and "sad", is one where both predicates cannot be true at the same time, but can be false at the same time. 
@@ -86,9 +88,12 @@ Two markers of negation in English could fill this role: *adverbial negation* (e
 
 @Horn1989:Natural and @Krifka2007:Negated-antonyms seem ready to assign *affixal negation* ("un-") a contrary meaning and *adverbial negation* a contradictory meaning, thus predicting an ordering (on degrees of happiness): "unhappy" $<$ "not happy" $<$ "not unhappy" $<$ "happy".
 Not everyone is in agreement on this.
-@orwell1946politics believes both kinds of negations are contradictory, noting: 
+@orwell1946politics took both kinds of negations to express contradictory opposition: 
 
-> Banal statements are given an appearance of profundity by means of the "not un-" formation... It should be possible to laugh the "not un-" formation out of existence by memorizing this sentence: "A not unblack dog was chasing a not unsmall rabbit across a not ungreen field."
+> Banal statements are given an appearance of profundity by means of the "not un-"
+> formation... It should be possible to laugh the "not un-" formation out of existence by
+> memorizing this sentence: "A not unblack dog was chasing a not unsmall rabbit across a not
+> ungreen field." \mf{pageref}
 
 Even if we disagree with Orwell and consider "unhappy" as a contrary to "happy", the mechanism by which "not unhappy" gets an interpretation is still unclear [@Krifka2007:Negated-antonyms].
 Considering "happy" and "not unhappy" as pragmatic alternatives only leads to the conclusion that "not unhappy" refers to a neutral or indifferent state [@Horn1991:Duplex], but intuition suggests "not unhappy" is a slightly positive state [@Krifka2007:Negated-antonyms].
@@ -99,8 +104,11 @@ In this work, we take seriously the indeterminacy in meaning for affixal and adv
 We build on previous work deriving thresholds for gradable adjectives by considerations of goal-oriented cooperative language use [@Lassiter2015; @Qing2014:Adjectives].
 We extend this line of inquiry to incorporate compositional expressions involving various forms of negation: how happy or sad is an agent who is reported to be *not happy*, *not sad*, *unhappy* or *not unhappy*? 
 We propose a probabilistic speaker-listener pragmatic reasoning model in the Rational Speech Act tradition [@Franke2015a; @Goodman2016:RSA], introducing elements of lexical uncertainty [@Bergen2016] in order to model a listener's uncertainty about how to interpret overt negation markers.
-We investigate the empirical phenomena in three experiments that measure interpretations for lexical antonyms ("happy"/"sad")  and affixal and adverbial negations both when salient alternative utterances are present and absent, discovering subtle but reliable differences.
-These findings suggest that pragmatic reasoning can utilize the uncertainty in logical meaning to derive finer-grained interpretations in-the-moment.
+We investigate the empirical phenomena in three experiments that measure interpretations for
+lexical antonyms ("happy"/"sad")  as well as affixal and adverbial negations both when salient alternative utterances are present and absent, discovering subtle but reliable differences.
+These findings suggest that pragmatic reasoning can utilize the uncertainty in logical meaning
+to derive finer-grained interpretations by contrasting multiple interpretations of multiple
+alternative utterances simultaneously.
 
 
 
@@ -202,7 +210,7 @@ ggdraw() + draw_image("img/happy-scale.pdf") +
 
 # Computational model
 
-In classical logic, a contrary claim  (e.g., $Px =$ *x is happy* vs. $Qx =$ *x is sad*) is distinguished from a contradiction (e.g.,  $Px =$ *x is even* vs.  $Qx = \neg Px =$ *x is odd*).
+<!-- In classical logic, a contrary claim  (e.g., $Px =$ *x is happy* vs. $Qx =$ *x is sad*) is distinguished from a contradiction (e.g.,  $Px =$ *x is even* vs.  $Qx = \neg Px =$ *x is odd*).
 Like contradictions, two contraries cannot be true simultaneously: $\forall x \thinspace ((Px \rightarrow \neg Qx) \wedge (Qx \rightarrow \neg Px))$; e.g., *happy* implies *not sad*. 
 With contradictions, however, one of two contradictories *must* be true: $\forall x \thinspace (Px \leftrightarrow \neg Qx)$; e.g., when $Px$ is false, $Qx$ is true and vice versa. 
 This is not the case with contrary claims (*not tall* does not imply *short*).
@@ -210,32 +218,32 @@ This is not the case with contrary claims (*not tall* does not imply *short*).
 Natural language antonyms (e.g., "happy" and "sad") and negation-inducing modifiers (e.g., "not" + "happy") seem to map well onto the formal devices of contrariness and contradictoriness, respectively.
 The mapping is not one-to-one, however. 
 Language provides yet more ways of conveying opposing meanings: "I'm not happy", "I'm unhappy", and "I'm sad" all seemingly convey similar ideas, but the strength of interpretation (how *not happy* a person is) could vary. 
-"Sad" is most likely a contrary to "happy", whereas "not happy" is most likely a contradiction to "happy".
+"Sad" is most likely a contrary to "happy", whereas "not happy" is most likely a contradiction to "happy". -->
 
 We take a radical (but hopefully not unreasonable) starting point: meanings of negated gradable adjectives (including adverbial negations like "not happy") are contextually constructed by pragmatic reasoning about alternative utterances a speaker might have chosen. 
 Our model comprises the possibility that a speaker might treat both *affix negation* (e.g., "un-", "in-") and *adverbial negation* (e.g., "not") as standard two-valued logical negation. 
 However, for each kind of negation, the speaker could assign independent thresholds, not derived compositionally from logical negation, to either adverbial- or affix-negated expressions. 
 A pragmatic listener then uses Bayesian inference, based on the assumption of an informative cooperative speaker, to infer which theory of the speaker's use of adverbial and affix negation best rationalizes a given utterance.
-We introduce this kind of *lexical uncertainty* [@Bergen2016] about negation into a model of gradable adjective interpretation [@Lassiter2015].
+We introduce this kind of *lexical uncertainty* [@Bergen2016] about negation into a model of gradable adjective interpretation [@Lassiter2015]. \mf{we might even leave out this paragraph?}
 <!-- Below, we briefly review a computational model of gradable adjectives before deriving predictions about listener's strength of interpretation for different kinds of (and double) negations. -->
 
 ## Model background
 
 Gradable adjectives (e.g., "tall", "happy") are vague decriptions of a quantitative scale (e.g., *height*, *happiness*).
-Their meanings can be modeled using a threshold function whose threshold variable $\theta$ is supplied by the context [@Kennedy2007]: $\denote{tall} = height(x) > \theta$. 
-@Lassiter2015 give a model that derives plausible values for $\theta$ in context from pragmatic reasoning [see also @Potts2008:Interpretive-Ec; @Qing2014:Adjectives], and how such a model can account for key aspects of vagueness: context-sensitivity and the admission of borderline cases (e.g., people who are both tall and not tall).
-\vspace{-0.8cm}
+Their meanings can be modeled using a threshold function whose threshold variable $\theta$ is supplied by the context [@Kennedy2007]: $\denote{happy} = \lambda x \thinspace . \thinspace happiness(x) > \theta$. 
+@Lassiter2015 give a model that derives plausible values for $\theta$ in context from pragmatic reasoning [see also @Potts2008:Interpretive-Ec; @Qing2014:Adjectives], and show how such a model can account for key aspects of vagueness: context-sensitivity and the admission of borderline cases (e.g., people who are both tall and not tall).
+\vspace{-0.5cm}
 \begin{align}
 L_{1}(x, \theta \mid u) &\propto S_{1}(u \mid x, \theta) \cdot P(x) \cdot P(\theta) \label{eq:L1} \\
 S_{1}(u \mid x, \theta) &\propto \exp{(\alpha \cdot \ln {L_{0}(x \mid u, \theta)} - \text{cost}(u))} \label{eq:S1}\\
 L_{0}(x \mid u, \theta) &\propto {\delta_{[\![u]\!](x, \theta)} \cdot P(x)} \label{eq:L0}
 \end{align}
 
-Equations \ref{eq:L1}-\ref{eq:L0} are the Rational Speech Act (RSA) model of @Lassiter2015, a recursive Bayesian model wherein a pragmatic listener $L_1$ tries to resolve the intended meaning of an utterance $u$ by combining their prior beliefs $P(x)$ with the generative process of the utterance, a speaker model $S_1$ [for a review, see @Goodman2016:RSA].
-The speaker model $S_1$  is an approximately rational Bayesian agent (with degree of rationality $\alpha$) trying to inform a naive listener $L_0$ (Eq.$\thinspace$\ref{eq:L0}) about the state of the world $x$.
+Equations \ref{eq:L1}-\ref{eq:L0} are the Rational Speech Act (RSA) model of @Lassiter2015, a recursive Bayesian model wherein a pragmatic listener $L_1$ tries to resolve the intended meaning of an utterance $u$ by combining their prior beliefs $P(x)$ with the generative process of the utterance, a speaker model $S_1$.
+The speaker model $S_1$  describes an approximately rational Bayesian agent (with degree of rationality $\alpha$) trying to inform a naive listener $L_0$ (Eq.$\thinspace$\ref{eq:L0}) about the state of the world $x$.
 In the context of adjective interpretation, the state of the world is given by the value of the scalar degree $x$ (e.g., the height of the referent).
 The literal listener updates their prior beliefs $P(x)$ via an utterance's literal meaning $[\![u]\!](x)$, the threshold function described above.
-The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely states of the world $P(x)$ (e.g., possible heights) and the likelihood that a speaker would say the adjective given a state and a threshold $S(u \mid x, \theta)$.
+The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely states of the world $P(x)$ (e.g., possible degrees of happiness) and the likelihood $S_1(u \mid x, \theta)$ that a speaker would say the adjective given a state $x$ and a threshold $\theta$.
 
 ## Model extension and prediction
 
