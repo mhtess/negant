@@ -92,6 +92,22 @@ to predicates, including those formed from predicate-forming contrary negation.
 This leads to the \emph{uncertain parse model} \dots
 
 
+\begin{table}
+  \centering
+  \begin{tabular}{ll}
+    not happy / unhappy & $\lambda x \thinspace . \thinspace \neg (\mathit{happiness}(x) >
+    \theta_{h})$ \\
+    & $\lambda x \thinspace . \thinspace \mathit{happiness}(x) <
+    \theta_{\tilde{h}}$ \\ \hline
+    not unhappy & $\lambda x \thinspace . \thinspace \mathit{happiness}(x) >
+    \theta_{h}$ \\
+    & $\lambda x \thinspace . \thinspace \neg(\mathit{happiness}(x) <
+    \theta_{\tilde{h}})$ \\ 
+  \end{tabular}
+  \caption{Logically possible interpretations of negated expressions.}
+  \label{tab:Interpretations}
+\end{table}
+
 
 
 \printbibliography[heading=bibintoc]
