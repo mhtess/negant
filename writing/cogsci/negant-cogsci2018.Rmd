@@ -93,7 +93,7 @@ Not everyone is in agreement on this.
 Even if we disagree with Orwell and consider "unhappy" as a contrary to "happy", the mechanism by which "not unhappy" gets an interpretation is still unclear [@Krifka2007:Negated-antonyms].
 Considering "happy" and "not unhappy" as pragmatic alternatives only leads to the conclusion that "not unhappy" refers to a neutral or indifferent state [@Horn1991:Duplex], but intuition suggests "not unhappy" is a slightly positive state [@Krifka2007:Negated-antonyms].
 It's plausible that "not happy" should also enter into the pragmatic computation [@Blutner2004:pragmatics], but how pragmatics contextually strengthens "not happy" has not been fully spelled out [@Krifka2007:Negated-antonyms].
-Furthermore, the meaning of "not happy" is at least as controversial "unhappy": @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning, while @Horn1989:Natural and @Krifka2007:Negated-antonyms disagree.
+Furthermore, the meaning of "not happy" is at least as controversial as "unhappy": @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning, while @Horn1989:Natural and @Krifka2007:Negated-antonyms disagree.
 
 In this work, we take seriously the indeterminacy in meaning for affixal and adverbial negation and investigate it both formally and empirically.
 We build on previous work deriving thresholds for gradable adjectives by considerations of goal-oriented cooperative language use [@Lassiter2015; @Qing2014:Adjectives].
@@ -672,16 +672,16 @@ Someone said to be *not unhappy* is neither sad nor truly happy, but residing in
 This work resolves an outstanding puzzle in natural language understanding.
 @Krifka2007:Negated-antonyms critiques outstanding pragmatic theories for either being underdetermined [@Blutner2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex]. 
 Using state-of-the-art models of pragmatic language understanding, we are able to precisely articulate the division of pragmatic labor between different utterances available to a speaker for conveying negation.
-It is noteworthy that we are able to recover the ordering predicted by @Krifka2007:Negated-antonyms without having to assume that 
+We hypothesized that uncertainty about the meaning of overt negation markers leads only to a partial ordering of antonyms and their negations when the role of the antonym is filled by affixal negation (e.g,. "not unhappy"). 
+It is noteworthy that we are able to recover the ordering predicted by @Krifka2007:Negated-antonyms even when the model has uncertainty about the meaning of adversial negation (e.g., "not happy") when a lexical antonym was an alternative utterance.
+\mht{note also that we don't assume any ordering on interpretations in the semantics for bonafide antonyms. note null utterance?}
 
-Our formalization of an uncertain parsing model is consistent with a growing 
+Our formalization of lexical uncertainty about the meaning of negation is consistent with a growing movement in theories of language to treat the interface of the lexicon (the meaning of words) as not totally separable from the combinatorial rules of grammar [e.g., @bybee2006usage].
+The two types of negation we consider---contrary and contradiction---correspond to a *lexicalized* form of oppositition and a *compositional* rule, respectively. 
+Thus, our model can be seen as an instance of the tension between productivity and reuse [e.g., @Odonnell2015productivity].
+A further test of our negation uncertainty model would be to see if usage-based metrics (e.g., frequency) correlated with the asymmetries explored here, namely the interpretative difference between an affixal negation and adverbial negation.
 
-- politeness, further inferences? (not unhappy -- *normally unhappy in this situation*)
-- connections to usage-based grammatical approaches
-    - fragment grammar (Tim O'Donnell, ...)
-    - Morgan \& Levy (2015)
-- formal modeling can rescue conflicting linguistic intuitions
-  
+\mht{politeness, further inferences? (not unhappy -- *normally unhappy in this situation*)}
   
 # Acknowledgements
 
