@@ -289,8 +289,8 @@ rs.listener.wp.expectation %>%
                          "Negated antonym", "Positive"),
                          labels = c("Antonym", "Negated\npositive",
                          "Negated\nantonym", "Positive")),
-         src = factor(src, levels = c("george orwell", "bonafide antonyms", "full uncertainty"),
-                      labels = c("logical negation\n(george orwell)", "bonafide antonyms", "uncertain parser"))) %>%
+         src = factor(src, levels = c("george orwell", "bonafide antonyms", "uncertain parser"),
+                      labels = c("logical negation\n(george orwell)", "bonafide antonyms", "full uncertainty"))) %>%
   ggplot(., aes( x = src, y = interpretation,
                  fill = utterance))+
     geom_col(position = position_dodge(0.8), 
@@ -331,7 +331,7 @@ Even though this model has *a priori* uncertainty about the correct interpretati
 
 Finally, the *full uncertainty model* considers the full set of logically possible lexica.
 This model predicts a quasi-ordering: *unhappy* $\approx$ *not happy* $<$ *not unhappy* $<$ *happy*.
-Even though the listener is uncertain about the parse for *unhappy* and *not happy*, when hearing *not unhappy*, the model reasons that a truly compositional, double negation is unlikely. 
+Even though the listener is uncertain about the proper interpretation for *unhappy* and *not happy*, when hearing *not unhappy*, the model reasons that a truly compositional, double negation is unlikely. 
 
 \mht{i think we could get a prediction for expt 2 / expt 3 (expl. vs. impl. alternatives) by conditioning the uncertain parsing model on all 4 (or at least more than 1) utterance, while keeping the lexicon fixed. for instance, to interpret *not unhappy*, the listener must ascribe *not* as logical negation and *un-* as contrary... if the listener must fit all the utterances to the same lexicon, that should make it more like the bonafide antonyms model... \mf{YES!}}
 
@@ -344,7 +344,7 @@ We design our behavioral experiments to test these predictions.
 
 # Behavioral experiments
 
-The *uncertain parse* model predicts that affixal negation (e.g., *unhappy*) and particle negation (e.g., *not happy*) will receive similar interpretations, while the negated antonym (e.g., *not unhappy*) will be interpreted more weakly than the simple positive form (e.g., *happy*).
+The *full uncertainty model* predicts that affixal negation (e.g., *unhappy*) and particle negation (e.g., *not happy*) will receive similar interpretations, while the negated antonym (e.g., *not unhappy*) will be interpreted more weakly than the simple positive form (e.g., *happy*).
 We contrast this quasi-ordering for *morphological anotnyms* (*unhappy* $\approx$ *not happy* $<$ *not unhappy* $<$ *happy*) with a full-ordering predicted for *lexical antonyms* (*short* $<$ *not tall* $<$ *not short* $<$ *tall*) by the *bonafide antonyms* model. 
 <!-- When there is no uncertainty about the correct parse of an antonym (e.g., because it has a distinct lexical entry e.g., *sad*), we predict a total ordering on interpretations: ANT $<$ NEGPOS $<$ NEGANT $<$ POS.  -->
 <!-- We designed our experiment in order to confirm this asymmetry between lexical and morphological antonyms. -->
