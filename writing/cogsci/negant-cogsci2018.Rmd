@@ -86,9 +86,13 @@ Do the two negatives make a positive?
 
 Negation is the semantic operation of forming an opposite, but there are multiple kinds of semantic opposition [@Horn1989:Natural]. 
 A *contrary opposition* is one where both predicates cannot be true at the same time, but both can be false.
-*Negative adjectives* (e.g., *sad*, *rude*) intuitively express contrary opposition to *positive adjectives* (*happy*, *polite*): it is conceivable that Jones is neither happy nor sad; there is a neutral middle ground.
+*Negative adjectives* (e.g., "sad", "rude") intuitively express contrary opposition to *positive adjectives* ("happy", "polite"): it is conceivable that Jones is neither happy nor sad; there is a neutral middle ground.
 In contrast, a *contradictory opposition* (e.g., *even/odd (positive integer)*), is one where falsity of one predicate entails truth of the other. 
-Modern standard logic with its proposition-level negation operator suggests that other meaning-opposing linguistic devices ---*particle negation* (e.g., "not happy") and *antonyms* (e.g., "unhappy")--- denote contradictory opposition.^[We use a somewhat idiosyncratic terminology here, so as to be maximally clear and concise in the distinctions most relevant for this paper. While *sad* is of course also an antonym of *happy*, we speak of negative and positive adjectives, and use "antonym" as shorthand for "antonym created by affixal negation". Also, we prefer "particle negation" for negation formed by *not* over the more accurate "adverbial negation", because of higher distinguishability from "affixal negation".]
+Contradictory opposition seems to manifest in *particle negation* (e.g., "not happy") and *antonyms* (e.g., "unhappy") because of its transparent mapping to proposition-level negation ($\neg$) in modern standard logic.^[
+  We use a somewhat idiosyncratic terminology here so as to be concise in the distinctions most relevant for this paper.
+  While "sad" is of course also an antonym of "happy", we speak of *negative* and *positive* adjectives, and reserve *antonym* for antonyms created by affixal negation (e.g., "un-"). 
+  Also, we use *particle negation* for negation formed by "not" over the more accurate "adverbial negation", because of higher distinguishability from "affixal negation".
+]
 If this is so, however, combining the two devices should cancel each other out: "not unhappy" means "happy".
 As @orwell1946politics argues:
 
@@ -97,17 +101,18 @@ As @orwell1946politics argues:
 Banal statements are given an appearance of profundity by means of the "not un-" formation. [$\ldots$] It should be possible to laugh the "not un-" formation out of existence by memorizing this sentence: "A not unblack dog was chasing a not unsmall rabbit across a not ungreen field." (p.$\thinspace$357)
 \end{quote}
 
-Instead, antonyms created by *affixal negation* (*un-*, *in-*, etc.) could form a contrary, like a negative adjective.
-Then, *happy* and *not unhappy* would be pragmatic alternatives; *not unhappy* could be pragmatically strengthened to something more specific than literally the negation of *unhappy*.
+Alterantively, antonyms created by affixal negation (*un-*, *in-*, etc.) could form a contrary, like a negative adjective.
+Then, *happy* and *not unhappy* would be pragmatic alternatives; *not unhappy* could be pragmatically strengthened to be more specific than literally the negation of *unhappy*.
 This logic alone, however, entails that *not unhappy* refers to a neutral or indifferent state [@Horn1991:Duplex], contra @Jespersen1924's intuition that *not unhappy* is a slightly positive state.
 It seems that *not happy* could also be an alternative [@Blutner2004:pragmatics], but how pragmatics contextually strengthens *not happy* has not been fully spelled out [@Krifka2007:Negated-antonyms].
-Furthermore, the meaning of *not happy* is at least as controversial as that of *unhappy*: @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning (i.e., affixal and particle negation are both contradictory in nature), while @Horn1989:Natural and @Krifka2007:Negated-antonyms disagree.
+Furthermore, the meaning of *not happy* is at least as controversial as that of *unhappy*: @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning (i.e., antonyms and negated positives are both contradictory in nature), while @Horn1989:Natural and @Krifka2007:Negated-antonyms disagree.
 
-Given this potential meaning underspecification of particle and affixal negation, we hypothesize that listeners too have uncertainty about how to interpret overt negation markers and that this uncertainty is resolved in context.
-We propose a probabilistic speaker-listener pragmatic reasoning model in the Rational Speech Act tradition [@Franke2015a; @Goodman2016:RSA], by combining previous work deriving interpretations for gradable adjectives by considerations of cooperative language use [@Lassiter2015; @Qing2014:Adjectives] with elements of lexical uncertainty [@Bergen2016] in order to model the indeterminacy about how to interpret overt negation markers.
+Given this potential meaning underspecification of antonyms and particle negation, we hypothesize that listeners too have uncertainty about how to interpret overt negation markers and that this uncertainty is resolved in context.
+We propose a probabilistic speaker-listener pragmatic reasoning model in the Rational Speech Act tradition [@Franke2015a; @Goodman2016:RSA],  to model the indeterminacy about how to interpret overt negation markers. 
+We combine previous work deriving interpretations for gradable adjectives by considerations of cooperative language use [@Lassiter2015; @Qing2014:Adjectives] with elements of lexical uncertainty [@Bergen2016].
 We compare model predictions to novel data from three experiments that measure interpretations for positive and negative adjectives (*happy*/*sad*) as well as antonyms (*unhappy*) and particle negations (*not happy/sad/unhappy*) in different contexts, uncovering subtle but reliable differences.
-These findings suggest that pragmatic reasoning can utilize the uncertainty in logical meanings to derive finer-grained interpretations by contrasting multiple interpretations of multiple alternative utterances simultaneously.
-\mht{this last sentence is a behemoth \mf{is that a good thing? from Wikipedia: "Metaphorically, the name has come to be used for any extremely large or powerful entity."}}
+These findings suggest that pragmatic reasoning can utilize uncertainty in logical meanings to derive finer-grained interpretations through the competition of multiple interpretations of multiple alternative utterances.
+<!-- \mht{this last sentence is a behemoth \mf{is that a good thing? from Wikipedia: "Metaphorically, the name has come to be used for any extremely large or powerful entity."}}\mht{strictly speaking: I prefer my mythical creatures in metaphorically bite-size chunks} -->
 
 <!-- In Experiment 1, we measure uncover this ordering for antonym pairs defined with unique lexical items (e.g., "tall"/"short") but not for morphological antonyms (e.g., "happy"/"unhappy").  -->
 <!-- In Experiment 2, we show that morphological antonyms to create a reliable ordering when context clearly provides a speaker's alternatives utterances. -->
@@ -219,7 +224,7 @@ S_{1}(u \mid x, \theta) &\propto \exp{(\alpha \cdot \ln {L_{0}(x \mid u, \theta)
 L_{0}(x \mid u, \theta) &\propto {\delta_{x> \theta} \cdot P(x)} \label{eq:L0}
 \end{align}
 
-Eqs.$\thinspace$\ref{eq:L1}-\ref{eq:L0} are a Rational Speech Act (RSA) model, a recursive Bayesian model wherein a pragmatic listener $L_{1}$ tries to resolve the intended meaning of an utterance $u$ by combining their prior beliefs $P(x)$ about the degree $x$ of Jones' happiness, with the generative process of the utterance, a speaker model $S_1$.
+Eqs.$\thinspace$\ref{eq:L1}-\ref{eq:L0} are a Rational Speech Act (RSA) model, a recursive Bayesian model wherein a pragmatic listener $L_{1}$ tries to resolve the intended meaning of an utterance $u$ (e.g., "Jones is happy") by combining their prior beliefs $P(x)$ about the degree $x$ of Jones' happiness, with the generative process of the utterance, a speaker model $S_1$.
 The speaker model $S_1$  describes an approximately rational Bayesian agent (with degree of rationality $\alpha$) trying to inform a naive listener $L_0$ (Eq.$\thinspace$\ref{eq:L0}) about the state of the world $x$.
 <!-- In the context of adjective interpretation, the state of the world is given by the value of the scalar degree $x$ (e.g., the height of the referent). -->
 The literal listener $L_0$ updates their prior beliefs $P(x)$ via an utterance's literal meaning, given by the threshold function described above.
