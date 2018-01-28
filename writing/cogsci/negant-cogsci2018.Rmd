@@ -47,6 +47,9 @@ theme_set(theme_few())
 orange.purple.color.palette <- 
   #c("#fdb863", "#5e3c99", "#e66101", "#b2abd2")
   c( "#b2abd2", "#e66101", "#5e3c99","#fdb863")
+orange.purple.blue.color.palette <- 
+  #c("#fdb863", "#5e3c99", "#e66101", "#b2abd2")
+  c("#74a9cf", "#0570b0","#5e3c99",  "#e66101", "#b2abd2","#fdb863")
 ```
 
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
@@ -72,19 +75,19 @@ orange.purple.color.palette <-
 
 If you hear "Jones is happy" you understand that Jones' happiness ---a *gradable property*--- exceeds a certain threshold [@kennedy2005scale; @Kennedy2007].
 But what about "Jones is not unhappy"? 
-Do the two negatives make a positive (i.e., Jones' happiness exceeds the same threshold)?
+Do the two negatives make a positive?
 @Jespersen1924 believed not:
 
 > The two negatives do not exactly cancel one another... the longer expression is always
 > weaker: "this is not unknown to me" or "I am not ignorant of this" means *I am to some extent
 > aware of it*, etc. (p.832)
 
-Negation is the semantic operation of forming an opposite, but there are several kinds of semantic opposition [@Horn1989:Natural]. 
+Negation is the semantic operation of forming an opposite, but there are multiple kinds of semantic opposition [@Horn1989:Natural]. 
 A *contrary opposition*, such as between "happy" and "sad", is one where both predicates cannot be true at the same time, but both can be false. 
-A *contradictory opposition*, such as between "pure" and "impure", is one where falsity of one predicate entails truth of the other. 
+A *contradictory opposition*, such as between "even" and "odd", is one where falsity of one predicate entails truth of the other. 
 In other words, contrary opposites about gradable terms allow for a neutral middle ground, unlike contradictory opposites. 
-In language, *lexical antonyms* (e.g., "happy" / "sad" or "polite" / "rude") intuitively express contrary opposition: Jones can be neither happy nor sad.
-Other negation-inducing linguistic devices ---*particle negation* (e.g., "not happy") and *affixal negation* (e.g., "unhappy")--- could then denote contradictory opposition.
+In language, *negative-form adjectives* (e.g., "sad", "rude") intuitively express contrary opposition to positive-form adjectives ("happy", "polite"): Jones is allowed to be neither happy nor sad.
+Other meaning-opposing linguistic devices ---*particle negation* (e.g., "not happy") and *antonyms* (e.g., "unhappy")--- could then denote contradictory opposition.
 If this is so, however, combining the two devices should cancel each other out: "not unhappy" means "happy".
 As @orwell1946politics argues:
 
@@ -93,17 +96,17 @@ As @orwell1946politics argues:
 > memorizing this sentence: "A not unblack dog was chasing a not unsmall rabbit across a not
 > ungreen field." \mf{pageref}
 
-Instead, affixal negation ("un-") could form a contrary, like a lexical antonym.
-Then, "happy" and "not unhappy" would be pragmatic alternatives; "not unhappy" could be pragmatically strengthened  to something more specific than literally the negation of "unhappy".
+Instead, antonyms created by affixal negation ("un-") could form a contrary, like a negative adjective.
+Then, "happy" and "not unhappy" would be pragmatic alternatives; "not unhappy" could be pragmatically strengthened to something more specific than literally the negation of "unhappy".
 This logic alone, however, entails that "not unhappy" refers to a neutral or indifferent state [@Horn1991:Duplex], contra @Jespersen1924's intuition that "not unhappy" is a slightly positive state.
 "Not happy" seems like it's also an alternative [@Blutner2004:pragmatics], but how pragmatics contextually strengthens "not happy" has not been fully spelled out [@Krifka2007:Negated-antonyms].
 Furthermore, the meaning of "not happy" is at least as controversial as "unhappy": @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning (i.e., affixal and particle negation are both contradictory in nature), while @Horn1989:Natural and @Krifka2007:Negated-antonyms disagree.
 
-Given this indeterminacy in meaning of particle ("not") and affixal ("un-") negation, we hypothesize that listeners too have uncertainty about how to interpret over negation markers and that this uncertainty is resolved in context.
+Given this indeterminacy in meaning of particle negation ("not") and affixal antonyms ("un-"), we hypothesize that listeners too have uncertainty about how to interpret overt negation markers and that this uncertainty is resolved in context.
 We extend previous work deriving interpretations for gradable adjectives by considerations of cooperative language use [@Lassiter2015; @Qing2014:Adjectives] to incorporate compositional expressions involving various forms of negation: how happy or sad is an agent who is reported to be *not happy*, *not sad*, *unhappy* or *not unhappy*? 
 We propose a probabilistic speaker-listener pragmatic reasoning model in the Rational Speech Act tradition [@Franke2015a; @Goodman2016:RSA], introducing elements of lexical uncertainty [@Bergen2016] in order to model the indeterminacy about how to interpret overt negation markers.
 We investigate the empirical phenomena in three experiments that measure interpretations for
-lexical antonyms ("happy"/"sad") as well as affixal and particle negations in different contexts, uncovering subtle but reliable differences.
+positive- and negative-form adjectives ("happy"/"sad") as well as affixal antonyms and particle negations in different contexts, uncovering subtle but reliable differences.
 These findings suggest that pragmatic reasoning can utilize the uncertainty in logical meanings
 to derive finer-grained interpretations by contrasting multiple interpretations of multiple
 alternative utterances simultaneously.
@@ -276,6 +279,11 @@ To better understand this model, consider three cases whose qualitative predicti
 
 ```{r modelPredictions, fig.cap="Predictions for the strengths of adjective interpretations for three model variants.", fig.env = "figure", fig.pos = "t", fig.width=3.5, fig.height=3, fig.align = "center"}
 load('cached_results/rsa_model_predictions.RData') # rs.listener.wp.expectation
+
+# new_type = ifelse(antonym_type == "lexical", 
+#                            ifelse(adjective_type == "Antonym", "Negative", 
+#                             ifelse(adjective_type == "Negated Antonym", "Negated negative", 
+#                                    as.character(adjective_type))), as.character(adjective_type))
 
 rs.listener.wp.expectation %>%
   mutate(utterance = factor(utterance, levels = c("Antonym", "Negated positive",
@@ -485,11 +493,42 @@ We again find a subset of responses to the negated morphological antonym ("not u
 ```{r expt1results}
 load("cached_results/oneSlider_bootstrappedCIs.RData") # df.oneSlider.ci
 
-fig.expt1 <- ggplot(df.oneSlider.ci %>%
-                      mutate(src = 'implicit'), aes(x = antonym_type,
+# fig.expt1 <- ggplot(df.oneSlider.ci %>%
+#                       mutate(src = 'implicit'), aes(x = antonym_type,
+#                       y = mean,
+#                        ymin = ci_lower, ymax = ci_upper,
+#                        fill = adjective_type,
+#                       group = adjective_type
+#               ))+
+#   geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+#   geom_errorbar(position = position_dodge(0.8), color = 'black',
+#                 width = 0.4)+
+#   #coord_flip()+
+#   facet_wrap(~src)+
+#   xlab("")+
+#   #scale_fill_viridis(discrete = T, name="Adjective type")+
+#   scale_fill_manual(name="Adjective type",
+#                     values = orange.purple.color.palette,
+#                     guide = guide_legend(reverse=TRUE))+
+#   ylab("mean normalized rating")+
+#   theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
+#   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
+
+fig.expt1 <- df.oneSlider.ci %>%
+  ungroup() %>%
+  mutate(
+    new_type = ifelse(antonym_type == "lexical", 
+                           ifelse(adjective_type == "Antonym", "Negative", 
+                            ifelse(adjective_type == "Negated antonym", "Negated negative", 
+                                   as.character(adjective_type))), as.character(adjective_type)),
+    antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
+                          labels = c("negative", "antonym")),
+    src = 'implicit'
+      ) %>%
+  ggplot(., aes(x = antonym_type,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
-                       fill = adjective_type,
+                       fill = new_type,
                       group = adjective_type
               ))+
   geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
@@ -500,10 +539,14 @@ fig.expt1 <- ggplot(df.oneSlider.ci %>%
   xlab("")+
   #scale_fill_viridis(discrete = T, name="Adjective type")+
   scale_fill_manual(name="Adjective type",
-                    values = orange.purple.color.palette,
-                    guide = guide_legend(reverse=TRUE))+
+                    values = orange.purple.blue.color.palette,
+                    guide = guide_legend(reverse=F),
+                    breaks = c("Negative", "Negated negative", 
+                               "Antonym", "Negated antonym", 
+                               "Positive", "Negated positive"))+
   ylab("mean normalized rating")+
-  theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
+  theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ),
+        legend.position = 'bottom')+
   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
 
 ```
@@ -511,10 +554,16 @@ fig.expt1 <- ggplot(df.oneSlider.ci %>%
 ```{r expt2results}
 load("cached_results/fourSlider_bootstrappedCIs.RData") # df.fourSlider.ci
 fig.expt2 <- ggplot(df.fourSlider.ci %>%
-                      mutate(src = 'explicit'), aes(x = antonym_type,
+                      mutate(src = 'explicit',
+                             new_type = ifelse(antonym_type == "lexical", 
+                           ifelse(adjective_type == "Antonym", "Negative", 
+                            ifelse(adjective_type == "Negated Antonym", "Negated negative", 
+                                   as.character(adjective_type))), as.character(adjective_type)),
+                               antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
+                          labels = c("negative", "antonym"))), aes(x = antonym_type,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
-                       fill = adjective_type,
+                       fill = new_type,
                       group = adjective_type
               ))+
   geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
@@ -526,14 +575,15 @@ fig.expt2 <- ggplot(df.fourSlider.ci %>%
   xlab("")+
   #scale_fill_viridis(discrete = T, name="Adjective type")+
   scale_fill_manual(name="Adjective type",
-                    values = orange.purple.color.palette,
-                    guide = guide_legend(reverse=TRUE))+
+                    values = orange.purple.blue.color.palette,
+                    guide = guide_legend(reverse=TRUE)
+                    )+
   ylab("mean normalized rating")+
     theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
 ```
 
-```{r expt-results, fig.cap="Experimental results. A: Expt 1. B: Expt 2. C: Expt 3.", fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=3.3, fig.align = "center", set.cap.width=T, num.cols.cap=2}
+```{r expt-results, fig.cap="Empirical ratings for scales defined with negative-form adjectives (e.g., \"sad\") and antonyms (e.g., \"unhappy\"). A, B: Expts. 1, 2, respectively; participants rated all adjective types. C: Four between-participants conditions. Left end-points of rating scales were defined by the scale type (negative vs. antonym).", fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=3.3, fig.align = "center", set.cap.width=T, num.cols.cap=2}
 
 load(file = "cached_results/bootstrappedCIs.RData") # d.full.boot
 
@@ -546,11 +596,17 @@ fig.bs.ci <- d.full.boot %>%
            factor(adjective_type_rescaled,
               levels = c("antonym", "neg_positive", "neg_antonym","positive"),
               labels = c("Antonym", "Negated positive",
-                         "Negated antonym", "Positive"))) %>%
+                         "Negated antonym", "Positive")),
+         new_type = ifelse(antonym_type == "lexical", 
+                           ifelse(adjective_type_rescaled == "Antonym", "Negative", 
+                            ifelse(adjective_type_rescaled == "Negated antonym", "Negated negative", 
+                                   as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
+             antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
+                          labels = c("negative", "antonym"))) %>%
   ggplot(., aes(x = antonym_type,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
-                       fill = adjective_type_rescaled,
+                       fill = new_type,
                       group = adjective_type_rescaled
               ))+
   geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
@@ -560,8 +616,11 @@ fig.bs.ci <- d.full.boot %>%
   xlab("Antonym type")+
   #scale_fill_viridis(discrete = T, name="Adjective type")+
   scale_fill_manual(name="Adjective type",
-                    values = orange.purple.color.palette,
-                    guide = guide_legend(reverse=F))+
+                    values = orange.purple.blue.color.palette,
+                    guide = guide_legend(reverse=F),
+                    breaks = c("Negative", "Negated negative", 
+                               "Antonym", "Negated antonym", 
+                               "Positive", "Negated positive"))+
   facet_wrap(~condition, scales = 'free', nrow = 1)+
   ylab("mean normalized rating")+
   xlab("")+
@@ -569,19 +628,21 @@ fig.bs.ci <- d.full.boot %>%
   #scale_y_reverse(limits = c(1.25, -1.1), breaks = c(1, 0, -1))
   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
 
-legend <- get_legend(fig.bs.ci + theme(legend.position="bottom"))
-prow <- plot_grid( fig.expt1 + theme(legend.position="none",
+legend <- get_legend(fig.bs.ci + theme(legend.position="bottom", legend.margin=margin(0,0,0,0),
+        legend.box.margin=margin(0,0,0,0)))
+prow <- plot_grid( 
+  fig.expt1 + theme(legend.position="none",
                                      plot.margin = unit(c(6,0,6,0), "pt")),
-           fig.expt2 + theme(legend.position="none",
-                             plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
-           fig.bs.ci + theme(legend.position="none",
-                             plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
+   fig.expt2 + theme(legend.position="none",
+                     plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
+   fig.bs.ci + theme(legend.position="none",
+                     plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
            align = 'vh',
            labels = c("A", "B", "C"),
            hjust = -1,
            nrow = 1, rel_widths = c(1,1,2)
            )
-plot_grid( prow, legend, ncol = 1, rel_heights = c(1.2, .1))
+plot_grid( prow, legend, ncol = 1, rel_heights = c(1.2, .2))
 ```
 
 
