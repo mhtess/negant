@@ -394,17 +394,17 @@ var listener1 = cache(function(list_of_utterances) {
       observe(S1, u)
     }, list_of_utterances, state)
 
-    return extend(lexicon, {states: _.fromPairs(_.zip(list_of_utterances, state))})
+    return extend(lexicon, {state: _.fromPairs(_.zip(list_of_utterances, state))})
   }})
 }, 10000);
 '
 ```
 
-```{r}
+```{r singleUtteranceModelCall}
 uncertainHasThresholdListenerCall <- '
 _.fromPairs(map(function(u){
   display(u)
-  var post = listener1(u)
+  var post = listener1([u])
   display(u + " __ ownThreshold(un) = " + expectation(post, function(x){return x.compositional_un }))
   display(u + " __ ownThreshold(not) = " + expectation(post, function(x){return x.compositional_un }))
   return [u, marginalize(post, "state")]
@@ -412,33 +412,32 @@ _.fromPairs(map(function(u){
 '
 ```
 
-```{r}
+```{r multipleUtterancesModelCall}
 multipleUtterancesListenerCall <- '
 var post = listener1(["happy", "not_happy", "unhappy", "not_unhappy"])
 display(" __ comp(un) = " + expectation(post, function(x){return x.compositional_un }))
 display(" __ comp(not) = " + expectation(post, function(x){return x.compositional_not }))
-// _.fromPairs(
-//  ["not_happy", marginalize(marginalize(post, "states"), "not_happy")],
-//  ["unhappy", marginalize(marginalize(post, "states"), "unhappy")]
-// )
-marginalize(post, "states")
+marginalize(post, "state")
 '
 ```
 
 
 ```{r runSingle}
-
-rs.listener.wp <- webppl(paste(rsaBinsCoarserGauss,
+rs.listener.wp.all4 <- webppl(paste(rsaBinsCoarserGauss,
                                  utils, 
                                  uncertainHasThresholdsRSA,
                                  multipleUtterancesListenerCall,
                                  sep = '\n'),
-                           data = list(compositional_un = 0.5, compositional_not = 0.5), 
+                           data = list(compositional_un = 0.5, 
+                                       compositional_not = 0.5), 
                            data_var = "lexicaPriorProbs")
-rs.listener.wp %>%
-  gather(key, val, -prob) %>%
-  group_by(key, val) %>%
-  summarize(marginalProb = sum(prob)) %>%
+
+rs.listener.wp.all4.tidy <- rs.listener.wp.all4  %>%
+  gather(support, utterance, -prob) %>%
+  group_by(support, utterance) %>%
+  summarize(probs = sum(prob),
+            src = )
+%>%
   ggplot(., aes( x = val, y = marginalProb))+
   geom_col(position = position_dodge())+
   facet_wrap(~key)
@@ -457,15 +456,9 @@ rs.listener.wp %>%
 
 
 ```{r runLUmodel}
-
-# model.variants in terms of prior probabilities of different lexica
-    # {un: "compositional", not: "compositional"},
-    # {un: "noncompositional", not: "compositional"},
-    # {un: "compositional", not: "noncompositional"},
-    # {un: "noncompositional", not: "noncompositional"}
 model.variants = list(
-  "uncertain parser" = list(compositional_un = 0.5, compositional_not = 0.5),
-  "bonafide antonyms" =  list(compositional_un = 0, compositional_not = 0.5),
+  "full uncertainty" = list(compositional_un = 0.5, compositional_not = 0.5),
+  "bonafide contraries" =  list(compositional_un = 0, compositional_not = 0.5),
   "george orwell" =  list(compositional_un = 1, compositional_not = 1)
 )
 
@@ -475,6 +468,7 @@ rs.listener.wp.expectation <- data.frame()
 for (modelName in names(model.variants)){
   lexiconPrior <- model.variants[[modelName]]
   
+  # run model variant with 4 independent utterances
   rs.listener.wp <- webppl(paste(rsaBinsCoarserGauss,
                                    utils, 
                                    uncertainHasThresholdsRSA,
@@ -483,16 +477,38 @@ for (modelName in names(model.variants)){
                              data = lexiconPrior, 
                              data_var = "lexicaPriorProbs")
   
+  # run mode variant with all 4 utterances simultaneous
+  rs.listener.wp.all4 <- webppl(paste(rsaBinsCoarserGauss,
+                                 utils, 
+                                 uncertainHasThresholdsRSA,
+                                 multipleUtterancesListenerCall,
+                                 sep = '\n'),
+                           data = lexiconPrior, 
+                           data_var = "lexicaPriorProbs")
+
+  rs.listener.wp.all4.tidy <- rs.listener.wp.all4  %>%
+    gather( utterance,support, -prob) %>%
+    group_by(support, utterance) %>%
+    summarize(probs = sum(prob),
+              src = modelName, utterances = 'simultaneous')
+    
   rs.listener.wp.tidy.temp <- bind_rows(
+    bind_rows(
         data.frame(rs.listener.wp$happy) %>% 
+          rename(support = happy) %>%
           mutate(utterance = "happy"),
         data.frame(rs.listener.wp$unhappy) %>% 
+          rename(support = unhappy) %>%
           mutate(utterance = "unhappy"),
         data.frame(rs.listener.wp$not_unhappy) %>% 
+          rename(support = not_unhappy) %>%
           mutate(utterance = "not_unhappy"),
         data.frame(rs.listener.wp$not_happy) %>% 
+          rename(support = not_happy) %>%
           mutate(utterance = "not_happy")
-      ) %>% mutate(src = modelName)
+      ) %>% mutate(src = modelName, utterances = 'independent'),
+    rs.listener.wp.all4.tidy)
+  
   rs.listener.wp.tidy <- bind_rows(
     rs.listener.wp.tidy, rs.listener.wp.tidy.temp
   )
@@ -500,13 +516,16 @@ for (modelName in names(model.variants)){
   rs.listener.wp.expectation <- bind_rows(
     rs.listener.wp.expectation, 
     rs.listener.wp.tidy.temp %>%
-      group_by(utterance) %>% summarize(interpretation = sum(probs * support)) %>%
+      group_by(utterances, utterance) %>% summarize(interpretation = sum(probs * support)) %>%
       mutate(src = modelName)
   )
   
   rs.listener.wp.samples <- bind_rows(
     rs.listener.wp.samples, 
-    get_samples(rs.listener.wp.tidy.temp %>% rename(prob = probs), 10000) %>% mutate(src = modelName)
+    get_samples(rs.listener.wp.tidy.temp %>% filter(utterances == "independent") %>% rename(prob = probs), 10000) %>%
+      mutate(src = modelName, utterances = "independent"),
+    get_samples(rs.listener.wp.tidy.temp %>% filter(utterances == "simultaneous") %>% rename(prob = probs), 10000) %>%
+      mutate(src = modelName, utterances = "simultaneous")
   )
 }
 
@@ -552,7 +571,7 @@ ggplot(rs.listener.wp.samples,
   xlab("Degree (e.g., of happiness)")+
   ylab("Posterior probability density")+
   scale_x_continuous(breaks = c(-1, 0, 1), limits = c(-1.5, 1.5))+
-  facet_wrap(~src)
+  facet_grid(utterances~src)
 
 #ggsave("figs/L1_posteriors_wCost3_alpha1.png", width = 6, height = 4)
 ```
@@ -569,7 +588,8 @@ ggplot(rs.listener.wp.expectation,
                     values = orange.purple.color.palette,
                     guide = guide_legend(reverse=TRUE))+
   xlab("")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))+
+  facet_wrap(~utterances)
 
 #ggsave("figs/L1_means_wCost3_alpha1.png", width = 4, height = 3.5)
 ```
