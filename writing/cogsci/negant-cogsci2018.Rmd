@@ -488,17 +488,24 @@ The *full uncertainty* model predicts a full ordering of the adjective set when 
 
 ### Methods
 
+
+```{r expt2_subjInfo}
+load("cached_results/time_summary_e2.RData") # d.expt2.time.summary
+load("cached_results/english_summary_e2.RData") # d.l1.5.nativeEnglish
+```
+
+
 #### Participants
 
-We recruited 50 participants MTurk.
+We recruited 50 participants from MTurk.
 This number was arrived at with the intention of getting approximately 25 ratings for each unique item in the experiment.
-The experiment took on average N minutes and participants were compensated \$N for their work.
+The experiment took on average `r round(d.expt1.time.summary[[1, "aveTime"]],1)` minutes and participants were compensated \$0.80 for their work.
 
 #### Procedure and Materials
 
 The experimental materials were the same as in \text{Expt.$\thinspace$1}. 
-The procedure differed in that participants saw and rated all four sentence types simultaneously (\figref{fig:experiment-slides}B). 
-In addition, the endpoints of the slider bars were relabeled to "the most \{\textsc{pos}, \textsc{ant}\} person *in the world*"; without "in the world", there is a salient interpretation of the endpoints as indicating  "the most \{\textsc{pos}, \textsc{ant}\} person (of these four)".
+The procedure differed in that participants saw and rated all four adjective types simultaneously (\figref{fig:experiment-slides}B). 
+In addition, the endpoints of the slider bars were relabeled to "the most \{\textsc{positive}, \textsc{opposite}\} person *in the world*"; without "in the world", there is a salient interpretation of the endpoints as indicating  "the most \{\textsc{positive}, \textsc{opposite}\} person (of these four)".
 
 ### Results
 
@@ -509,10 +516,13 @@ rs1.expt2.coef <- rs1.expt2.helmert.summary[["coefficients"]]
 rs1.expt2.simple.morph.coef <- rs1.expt2.simpleMorph.summary[["coefficients"]]
 ```
 
-We hypothesized that attested differences in meaning between negated positives and morphological antonyms can be drawn out with explicit comparisons to alternative utterances.
-In this experiment, with the alternatives explicit, we find that participants rate morphological antonyms as significantly more negative than negated positives: $\beta = `r round(rs1.expt2.simple.morph.coef["st1","Estimate"],3)`$, $SE =  `r round(rs1.expt2.simple.morph.coef["st1","Std. Error"],4)`$, t$(`r round(rs1.expt2.simple.morph.coef["st1","df"], 1)`) = `r round(rs1.expt2.simple.morph.coef["st1","t value"],2)`, p = `r round(rs1.expt2.simple.morph.coef["st1","Pr(>|t|)"], 4)`$.
-The interaction between negation type (antonym vs.\text{~}negated positive) and type of antonym (morphological vs.\text{~}lexical) was also significant: $\beta = `r round(rs1.expt2.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt2.coef["antonym_typelexical:st1","Std. Error"],4)`$, t$(`r round(rs1.expt2.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt2.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt2.coef["antonym_typelexical:st1","Pr(>|t|)"], 4)`$, suggesting that the explicit alternatives exaggerates differences in interpretation for both kinds of adjective sets.
-We again find a subset of responses to the negated morphological antonym (*not unhappy*) are appreciably below the midpoint, suggesting again a small effect of politeness on interpretation. 
+`r sum(!d.l1.5.nativeEnglish$englishNative)` participants were excluded for self-reporting a native language other than English, leaving a remainder of `r sum(d.l1.5.nativeEnglish$englishNative)` participants for these analyses.
+
+We hypothesized that attested differences in meaning between negated positives and antonyms can be drawn out with explicit comparisons to alternative utterances.
+Figure \ref{fig:expt-results}B shows the mean normalized ratings for each adjective type in each opposite type set.
+In this experiment, with the alternatives explicit, we find that participants rate antonyms as significantly more negative than negated positives: $\beta = `r round(rs1.expt2.simple.morph.coef["st1","Estimate"],3)`$, $SE =  `r round(rs1.expt2.simple.morph.coef["st1","Std. Error"],4)`$, t$(`r round(rs1.expt2.simple.morph.coef["st1","df"], 1)`) = `r round(rs1.expt2.simple.morph.coef["st1","t value"],2)`, p = `r round(rs1.expt2.simple.morph.coef["st1","Pr(>|t|)"], 4)`$.
+The interaction between adjective type (antonym vs.\text{~}negated positive) and opposite type (antonyms vs.\text{~}opposites) was also significant: $\beta = `r round(rs1.expt2.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt2.coef["antonym_typelexical:st1","Std. Error"],4)`$, t$(`r round(rs1.expt2.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt2.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt2.coef["antonym_typelexical:st1","Pr(>|t|)"], 4)`$, suggesting that the explicit alternatives exaggerates differences in interpretation for both kinds of adjective sets.
+We again find a subset of responses to the negated antonym (*not unhappy*) are appreciably below the midpoint, suggesting again a small effect of politeness on interpretation. 
 
 
 ```{r expt1results}
@@ -671,7 +681,7 @@ plot_grid( prow, legend, ncol = 1, rel_heights = c(1.2, .2))
 ```
 
 
-## Experiment 3: Large-scale, within-scale replication
+## Experiment 3: Large-scale, within-item replication
 
 \text{Expts$\thinspace$1 \& 2} revealed an asymmetry between lexical and morphological antonyms. 
 Whereas lexical antonyms are clearly distinguished from negated positives (e.g., *not happy*), morphological antonyms were not. 
