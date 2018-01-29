@@ -360,6 +360,10 @@ anova(rs.7.helmert.0, rs.7.helmert)
 
 # try model with inverse random effect structure?
 ```
+```{r}
+plot(rs.7.helmert)
+qqnorm(residuals(rs.7.helmert))
+```
 
 
 "Simple effects"

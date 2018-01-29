@@ -411,7 +411,7 @@ anova(rs2.helmert.morph.simpler1, rs2.helmert.morph)
 
 rs2.helmert.morph.summary <- summary(rs2.helmert.morph)
 #save(rs2.helmert.morph.summary, file =
-       "../cached_results/regression_adjTypeXcontext_morph.RData")
+       #"../cached_results/regression_adjTypeXcontext_morph.RData")
 
 
 summary(rs2.helmert.morph)
@@ -528,18 +528,29 @@ rs1.helmert.implicit.simple.morph <- lmer(response ~ adj_type +
                               condition == "implicit")
                      )
 
-summary(rs1.helmert.implicit.simple.morph)
+rs1.simple.morph.implicit.summary <- summary(rs1.helmert.implicit.simple.morph)
+
+save(rs1.simple.morph.implicit.summary, file =
+       "../cached_results/regression_simple_adjType_morph_implicit.RData")
+
+rs1.simple.morph.implicit.summary
 ```
 
 ```{r reg.simple.lex.implicit}
-rs.7.helmert.lex.simple <- lmer(response ~ st + 
-                       (1 + st | workerid) + 
-                       (1 | positive),
-                     data = d.l1.natEng.rescaled %>%
-                       filter(antonym_type == "lexant")
+rs1.helmert.implicit.simple.lex <- lmer(response ~ adj_type + 
+                       (1 + adj_type | workerid) + 
+                       (1  | item),
+                     data = d.full.natEng %>%
+                       filter(antonym_type == "lexant",
+                              condition == "implicit")
                      )
 
-summary(rs.7.helmert.lex.simple)
+rs1.simple.lex.implicit.summary <- summary(rs1.helmert.implicit.simple.lex)
+
+save(rs1.simple.lex.implicit.summary, file =
+       "../cached_results/regression_simple_adjType_lex_implicit.RData")
+
+rs1.simple.lex.implicit.summary
 ```
 
 
