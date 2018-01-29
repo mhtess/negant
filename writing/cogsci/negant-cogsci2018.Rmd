@@ -250,14 +250,16 @@ The pragmatic listener has uncertainty about $\theta$, which comes from an uninf
 
 
 The proportionality in Eq.$\thinspace$\ref{eq:S1} implies normalization over a set of alternative utterances (potentially differentiated by their cost).
-We consider the alternative set to composed of four utterances: \{*happy*, *not happy*, *unhappy*, *not unhappy*\}, which we will refer to as \{positive, negated positive, antonym, and negated antonym\} [@Blutner2004:pragmatics; @Krifka2007:Negated-antonyms].
+Our primary focus is on an alternative set composed of a positive adjective, its antonym, and their respective negations [e.g., \{*happy*, *not happy*, *unhappy*, *not unhappy*\}; @Blutner2004:pragmatics; @Krifka2007:Negated-antonyms].
+<!-- We consider two such alternative sets: postives, negatives, and their negations (e.g., \{*tall*, *not tall*, *short*, *not short*\}) and positives, antonyms, and their negations  -->
 We posit that listeners have uncertainty about whether each negation marker (*not*, *un-*) expresses contradictory or contrary opposition but maintain structural constraints on composition.
 If $Hx$ expresses that $x$ is happy, contradictory opposition is standard, bivalent, proposition-level negation $\neg Hx$.
-Contrary opposition is made by a predicate-forming operation $\tilde{H}x$ which introduces its own free threshold $\theta_{\tilde{h}}$ for gradable predicates.
+Contrary opposition is made by a predicate-forming operation $\tilde{H}x$ which introduces its own free threshold $\theta_{\tilde{H}}$ for gradable predicates.
 The latter is not iterable [@Horn1989:Natural; @sep-negation], so while it makes sense to iterate $\neg \neg Hx$, it is impossible to iterated contrary negation. 
 <!-- It is, however possible, to have $\neg \tilde{H}x$.  -->
 <!-- But it is not possible to have $\neg$ in the scope of $\tilde{H}x$. -->
 Consequently, *not happy* and *unhappy* can both be construed as either $\neg Hx$ or $\tilde{H}x$, while *not unhappy* can receive two interpretations, namely $\neg \neg Hx$ and $\neg \tilde{H}x$ (Table$\thinspace$\ref{tab:Interpretations}).
+<!-- Negative adjectives (e.g., "short", discussed later) have no overt negation marker, and thus are assumed to be contraries $\tilde{H}x$, which receive their own thresholds $\theta_{\tilde{H}}$. -->
 
 
 <!-- cases, distinguished by what antonym is assumed for a positive form like *happy*. -->
@@ -269,7 +271,7 @@ Consequently, *not happy* and *unhappy* can both be construed as either $\neg Hx
 
 
 The listener's uncertainty about how to interpret negation markers is formally captured in our probabilistic model as uncertainty about the lexicon $\mathcal{L}$ the speaker is likely to use [@Bergen2016]. 
-We consider the set of all combinations of logically possible interpretations of negated expressions (Table$\thinspace$\ref{tab:Interpretations}) as the set of possible lexica, and assume, for simplicity, that the listener treats all lexica as equally likely *a priori*.
+We consider the set of all combinations of logically possible interpretations of negated expressions in the alternative set as the set of possible lexica (Table$\thinspace$\ref{tab:Interpretations}), and assume, for simplicity, that the listener treats all lexica as equally likely *a priori*.
 <!-- (even when we considers only a proper subset of the logically possible lexica, as in some model variants investigated below).  -->
 Adding such lexical uncertainty to the threshold-inference model above, Eq.$\thinspace$\ref{eq:L1} becomes:
 
@@ -279,7 +281,7 @@ L_{1}(x, \theta, \mathcal{L} \mid u) &\propto S_{1}(u \mid x, \theta, \mathcal{L
 \end{align}
 
 \noindent where $\mathbf{\theta}$ is a now a vector of relevant thresholds.
-To better understand this model, consider three cases whose qualitative predictions are displayed in Figure$\thinspace$\ref{fig:modelPredictions}.^[These model predictions assume the following model parameters: $P(x) = \mathcal{N}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 1; \text{cost}(\mathit{not}) = 2$.]
+To better understand this model, we consider three cases whose qualitative predictions are displayed in Figure$\thinspace$\ref{fig:modelPredictions}.^[These model predictions assume the following model parameters: $P(x) = \mathcal{N}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 1; \text{cost}(\mathit{not}) = 2$.]
 
 ```{r modelPredictions, fig.cap="Predictions for the strengths of adjective interpretations for three model variants.", fig.env = "figure", fig.pos = "t", fig.width=3.5, fig.height=3, fig.align = "center"}
 load('cached_results/rsa_model_predictions.RData') # rs.listener.wp.expectation
@@ -323,11 +325,11 @@ rs.listener.wp.expectation %>%
 ```
 
 The *logical negation model* is based on the intuition of George Orwell that negation markers only express contradictory opposition. 
-This model does not differentiate between negated antonym *not unhappy* and positive *happy*, nor negated positives and antonyms.
+This model does not have lexical uncertainty about overt negation markers and, consequently, does not differentiate between negated antonym *not unhappy* and positive *happy*, nor negated positives and antonyms.
 
-The *bonafide antonyms model* either assumes that affixal negation (*unhappy*) conveys contrary opposition, while maintaining uncertainty about the meaning of particle negation (*not happy*).
+The *bonafide contraries model* either assumes that antonyms (*unhappy*) convey contrary opposition, while maintaining uncertainty about the meaning of particle negation (*not happy*).
 This model provides stronger interpretations to positives than to negated antonyms, and stronger interpretations to antonyms than to negated positives, consistent with the prediction of @Krifka2007:Negated-antonyms. 
-That is, the *bonafide antonyms* model predicts a full ordering: *unhappy* $\approx$ *not happy* $<$ *not unhappy* $<$ *happy*.
+That is, the *bonafide contraries* model predicts a full ordering: *unhappy* $\approx$ *not happy* $<$ *not unhappy* $<$ *happy*.
 Even though this model has *a priori* uncertainty about the correct interpretation of particle negation *not*, pragmatic reasoning infers that *not* should be interpreted as contradictory opposition $\neg$ so as to keep the lexicon non-redundant.
 
 <!-- \mht{i wonder if we should talk about all model variants with the same alternative set (unhappy), and note at the end of this paragraph that the bonafide antonyms model we hypothesize is the correct model for lexical anotnyms} -->
