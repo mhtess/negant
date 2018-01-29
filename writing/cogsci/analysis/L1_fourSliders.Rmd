@@ -48,6 +48,13 @@ Time to complete task
 ggplot(d.l1.5.time, aes(x = time)) +
   geom_histogram()+
   xlab("time in minutes")
+
+d.expt2.time.summary <- d.l1.5.time %>%
+  summarize(aveTime = mean(time),
+            sdTime = sd(time))
+
+save(d.expt2.time.summary, file = "../cached_results/time_summary_e2.RData")
+#
 ```
 
 
@@ -62,6 +69,8 @@ Self-reported native language
 ```{r selfReportEnglishNative}
 d.l1.5.nativeEnglish <- d.l1.5.comments %>% select(workerid ,language) %>% 
   mutate(englishNative = grepl("eng", tolower(language)))
+
+save(d.l1.5.nativeEnglish, file = "../cached_results/english_summary_e2.RData")
 
 table(d.l1.5.nativeEnglish$englishNative)
 ```
