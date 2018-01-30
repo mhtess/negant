@@ -76,7 +76,7 @@ d.items <- d.items[with(d.items, order(positive)),] %>%
   rename("Positive adjective" = positive, "Affixal antonym" = morphant,
          "Negative adjective" = lexant)
 
-tab1 <- xtable::xtable(d.items, caption = "Adjectives used in experiment.")
+tab1 <- xtable::xtable(d.items, caption = "Adjectives used in Experiment 3.")
 #save(tab1, file = "../cached_results/item_table.RData")
 # print(tab1, type="latex", comment = F, table.placement = "H",  include.rownames=FALSE)
 ```
