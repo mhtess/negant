@@ -15,10 +15,10 @@ author-information: >
   \AND {\large \bf Michael Franke (mchfranke@gmail.com)} \\ Department of Linguistics, University of T\"{u}bingen}
 
 abstract: 
-    "Formal logic provides two kinds of opposing meanings: contradictories, often expressed linguistically in particle negation (e.g., \"not happy\"), and contraries expressed as antonyms (e.g., \"sad\"), yet these are not the only options available to a speaker (e.g., \"unhappy\"). Rather than being redundant, we hypothesize that uncertainty about the intended *parse* of the message creates more precise meanings in context. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., \"happy\"), and derive, as a special case, an ordering of unambiguous antonyms and their negations (\"sad\" $<$ \"not happy\" $<$ \"not sad\" $<$ \"happy\"). However, when there is uncertainty about how to parse a hypothetical antonym (e.g., \"unhappy\"), we predict interpretations should not be different from pure negations (e.g., \"not happy\"). Across two behavioral experiments and a preregistered replication, we confirm consistent orderings of interpretations that interacts with contexct. This promising support for our hypothesis suggests that in-the-moment pragmatic reasoning can off-load from grammar...something...something. "
+    "Language provides multiple distinct ways of conveying the opposite: A person can be *unhappy*, *not happy*, or *sad*. Rather than being redundant, we hypothesize that uncertainty about the meaning of negation allows listeners to derive fine-grained distinctions in interpretation among these various alternatives. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., \"happy\"), and use this to address an outstanding puzzle: how to interpret double negations (e.g., *not unhappy*). Our model makes two additional predictions about the ordering of antonym pairs (*happy*/*unhappy*) and their negations (*not* happy/unhappy). Across two behavioral experiments and a preregistered replication, we confirm consistent orderings of interpretations that interact with context. These findings support the hypothesis that listeners represent uncertainty about the most logical of language: negation. "
 
 keywords:
-    "semantics; pragmatics; negation; Rational Speech Act; Bayesian cognitive model"
+    "semantics; pragmatics; negation; Bayesian cognitive model; Rational Speech Act"
     
 output: cogsci2016::cogsci_paper
 ---
@@ -76,38 +76,38 @@ orange.purple.blue.color.palette <-
 
 # Introduction
 
-If you hear "Jones is happy" you understand that Jones' happiness ---a *gradable property*--- exceeds a certain threshold which depends on the context of utterance and our prior expectations about Jones' likely happiness [@kennedy2005scale; @Kennedy2007].
+If "Jones is happy" you understand that Jones' happiness ---a *gradable property*--- exceeds a certain threshold, which depends on the context and prior expectations about Jones' likely happiness [@kennedy2005scale; @Kennedy2007].
 But what about the compositional "Jones is not unhappy"? 
 Do the two negatives make a positive?
 @Jespersen1924 believed not:
 
 \begin{quote}
 \footnotesize
-[T]wo negatives do not exactly cancel one another [$\ldots$]; the longer expression is always weaker: "this is not unknown to me" or "I am not ignorant of this" means "I am to some extent aware of it," etc. (p.$\thinspace$332)
+[T]wo negatives do not exactly cancel one another [$\ldots$]; the longer expression is always weaker: ``this is not unknown to me'' or ``I am not ignorant of this'' means ``I am to some extent aware of it,'' etc. (p.$\thinspace$332)
 \end{quote}
 
 Negation is the semantic operation of forming an opposite, but there are multiple kinds of semantic opposition [@Horn1989:Natural]. 
-A *contrary opposition* is one where both predicates cannot be true at the same time, but both can be false.
-*Negative adjectives* (e.g., "sad", "rude") intuitively express contrary opposition to *positive adjectives* ("happy", "polite"): it is conceivable that Jones is neither happy nor sad; there is a neutral middle ground.
-In contrast, a *contradictory opposition* (e.g., *even/odd (positive integer)*), is one where falsity of one predicate entails truth of the other. 
-Contradictory opposition seems to manifest in *particle negation* (e.g., "not happy") and *antonyms* (e.g., "unhappy") because of its transparent mapping to proposition-level negation ($\neg$) in modern standard logic.^[
-  We use a somewhat idiosyncratic terminology here so as to be concise in the distinctions most relevant for this paper.
+A *contrary* opposition is one where both predicates cannot be true at the same time, but both can be false.
+"Happy" (a *positive* adjective) and "sad" (a *negative* adjective) or "polite" and "rude" are two such examples: it is conceivable that Jones is neither happy nor sad, but in a neutral middle ground.
+In contrast, a *contradictory* opposition (e.g., *even/odd* positive integer), is one where falsity of one predicate entails truth of the other. 
+"Not happy" (a *negated positive*) or "unhappy" (an *antonym*) seem like good contenders to express contradictory opposition because each maps transparently to proposition-level negation ($\neg$) in modern standard logic.^[
   While "sad" is of course also an antonym of "happy", we speak of *negative* and *positive* adjectives, and reserve *antonym* for antonyms created by affixal negation (e.g., "un-"). 
-  Also, we use *particle negation* for negation formed by "not" over the more accurate "adverbial negation", because of higher distinguishability from "affixal negation".
+  Also, we use *particle negation* or *negated X* for negation formed by "not" over the more accurate "adverbial negation".
+  We use a somewhat idiosyncratic terminology so as to be concise in the distinctions most relevant for this paper.
 ]
-If this is so, however, combining the two devices should cancel each other out: "not unhappy" means "happy".
+If this is so, however, combining the two contradictory devices should cancel each other out: "not unhappy" means "happy".
 As @orwell1946politics argues:
 
 \begin{quote}
 \footnotesize
-Banal statements are given an appearance of profundity by means of the "not un-" formation. [$\ldots$] It should be possible to laugh the "not un-" formation out of existence by memorizing this sentence: "A not unblack dog was chasing a not unsmall rabbit across a not ungreen field." (p.$\thinspace$357)
+Banal statements are given an appearance of profundity by means of the ``not un-'' formation. [$\ldots$] It should be possible to laugh the ``not un-'' formation out of existence by memorizing this sentence: ``A not unblack dog was chasing a not unsmall rabbit across a not ungreen field.'' (p.$\thinspace$357)
 \end{quote}
 
 Alterantively, antonyms created by affixal negation (*un-*, *in-*, etc.) could form a contrary, like a negative adjective.
-Then, *happy* and *not unhappy* would be pragmatic alternatives; *not unhappy* could be pragmatically strengthened to be more specific than literally the negation of *unhappy*.
+Then, *happy* and *not unhappy* would be pragmatic alternatives, and *not unhappy* could be pragmatically strengthened to be more specific than literally the negation of *unhappy*.
 This logic alone, however, entails that *not unhappy* refers to a neutral or indifferent state [@Horn1991:Duplex], contra @Jespersen1924's intuition that *not unhappy* is a slightly positive state.
-It seems that *not happy* could also be an alternative [@Blutner2004:pragmatics], but how pragmatics contextually strengthens *not happy* has not been fully spelled out [@Krifka2007:Negated-antonyms].
-Furthermore, the meaning of *not happy* is at least as controversial as that of *unhappy*: @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning (i.e., antonyms and negated positives are both contradictory in nature), but @Krifka2007:Negated-antonyms cites examples like the following (taken from the internet):
+*Not happy* should also be an alternative [@Blutner2004:pragmatics], but how pragmatics contextually strengthens *not happy* has not been fully spelled out [@Krifka2007:Negated-antonyms].
+Furthermore, the meaning of *not happy* is at least as controversial as that of *unhappy*: @Jespersen1917:Negation and @Blutner2004:pragmatics argue the two are basically identical in meaning (i.e., antonyms and negated positives are both contradictory in nature), but @Krifka2007:Negated-antonyms cites examples like the following (taken from the internet):
 
 <!-- Here is an instance of an attested difference in meaning between negated positives and morphological antonyms (e.g., *not happy* and *unhappy*), taken from @Krifka2007:Negated-antonyms, taken from internet: -->
 \begin{quote}
@@ -118,10 +118,9 @@ It's an absolutely horrible feeling to be unhappy, and I don't even think I was 
 <!-- This example suggests that at least in the context of explicit alternative utterances (*not unhappy just not happy*), antonyms and negated positives can take on distinct meanings, even if they may not in isolation. -->
 This multiplicity of interpretations, we posit, is the result of uncertainty about the meaning of overt negation markers ("un-", "not").
 We propose a probabilistic speaker-listener pragmatic reasoning model in the Rational Speech Act tradition [@Franke2015a; @Goodman2016:RSA], by combining previous work deriving interpretations for gradable adjectives [@Lassiter2015; @Qing2014:Adjectives] with elements of lexical uncertainty [@Bergen2016].
-This model predicts qualitative differences between scales described by positive \& negative adjective pairs (e.g., "tall"/"short") and those given by antonym pairs (e.g., "happy"/"unhappy").
-Our lexical uncertainty model makes the further prediction that these differences between scale types should be sensitive to context, in particular, the presence of explicit alternative utterances (as suggested by the example above). 
+This model interprets "not unhappy" as a slightly positive state and predicts qualitative differences between antonym pairs (e.g., "happy"/"unhappy") and positive/negative adjectives (e.g., "tall"/"short") that are sensitive to the presence of explicit alternative utterances [as illustrated in @Krifka2007:Negated-antonyms's example above]. 
 We compare model predictions to novel data from three experiments that measure interpretations for different kinds of adjectives in different contexts, uncovering subtle but reliable differences.
-These findings suggest that pragmatic reasoning can utilize uncertainty in logical meanings to derive finer-grained interpretations through the competiton of multiple interpretations of multiple alternative utterances.
+These findings suggest that uncertainty in logical meanings can be exploited by pragmatic reasoning to signal fine-grained meaning on otherwise vague dimensions. 
 
 <!-- \noindent We did not find such a difference in our experiment, but rather than conclude that no differnce exists, we note that the speaker in this example utterance chose to use both *unhappy* and *not happy* in the same utterance.  -->
 <!-- We hypothesize that explicit comparisons between alternative utterances can draw out the difference in meaning between negated positives and morphological antonyms, which leads the morphological antonym to behave more like a bonafide antonym. -->
@@ -395,14 +394,14 @@ load("cached_results/time_summary_e1.RData") # d.expt1.time.summary
 load("cached_results/english_summary_e1.RData") # d.l1.7.nativeEnglish
 ```
 
-#### Participants
+### Participants
 
 We recruited 120 participants from Amazon's Mechanical Turk (MTurk). 
 This number was arrived at with the intention of getting approximately 25 ratings for each unique item in the experiment.
 In all experiments, participants were restricted to those with U.S. IP addresses and at least a 95\% work approval rating. 
 The experiment took on average `r round(d.expt1.time.summary[[1, "aveTime"]],1)` minutes and participants were compensated \$0.40 for their work.
 
-#### Procedure and Materials
+### Procedure and Materials
 
 On each trial, participants read a statement introducing a character using a gradable adjective of one of eight **adjective types** that can be broken down into four adjectives for each of two different **opposite types** (*negatives* $\textsc{opposite}_\textsc{neg}$ e.g., "short" and *antonyms* $\textsc{opposite}_\textsc{ant}$ e.g., "unhappy").
 The adjective types were $\textsc{positive}$ (e.g., "happy", "tall"), $\textsc{opposite}$ (e.g., "short", "unhappy"), and their respective negations (e.g., "not" + adj). 
@@ -499,13 +498,13 @@ load("cached_results/english_summary_e2.RData") # d.l1.5.nativeEnglish
 ```
 
 
-#### Participants
+### Participants
 
 We recruited 50 participants from MTurk.
 This number was arrived at with the intention of getting approximately 25 ratings for each unique item in the experiment.
 The experiment took on average `r round(d.expt1.time.summary[[1, "aveTime"]],1)` minutes and participants were compensated \$0.80 for their work.
 
-#### Procedure and Materials
+### Procedure and Materials
 
 The experimental materials were the same as in \text{Expt.$\thinspace$1}. 
 The procedure differed in that participants saw and rated all four adjective types simultaneously (\figref{fig:experiment-slides}B). 
@@ -755,7 +754,7 @@ As well, the end-points for slider bars used in the "...*in the world*" label of
 
 <!-- Again, there were 12 trials. -->
 
-## Results 
+### Results 
 
 ```{r loadRegressionResults}
 # regression 1: opposite vs. negated positive X opposite type (implicit only)
