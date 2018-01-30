@@ -42,7 +42,7 @@ d.items.lex <- d.l1.7 %>%
   select(adj_pair) %>%
   distinct()
 
-d.items.lex <- data.frame(adj_pair = d.items.lex[with(d.items.lex, order(adj_pair)), ]) %>%   rename("Lexical antonyms" = adj_pair)
+d.items.lex <- data.frame(adj_pair = d.items.lex[with(d.items.lex, order(adj_pair)), ]) %>%   rename("Negative opposites" = adj_pair)
 
 
 d.items.morph <- d.l1.7 %>%
@@ -52,7 +52,7 @@ d.items.morph <- d.l1.7 %>%
   distinct() 
 
 d.items.morph <- data.frame(adj_pair = d.items.morph[with(d.items.morph, order(adj_pair)), ])%>%
-  rename("Morphological antonyms" = adj_pair)
+  rename("Antonym opposites" = adj_pair)
 
 
 # d.items <- d.items[with(d.items, order(positive)),] %>%

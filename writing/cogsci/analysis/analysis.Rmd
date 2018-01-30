@@ -73,11 +73,11 @@ d.items <- d.full %>%
   select(positive, morphant, lexant) 
 
 d.items <- d.items[with(d.items, order(positive)),] %>%
-  rename("Positive adjective" = positive, "Morphological antonym" = morphant,
-         "Lexical antonym" = lexant)
+  rename("Positive adjective" = positive, "Affixal antonym" = morphant,
+         "Negative adjective" = lexant)
 
 tab1 <- xtable::xtable(d.items, caption = "Adjectives used in experiment.")
-# save(tab1, file = "../cached_results/item_table.RData")
+#save(tab1, file = "../cached_results/item_table.RData")
 # print(tab1, type="latex", comment = F, table.placement = "H",  include.rownames=FALSE)
 ```
 
@@ -445,7 +445,7 @@ rs.helmert.3way.3 <- lmer(
 )
 
 rs.helmert.3way.4 <- lmer(
-  response ~ adj_type * antonym_type * condition + 
+  response ~ -1 + adj_type * antonym_type * condition + 
            (1 + adj_type | workerid) + 
            (1 + adj_type | item),
          data = d.full.natEng
@@ -493,8 +493,8 @@ summary(rs.helmert.3way.4a)
 summary(rs.helmert.3way.4b)
 
 rs3.3way.summary <- summary(rs.helmert.3way.4)
-save(rs3.3way.summary, file =
-       "../cached_results/regression_antTypeXadjTypeXcontext.RData")
+#save(rs3.3way.summary, file =
+#       "../cached_results/regression_antTypeXadjTypeXcontext.RData")
 ```
 
 
