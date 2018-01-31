@@ -15,7 +15,7 @@ author-information: >
   \AND {\large \bf Michael Franke (mchfranke@gmail.com)} \\ Department of Linguistics, University of T\"{u}bingen}
 
 abstract: 
-    "Language provides multiple distinct ways of conveying the opposite: A person *not happy*, can be *unhappy*, *sad*, or perhaps neither, just *not happy*. Rather than being redundant, we hypothesize that uncertainty about the meaning of negation markers allows listeners to derive fine-grained distinctions in interpretation among these various alternatives. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., *happy*), and use this to address an outstanding puzzle: how to interpret double negations (e.g., *not unhappy*). Our model makes two additional predictions about the ordering of antonyms and their negations (*happy*/*not happy*/*unhappy*/*not unhappy*). Across two behavioral experiments, we confirm consistent orderings of interpretations that interact with context. These findings support the hypothesis that listeners represent uncertainty about the most logical of language: negation. "
+    "Language provides multiple distinct ways of conveying the opposite: A person *not happy*, can be *unhappy*, *sad*, or perhaps neither, just *not happy*. Rather than being redundant, we hypothesize that uncertainty about the meaning of negation markers allows listeners to derive fine-grained distinctions in interpretation among these various alternatives. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., *happy*), and use this to address an outstanding puzzle: how to interpret double negations (e.g., *not unhappy*). Our model makes surprising additional predictions about a putative difference between antonyms created by affixal negation (*unhappy*) and negated positives (*not happy*): when forms are presented in isolation, we predict no interpretation difference; when confronted with the whole set of alternatives (*happy*/*not happy*/*unhappy*/*not unhappy*) listeners should judge *unhappy* as more sad than *not happy*. Two behavioral experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted. These findings support the hypothesis that listeners represent uncertainty about the most logical element of language: negation. "
 
 keywords:
     "semantics; pragmatics; negation; Bayesian cognitive model; Rational Speech Act"
@@ -1053,13 +1053,14 @@ This interaction was also significant: $\beta = `r round(rs2.morph.coef["conditi
 
 Finally, as an exploratory analysis we test the 3-way interaction between adjective type (specically, levels: antonym vs.\text{~}negated positive), antonym type (morphological vs.\text{~}lexical), and context (single vs.\text{~}multiple utterances), using a mixed-effects model with by-participant and by-item random effects of intercept and adjective type.
 The 3-way interaction was not significant and numerically in the direction of the multiple utterances context making the difference between antonyms and negated positives more pronounced with lexical antonyms than for morphological antonyms:
-$\beta = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Estimate"],3)`$, $SE =  `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Std. Error"],4)`$, t$(`r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","df"], 1)`) = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","t value"],2)`, p = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Pr(>|t|)"], 4)`$
+$\beta = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Estimate"],3)`$, $SE =  `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Std. Error"],4)`$, t$(`r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","df"], 1)`) = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","t value"],2)`, p = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Pr(>|t|)"], 4)`$.
+\mf{how important is this paragraph? maybe skip?}
 
 # Discussion
 
 Many dimensional scales have no units.
 Speakers cannot say they are *42 units happy* like they can say they are *6'1" tall*.
-Instead, speakers can modifiers and alternative utterances to carve more precise meanings from otherwise vague dimensions. 
+Instead, speakers can use modifiers and alternative utterances to carve more precise meanings from otherwise vague dimensions. 
 Someone said to be *not unhappy* is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
 
 This work resolves an outstanding puzzle in natural language understanding.
