@@ -67,6 +67,8 @@ orange.purple.blue.color.palette <-
 \newcommand{\mf}[1]{\textcolor{Green}{[mf: #1]}}  
 \newcommand{\mht}[1]{\textcolor{Blue}{[mht: #1]}} 
 
+\newcommand{\wrapmf}[1]{#1}
+
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
   
@@ -454,7 +456,7 @@ Experimental paradigms, computational models, preregistration report, and data f
 
 The *uncertain negation model* predicts that antonyms created by affixal negation (*unhappy*) and negated positives (*not happy*) receive similar interpretations when evaluated in isolation, but are drawn apart when heard in the same context.
 <!-- while negated antonyms (*not unhappy*) are interpreted more weakly than positive adjectives (*happy*). -->
-We contrast this context-sensitive quasi-ordering for *morphological antonyms* (*unhappy* $\approx$ *not happy* $<$ *not unhappy* $<$ *happy*) with a full-ordering predicted when overt negation is not present in antonyms (*bonafide contraries* model), as for *lexical antonyms* (*short* $<$ *not tall* $<$ *not short* $<$ *tall*). 
+We contrast this context-sensitive quasi-ordering for *morphological antonyms* (*unhappy* $\approx$ *not happy* $<$ *not unhappy* $<$ *happy*) with a full-ordering predicted when overt negation is not present in antonyms (*bonafide contraries* model), as for *lexical antonyms* (*short* $<$ *not tall* $<$ *not short* $<$ *tall*), the latter of which is predicted even when utterances are presented in isolation. 
 
 ## Experiment 1: Single utterances
 
@@ -476,9 +478,9 @@ The experiment took on average `r round(d.expt1.time.summary[[1, "aveTime"]],1)`
 
 On each trial, participants read a statement introducing a person using a gradable adjective of one of four *adjective types*: 
 <!-- $\textsc{positives}$ -->
-positives (e.g., "happy", "tall"), 
+positives (e.g., *happy*, *tall*), 
 <!-- $\textsc{opposites}$  -->
-antonyms (e.g., "short", "unhappy"), and their respective negations (e.g., "not" + adj). 
+antonyms (e.g., *short*, *unhappy*), and their respective negations (e.g., *not* + adj). 
 There were two *antonym types* (mophological, e.g., *unhappy*; and lexical, e.g., *short*).
 Participants were asked to rate the character on a scale from "the most \textsc{positive} person" to "the most \textsc{anotnym} person", which depended on the item, using a slider bar (\figref{fig:experiment-slides}A).
 Participants rated one sentence at a time (e.g., "Greg is not unhappy") and saw items from both antonym types throughout the experiment. 
@@ -529,18 +531,18 @@ rs1.expt1.coef <- rs1.expt1.helmert.summary[["coefficients"]]
 
 The qualitative predictions of our models concern the ordering within a set of alternatives for different antonym types (morphological vs. lexical).
 To visualize the data, we compute normalized responses on a participant-wise basis (i.e., normalized response $r'_{ij} = \frac{r_{ij} - mean_j}{sd_j}$ for trial $i$ and participant $j$).
-Figure \ref{fig:expt-results}A shows the mean normalized responses and bootstrapped 95\% confidence intervals for each of the four adjective types for with morphological and lexical antonyms.
+Figure \ref{fig:expt-results}A shows the mean normalized responses and bootstrapped 95\% confidence intervals for each of the four adjective types for morphological and lexical antonyms.
 As predicted by the bonafide contraries model, adjective sets with lexical antonyms show a strict ordering: $\textsc{opposite}_\textsc{neg} < \textsc{negated positive} < \textsc{negated opposite}_\textsc{neg} < \textsc{positive}$.
 Critically, as predicted by the uncertain negation model, adjective sets with morphological antonyms show only a partial ordering: $\textsc{opposite}_\textsc{ant} \approx  \textsc{negated positive} < \textsc{negated opposite}_\textsc{ant} < \textsc{positive}$.
 
 To confirm these observations, we built a linear mixed model predicting the raw, unnormalized ratings in terms of fixed effects of *antonym type* (morphological vs. lexical), *adjective type* (Helmert coded in order: antonym, negated positive, negated antonym, positive^[
  Throughout, we code adjective type using Helmert coding, which compares levels of a factor to the average of preceding levels, in order to compare anotnym vs. negated positive levels of the adjective type factor.
 ]), and their interaction; the model also included random intercepts and random slopes of *adjective type* by-participant and by-item.^[
-  This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R [@lme4]. \mf{check name of second author?} \mht{rmarkdown parsing error... investigating...}
-]
+  This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R [@lme4].]
 Consistent with our observations, the difference between the *antonym* vs. *negated positive* levels of adjective type interacted significantly with antonym type (morphological vs.\text{~}lexical): $\beta = `r round(rs1.expt1.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt1.coef["antonym_typelexical:st1","Std. Error"],4)`$, t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 4)`$.
 
-We additionally observe that interpretations of negated morphological antonyms (e.g., *not unhappy*) were appreciably less positive for than those of negated lexical antonyms (e.g., *not tall*).
+We additionally observe that interpretations of negated morphological antonyms (e.g., *not unhappy*) were appreciably less positive for than those of negated lexical antonyms (e.g., *not tall*). 
+\mf{I don't understand the previous sentence.}
 Investigation of the empirical distribution of responses revealed that negated antonyms received a bimodal distribution of ratings: The vast majority of ratings were slightly positive, while a clearly distinguishable minority distribution of ratings were slightly negative (e.g., *not dishonest* meaning that the person is below average in honesty).
 This marginally negative interpretation for negated antonyms was seen at least somewhat in every item and roughly half of participants gave at least one below average rating for a negated antonym. 
 <!-- \mf{Was this bimodality consistent between certain subjects or certain items? Does this violate assumptions of normality for the regression model?}\mht{i looked at the residuals... which are not crazy... but then again, I dont often do residuals / regression so i'm not totally sure...} -->
@@ -569,8 +571,7 @@ This interpretation may be attributable to politeness on behalf of the speaker, 
 ## Experiment 2: Within-item replication
 
 <!-- \text{Expts$\thinspace$1 \& 2} revealed an asymmetry between opposites with overt negation markers (*affixal antonyms* e.g., "unhappy") and those with (*negative adjectives* e.g., "short"). -->
-\text{Expt$\thinspace$1} revealed an asymmetry between antonyms with overt negation markers (morphological antonyms e.g., *unhappy*) and those with unique lexical entries (lexical antonyms e.g., *short*).
-Lexical antonyms (e.g., *short*) are clearly distinguished from negated positives (e.g., *not tall*), whereas morphological antonyms were not.
+\text{Expt$\thinspace$1} revealed an asymmetry: lexical antonyms (e.g., *short*) are clearly distinguished from negated positives (e.g., *not tall*), whereas morphological antonyms (e.g., *not unhappy*) were not markedly different from negated positives (e.g., *not happy*).
 <!-- , unless a speaker used multiple distinct alternatives in the same context (Expt.$\thinspace$2).  -->
 In this experiment, we aim to replicate these findings while controlling for the semantic scale under consideration. 
 <!-- Specifically, in \text{Expts.$\thinspace$1~\&~2}, our adjective sets varied both in terms of their opposites (negatives vs.\text{~}antonyms) as well as the actual degree scales being described (e.g., height for *tall*/*short* vs.\text{~}happiness for *happy*/*unhappy*). -->
