@@ -640,6 +640,41 @@ load("cached_results/oneSlider_bootstrappedCIs.RData") # df.oneSlider.ci
 #   theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
 #   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
 
+# fig.expt1 <- df.oneSlider.ci %>%
+#   ungroup() %>%
+#   mutate(
+#     new_type = ifelse(antonym_type == "lexical", 
+#                            ifelse(adjective_type == "Antonym", "Negative", 
+#                             ifelse(adjective_type == "Negated antonym", "Negated negative", 
+#                                    as.character(adjective_type))), as.character(adjective_type)),
+#     antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
+#                           labels = c("negative", "antonym")),
+#     src = 'implicit'
+#       ) %>%
+#   ggplot(., aes(x = antonym_type,
+#                       y = mean,
+#                        ymin = ci_lower, ymax = ci_upper,
+#                        fill = new_type,
+#                       group = adjective_type
+#               ))+
+#   geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+#   geom_errorbar(position = position_dodge(0.8), color = 'black',
+#                 width = 0.4)+
+#   #coord_flip()+
+#   facet_wrap(~src)+
+#   xlab("")+
+#   #scale_fill_viridis(discrete = T, name="Adjective type")+
+#   scale_fill_manual(name="Adjective type",
+#                     values = orange.purple.blue.color.palette,
+#                     guide = guide_legend(reverse=F),
+#                     breaks = c("Negative", "Negated negative", 
+#                                "Antonym", "Negated antonym", 
+#                                "Positive", "Negated positive"))+
+#   ylab("mean normalized rating")+
+#   theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ),
+#         legend.position = 'bottom')+
+#   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
+
 fig.expt1 <- df.oneSlider.ci %>%
   ungroup() %>%
   mutate(
@@ -651,33 +686,35 @@ fig.expt1 <- df.oneSlider.ci %>%
                           labels = c("negative", "antonym")),
     src = 'implicit'
       ) %>%
-  ggplot(., aes(x = antonym_type,
+  ggplot(., aes(x = 0,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
-                       fill = new_type,
-                      group = adjective_type
+                       color = new_type,
+                      group = antonym_type
               ))+
-  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
-  geom_errorbar(position = position_dodge(0.8), color = 'black',
-                width = 0.4)+
-  #coord_flip()+
-  facet_wrap(~src)+
-  xlab("")+
-  #scale_fill_viridis(discrete = T, name="Adjective type")+
-  scale_fill_manual(name="Adjective type",
+    xlab("")+
+    coord_flip()+
+    geom_linerange(position = position_jitterdodge(dodge.width = 0.3,
+      jitter.height = 0,
+      jitter.width = 0), size = 10, alpha = 1)+
+    geom_vline(xintercept =  -(0.3/4),  size = 5, alpha = 0.1, color = 'darkgreen')+
+    geom_vline(xintercept =  0.3/4,  size = 5, alpha = 0.1) +
+    geom_text(x = -(0.3/4) + 0.05, y = 0.1, label = 'lexical antonyms', color = 'darkgreen', size = 2.5)+
+    geom_text(x = (0.3/4) + 0.05, y = 0.1, label = 'morphological antonyms', color = 'black', alpha = 0.6, size = 2.5)+
+    geom_text(x = -(0.3/4) - 0.07, y = 0.75, label = 'single utterance', color = 'black', alpha = 0.8, size = 3)+
+    scale_color_manual(name="Adjective type",
                     values = orange.purple.blue.color.palette,
                     guide = guide_legend(reverse=F),
                     breaks = c("Negative", "Negated negative", 
                                "Antonym", "Negated antonym", 
                                "Positive", "Negated positive"))+
-  ylab("mean normalized rating")+
-  theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ),
-        legend.position = 'bottom')+
-  scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
+    ylab("mean normalized rating")+
+    scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
 ```
 
-```{r expt2results}
+```{r expt2results, eval = F}
 load("cached_results/fourSlider_bootstrappedCIs.RData") # df.fourSlider.ci
 fig.expt2 <- ggplot(df.fourSlider.ci %>%
                       mutate(src = 'explicit',
@@ -709,11 +746,99 @@ fig.expt2 <- ggplot(df.fourSlider.ci %>%
   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
 ```
 
-```{r expt-results, fig.cap="Empirical ratings for adjective sets negative opposites (e.g., \"sad\") and antonyms (e.g., \"unhappy\"). A-B: Expts. 1, 2, respectively; participants rated all adjective types for both negative and antonym opposites. C: Four between-participants conditions. Left end-points of rating scales were defined by the opposite type (negative vs. antonym).", fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=3.3, fig.align = "center", set.cap.width=T, num.cols.cap=2}
+```{r expt-results, fig.cap="Empirical ratings for adjective sets with morphological antonyms opposites (e.g., \"sad\") and antonyms (e.g., \"unhappy\"). A-B: Expts. 1, 2, respectively; participants rated all adjective types for both negative and antonym opposites. C: Four between-participants conditions. Left end-points of rating scales were defined by the opposite type (negative vs. antonym).", fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=3, fig.align = "center", set.cap.width=T, num.cols.cap=2}
 
 load(file = "cached_results/bootstrappedCIs.RData") # d.full.boot
 
-fig.bs.ci <- d.full.boot %>%
+# fig.bs.ci <- d.full.boot %>%
+#   ungroup() %>%
+#   mutate(antonym_type = factor(antonym_type, 
+#                                levels = c(  "lexant", "morphant"),
+#                                labels = c("lexical", "morphological")),
+#          adjective_type_rescaled = 
+#            factor(adjective_type_rescaled,
+#               levels = c("antonym", "neg_positive", "neg_antonym","positive"),
+#               labels = c("Antonym", "Negated positive",
+#                          "Negated antonym", "Positive")),
+#          new_type = ifelse(antonym_type == "lexical", 
+#                            ifelse(adjective_type_rescaled == "Antonym", "Negative", 
+#                             ifelse(adjective_type_rescaled == "Negated antonym", "Negated negative", 
+#                                    as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
+#              antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
+#                           labels = c("negative", "antonym"))) %>%
+#   ggplot(., aes(x = antonym_type,
+#                       y = mean,
+#                        ymin = ci_lower, ymax = ci_upper,
+#                        fill = new_type,
+#                       group = adjective_type_rescaled
+#               ))+
+#   geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+#   geom_errorbar(position = position_dodge(0.8), color = 'black',
+#                 width = 0.4)+
+#   #coord_flip()+
+#   xlab("Antonym type")+
+#   #scale_fill_viridis(discrete = T, name="Adjective type")+
+#   scale_fill_manual(name="Adjective type",
+#                     values = orange.purple.blue.color.palette,
+#                     guide = guide_legend(reverse=F),
+#                     breaks = c("Negative", "Negated negative", 
+#                                "Antonym", "Negated antonym", 
+#                                "Positive", "Negated positive"))+
+#   facet_wrap(~condition, scales = 'free', nrow = 1)+
+#   ylab("mean normalized rating")+
+#   xlab("")+
+#     theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
+#   #scale_y_reverse(limits = c(1.25, -1.1), breaks = c(1, 0, -1))
+#   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
+
+# 
+# fig.bs.ci <- d.full.boot %>%
+#   ungroup() %>%
+#   mutate(antonym_type = factor(antonym_type, 
+#                                levels = c(  "lexant", "morphant"),
+#                                labels = c("lexical", "morphological")),
+#          adjective_type_rescaled = 
+#            factor(adjective_type_rescaled,
+#               levels = c("antonym", "neg_positive", "neg_antonym","positive"),
+#               labels = c("Antonym", "Negated positive",
+#                          "Negated antonym", "Positive")),
+#          new_type = ifelse(antonym_type == "lexical", 
+#                            ifelse(adjective_type_rescaled == "Antonym", "Negative", 
+#                             ifelse(adjective_type_rescaled == "Negated antonym", "Negated negative", 
+#                                    as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
+#              antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
+#                           labels = c("negative", "antonym")),
+#          condition = factor(condition, levels = c("explicit", "implicit"),
+#                             labels=c("multiple utterances", "single utterance"))) %>%
+#   
+#   ggplot(., aes( x = condition, y = mean, ymin = ci_lower, 
+#     ymax = ci_upper, color = new_type, group = antonym_type ))+
+#     xlab("")+
+#     coord_flip()+
+#     geom_linerange(position = position_jitterdodge(dodge.width = 0.75,
+#                                     jitter.height = 0,
+#                                     jitter.width = 0), size = 10, alpha = 1)+
+#   
+#     geom_vline(xintercept = 0.81,  size = 5, alpha = 0.1, color = 'darkgreen')+
+#     geom_vline(xintercept = 1.19,  size = 5, alpha = 0.1) +
+#     geom_vline(xintercept = 1.81,  size = 5, alpha = 0.1, color = 'darkgreen')+
+#     geom_vline(xintercept = 2.19,  size = 5, alpha = 0.1) +
+#     geom_text(x = 2.0, y = 1.17, label = 'lexical antonyms', color = 'darkgreen', size = 2.5)+
+#     geom_text(x = 2.4, y = 1.07, label = 'morphological antonyms', color = 'black', alpha = 0.6, size = 2.5)+
+#     geom_text(x = 2.45, y = 0.1, label = 'single utterance condition', color = 'black', size = 3)+
+#     geom_text(x = 1.45, y = 0.1, label = 'multiple utterances condition', color = 'black', size = 3)+
+#     scale_color_manual(name="Adjective type",
+#                     values = orange.purple.blue.color.palette,
+#                     guide = guide_legend(reverse=F),
+#                     breaks = c("Negative", "Negated negative", 
+#                                "Antonym", "Negated antonym", 
+#                                "Positive", "Negated positive"))+
+#     ylab("mean normalized rating")+
+#     scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
+#     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
+
+fig.expt2.single <- d.full.boot %>%
   ungroup() %>%
   mutate(antonym_type = factor(antonym_type, 
                                levels = c(  "lexant", "morphant"),
@@ -728,47 +853,129 @@ fig.bs.ci <- d.full.boot %>%
                             ifelse(adjective_type_rescaled == "Negated antonym", "Negated negative", 
                                    as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
              antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
-                          labels = c("negative", "antonym"))) %>%
-  ggplot(., aes(x = antonym_type,
+                          labels = c("negative", "antonym")),
+         condition = factor(condition, levels = c("explicit", "implicit"),
+                            labels=c("multiple utterances", "single utterance"))) %>%
+  filter(condition == "single utterance") %>%
+  ggplot(., aes(x = 0,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
-                       fill = new_type,
-                      group = adjective_type_rescaled
+                       color = new_type,
+                      group = antonym_type
               ))+
-  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
-  geom_errorbar(position = position_dodge(0.8), color = 'black',
-                width = 0.4)+
-  #coord_flip()+
-  xlab("Antonym type")+
-  #scale_fill_viridis(discrete = T, name="Adjective type")+
-  scale_fill_manual(name="Adjective type",
+    xlab("")+
+    coord_flip()+
+    geom_linerange(position = position_jitterdodge(dodge.width = 0.3,
+      jitter.height = 0,
+      jitter.width = 0), size = 10, alpha = 1)+
+    geom_vline(xintercept =  -(0.3/4),  size = 5, alpha = 0.1, color = 'darkgreen')+
+    geom_vline(xintercept =  0.3/4,  size = 5, alpha = 0.1) +
+    geom_text(x = -(0.3/4) + 0.05, y = 0.1, label = 'lexical antonyms', color = 'darkgreen', size = 2.5)+
+    geom_text(x = (0.3/4) + 0.05, y = 0.1, label = 'morphological antonyms', color = 'black', alpha = 0.6, size = 2.5)+
+    geom_text(x = -(0.3/4) - 0.07, y = 0.75, label = 'single utterance', color = 'black', alpha = 0.8, size = 3)+
+    scale_color_manual(name="Adjective type",
                     values = orange.purple.blue.color.palette,
                     guide = guide_legend(reverse=F),
                     breaks = c("Negative", "Negated negative", 
                                "Antonym", "Negated antonym", 
                                "Positive", "Negated positive"))+
-  facet_wrap(~condition, scales = 'free', nrow = 1)+
-  ylab("mean normalized rating")+
-  xlab("")+
-    theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
-  #scale_y_reverse(limits = c(1.25, -1.1), breaks = c(1, 0, -1))
-  scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
+    ylab("mean normalized rating")+
+    scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
-legend <- get_legend(fig.bs.ci + theme(legend.position="bottom", legend.margin=margin(0,0,0,0),
-        legend.box.margin=margin(0,0,0,0)))
-prow <- plot_grid( 
+fig.expt2.multiple <- d.full.boot %>%
+  ungroup() %>%
+  mutate(antonym_type = factor(antonym_type, 
+                               levels = c(  "lexant", "morphant"),
+                               labels = c("lexical", "morphological")),
+         adjective_type_rescaled = 
+           factor(adjective_type_rescaled,
+              levels = c("antonym", "neg_positive", "neg_antonym","positive"),
+              labels = c("Antonym", "Negated positive",
+                         "Negated antonym", "Positive")),
+         new_type = ifelse(antonym_type == "lexical", 
+                           ifelse(adjective_type_rescaled == "Antonym", "Lexical antonym", 
+                            ifelse(adjective_type_rescaled == "Negated antonym", "Negated lexical antonym", 
+                                   as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
+           new_type = ifelse(antonym_type == "morphological", 
+                           ifelse(adjective_type_rescaled == "Antonym", "Morphological antonym", 
+                            ifelse(adjective_type_rescaled == "Negated antonym", "Negated morphological antonym", 
+                                   as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
+             antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
+                          labels = c("negative", "antonym")),
+         condition = factor(condition, levels = c("explicit", "implicit"),
+                            labels=c("multiple utterances", "single utterance"))) %>%
+  filter(condition == "multiple utterances") %>%
+  ggplot(., aes(x = 0,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       color = new_type,
+                      group = antonym_type
+              ))+
+    xlab("")+
+    coord_flip()+
+    geom_linerange(position = position_jitterdodge(dodge.width = 0.3,
+      jitter.height = 0,
+      jitter.width = 0), size = 10, alpha = 1)+
+    geom_vline(xintercept =  -(0.3/4),  size = 5, alpha = 0.1, color = 'darkgreen')+
+    geom_vline(xintercept =  0.3/4,  size = 5, alpha = 0.1) +
+    geom_text(x = -(0.3/4) + 0.05, y = 0.1, label = 'lexical antonyms', color = 'darkgreen', size = 2.5)+
+    geom_text(x = (0.3/4) + 0.05, y = 0.1, label = 'morphological antonyms', color = 'black', alpha = 0.6, size = 2.5)+
+    geom_text(x = -(0.3/4) - 0.07, y = 0.7, label = 'multiple utterances', color = 'black', alpha = 0.8, size = 3)+
+    scale_color_manual(name="Adjective type",
+                    values = orange.purple.blue.color.palette,
+                    guide = guide_legend(reverse=F),
+                    breaks = c("Lexical antonym", "Negated lexical antonym", 
+                               "Morphological antonym", "Negated morphological antonym", 
+                               "Positive", "Negated positive"))+
+    ylab("mean normalized rating")+
+    scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
+
+legend <- get_legend(fig.expt2.multiple + 
+                       theme(legend.position="bottom", legend.margin=margin(0,0,0,0), legend.box.margin=margin(0,0,0,0),
+                             legend.direction = "horizontal",
+                             legend.key.size = unit(0.0005, "cm"),
+                             #legend.title = element_text(size = 4),
+                             legend.text = element_text(size = 8)
+                             ))
+
+
+prow <- plot_grid(
   fig.expt1 + theme(legend.position="none",
-                                     plot.margin = unit(c(6,0,6,0), "pt")),
-   fig.expt2 + theme(legend.position="none",
-                     plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
-   fig.bs.ci + theme(legend.position="none",
-                     plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
+                                     plot.margin = unit(c(6,0,6,6), "pt"),
+                    axis.title.x = element_blank()),
+   fig.expt2.single + theme(legend.position="none",
+                     plot.margin = unit(c(6,0,6,6), "pt")),
+   fig.expt2.multiple + theme(legend.position="none",
+                     plot.margin = unit(c(6,0,6,6), "pt"),
+                     axis.title.x = element_blank()),
            align = 'vh',
            labels = c("A", "B", "C"),
            hjust = -1,
-           nrow = 1, rel_widths = c(1,1,2)
+           nrow = 1, rel_widths = c(1,1,1)
            )
-plot_grid( prow, legend, ncol = 1, rel_heights = c(1.2, .2))
+
+
+
+# prow <- plot_grid(
+#   fig.expt1 + theme(legend.position="none",
+#                                      plot.margin = unit(c(6,0,6,0), "pt")),
+#    # fig.expt2 + theme(legend.position="none",
+#    #                   plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
+#    fig.bs.ci + theme(legend.position="none",
+#                      plot.margin = unit(c(6,0,6,0), "pt")) + ylab(""),
+#            align = 'vh',
+#            labels = c("A", "B", "C"),
+#            hjust = -1,
+#            nrow = 1, rel_widths = c(1,2)
+#            )
+
+plot_grid( prow, legend, ncol = 1, rel_heights = c(1, .25))
+
+#prow
+#fig.bs.ci
 ```
 
 
