@@ -1078,6 +1078,8 @@ In our modeling, we assumed all lexica (all logically-possible interpretations o
 To negate is to make true false, but for statements that are truly vague, the behavior of negation is not so obvious. 
 We present an explanation for why this is so, and provide empirical data that sheds new light on the age old question of meaning and opposition.
 
+At a higher level of abstraction this work carries with it an interesting account of a robust linguistic intuition, namely that potentially equivalent expressions receive differential interpretations when presented in direct co-text. Reasoning about lexical ambiguity, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings. \mf{you like this? more?}
+
 \mht{add limitations on generality: adjectives all about people}
 
 \mht{discuss languages with "negative concord" (double negations acting as an intensifier)}
