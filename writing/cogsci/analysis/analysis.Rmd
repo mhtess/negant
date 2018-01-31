@@ -212,9 +212,9 @@ d.full.natEng %>%
         legend.position = 'bottom')+
   scale_x_continuous(limits = c(-2, 2), breaks = c(-1, 0, 1))
 
-ggsave(paste(
-  "~/Documents/research/negant/analysis/figs/cogsci_expt3_densities.pdf", sep = ""),
-       width = 6, height = 3.5)
+# ggsave(paste(
+#   "~/Documents/research/negant/analysis/figs/cogsci_expt3_densities.pdf", sep = ""),
+#        width = 6, height = 3.5)
 ```
 
 
@@ -237,7 +237,7 @@ d.full.natEng %>%
 
 Bootstrapped CIs
 
-```{r boostrapCIs, fig.height=2, fig.width=4}
+```{r boostrapCIs, fig.height=2, fig.width=7}
 d.full.boot <- d.full.natEng %>%
   group_by(condition, antonym_type, adjective_type_rescaled) %>%
   multi_boot_standard(col = "normalizedResponse") 
@@ -249,35 +249,57 @@ d.full.boot <- d.full.natEng %>%
 d.full.boot %>%
   ungroup() %>%
   mutate(antonym_type = factor(antonym_type, levels = c( "lexant", "morphant"))) %>%
-  ggplot(., aes(x = antonym_type,
-                      y = mean,
-                       ymin = ci_lower, ymax = ci_upper,
-                       fill = adjective_type_rescaled,
-                      group = adjective_type_rescaled
+  ggplot(., aes(
+    x = condition,
+    y = mean,
+     ymin = ci_lower, 
+    ymax = ci_upper,
+    color = adjective_type_rescaled,
+    group = antonym_type
+    #group = condition#,
+    #color = condition#,
+    #group = adjective_type_rescaled
+    #  fill = adjective_type_rescaled,
+    # color = adjective_type_rescaled,
+    # group = adjective_type_rescaled
               ))+
-  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
-  geom_errorbar(position = position_dodge(0.8), color = 'black',
-                width = 0.4)+
+  #geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_linerange(
+    position = position_jitterdodge(dodge.width = 0.75,
+                                    jitter.height = 0,
+                                    jitter.width = 0.2),
+    #position = position_dodge(0.5),
+    size = 5)+
+  # geom_density(data = d.full.natEng, 
+  #              inherit.aes = F,
+  #              )
+  #geom_errorbar(position = position_dodge(0.8), color = 'black',
+                #width = 0.4)+
   #coord_flip()+
   xlab("")+
-  scale_fill_manual(name="Adjective type",
+  scale_color_manual(name="Adjective type",
                     values = orange.purple.color.palette,
                     guide = guide_legend(reverse=TRUE))+
-  facet_wrap(~condition, scales = 'free')+
+    scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=TRUE))+
+  #facet_wrap(~condition, scales = 'fixed')+
+  coord_flip()+
   ylab("mean normalized rating")+
+  #geom_vline(xintercept = 1.2)+
   scale_y_continuous(limits = c(-1.1,1.4), breaks = c(-1, 0, 1))#+
   #theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 
-# ggsave(paste(
-#   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_bootstrapped.pdf", sep = ""),
-#        width = 6, height = 3.75)
+ggsave(paste(
+  "~/Documents/research/negant/analysis/figs/1d_bootstrapped.pdf", sep = ""),
+       width = 8, height = 2.5)
 ```
 
 
 ## By item plots
 
 
-```{r fig_byItem, fig.width = 8, fig.height = 6}
+```{r fig_byItem}
  d.full.natEng <- d.full.natEng %>%
   mutate(item = ifelse(antonym_type == "lexant",
                        paste(lexant, "--", positive, sep = ""),
@@ -290,8 +312,42 @@ d.full.boot.item <- d.full.natEng %>%
   #   ungroup() %>%
   # mutate(antonym_type = factor(antonym_type, 
   #                          levels = c("lexical", "morphological")))
+d.full.boot.item.wide <- left_join(
+  d.full.boot.item %>%
+    filter(antonym_type == "morphant") %>% 
+    rename(m_mean = mean, m_lower = ci_lower, m_upper = ci_upper) %>%
+    ungroup() %>%
+    select(-antonym_type),
+  d.full.boot.item %>%
+    filter(antonym_type == "lexant") %>% 
+    rename(l_mean = mean, l_lower = ci_lower, l_upper = ci_upper, negative = antonym) %>%
+    ungroup() %>%
+    select(-antonym_type)
+)
 
+ggplot(d.full.boot.item.wide, 
+       aes(x = m_mean, y = l_mean, xmin = m_lower, ymin = l_lower, xmax = m_upper, ymax = l_upper,
+           color = adjective_type_rescaled))+
+  geom_abline(intercept = 0, slope = 1, alpha = 0.3)+
+  geom_point()+geom_errorbar(alpha = 0.3)+geom_errorbarh(alpha = 0.3)+
+  facet_wrap(~condition, scales = 'free')+
+  scale_x_continuous(limits = c(-1.3, 1.5))+
+  scale_y_continuous(limits = c(-1.3, 1.5))+
+  coord_fixed(ratio = 1)
 
+d.full.boot.item.wide %>%
+  mutate(lm_diff = abs(m_mean) - abs(l_mean)) %>%
+  ggplot(., aes( x = lm_diff, fill = adjective_type_rescaled))+
+  xlab("absolute difference of Morph - Lexical")+
+  #geom_density( alpha = 0.3 )+
+  #facet_wrap(~condition)
+  geom_histogram()+
+  geom_vline(xintercept = 0, lty = 2)+
+  facet_grid(adjective_type_rescaled~ condition )
+``` 
+
+by item facets
+```{r}
 d.full.boot.item %>%
     filter(condition == "implicit") %>%
   ggplot(., aes(x = antonym, 
@@ -329,9 +385,9 @@ d.full.boot.item %>%
 
 
 
-ggsave(paste(
-  "~/Documents/research/negant/analysis/figs/cogsci_expt3_byItem.pdf", sep = ""),
-       width = 12, height = 8)
+# ggsave(paste(
+#   "~/Documents/research/negant/analysis/figs/cogsci_expt3_byItem.pdf", sep = ""),
+#        width = 12, height = 8)
 ```
 
 
