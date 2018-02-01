@@ -119,7 +119,13 @@ Furthermore, the meaning of *not happy* is at least as controversial as that of 
 It's an absolutely horrible feeling to be unhappy, and I don't even think I was unhappy, just not happy, if you know what I mean. 
 \end{quote}
 
-```{r happy-scale, fig.height=2, fig.width=3.5, fig.align = "center", fig.cap="Possible ordering of antonyms and their negations."}
+
+```{r happy-scale, fig.pos = "t", fig.align = "center", fig.cap="Possible ordering of antonyms and their negations."}
+happy_scale <- png::readPNG("img/happy-scale.png")
+grid::grid.raster(happy_scale)
+```
+
+```{r old2_happy-scale, fig.height=2, fig.width=3.5, fig.align = "center", eval = F, fig.cap="Possible ordering of antonyms and their negations."}
 happy.scale <- data.frame(
   adjective = c("happy", "not unhappy", "not happy", "unhappy"),
   low = c(0.75, 0.5, 0.25, 0),
@@ -1271,8 +1277,8 @@ This interaction was also significant: $\beta = `r round(rs2.morph.coef["conditi
 
 Many dimensional scales lack units.
 Speakers cannot say they are *42 units happy* like they can say they are *6'1" tall*.
-Instead, speakers can use modifiers and alternative utterances to carve more precise meanings from otherwise vague dimensions. 
-Someone said to be *not unhappy* is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
+Instead, speakers can use modifiers and morphemes to carve more precise meanings from otherwise vague dimensions. 
+A person *not unhappy* is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
 
 This work resolves an outstanding puzzle in natural language understanding: How to interpret double negatives.
 @Krifka2007:Negated-antonyms critiques previous pragmatic theories for either being underdetermined [@Blutner2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex]. 
