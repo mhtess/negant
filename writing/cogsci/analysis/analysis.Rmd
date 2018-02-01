@@ -264,12 +264,6 @@ d.full.boot %>%
     # group = adjective_type_rescaled
               ))+
   #geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
-  geom_linerange(
-    position = position_jitterdodge(dodge.width = 0.75,
-                                    jitter.height = 0,
-                                    jitter.width = 0.2),
-    #position = position_dodge(0.5),
-    size = 5)+
   # geom_density(data = d.full.natEng, 
   #              inherit.aes = F,
   #              )
@@ -277,6 +271,18 @@ d.full.boot %>%
                 #width = 0.4)+
   #coord_flip()+
   xlab("")+
+  coord_flip()+
+    geom_linerange(position = position_jitterdodge(dodge.width = 0.75,
+                                    jitter.height = 0,
+                                    jitter.width = 0.2),
+    #position = position_dodge(0.5),
+    size = 5)+
+    geom_vline(xintercept = 1.2,  size = 5, alpha = 0.2, inherit.aes = F)+
+    # geom_errorbarh(position = position_jitterdodge(dodge.width = 0.75,
+    #                                 jitter.height = 0,
+    #                                 jitter.width = 0.2),
+    # #position = position_dodge(0.5),
+    # size = 5)+
   scale_color_manual(name="Adjective type",
                     values = orange.purple.color.palette,
                     guide = guide_legend(reverse=TRUE))+
@@ -284,15 +290,17 @@ d.full.boot %>%
                     values = orange.purple.color.palette,
                     guide = guide_legend(reverse=TRUE))+
   #facet_wrap(~condition, scales = 'fixed')+
-  coord_flip()+
+  #geom_ribbon(ymin=0.5, ymax=0.7, x=1, inherit.aes = F, fill = 'black',alpha = 1)+
   ylab("mean normalized rating")+
-  #geom_vline(xintercept = 1.2)+
-  scale_y_continuous(limits = c(-1.1,1.4), breaks = c(-1, 0, 1))#+
+  scale_y_continuous(limits = c(-1.1,1.4), breaks = c(-1, 0, 1))
+
+
+#+
   #theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 
-ggsave(paste(
-  "~/Documents/research/negant/analysis/figs/1d_bootstrapped.pdf", sep = ""),
-       width = 8, height = 2.5)
+# ggsave(paste(
+#   "~/Documents/research/negant/analysis/figs/1d_bootstrapped.pdf", sep = ""),
+#        width = 8, height = 2.5)
 ```
 
 

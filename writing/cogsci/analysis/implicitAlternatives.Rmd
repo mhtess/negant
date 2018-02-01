@@ -61,7 +61,7 @@ d.items.morph <- data.frame(adj_pair = d.items.morph[with(d.items.morph, order(a
 
 tab1 <- xtable::xtable(
   cbind(as.matrix(d.items.morph), as.matrix(d.items.lex)), 
-  caption = "Items in Experiments 1 and 2")
+  caption = "Items in Experiment 1.")
 save(tab1, file = "../cached_results/item_table_e12.RData")
 #print(tab1, type="latex", comment = F, table.placement = "H",  include.rownames=FALSE)
 #d.items
@@ -173,7 +173,20 @@ ggsave(paste(
 #        width = 7, height = 3)
 ```
 
+By item histograms
+
 ```{r}
+d.l1.natEng %>%
+  filter(adjective_type == "neg_antonym", 
+        antonym_type == "morphological") %>%
+  mutate(belowAve = normalizedResponse < 0) %>%
+  group_by(workerid) %>%
+  summarize(nBelowAve = sum(belowAve)) %>%
+  ungroup() %>%
+  group_by(nBelowAve) %>%
+  count()
+
+
 d.l1.natEng %>%
   filter(adjective_type == "neg_antonym", 
         antonym_type == "morphological") %>%
@@ -360,6 +373,7 @@ anova(rs.7.helmert.0, rs.7.helmert)
 
 # try model with inverse random effect structure?
 ```
+
 ```{r}
 plot(rs.7.helmert)
 qqnorm(residuals(rs.7.helmert))
