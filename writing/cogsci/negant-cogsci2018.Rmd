@@ -15,7 +15,7 @@ author-information: >
   \AND {\large \bf Michael Franke (mchfranke@gmail.com)} \\ Department of Linguistics, University of T\"{u}bingen}
 
 abstract: 
-    "Language provides multiple distinct ways of conveying the opposite: A person *not happy*, can be *unhappy*, *sad*, or perhaps neither, just *not happy*. Rather than being redundant, we hypothesize that uncertainty about the meaning of negation markers allows listeners to derive fine-grained distinctions in interpretation among these various alternatives. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., *happy*), and use this to address an outstanding puzzle: how to interpret double negations (e.g., *not unhappy*). Our model makes surprising additional predictions about a putative difference between antonyms created by affixal negation (*unhappy*) and negated positives (*not happy*): when forms are presented in isolation, we predict no interpretation difference; when confronted with the whole set of alternatives (*happy*/*not happy*/*unhappy*/*not unhappy*) listeners should judge *unhappy* as more sad than *not happy*. Two behavioral experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted. These findings support the hypothesis that listeners represent uncertainty about the most logical element of language: negation. "
+    "Language provides multiple distinct ways of conveying the opposite: A person *not happy* can be *unhappy*, *sad*, or perhaps neither, just *not happy*. Rather than being redundant, we hypothesize that uncertainty about the meaning of negation markers allows listeners to derive fine-grained distinctions in interpretation among these various alternatives. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., *happy*), and use this to address an outstanding puzzle: how to interpret double negations (e.g., *not unhappy*). Our model makes surprising additional predictions about a putative difference between antonyms created by affixal negation (*unhappy*) and negated positives (*not happy*): when forms are presented in isolation, we predict no interpretation difference; when confronted with the whole set of alternatives, listeners should judge *unhappy* as more sad than *not happy*. Two behavioral experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted. These findings support the hypothesis that listeners represent uncertainty about the most logical element of language: negation. "
 
 keywords:
     "semantics; pragmatics; negation; Bayesian cognitive model; Rational Speech Act"
@@ -89,7 +89,7 @@ If "Jones is not unhappy", does that mean that Jones is happy?
 [T]wo negatives do not exactly cancel one another [$\ldots$]; the longer expression is always weaker: ``this is not unknown to me'' or ``I am not ignorant of this'' means ``I am to some extent aware of it,'' etc. (p.$\thinspace$332)
 \end{quote}
 
-*Negated antonyms* (e.g., "not unhappy") are thought to occupy a particular region of their associated scale (e.g., happiness), below that of *positive adjectives* (happy) but above that of *negated positives* (not happy) and *antonyms* (unhappy) [Figure \ref{fig:happy-scale}; @Krifka2007:Negated-antonyms].
+*Negated antonyms* (e.g., "not unhappy") are thought to occupy a particular region of their associated scale (e.g., happiness), below  *positive adjectives* (happy) but above *negated positives* (not happy) and *antonyms* (unhappy) [Fig.$\thinspace$\ref{fig:happy-scale}; @Krifka2007:Negated-antonyms].
 <!-- What is the logic of natural language negation such that two negatives don't make positive? -->
 <!-- How negated antonyms are interpretated as slightly positive, or even that they are as @Jespersen1924 suggests, is a matter of some controversy. -->
 A straight-forward, compositional analysis, however, would map morphological negation via affixation (e.g., *un-*) and negation particles (e.g., adverbial *not*) to proposition-level negation ($\neg$) in modern standard logic. 
@@ -101,13 +101,12 @@ Such a logically-transparent theory would predict the two overt negation markers
 Banal statements are given an appearance of profundity by means of the ``not un-'' formation. [$\ldots$] It should be possible to laugh the ``not un-'' formation out of existence by memorizing this sentence: ``A not unblack dog was chasing a not unsmall rabbit across a not ungreen field.'' (p.$\thinspace$357)
 \end{quote}
 
-Alternatively, *morphological antonyms* (*unhappy*) could behave like lexical antonyms (*sad*) which seem clearly to express *contrary opposition*. 
+Alternatively, morphological antonyms (*unhappy*) could behave like lexical antonyms (*sad*) which seem clearly to express *contrary opposition*. 
 Contraries cannot both be true but they can both be false [@Horn1989:Natural]: Jones may be neither happy nor sad, neither tall not short. 
-Just like *tall* and *not short* may be true of the same people, *happy* and *not unhappy* would compete as pragmatic alternatives a speaker could use to describe a state of affairs.
-*Not unhappy* would be pragmatically strengthened in context to have a more specific meaning than literally the negation of *unhappy*.
+*Not unhappy*, then, would compete as pragmatic alternative to *happy* (a speaker could use to describe a state of affairs) and *not unhappy* would be pragmatically strengthened in context to yield an interpretation more specific than its literal meaning.
 This logic alone, however, entails that *not unhappy* refers to a neutral or indifferent state [@Horn1991:Duplex], contra @Jespersen1924's intuition that *not unhappy* is a slightly positive state.
 It's been noted that *not happy* should also be an alternative [@Blutner2004:pragmatics], but how pragmatics contextually strengthens *not happy* has yet to be fully spelled out [@Krifka2007:Negated-antonyms].
-Furthermore, the meaning of *not happy* is at least as controversial as that of *unhappy*: @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning (i.e., antonyms and negated positives are both contradictory in nature), but @Krifka2007:Negated-antonyms cites examples like the following (taken from the internet):
+Furthermore, the meaning of *not happy* is at least as controversial as that of *unhappy*: @Jespersen1917:Negation and @Blutner2004:pragmatics argue that the two are basically identical in meaning, while @Krifka2007:Negated-antonyms cites examples like the following (taken from the internet):
 
 \begin{quote}
 \footnotesize
@@ -141,8 +140,6 @@ ggplot(happy.scale, aes(x = x, y=y, ymin = low, ymax = high, color = adjective,
         panel.border = element_blank())
 ```
 
-
-
 <!-- Negation is the semantic operation of forming an opposite, but there are multiple kinds of semantic opposition -->
 <!-- A *contrary* opposition is one where both predicates cannot be true at the same time, but both can be false. -->
 <!-- <!-- "Happy" (a *positive* adjective) and "sad" (a *negative* adjective) or "polite" and "rude" are two such examples: it is conceivable that Jones is neither happy nor sad, but in a neutral middle ground. -->
@@ -162,8 +159,8 @@ ggplot(happy.scale, aes(x = x, y=y, ymin = low, ymax = high, color = adjective,
 How does such a logical linguistic device---negation---give rise to a multiplicity of meanings?
 We posit that uncertainty about the meaning of overt negation markers (*un-*, *not*) interacts with communicative reasoning principles to give rise to fine-grained interpretations in the moment.
 We propose a probabilistic speaker-listener pragmatic reasoning model in the Rational Speech Act tradition [@Franke2015a; @Goodman2016:RSA], combining previous work on gradable adjectives [e.g., *tall*; @Lassiter2015; @Qing2014:Adjectives] with elements of lexical uncertainty [@Bergen2016].
-Our model interprets *not unhappy* as a slightly positive state and predicts qualitative differences between morphological antonyms (e.g., \{*happy*, *unhappy*\}) and antonyms that lack overt negation markers (*lexical antonyms* e.g., \{*tall, short*\}).
-These differences are also shown to be sensitive to the presence of explicit alternative utterances [as illustrated in @Krifka2007:Negated-antonyms's example above]. 
+Our model interprets *not unhappy* as a slightly positive state and predicts qualitative differences between morphological antonyms (e.g., \{*happy*, *unhappy*\}) and lexical antonyms which lack overt negation markers (\{*tall, short*\}).
+These differences are shown to be sensitive to the presence of explicit alternative utterances [as illustrated in @Krifka2007:Negated-antonyms's example above]. 
 We compare model predictions to novel data from two experiments that measure interpretations for different kinds of adjectives in different contexts, uncovering subtle but reliable differences.
 <!-- These findings suggest that uncertainty in logical meanings can be exploited by pragmatic reasoning to signal fine-grained meaning on otherwise vague dimensions.  -->
 
@@ -276,20 +273,19 @@ ggdraw() + draw_image("img/happy-scale.pdf") +
 # Computational model
 
 
-Negation is the semantic operation of forming an opposite, but there are multiple kinds of semantic opposition
+Negation is the semantic operation of forming an opposite, but there are multiple kinds of semantic opposition.
 A *contrary* opposition is one where both predicates cannot be true at the same time, but both can be false (e.g., *tall* and *short*).
-In contrast, a *contradictory* opposition (e.g., *even/odd* positive integer), is one where falsity of one predicate entails truth of the other.
+A *contradictory* opposition is one where falsity of one predicate entails truth of the other  (e.g., *even/odd* positive integer).
 We posit that listeners have uncertainty about whether negation markers (*not*, *un-*) express contradictory or contrary opposition, and examine its effect on the interpretation of negated gradable adjectives (e.g., *tall*, *happy*).
 
-Formal linguistic theories capture the meaning of gradable adjectives as a threshold function: $\denote{happy} = \lambda e \thinspace . \thinspace \text{happiness}(e) > \theta$, whose threshold variable $\theta$ is supplied by the context [@Kennedy2007]. Here, we consider a pragmatic model that reasons about which value for $\theta$ would make a speaker's observed utterance most likely [@Lassiter2015]. 
-
-How to combine a threshold semantics with contrary and contradictory negation?
+Formal linguistic theories capture the meaning of gradable adjectives as a threshold function: $\denote{happy} = \lambda e \thinspace . \thinspace \text{happiness}(e) > \theta$, whose threshold variable $\theta$ is supplied by the context [@Kennedy2007]. 
+Here, we combine a pragmatic model that reasons about values for $\theta$ that would make a speaker's utterance most likely [@Lassiter2015] with contrary and contradictory negations. 
 Formally, if $Hx$ expresses that $x$ is happy, contradictory opposition is standard, bivalent, proposition-level negation $\neg Hx$.
 Contrary opposition is made by a predicate-forming operation $\tilde{H}x$ which introduces its own free threshold $\theta_{\tilde{H}}$ for gradable predicates.
 The latter is not iterable [@Horn1989:Natural; @sep-negation], so while it makes sense to iterate $\neg \neg Hx$, it is impossible to iterated contrary negation. 
 <!-- It is, however possible, to have $\neg \tilde{H}x$.  -->
 <!-- But it is not possible to have $\neg$ in the scope of $\tilde{H}x$. -->
-As a result, *not happy* and *unhappy* can be construed as either $\neg Hx$ or $\tilde{H}x$, while "not unhappy" may be $\neg \neg Hx$ or $\neg \tilde{H}x$ (Table$\thinspace$\ref{tab:Interpretations}).
+As a result, *not happy* and *unhappy* can be construed as either $\neg Hx$ or $\tilde{H}x$, while *not unhappy* may be $\neg \neg Hx$ or $\neg \tilde{H}x$ (Table$\thinspace$\ref{tab:Interpretations}).
 <!-- Negative adjectives (e.g., "short", discussed later) have no overt negation marker, and thus are assumed to be contraries $\tilde{H}x$, which receive their own thresholds $\theta_{\tilde{H}}$. -->
 
 \begin{table}[b]
@@ -323,33 +319,33 @@ L_{0}(x \mid u, \theta, \mathcal{L}) &\propto \mathcal{L}(u, x, \theta) \cdot P(
 
 \noindent where $\mathcal{L}(u, x, \theta)$ represents the semantic truth-function of $u$ in lexicon $\mathcal{L}$ applied to state $x$ assuming semantic threshold $\theta$.
 
-Eqs.$\thinspace$\ref{eq:L1}-\ref{eq:L0} are a Rational Speech Act (RSA) model, a recursive Bayesian model wherein a pragmatic listener $L_{1}$ tries to resolve the intended meaning of an utterance $u$ (e.g., "Jones is not unhappy") by combining its prior beliefs $P(x)$ about the degree $x$ of Jones' happiness, with the generative process of the utterance, a speaker model $S_1$.
+Eqs.$\thinspace$\ref{eq:L1}-\ref{eq:L0} are a Rational Speech Act (RSA) model, a recursive Bayesian model wherein a pragmatic listener $L_{1}$ tries to resolve the intended meaning of an utterance $u$ (e.g., "Jones is not unhappy") by combining its prior beliefs about the degree of Jones' happiness $P(x)$, with the generative process of the utterance, a speaker model $S_1$.
 The speaker model $S_1$ (Eq.$\thinspace$\ref{eq:S1}) describes an approximately rational Bayesian agent (with degree of rationality $\alpha$) trying to inform a naive listener $L_0$ (Eq.$\thinspace$\ref{eq:L0}) about the degree $x$.
 <!-- In the context of adjective interpretation, the state of the world is given by the value of the scalar degree $x$ (e.g., the height of the referent). -->
 The literal listener $L_0$ updates its prior beliefs $P(x)$ via an utterance's literal meaning in lexicon $\mathcal{L}$.
 Additionally, the pragmatic listener (Eq.$\thinspace$\ref{eq:L1}) has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely degree $P(x)$, the likely lexicon $P(\mathcal{L})$, and the likelihood $S_1(u \mid x, \theta, \mathcal{L})$ that a cooperative information-maximizing speaker would utter the adjective given a degree $x$, threshold $\theta$, and lexicon $\mathcal{L}$.
 
 Possible lexica differ in how overt negation markers (*un-*, *not*) are semantically parsed (Table$\thinspace$\ref{tab:Interpretations}).
-According to the *uncertain negation* model listeners have uncertainty about which lexicon a speaker may be using; we explore the simplest instantiation of this model, putting equal probability on the logically possible parses of utterances with negation.^[These model predictions assume the following model parameters: $P(x) = \mathcal{N}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 1; \text{cost}(\mathit{not}) = 2$.]
-When this model hears *not unhappy* it reasons that a truly compositional, double negation is implausible (intuitively because the speaker could have said the simpler *happy*) and interprets the utterances as signalling a slightly positive state (Figure$\thinspace$\ref{fig:modelPredictions}).
+<!-- According to the *uncertain negation* model, listeners have uncertainty about which lexicon a speaker may be using; -->
+We explore the simplest instantiation of this *uncertain negation* model, putting equal probability on the logically possible parses of utterances with negation.^[Model predictions assume the following model parameters: $P(x) = \mathcal{N}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 1; \text{cost}(\mathit{not}) = 2$.]
+When this model hears *not unhappy* it reasons that a truly compositional, double negation is implausible (intuitively because the speaker could have said the simpler *happy*) and interprets the utterances as signalling a slightly positive state (Fig.$\thinspace$\ref{fig:modelPredictions}).
 Interestingly, the *uncertain negation* model does not differentiate antonyms (*unhappy*) from negated positives (*not happy*)---in line with the intuition of @Jespersen1917:Negation and @Blutner2004:pragmatics.\mf{clearer references to which part of Figure are relevant; use same model names in figure and order left-right like introduced in text?}
 
-Different settings to the lexicon prior $P(\mathcal{L})$ correspond to distinct hypotheses about the semantics of overt negation.
-An alterantive *pure logical negation* (or *George Orwell*) model can be derived by assigning probability zero to lexica with contrary interpretations of overt negation markers. 
+We generate alterantive hypotheses by perturbing the lexicon prior $P(\mathcal{L})$.
+A *pure logical negation* (or *George Orwell*) alternative model can be derived by assigning probability zero to lexica with contrary interpretations of negation. 
 This model believes negation markers only express contradictory opposition. 
 As a result, the *pure logical negation* model does not differentiate between negated antonyms (*not unhappy*) and positives (*happy*), nor between negated positives and antonyms.
-
 As a second alternative, we consider a model that interprets morphological negation (*un-*) as expressing true contrary opposition by assigning probability zero to lexica with contradictory interpretations of morphological antonyms.
-This *bonafide contraries* hypothesis still has uncertainty about the correct interpretation of particle negation (*not*), but in context, reasons that *not* should be interpreted as contradictory opposition ($\neg$) so as to keep the lexicon non-redundant.
+This *bonafide contraries* hypothesis still has uncertainty about how to interpret particle negation (*not*), but in context, reasons that *not* should be interpreted as contradictory opposition ($\neg$) so as to keep the lexicon non-redundant.
 This model interprets negated antonyms (*not unhappy*) as slightly positive and predicts the ordering hypothesized by @Krifka2007:Negated-antonyms and shown in Fig.\ref{fig:happy-scale}.
 
-We posit uncertainty about the meaning of negation that is resovlved in context. 
-As such, multiple utterances heard in the same context can have different meanings than a single utterance heard in isolation. 
+Our models resolve the meaning of negation in context. 
+As such, multiple utterances heard in the same context can have different meanings than if the utterances are heard in isolation. 
 We simulate the three models' predictions when presented with multiple utterances in the same context.^[
   To match our experimental setup described later, the multiple utterances simulation corresponds to hearing all four adjective alternatives about four different individuals.
 ]
 In this situation, all models have more exaggerated interpretations from the adjectival utterances.
-The *uncertain negation* model, though, uniquely differentiates itself from the single utterance simulation: It now predicts a true ordering as in Figure \ref{fig:happy-scale} between negated positives and antonyms.
+The *uncertain negation* model, though, uniquely differentiates itself from the single utterance simulation: It now predicts a true ordering as in Fig.$\thinspace$\ref{fig:happy-scale} between negated positives and antonyms.
 
 
 <!-- The proportionality in Eq.$\thinspace$\ref{eq:S1} implies normalization over a set of alternative utterances (potentially differentiated by their cost). -->
@@ -447,10 +443,9 @@ As a control condition, we additionally predict that antonyms which do not have 
 We design our behavioral experiments to test these predictions.
 <!-- \text{Expts.$\thinspace$1 $\&$ 2} were exploratory and informed our computational modeling. -->
 \text{Expt.$\thinspace$1} was exploratory and informed our computational modeling.
-\text{Expt.$\thinspace$2} is a more powerful and more stringent, preregistered confirmatory replication.
-Experimental paradigms, computational models, preregistration report, and data for this paper can be found at \url{https://mhtess.github.io}.
+\text{Expt.$\thinspace$2} is a more powerful and more stringent, preregistered (\url{osf.io/p7f25/}) confirmatory replication.
 <!-- \mht{i feel like this paragraph and the one right after it could be merged somehow..} -->
-\mf{what about the official preregistration as OSF?}
+<!-- \mf{what about the official preregistration as OSF?} -->
 
 # Behavioral experiments
 
@@ -679,42 +674,71 @@ load("cached_results/oneSlider_bootstrappedCIs.RData") # df.oneSlider.ci
 #         legend.position = 'bottom')+
 #   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
 
-fig.expt1 <- df.oneSlider.ci %>%
+
+df.oneSlider.ci <- df.oneSlider.ci %>%
   ungroup() %>%
   mutate(
     new_type = ifelse(antonym_type == "lexical", 
-                           ifelse(adjective_type == "Antonym", "Negative", 
-                            ifelse(adjective_type == "Negated antonym", "Negated negative", 
-                                   as.character(adjective_type))), as.character(adjective_type)),
-    antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
-                          labels = c("negative", "antonym")),
+                     ifelse(adjective_type == "Antonym", "Lexical antonym", 
+                      ifelse(adjective_type == "Negated antonym", "Negated lexical antonym", 
+                             as.character(adjective_type))), as.character(adjective_type)),
+     new_type = ifelse(antonym_type == "morphological", 
+                     ifelse(new_type == "Antonym", "Morphological antonym", 
+                      ifelse(new_type == "Negated antonym", "Negated morphological antonym", 
+                             as.character(new_type))), as.character(new_type)),
+    new_type = factor(new_type, levels = c( "Morphological antonym", "Lexical antonym", "Positive",
+                                           "Negated morphological antonym", "Negated lexical antonym", "Negated positive")),
+    antonym_type = factor(antonym_type, levels = c("lexical", "morphological")),
+    condition_numeric = ifelse(as.character(antonym_type) == "lexical", 0, 0.2),
     src = 'implicit'
-      ) %>%
-  ggplot(., aes(x = 0,
+  )
+
+
+fig.expt1 <- ggplot(df.oneSlider.ci %>%
+           filter(!(antonym_type == "morphological" & adjective_type %in% c("Negated positive", "Antonym"))), 
+         aes(x = condition_numeric,
                       y = mean,
                        ymin = ci_lower, ymax = ci_upper,
-                       color = new_type,
-                      group = antonym_type
-              ))+
+                       color = new_type))+
     xlab("")+
     coord_flip()+
-    geom_linerange(position = position_jitterdodge(dodge.width = 0.3,
-      jitter.height = 0,
-      jitter.width = 0), size = 10, alpha = 1)+
-    geom_vline(xintercept =  -(0.3/4),  size = 5, alpha = 0.1, color = 'darkgreen')+
-    geom_vline(xintercept =  0.3/4,  size = 5, alpha = 0.1) +
-    geom_text(x = -(0.3/4) + 0.05, y = 0.1, label = 'lexical antonyms', color = 'darkgreen', size = 2.5)+
-    geom_text(x = (0.3/4) + 0.05, y = 0.1, label = 'morphological antonyms', color = 'black', alpha = 0.6, size = 2.5)+
-    geom_text(x = -(0.3/4) - 0.07, y = 0.75, label = 'single utterance', color = 'black', alpha = 0.8, size = 3)+
+    geom_vline(xintercept = 0,  size = 5, alpha = 0.1)+
+    geom_vline(xintercept = 0.2,  size = 5, alpha = 0.1, color = 'darkblue') +
+    geom_linerange(size = 10, alpha = 1)+
+    geom_linerange(data = df.oneSlider.ci %>%
+           filter(antonym_type == "morphological" & adjective_type %in% c("Negated positive", "Antonym")),
+           position = position_dodge(width = 0.02), size = 10, inherit.aes = F,
+           aes(x = condition_numeric,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       color = new_type))+
+    #geom_point(color = 'black', shape = 15)+
+  # geom_linerange(position = position_jitterdodge(dodge.width = 0.3,
+  #     jitter.height = 0,
+  #     jitter.width = 0), size = 10, alpha = 1)+
+    geom_text(x = 0.15, y = 0.9, label = 'morphological antonyms', color = 'darkblue', size = 4, family = "Palatino")+
+    geom_text(x = -0.05, y = 1.05, label = 'lexical antonyms', color = 'black', alpha = 0.6, size = 4, family = "Palatino")+
+    geom_text(x = -0.09, y = -0.75, label = 'SINGLE UTTERANCE', color = 'black', alpha = 0.8, family = "Palatino",
+              fontface = 'italic', size = 4)+
+    # geom_text(x = 0.15, y = -0.85, label = 'morphological antonyms', color = 'darkblue', size = 4, family = "Palatino")+
+    # geom_text(x = -0.05, y = -0.95, label = 'lexical antonyms', color = 'black', alpha = 0.6, size = 4, family = "Palatino")+
+    # geom_text(x = -0.09, y = 1, label = 'SINGLE UTTERANCE', color = 'black', alpha = 0.8, family = "Palatino",
+    #           fontface = 'italic', size = 4)+
     scale_color_manual(name="Adjective type",
-                    values = orange.purple.blue.color.palette,
+                    #values = c("#74a9cf", "#0570b0","#5e3c99",  "#e66101", "#b2abd2","#fdb863"),
+                    values = c("#5e3c99",  "#0570b0",  "#b2abd2", "#74a9cf","#fdb863","#e66101"),
+                    #values = c("#5e3c99",  "#0570b0","#e66101",  "#b2abd2", "#74a9cf","#fdb863"),
                     guide = guide_legend(reverse=F),
-                    breaks = c("Negative", "Negated negative", 
-                               "Antonym", "Negated antonym", 
-                               "Positive", "Negated positive"))+
+                    breaks = c("Morphological antonym", "Negated morphological antonym", 
+                               "Lexical antonym", "Negated lexical antonym", 
+                               "Positive", "Negated positive"
+                               ))+
     ylab("mean normalized rating")+
+    scale_x_continuous(limits = c(-0.1, 0.3))+
     scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
-    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          legend.position = 'bottom')
+  
 
 ```
 
@@ -746,11 +770,162 @@ fig.expt2 <- ggplot(df.fourSlider.ci %>%
                     guide = guide_legend(reverse=TRUE)
                     )+
   ylab("mean normalized rating")+
-    theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
+  theme(axis.text.x = element_text(angle = 45, vjust =1 ,hjust =1 ))+
   scale_y_continuous(limits = c(-1.1, 1.25), breaks = c(-1, 0, 1))
 ```
 
-```{r expt-results, fig.cap="Empirical ratings for adjective sets with morphological antonyms opposites (e.g., \"sad\") and antonyms (e.g., \"unhappy\"). A-B: Expts. 1, 2, respectively; participants rated all adjective types for both negative and antonym opposites. C: Four between-participants conditions. Left end-points of rating scales were defined by the opposite type (negative vs. antonym).", fig.env = "figure*", fig.pos = "h", fig.width=7, fig.height=3, fig.align = "center", set.cap.width=T, num.cols.cap=2}
+
+```{r expt-results-legend}
+load(file = "cached_results/bootstrappedCIs.RData") # d.full.boot
+
+fig.expt2.multiple.legend <- d.full.boot %>%
+  ungroup() %>%
+  mutate(antonym_type = factor(antonym_type, 
+                               levels = c(  "lexant", "morphant"),
+                               labels = c("lexical", "morphological")),
+         adjective_type_rescaled = 
+           factor(adjective_type_rescaled,
+              levels = c("antonym", "neg_positive", "neg_antonym","positive"),
+              labels = c("Antonym", "Negated positive",
+                         "Negated antonym", "Positive")),
+         new_type = ifelse(antonym_type == "lexical", 
+                           ifelse(adjective_type_rescaled == "Antonym", "Lexical antonym", 
+                            ifelse(adjective_type_rescaled == "Negated antonym", "Negated lexical antonym", 
+                                   as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
+           new_type = ifelse(antonym_type == "morphological", 
+                           ifelse(new_type == "Antonym", "Morphological antonym", 
+                            ifelse(new_type == "Negated antonym", "Negated morphological antonym", 
+                                   as.character(new_type))), as.character(new_type)),
+             antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
+                          labels = c("negative", "antonym")),
+         condition = factor(condition, levels = c("explicit", "implicit"),
+                            labels=c("multiple utterances", "single utterance"))) %>%
+  filter(condition == "multiple utterances") %>%
+  ggplot(., aes(x = 0,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       color = new_type,
+                      group = antonym_type
+              ))+
+    xlab("")+
+    coord_flip()+
+    geom_linerange(position = position_jitterdodge(dodge.width = 0.3, jitter.height = 0, jitter.width = 0), size = 3, alpha = 1)+
+    geom_vline(xintercept =  -(0.3/4),  size = 5, alpha = 0.1, color = 'darkgreen')+
+    geom_vline(xintercept =  0.3/4,  size = 5, alpha = 0.1) +
+    geom_text(x = -(0.3/4) + 0.05, y = 0.1, label = 'lexical antonyms', color = 'darkgreen', size = 2.5)+
+    geom_text(x = (0.3/4) + 0.05, y = 0.1, label = 'morphological antonyms', color = 'black', alpha = 0.6, size = 2.5)+
+    geom_text(x = -(0.3/4) - 0.07, y = 0.7, label = 'multiple utterances', color = 'black', alpha = 0.8, size = 3)+
+    scale_color_manual(name="Adjective type",
+                    values = orange.purple.blue.color.palette,
+                    guide = guide_legend(nrow = 2, reverse=F),
+                    breaks = c("Lexical antonym", "Negated lexical antonym", 
+                               "Morphological antonym", "Negated morphological antonym", 
+                               "Positive", "Negated positive"))+
+    ylab("mean normalized rating")+
+    scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))
+```
+
+```{r}
+load(file = "cached_results/bootstrappedCIs.RData") # d.full.boot
+
+d.full.boot <- d.full.boot %>%
+  ungroup() %>%
+  mutate(antonym_type = factor(antonym_type, 
+                               levels = c("lexant", "morphant"),
+                               labels = c("lexical", "morphological")),
+         adjective_type_rescaled = 
+           factor(adjective_type_rescaled,
+              levels = c("antonym", "neg_positive", "neg_antonym","positive"),
+              labels = c("Antonym", "Negated positive",
+                         "Negated antonym", "Positive")),
+    new_type = ifelse(antonym_type == "lexical", 
+                     ifelse(adjective_type_rescaled == "Antonym", "Lexical antonym", 
+                      ifelse(adjective_type_rescaled == "Negated antonym", "Negated lexical antonym", 
+                             as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
+     new_type = ifelse(antonym_type == "morphological", 
+                     ifelse(new_type == "Antonym", "Morphological antonym", 
+                      ifelse(new_type == "Negated antonym", "Negated morphological antonym", 
+                             as.character(new_type))), as.character(new_type)),
+    new_type = factor(new_type, levels = c( "Morphological antonym", "Lexical antonym", "Positive",
+                                           "Negated morphological antonym", "Negated lexical antonym", "Negated positive")),
+         condition = factor(condition, levels = c("explicit", "implicit"),
+                            labels=c("multiple utterances", "single utterance")),
+          condition_numeric = ifelse(as.character(antonym_type) == "lexical", 0, 0.2),
+          new_type = factor(new_type, levels = c( "Morphological antonym", "Lexical antonym", "Positive",
+                                           "Negated morphological antonym", "Negated lexical antonym", "Negated positive"))) 
+
+df.expt2.single <- d.full.boot %>% filter(condition == "single utterance")
+df.expt2.multiple <- d.full.boot %>% filter(condition == "multiple utterances")
+
+fig.expt2.single <- ggplot(df.expt2.single %>%
+           filter(!(antonym_type == "morphological" & adjective_type_rescaled %in% c("Negated positive", "Antonym"))), 
+         aes(x = condition_numeric, y = mean, ymin = ci_lower, ymax = ci_upper, color = new_type))+
+    xlab("")+
+    coord_flip()+
+    geom_vline(xintercept = 0,  size = 5, alpha = 0.1)+
+    geom_vline(xintercept = 0.2,  size = 5, alpha = 0.1, color = 'darkblue') +
+    geom_linerange(size = 10, alpha = 1)+
+    geom_linerange(data = df.expt2.single %>%
+           filter(antonym_type == "morphological" & adjective_type_rescaled %in% c("Negated positive", "Antonym")),
+           position = position_dodge(width = 0.02), size = 10, inherit.aes = F,
+           aes(x = condition_numeric,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       color = new_type))+
+    geom_text(x = 0.15, y = 0.9, label = 'morphological antonyms', color = 'darkblue', size = 4, family = "Palatino")+
+    geom_text(x = -0.05, y = 1.05, label = 'lexical antonyms', color = 'black', alpha = 0.6, size = 4, family = "Palatino")+
+    geom_text(x = -0.09, y = -0.75, label = 'SINGLE UTTERANCE', color = 'black', alpha = 0.8, family = "Palatino",
+              fontface = 'italic', size = 4)+
+    scale_color_manual(name="Adjective type",
+                    values = c("#5e3c99",  "#0570b0",  "#b2abd2", "#74a9cf","#fdb863","#e66101"),
+                    guide = guide_legend(reverse=F),
+                    breaks = c("Morphological antonym", "Negated morphological antonym", 
+                               "Lexical antonym", "Negated lexical antonym", 
+                               "Positive", "Negated positive"
+                               ))+
+    ylab("mean normalized rating")+
+    scale_x_continuous(limits = c(-0.1, 0.3))+
+    scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          legend.position = 'bottom')
+
+
+fig.expt2.multiple <- ggplot(df.expt2.multiple %>%
+           filter(!(antonym_type == "morphological" & adjective_type_rescaled %in% c("Negated positive", "Antonym"))), 
+         aes(x = condition_numeric, y = mean, ymin = ci_lower, ymax = ci_upper, color = new_type))+
+    xlab("")+
+    coord_flip()+
+    geom_vline(xintercept = 0,  size = 5, alpha = 0.1)+
+    geom_vline(xintercept = 0.2,  size = 5, alpha = 0.1, color = 'darkblue') +
+    geom_linerange(size = 10, alpha = 1)+
+    geom_linerange(data = df.expt2.multiple %>%
+           filter(antonym_type == "morphological" & adjective_type_rescaled %in% c("Negated positive", "Antonym")),
+           aes(x = condition_numeric,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       color = new_type), size = 10)+
+    geom_text(x = 0.15, y = 0.9, label = 'morphological antonyms', color = 'darkblue', size = 4, family = "Palatino")+
+    geom_text(x = -0.05, y = 1.05, label = 'lexical antonyms', color = 'black', alpha = 0.6, size = 4, family = "Palatino")+
+    geom_text(x = -0.09, y = -0.75, label = 'MULTIPLE UTTERANCES', color = 'black', alpha = 0.8, family = "Palatino",
+              fontface = 'italic', size = 4)+
+    scale_color_manual(name="Adjective type",
+                    values = c("#5e3c99",  "#0570b0",  "#b2abd2", "#74a9cf","#fdb863","#e66101"),
+                    guide = guide_legend(reverse=F),
+                    breaks = c("Morphological antonym", "Negated morphological antonym", 
+                               "Lexical antonym", "Negated lexical antonym", 
+                               "Positive", "Negated positive"
+                               ))+
+    ylab("mean normalized rating")+
+    scale_x_continuous(limits = c(-0.1, 0.3))+
+    scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          legend.position = 'bottom')
+```
+
+
+
+
+```{r expt-results, fig.cap="Empirical ratings for adjective sets with morphological antonyms opposites (e.g., \"sad\") and antonyms (e.g., \"unhappy\"). A-B: Expts. 1, 2, respectively; participants rated all adjective types for both negative and antonym opposites. C: Four between-participants conditions. Left end-points of rating scales were defined by the opposite type (negative vs. antonym).", fig.env = "figure*", fig.pos = "h", fig.width=8, fig.asp = 0.6, out.width = "100%", fig.align = "center", set.cap.width=T, num.cols.cap=2}
 
 load(file = "cached_results/bootstrappedCIs.RData") # d.full.boot
 
@@ -842,7 +1017,7 @@ load(file = "cached_results/bootstrappedCIs.RData") # d.full.boot
 #     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
 
-fig.expt2.single <- d.full.boot %>%
+d.full.boot <- d.full.boot %>%
   ungroup() %>%
   mutate(antonym_type = factor(antonym_type, 
                                levels = c(  "lexant", "morphant"),
@@ -859,33 +1034,58 @@ fig.expt2.single <- d.full.boot %>%
              antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
                           labels = c("negative", "antonym")),
          condition = factor(condition, levels = c("explicit", "implicit"),
-                            labels=c("multiple utterances", "single utterance"))) %>%
-  filter(condition == "single utterance") %>%
-  ggplot(., aes(x = 0,
-                      y = mean,
-                       ymin = ci_lower, ymax = ci_upper,
-                       color = new_type,
-                      group = antonym_type
-              ))+
+                            labels=c("multiple utterances", "single utterance")),
+          condition_numeric = ifelse(as.character(antonym_type) == "lexical", 0, 0.2)) 
+
+df.expt2.single <- d.full.boot %>% filter(condition == "single utterance")
+df.expt2.multiple <- d.full.boot %>% filter(condition == "multiple utterances")
+
+
+# fig.expt2.single 
+ggplot(df.expt2.single %>%
+           filter(!(antonym_type == "morphological" & adjective_type_rescaled %in% c("Negated positive", "Antonym"))), 
+         aes(x = condition_numeric, y = mean, ymin = ci_lower, ymax = ci_upper, color = new_type))+
     xlab("")+
     coord_flip()+
-    geom_linerange(position = position_jitterdodge(dodge.width = 0.3,
-      jitter.height = 0,
-      jitter.width = 0), size = 10, alpha = 1)+
-    geom_vline(xintercept =  -(0.3/4),  size = 5, alpha = 0.1, color = 'darkgreen')+
-    geom_vline(xintercept =  0.3/4,  size = 5, alpha = 0.1) +
-    geom_text(x = -(0.3/4) + 0.05, y = 0.1, label = 'lexical antonyms', color = 'darkgreen', size = 2.5)+
-    geom_text(x = (0.3/4) + 0.05, y = 0.1, label = 'morphological antonyms', color = 'black', alpha = 0.6, size = 2.5)+
-    geom_text(x = -(0.3/4) - 0.07, y = 0.75, label = 'single utterance', color = 'black', alpha = 0.8, size = 3)+
+    geom_vline(xintercept = 0,  size = 5, alpha = 0.1)+
+    geom_vline(xintercept = 0.2,  size = 5, alpha = 0.1, color = 'darkblue') +
+    geom_linerange(size = 10, alpha = 1)+
+    geom_linerange(data = df.expt2.single %>%
+           filter(antonym_type == "morphological" & adjective_type_rescaled %in% c("Negated positive", "Antonym")),
+           position = position_dodge(width = 0.02), size = 10, inherit.aes = F,
+           aes(x = condition_numeric,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       color = new_type))+
+    #geom_point(color = 'black', shape = 15)+
+  # geom_linerange(position = position_jitterdodge(dodge.width = 0.3,
+  #     jitter.height = 0,
+  #     jitter.width = 0), size = 10, alpha = 1)+
+    geom_text(x = 0.15, y = 0.9, label = 'morphological antonyms', color = 'darkblue', size = 4, family = "Palatino")+
+    geom_text(x = -0.05, y = 1.05, label = 'lexical antonyms', color = 'black', alpha = 0.6, size = 4, family = "Palatino")+
+    geom_text(x = -0.09, y = -0.75, label = 'SINGLE UTTERANCE', color = 'black', alpha = 0.8, family = "Palatino",
+              fontface = 'italic', size = 4)+
+    # geom_text(x = 0.15, y = -0.85, label = 'morphological antonyms', color = 'darkblue', size = 4, family = "Palatino")+
+    # geom_text(x = -0.05, y = -0.95, label = 'lexical antonyms', color = 'black', alpha = 0.6, size = 4, family = "Palatino")+
+    # geom_text(x = -0.09, y = 1, label = 'SINGLE UTTERANCE', color = 'black', alpha = 0.8, family = "Palatino",
+    #           fontface = 'italic', size = 4)+
     scale_color_manual(name="Adjective type",
-                    values = orange.purple.blue.color.palette,
+                    #values = c("#74a9cf", "#0570b0","#5e3c99",  "#e66101", "#b2abd2","#fdb863"),
+                    values = c("#5e3c99",  "#0570b0",  "#b2abd2", "#74a9cf","#fdb863","#e66101"),
+                    #values = c("#5e3c99",  "#0570b0","#e66101",  "#b2abd2", "#74a9cf","#fdb863"),
                     guide = guide_legend(reverse=F),
-                    breaks = c("Negative", "Negated negative", 
-                               "Antonym", "Negated antonym", 
-                               "Positive", "Negated positive"))+
+                    breaks = c("Morphological antonym", "Negated morphological antonym", 
+                               "Lexical antonym", "Negated lexical antonym", 
+                               "Positive", "Negated positive"
+                               ))+
     ylab("mean normalized rating")+
+    scale_x_continuous(limits = c(-0.1, 0.3))+
     scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
-    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          legend.position = 'bottom')
+
+
+
 
 fig.expt2.multiple <- d.full.boot %>%
   ungroup() %>%
@@ -902,9 +1102,9 @@ fig.expt2.multiple <- d.full.boot %>%
                             ifelse(adjective_type_rescaled == "Negated antonym", "Negated lexical antonym", 
                                    as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
            new_type = ifelse(antonym_type == "morphological", 
-                           ifelse(adjective_type_rescaled == "Antonym", "Morphological antonym", 
-                            ifelse(adjective_type_rescaled == "Negated antonym", "Negated morphological antonym", 
-                                   as.character(adjective_type_rescaled))), as.character(adjective_type_rescaled)),
+                           ifelse(new_type == "Antonym", "Morphological antonym", 
+                            ifelse(new_type == "Negated antonym", "Negated morphological antonym", 
+                                   as.character(new_type))), as.character(new_type)),
              antonym_type = factor(antonym_type, levels = c("lexical", "morphological"),
                           labels = c("negative", "antonym")),
          condition = factor(condition, levels = c("explicit", "implicit"),
@@ -918,37 +1118,36 @@ fig.expt2.multiple <- d.full.boot %>%
               ))+
     xlab("")+
     coord_flip()+
-    geom_linerange(position = position_jitterdodge(dodge.width = 0.3,
-      jitter.height = 0,
-      jitter.width = 0), size = 10, alpha = 1)+
-    geom_vline(xintercept =  -(0.3/4),  size = 5, alpha = 0.1, color = 'darkgreen')+
-    geom_vline(xintercept =  0.3/4,  size = 5, alpha = 0.1) +
+    geom_linerange(position = position_jitterdodge(dodge.width = 0.3, jitter.height = 0, jitter.width = 0), size = 10, alpha = 1)+
     geom_text(x = -(0.3/4) + 0.05, y = 0.1, label = 'lexical antonyms', color = 'darkgreen', size = 2.5)+
     geom_text(x = (0.3/4) + 0.05, y = 0.1, label = 'morphological antonyms', color = 'black', alpha = 0.6, size = 2.5)+
     geom_text(x = -(0.3/4) - 0.07, y = 0.7, label = 'multiple utterances', color = 'black', alpha = 0.8, size = 3)+
+    geom_vline(xintercept =  -(0.3/4),  size = 5, alpha = 0.1, color = 'darkgreen')+
+    geom_vline(xintercept =  0.3/4,  size = 5, alpha = 0.1) +
     scale_color_manual(name="Adjective type",
                     values = orange.purple.blue.color.palette,
-                    guide = guide_legend(reverse=F),
+                    guide = guide_legend(keywidth = 0.01, keyheight = 0.01, nrow = 2, reverse=F),
                     breaks = c("Lexical antonym", "Negated lexical antonym", 
                                "Morphological antonym", "Negated morphological antonym", 
                                "Positive", "Negated positive"))+
     ylab("mean normalized rating")+
     scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
+    scale_x_discrete(expand = c(0.3,0.1))+
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+    
 
-
-legend <- get_legend(fig.expt2.multiple + 
+legend <- get_legend(fig.expt2.multiple.legend + 
                        theme(legend.position="bottom", legend.margin=margin(0,0,0,0), legend.box.margin=margin(0,0,0,0),
                              legend.direction = "horizontal",
-                             legend.key.size = unit(0.0005, "cm"),
+                              # legend.key.width = unit(0.000005, "cm"),
+                              # legend.key.height = unit(0.000005, "cm"),
                              #legend.title = element_text(size = 4),
-                             legend.text = element_text(size = 8)
+                             legend.text = element_text(size = 10)
                              ))
 
 
 prow <- plot_grid(
-  fig.expt1 + theme(legend.position="none",
-                                     plot.margin = unit(c(6,0,6,6), "pt"),
+  fig.expt1 + theme(legend.position="none", plot.margin = unit(c(6,0,6,6), "pt"),
                     axis.title.x = element_blank()),
    fig.expt2.single + theme(legend.position="none",
                      plot.margin = unit(c(6,0,6,6), "pt")),
@@ -976,8 +1175,17 @@ prow <- plot_grid(
 #            nrow = 1, rel_widths = c(1,2)
 #            )
 
-plot_grid( prow, legend, ncol = 1, rel_heights = c(1, .25))
+plot_grid(legend, prow,  ncol = 1, rel_heights = c(.25, 1))
 
+
+# fig.expt2.multiple+ 
+#                        theme(legend.position="bottom", legend.margin=margin(0,0,0,0), legend.box.margin=margin(0,0,0,0),
+#                              legend.direction = "horizontal",
+#                              legend.key.width = unit(0.0005, "cm"),
+#                              legend.key.height = unit(0.0005, "cm"),
+#                              #legend.title = element_text(size = 4),
+#                              legend.text = element_text(size = 8)
+#                              )
 #prow
 #fig.bs.ci
 ```
@@ -1088,6 +1296,10 @@ At a higher level of abstraction this work carries with it an interesting accoun
 
 \mht{need to explain what breaks the symmetry in the model}
 <!-- \mht{politeness, further inferences? (not unhappy -- *normally unhappy in this situation*)} -->
+  
+
+\vspace{1em} \fbox{\parbox[b][][c]{7.3cm}{\centering Experimental paradigms, computational models, and data for this paper can be found at \url{https://mhtess.github.io}.
+}} \vspace{1em}
   
 # Acknowledgements
 
