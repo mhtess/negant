@@ -1281,6 +1281,7 @@ But morphological antonyms (*unhappy*) do not behave like bonafide antonyms
 We discovered and confirmed a surprising empirical result, which both validates and challenges existing intuitions in linguistics: *unhappy* and *not happy* are not immediately differentiated, except when both are present in the same context.
 A model of fixed meanings for negation cannot account for this pattern of data.
 However, a model that represents uncertainty about how to parse overt negation markers (*un-*, *not*) predicts this very result. 
+While the items used in our experiment were all evaluative statements about people, we expect the asymmetries observed in our data to generalize to other negated antonyms.
 
 It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by @Krifka2007:Negated-antonyms for morphological antonyms when the listener hears multiple adjectival utterances in the same context (multiple utterances condition).
 This work thus carries with it an interesting account of a robust linguistic intuition: Potentially equivalent expressions receive differential interpretations when presented in direct co-text. \mht{what is co-text?} 
@@ -1291,7 +1292,8 @@ Recent psycholinguistic evidence supports the idea that utterances which are hea
 The two types of negation meaning we considered---contrary and contradiction opposition---can be seen as a *lexicalized* form of opposition (with the adjective receiving its own threshold variable) and a *compositional* rule (logical negation), respectively. 
 In our modeling, we assumed all lexica (all logically-possible interpretations of negation) were equally likely: A further test of our negation uncertainty model would be to see if frequency can serve as a proxy for this prior over lexica.
 
-
+To negate is to make true false, but for statements that are truly vague, the behavior of negation is not so obvious. 
+We present a computational explanation for why this is so, and provide empirical data that sheds new light on the age old question of meaning and opposition.
 
 <!-- @Krifka2007:Negated-antonyms critiques previous pragmatic theories for either being underdetermined [@Blutner2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex].  -->
 <!-- Using state-of-the-art models of pragmatic language understanding, we are able to precisely articulate the division of pragmatic labor between different utterances available to a speaker for conveying negation. -->
@@ -1300,19 +1302,12 @@ In our modeling, we assumed all lexica (all logically-possible interpretations o
 
 <!-- \mht{note also that we don't assume any ordering on interpretations in the semantics for bonafide antonyms. note null utterance? \mf{maybe footnote if we have the space?}} -->
 
-
-
-To negate is to make true false, but for statements that are truly vague, the behavior of negation is not so obvious. 
-We present an explanation for why this is so, and provide empirical data that sheds new light on the age old question of meaning and opposition.
-
-
-\mht{add limitations on generality: adjectives all about people}
-
 \mht{discuss languages with "negative concord" (double negations acting as an intensifier)}
 
 \mht{discuss the generality of negation across languages?}
 
 \mht{need to explain what breaks the symmetry in the model}
+
 <!-- \mht{politeness, further inferences? (not unhappy -- *normally unhappy in this situation*)} -->
   
 
