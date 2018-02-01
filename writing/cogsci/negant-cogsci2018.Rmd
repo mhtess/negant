@@ -1269,29 +1269,42 @@ This interaction was also significant: $\beta = `r round(rs2.morph.coef["conditi
 
 # Discussion
 
-This work resolves an outstanding puzzle in natural language understanding: How to interpret double negatives.
-@Krifka2007:Negated-antonyms critiques previous pragmatic theories for either being underdetermined [@Blutner2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex]. 
-Using state-of-the-art models of pragmatic language understanding, we are able to precisely articulate the division of pragmatic labor between different utterances available to a speaker for conveying negation.
-We hypothesized that uncertainty about the meaning of overt negation markers leads only to a partial ordering of affixal antonyms and their negations (e.g,. *not unhappy* $\approx$ *not happy*). 
-It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by @Krifka2007:Negated-antonyms for morphological antonyms (e.g., *unhappy*) when the listener hears multiple adjectival utterances in the same context (multiple utterances condition).
-
-Many dimensional scales have no units.
+Many dimensional scales lack units.
 Speakers cannot say they are *42 units happy* like they can say they are *6'1" tall*.
 Instead, speakers can use modifiers and alternative utterances to carve more precise meanings from otherwise vague dimensions. 
 Someone said to be *not unhappy* is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
 
+This work resolves an outstanding puzzle in natural language understanding: How to interpret double negatives.
+@Krifka2007:Negated-antonyms critiques previous pragmatic theories for either being underdetermined [@Blutner2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex]. 
+Here, we develop a theory of interpretation for negated antonyms by introducing logical negation into a pragmatic model of adjective interpretation. 
+But morphological antonyms (*unhappy*) do not behave like bonafide antonyms
+We discovered and confirmed a surprising empirical result, which both validates and challenges existing intuitions in linguistics: *unhappy* and *not happy* are not immediately differentiated, except when both are present in the same context.
+A model of fixed meanings for negation cannot account for this pattern of data.
+However, a model that represents uncertainty about how to parse overt negation markers (*un-*, *not*) predicts this very result. 
 
-<!-- \mht{note also that we don't assume any ordering on interpretations in the semantics for bonafide antonyms. note null utterance? \mf{maybe footnote if we have the space?}} -->
+It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by @Krifka2007:Negated-antonyms for morphological antonyms when the listener hears multiple adjectival utterances in the same context (multiple utterances condition).
+This work thus carries with it an interesting account of a robust linguistic intuition: Potentially equivalent expressions receive differential interpretations when presented in direct co-text. \mht{what is co-text?} 
+Reasoning about lexical ambiguity, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings. \mf{you like this? more?} \mht{go on...}
 
 Our formalization of lexical uncertainty about the meaning of natural language negation builds on a growing movement to treat the lexicon as not totally separable from the combinatorial rules of grammar [e.g., @bybee2006usage; @Odonnell2015productivity].
 Recent psycholinguistic evidence supports the idea that utterances which are heavily used will be processed as unique lexical entries while less frequent phrases will be understood compositionally [@MorganLevy2016:binomials]. 
 The two types of negation meaning we considered---contrary and contradiction opposition---can be seen as a *lexicalized* form of opposition (with the adjective receiving its own threshold variable) and a *compositional* rule (logical negation), respectively. 
-In our modeling, we assumed all lexica (all logically-possible interpretations of negation) were equally likely: A further test of our negation uncertainty model would be to see if frequency can serve as a proxy for this prior over lexica on a by-item basis.
+In our modeling, we assumed all lexica (all logically-possible interpretations of negation) were equally likely: A further test of our negation uncertainty model would be to see if frequency can serve as a proxy for this prior over lexica.
+
+
+
+<!-- @Krifka2007:Negated-antonyms critiques previous pragmatic theories for either being underdetermined [@Blutner2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex].  -->
+<!-- Using state-of-the-art models of pragmatic language understanding, we are able to precisely articulate the division of pragmatic labor between different utterances available to a speaker for conveying negation. -->
+<!-- We hypothesized that uncertainty about the meaning of overt negation markers leads only to a partial ordering of affixal antonyms and their negations (e.g,. *not unhappy* $\approx$ *not happy*).  -->
+<!-- We present an explanation for why this is so, and provide empirical data that sheds new light on the age old question of meaning and opposition. -->
+
+<!-- \mht{note also that we don't assume any ordering on interpretations in the semantics for bonafide antonyms. note null utterance? \mf{maybe footnote if we have the space?}} -->
+
+
 
 To negate is to make true false, but for statements that are truly vague, the behavior of negation is not so obvious. 
 We present an explanation for why this is so, and provide empirical data that sheds new light on the age old question of meaning and opposition.
 
-At a higher level of abstraction this work carries with it an interesting account of a robust linguistic intuition, namely that potentially equivalent expressions receive differential interpretations when presented in direct co-text. Reasoning about lexical ambiguity, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings. \mf{you like this? more?}
 
 \mht{add limitations on generality: adjectives all about people}
 
