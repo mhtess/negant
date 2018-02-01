@@ -9,13 +9,15 @@ header-includes:
   - \usepackage{wrapfig}
   - \usepackage{caption}
   - \usepackage{booktabs}
+  - \usepackage{caption}
+  - \setlength{\belowcaptionskip}{-0.4cm} 
   
 author-information: > 
   \author{{\large \bf Michael Henry Tessler (mhtessler@stanford.edu)} \\ Department of Psychology, Stanford University 
   \AND {\large \bf Michael Franke (mchfranke@gmail.com)} \\ Department of Linguistics, University of T\"{u}bingen}
 
 abstract: 
-    "Language provides multiple distinct ways of conveying the opposite: A person *not happy* can be *unhappy*, *sad*, or perhaps neither, just *not happy*. Rather than being redundant, we hypothesize that uncertainty about the meaning of negation markers allows listeners to derive fine-grained distinctions in interpretation among these various alternatives. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., *happy*), and use this to address an outstanding puzzle: how to interpret double negations (e.g., *not unhappy*). Our model makes surprising additional predictions about a putative difference between antonyms created by affixal negation (*unhappy*) and negated positives (*not happy*): when forms are presented in isolation, we predict no interpretation difference; when confronted with the whole set of alternatives, listeners should judge *unhappy* as more sad than *not happy*. Two behavioral experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted. These findings support the hypothesis that listeners represent uncertainty about the most logical element of language: negation. "
+    "Language provides multiple ways of conveying the opposite: A person *not happy* can be *unhappy*, *sad*, or perhaps neither, just *not happy*. Rather than being redundant, we hypothesize that uncertainty about the meaning of negation markers allows listeners to derive fine-grained distinctions among these various alternatives. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., *happy*), and use this to address an outstanding puzzle: how to interpret double negations (e.g., *not unhappy*). Our model makes surprising additional predictions about a putative difference between antonyms created by affixal negation (*unhappy*) and negated positives (*not happy*): when forms are presented in isolation, we predict no interpretation difference; when confronted with the whole set of alternatives, listeners should judge *unhappy* as more sad than *not happy*. Two behavioral experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted. These findings support the hypothesis that listeners represent uncertainty about the most logical element of language: negation. "
 
 keywords:
     "semantics; pragmatics; negation; Bayesian cognitive model; Rational Speech Act"
@@ -320,7 +322,7 @@ As a result, *not happy* and *unhappy* can be construed as either $\neg Hx$ or $
 <!-- \end{table} -->
 
 A listener's uncertainty about how to interpret negation markers can be formally modeled as uncertainty about the lexicon $\mathcal{L}$ a speaker is likely to use [@Bergen2016]. 
-We combine this technique with a model that derives plausible thresholds $\theta$ for gradable adjective interpretation [@Lassiter2015; see also @Potts2008:Interpretive-Ec; @Qing2014:Adjectives].
+We combine this technique with a model that derives plausible thresholds $\theta$ for gradable adjective interpretation [@Lassiter2015; see also @Qing2014:Adjectives].
 
 \vspace{-0.5cm}
 \begin{align}
@@ -1156,7 +1158,7 @@ In \text{Expt.$\thinspace$1}, our adjective sets varied both in terms of their a
 Many adjective sets have both morphological and lexical antonyms (e.g., *happy*/*unhappy*/*sad*).
 In this experiment, we aim to replicate the asymmetry findings using adjectives that describe the same semantic scales.
 <!-- Specifically, in \text{Expts.$\thinspace$1~\&~2}, our adjective sets varied both in terms of their opposites (negatives vs.\text{~}antonyms) as well as the actual degree scales being described (e.g., height for *tall*/*short* vs.\text{~}happiness for *happy*/*unhappy*). -->
-In addition, we test our second prediction that hearing multiple utterances in the same context will produce the full ordering for morphological antonym sets (Fig.$\thinspace$\ref{fig:modelPredictions}).
+Also, we test our second prediction that hearing multiple utterances in the same context will produce the full ordering for morphological antonym sets (Fig.$\thinspace$\ref{fig:modelPredictions}).
 
 <!-- ## Methods -->
 
