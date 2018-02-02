@@ -346,10 +346,10 @@ Each participant completed a total of 16 trials, with exactly 2 repetitions of e
 
 We used adjectives that described properties of people.
 We refer to a collection of the four associated adjective forms---positives, antonyms (morphological or lexical), and their negations using the particle "not"---that have the same positive adjective as an *adjective set* (e.g., one adjective set is *happy*, *unhappy*, *not happy*, *not unhappy*).
-10 adjective sets were constructed for each antonym type (total 20) from an informal survey of the linguistics literature and taken from a list of "common opposites" available online (Table 2).^[http://www.enchantedlearning.com/wordlist/opposites.shtml]
+10 adjective sets were constructed for each antonym type (total 20) from an informal survey of the linguistics literature and taken from a list of "common opposites" available online (Table 1).^[http://www.enchantedlearning.com/wordlist/opposites.shtml]
 Each trial of the experiment used an adjective from a distinct adjective set (e.g., if a participant rated *unhappy*, they rated no other adjective from the \{*happy*, *unhappy*, ...\} set).
 
-```{r items12, results="asis"}
+```{r items1, results="asis"}
 load(file = "cached_results/item_table_e12.RData")
 print(tab1, type="latex", comment = F, table.placement = "H", size="\\fontsize{9pt}{10pt}\\selectfont", include.rownames=FALSE)
 ```
@@ -655,7 +655,7 @@ This exclusion criterion, our planned sample size, the procedure, and the analys
 
 ### Materials
 
-To best isolate the contribution of morphological vs.\text{~}lexical antonyms, we curated adjective sets consisting of words for properties of people, such that both types of antonyms existed for the same positive adjective (e.g., *happy* $\rightarrow$ *unhappy*, *sad*; \text{Table$\thinspace$3}).
+To best isolate the contribution of morphological vs.\text{~}lexical antonyms, we curated adjective sets consisting of words for properties of people, such that both types of antonyms existed for the same positive adjective (e.g., *happy* $\rightarrow$ *unhappy*, *sad*; \text{Table$\thinspace$2}).
 Lexical antonyms were selected from a set of possibilities produced from a small survey (n=18) on MTurk eliciting "opposites" for a list of 30 positive-form adjectives which had morphological antonyms (asking participants in the same experimental context as our interpretation studies, "What is the opposite of e.g., *forgiving*?").
 From the list of freely-produced opposites (the vast majority of which were not morphological), the first author chose the one that intuitively best conveyed the same scalar dimension as the morphological antonym and which was not already used as a lexical antonym for another item (e.g., opposite of *forgiving* $\rightarrow$ *resentful*; opposite of *kind* $\rightarrow$ *cruel*, because opposite of *friendly* $\rightarrow$ *mean*).
 Ten out of the original 30 items were dropped for either not having such a well-suited lexical antonym (e.g., *moral*) or for having a well-suited lexical antonym that conflicted with another item (e.g., *compassionate* $\rightarrow$ *cold*, but also *affectionate* $\rightarrow$ *cold*).
@@ -667,7 +667,7 @@ The *single utterances* conditions were similar to of that \text{Expt.$\thinspac
 In contrast to \text{Expt.$\thinspace$1}, *antonym type* (morphological vs.\text{~}lexical) was a between-participants factor.
 In addition, the slider bar endpoints were relabeled to "the most \{*positive*, *negative*\} person *in the world*"; without "in the world", there is a salient interpretation of the endpoints indicating  "the most \{*positive*, *negative*\} person (of these four)" in the multiple utterances conditions.
 
-```{r items, results="asis"}
+```{r items2, results="asis"}
 load(file = "cached_results/item_table.RData")
 print(tab1, type="latex", comment = F, table.placement = "h", size="\\fontsize{9pt}{10pt}\\selectfont", include.rownames=FALSE)
 ```
