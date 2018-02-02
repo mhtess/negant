@@ -1,5 +1,5 @@
 ---
-title: "4_L1"
+title: "Analysis for Expt. 2 in 'Not unreasonable' (cogsci)"
 output: github_document
 ---
 
@@ -12,11 +12,11 @@ library(lme4)
 library(lmerTest)
 theme_set(theme_few())
 project.prefix <- "4_L1_1slider"
-#project.prefix.lex <- "7_1slider_lex"
 
 orange.purple.color.palette <- 
   c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
 ```
+# Load Data
 
 ```{r loadDataAndTime}
 d.l1.7 <- read.csv(paste("../data/", project.prefix,"/",project.prefix,"-trials.csv",
@@ -30,10 +30,10 @@ d.l1.7 <- read.csv(paste("../data/", project.prefix,"/",project.prefix,"-trials.
                                       "positive")))
   
 d.l1.7.time <- read.csv(paste("../data/", project.prefix,"/",project.prefix,"-time.csv", sep = ""))
-summary(d.l1.7)
+#summary(d.l1.7)
 ```
 
-Table of items
+#### Table of items
 
 ```{r itemTable}
 d.items.lex <- d.l1.7 %>%
@@ -42,7 +42,7 @@ d.items.lex <- d.l1.7 %>%
   select(adj_pair) %>%
   distinct()
 
-d.items.lex <- data.frame(adj_pair = d.items.lex[with(d.items.lex, order(adj_pair)), ]) %>%   rename("Negative opposites" = adj_pair)
+d.items.lex <- data.frame(adj_pair = d.items.lex[with(d.items.lex, order(adj_pair)), ]) %>%   rename("Lexical antonyms" = adj_pair)
 
 
 d.items.morph <- d.l1.7 %>%
@@ -52,42 +52,33 @@ d.items.morph <- d.l1.7 %>%
   distinct() 
 
 d.items.morph <- data.frame(adj_pair = d.items.morph[with(d.items.morph, order(adj_pair)), ])%>%
-  rename("Antonym opposites" = adj_pair)
+  rename("Morphological antonyms" = adj_pair)
 
-
-# d.items <- d.items[with(d.items, order(positive)),] %>%
-#   rename("Positive adjective" = positive, "Morphological antonym" = morphant,
-#          "Lexical antonym" = lexant)
 
 tab1 <- xtable::xtable(
   cbind(as.matrix(d.items.morph), as.matrix(d.items.lex)), 
   caption = "Items in Experiment 1.")
-save(tab1, file = "../cached_results/item_table_e12.RData")
-#print(tab1, type="latex", comment = F, table.placement = "H",  include.rownames=FALSE)
-#d.items
-#d.items.morph
 
-#tab1
+#save(tab1, file = "../cached_results/item_table_e12.RData")
 
 ```
 
 
-Time to complete task
+#### Time to complete task
 
 ```{r fig_timeInMinutes}
-
 d.expt1.time.summary <- d.l1.7.time %>%
   summarize(aveTime = mean(time),
             sdTime = sd(time))
 
-s#ave(d.expt1.time.summary, file = "../cached_results/time_summary_e1.RData")
-#
+#save(d.expt1.time.summary, file = "../cached_results/time_summary_e1.RData")
 
 ggplot(d.l1.7.time, aes(x = time)) +
   geom_histogram()+
   xlab("time in minutes")
 ```
 
+#### Participant comments
 
 ```{r subjectComments}
 d.l1.7.comments <- read.csv(paste("../data/",
@@ -98,7 +89,7 @@ d.l1.7.comments <- read.csv(paste("../data/",
 d.l1.7.comments %>% select(comments) %>% filter(comments != "") %>% kable()
 ```
 
-Self-reported native language
+#### Self-reported native language
 
 ```{r selfReportEnglishNative}
 d.l1.7.nativeEnglish <- d.l1.7.comments %>% 
@@ -128,11 +119,14 @@ d.l1.natEng <- left_join(
 ## check that i've done the filtering correctly
 length(unique(d.l1.natEng$workerid))
 ```
+
+#### Number of ratings per item
+
 ```{r}
 table(d.l1.natEng$positive, d.l1.natEng$adjective_type)
 ```
 
-Normalize ratings (by subject, subject off mean and divide by SD)
+#### Normalize ratings (by subject, subject off mean and divide by SD)
 
 ```{r}
 d.l1.natEng <- d.l1.natEng %>%
@@ -153,29 +147,21 @@ Raw histograms
 d.l1.natEng %>%
 ggplot(., aes( x = normalizedResponse,
                        fill = adjective_type))+
-  #geom_histogram(position = position_dodge(), bins = 20)+
   geom_density(alpha = 0.5)+
   facet_wrap(~antonym_type, scales = 'free')+
     scale_fill_manual(values = orange.purple.color.palette)+
-  #facet_grid(antonym_type~adjective_type, scales = 'free')+
-  #scale_fill_manual(values = orange.purple.color.palette)+
-  #ylab("counts")+
   xlab("slider ratings")
-
-ggsave(paste(
-  "~/Documents/research/negant/analysis/figs/cogsci_expt1_densities.pdf", sep = ""),
-       width = 6, height = 3)
-
-  ##scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
-  guides(fill = F)
+# 
 # ggsave(paste(
-#   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_histograms.pdf", sep = ""),
-#        width = 7, height = 3)
+#   "~/Documents/research/negant/analysis/figs/cogsci_expt1_densities.pdf", sep = ""),
+#        width = 6, height = 3)
+
 ```
 
-By item histograms
+#### Exploratory: By item histograms
 
 ```{r}
+# how many participants rate a morphological negated antonym below average?
 d.l1.natEng %>%
   filter(adjective_type == "neg_antonym", 
         antonym_type == "morphological") %>%
@@ -203,7 +189,7 @@ d.l1.natEng %>%
 ```
 
 
-Bootstrapped CIs
+#### Bootstrapped CIs
 
 ```{r fig_bootstrappedCIs}
 d.l1.4.boot <- d.l1.natEng %>%
@@ -249,10 +235,9 @@ d.l1.4.boot %>%
 #        width = 6, height = 3.75)
 ```
 
-By item
+#### By item
 
 ```{r fig.width = 7, fig.height = 5}
-
 d.l1.7.boot.adj <- d.l1.natEng %>%
   group_by(positive, adjective, adjective_type)  %>%
   multi_boot_standard(col = "normalizedResponse") %>%
@@ -265,11 +250,6 @@ d.l1.7.boot.adj <- d.l1.natEng %>%
                                       "neg_morphant",
                                       "positive")))
 
-
-# %>%
-#   filter(adjective_type %in% c("lexant",
-#                                       "morphant",
-#                                       "neg_positive"))
 
 d.l1.7.boot.adj  %>%
   ggplot(., aes(x = adjective,
@@ -303,23 +283,6 @@ d.l1.7.boot.adj  %>%
 
 Helmert coding, maximal model, and model comparison to simpler model.
 
-```{r}
-
-summary(lmer(
-  response ~  adjective_type + 
-                      (1 | workerid) + 
-                       (1 | positive),
-                     data = d.l1.natEng %>%
-      mutate(adjective_type = factor(adjective_type, 
-                           levels = c("neg_positive",
-                                      "lexant",
-                                      "morphant",
-                                      "neg_lexant",
-                                      "neg_morphant",
-                                      "positive")))
-  ))
-
-```
 
 
 ```{r}
@@ -362,25 +325,23 @@ summary(rs.7.helmert)
 #        "../cached_results/regression_antTypeXadjType_expt1.RData")
 
 
-
-
+## more limited random effects structure
 rs.7.helmert.0 <- lmer(response ~ antonym_type * st + 
                        (1 + st | workerid) + 
                        (1  | positive),
                      data = d.l1.natEng.rescaled)
 # extra random effect of sentence_type by item accounts for significantly more variance
 anova(rs.7.helmert.0, rs.7.helmert)
-
-# try model with inverse random effect structure?
 ```
+
+Examine residuals
 
 ```{r}
 plot(rs.7.helmert)
 qqnorm(residuals(rs.7.helmert))
 ```
 
-
-"Simple effects"
+### "Simple effects"
 
 ```{r reg.simple.morph}
 
@@ -451,7 +412,6 @@ ggplot(d.l1.4.splithalf,
 ### First vs. last rating
 
 ```{r}
-
 d.l1.4.first.last <- bind_rows(
   d.l1.4 %>%
     group_by(workerid, negation, sentence_type) %>%
@@ -475,5 +435,4 @@ ggplot(d.l1.4.first.last.summary, aes(x = presentation, fill = sentence_type,
   geom_errorbar(position = position_dodge())+
   facet_wrap(~negation)
 
-#ggsave("~/Documents/research/negant/analysis/figs/split_half-3_L1.pdf", width =6 , height = 4)
 ```
