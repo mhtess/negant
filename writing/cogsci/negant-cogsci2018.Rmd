@@ -17,7 +17,7 @@ author-information: >
   \AND {\large \bf Michael Franke (mchfranke@gmail.com)} \\ Department of Linguistics, University of T\"{u}bingen}
 
 abstract: 
-    "Language provides multiple ways of conveying the opposite: A person *not happy* can be *unhappy*, *sad*, or perhaps neither, just *not happy*. Rather than being redundant, we hypothesize that uncertainty about the meaning of negation markers allows listeners to derive fine-grained distinctions among these various alternatives. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., *happy*), and use this to address an outstanding puzzle: how to interpret double negations (e.g., *not unhappy*). Our model makes surprising additional predictions about a putative difference between antonyms created by affixal negation (*unhappy*) and negated positives (*not happy*): when forms are presented in isolation, we predict no interpretation difference; when confronted with the whole set of alternatives, listeners should judge *unhappy* as more sad than *not happy*. Two behavioral experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted. These findings support the hypothesis that listeners represent uncertainty about the most logical element of language: negation. "
+    "Language provides multiple ways of conveying the opposite: A person *not happy* can be *unhappy*, *sad*, or perhaps neither, just *not happy*. Rather than being redundant, we hypothesize that uncertainty about the meaning of negation markers allows listeners to derive fine-grained distinctions among these various alternatives. We formalize this hypothesis in a probabilistic model of gradable adjectives (e.g., *happy*), and use this to address an outstanding puzzle: how to interpret double negations (e.g., *not unhappy*). Our model makes surprising additional predictions about a putative difference between morphological antonyms (*unhappy*) and negated positives (*not happy*): Listeners should judge *unhappy* as more sad than *not happy* only when confronted with alternatives in context; when interpreted in isolation, we predict no difference in understanding. Two behavioral experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted. These findings support the hypothesis that listeners represent uncertainty even about the most logical elements of language. "
 
 keywords:
     "semantics; pragmatics; negation; Bayesian cognitive model; Rational Speech Act"
@@ -295,7 +295,7 @@ Formal linguistic theories capture the meaning of gradable adjectives as a thres
 Here, we introduce contrary and contradictory negations into a pragmatic model that reasons about a speaker's likely values for $\theta$ [@Lassiter2015]. 
 Formally, if $Hx$ expresses that $x$ is happy, contradictory opposition is standard, bivalent, proposition-level negation $\neg Hx$.
 Contrary opposition is a predicate-forming operation $\tilde{H}x$ which introduces its own free threshold $\theta_{\tilde{H}}$ for gradable predicates.
-The latter is not iterable [@Horn1989:Natural; @sep-negation], so while it makes sense to iterate $\neg \neg Hx$, it is impossible to iterate contrary negation. 
+The latter is not iterable [@Horn1989:Natural], so while it makes sense to iterate $\neg \neg Hx$, it is impossible to iterate contrary negation. 
 <!-- It is, however possible, to have $\neg \tilde{H}x$.  -->
 <!-- But it is not possible to have $\neg$ in the scope of $\tilde{H}x$. -->
 As a result, *not happy* and *unhappy* can be construed as either $\neg Hx$ or $\tilde{H}x$, while *not unhappy* may be $\neg \neg Hx$ or $\neg \tilde{H}x$ (Fig.$\thinspace$\ref{fig:lexicon-model}).
@@ -330,15 +330,6 @@ S_{1}(u \mid x, \theta, \mathcal{L}) &\propto \exp{(\alpha \cdot \ln {L_{0}(x \m
 L_{0}(x \mid u, \theta, \mathcal{L}) &\propto \mathcal{L}(u, x, \theta) \cdot P(x) \label{eq:L0}
 \end{align}
 
-
-```{r lexicon-model, fig.pos = "b", fig.cap="Hypothesis space of lexica for the \\emph{uncertain negation} model. The hypothesis space is restricted to the interpretations that are circled for the \\emph{logical negation} and \\emph{bonafide contraries} model."}
-# cowplot::ggdraw() +  
-#   cowplot::draw_image("img/lexicon-model.pdf", scale = 1.3) +
-#   theme(plot.margin = unit(c(0,0,0,0), "pt"))
-img <- png::readPNG("img/lexicon-model.png")
-grid::grid.raster(img)
-```
-
 Eqs.$\thinspace$\ref{eq:L1}-\ref{eq:L0} are a Rational Speech Act (RSA) model, a recursive reasoning model wherein a pragmatic listener $L_{1}$ tries to resolve the intended meaning of an utterance $u$ (e.g., "Jones is not unhappy") by combining its prior beliefs about the degree of Jones' happiness $P(x)$, with the generative process of the utterance, a speaker model $S_1$.
 The speaker model $S_1$ describes an approximately rational agent (with degree of rationality $\alpha$) trying to inform a naive listener $L_0$ about the degree $x$.
 <!-- In the context of adjective interpretation, the state of the world is given by the value of the scalar degree $x$ (e.g., the height of the referent). -->
@@ -346,23 +337,37 @@ The literal listener $L_0$ updates its prior beliefs $P(x)$ via an utterance's l
 where $\mathcal{L}(u, x, \theta)$ gives the truth-value of $u$ in lexicon $\mathcal{L}$ applied to state $x$ under threshold $\theta$.
 The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely degree $P(x)$, the likely lexicon $P(\mathcal{L})$, and the likelihood $S_1(u \mid x, \theta, \mathcal{L})$ that a cooperative information-maximizing speaker would utter the adjective given a degree $x$, threshold $\theta$, and lexicon $\mathcal{L}$.
 
-Does this model predict that $L_1$ would infer any qualitative differences between positive adjectives (*happy*), antonyms (*unhappy*), negated positives (*not happy*) and negated antonyms (*not unhappy*)?
-Predictions depend on two additional features: the prior over lexica and what utterances to condition on (Fig.$\thinspace$\ref{fig:modelPredictions}). 
-There are three natural possibilities for priors to assign probability to various hypotheses about negation markers (*un-*, *not*; Fig.$\thinspace$\ref{fig:lexicon-model}).
-Our main object of interest is the *uncertain negation* model because it considers all logical possibility at equal probability.
-The *bonafide contraries* submodel interprets morphological negation (*un-*) as expressing true contrary opposition, but maintains uncertainty about how to interpret particle negation (*not*).
-This prior structure is also the natural choice when the antonym is not derived by morphological negation (e.g., *sad*).
-The *logical negation* (or *George Orwell*) submodel assigns probability zero to lexica with contrary interpretations of negation. 
 
-When listeners reason about which lexicon best explains the observed speaker utterance, it matters whether only a single utterance or multiple utterances are observed from the same speaker.
-Given a richly structure domain of lexical uncertainty, multiple utterances heard in the same context can help resolve the meaning of each, and thus yield different interpretations than if the utterances are heard in isolation.
-To match our experimental setup described later, multiple utterances predictions from Fig.$\thinspace$\ref{fig:modelPredictions} stem from conditioning $L_1$ on the observation of a speaker who used all four adjective alternatives to talk about four different individuals.
 
-Upon hearing *not unhappy*, the *uncertain negation* model reasons that a truly compositional $\neg \neg \textit{happy}$ is implausible (intuitively because the speaker could have said the simpler *happy*) and interprets the utterance as signalling a slightly positive state (Fig.$\thinspace$\ref{fig:modelPredictions}).^[Model predictions assume the following model parameters: $P(x) = \mathcal{N}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 1; \text{cost}(\mathit{not}) = 2$.]
-When conditioning on a single utterance, our *uncertain negation* model does not differentiate antonyms (*unhappy*) from negated positives (*not happy*), as @Jespersen1917:Negation and @Blutner2004:pragmatics surmised.
-But when it hears multiple utterances in the same context, the model predicts that *unhappy* is less happy than *not happy*, producing the ordering hypothesized by @Krifka2007:Negated-antonyms as shown in Fig.\ref{fig:happy-scale}.
-The *bonafide contraries* submodel also interprets negated antonyms as slightly positive, but predicts Krifka's ordering for both single and multiple utterance conditioning. 
-The *logical negation* submodel does not differentiate between negated antonyms and positives, nor between negated positives and antonyms.
+```{r lexicon-model, fig.pos = "t", fig.cap="Space of possible meanings in the lexicon prior for the \\emph{uncertain negation} model. The hypothesis space is restricted to the circled meanings for the \\emph{logical negation} and \\emph{bonafide contraries} subclasses."}
+# cowplot::ggdraw() +  
+#   cowplot::draw_image("img/lexicon-model.pdf", scale = 1.3) +
+#   theme(plot.margin = unit(c(0,0,0,0), "pt"))
+img <- png::readPNG("img/lexicon-model.png")
+grid::grid.raster(img)
+```
+
+Does this model predict any qualitative differences between interpretations of positive adjectives (*happy*), antonyms (*unhappy*), negated positives (*not happy*) and negated antonyms (*not unhappy*)?
+Predictions depend on the space of possible meanings considered in the lexicon prior $P(\mathcal{L})$.
+There are three natural possibilities for this space of meanings (Fig.$\thinspace$\ref{fig:lexicon-model}).
+Our full *uncertain negation* model considers the full space of logically possible ways of mapping overt negation markers (*un-*, *not*) onto oppositional meanings (contraries and contradictions).
+Another possibility is for morphological negation (*un-*) to express a bonafide contrary meaning (a la *sad*), while maintaining uncertainty about particle negation (*not*; Fig.$\thinspace$\ref{fig:lexicon-model} purple dashes).
+A third class of meanings considers both negation markers to map only onto to contradictory meanings (the *logical negation* or *George Orwell* class of meanings; Fig.$\thinspace$\ref{fig:lexicon-model} orange solid lines).
+We consider these different spaces of possible meanings as model variants for purposes of comparison. 
+
+For a given lexicon prior, listeners reason about which lexicon best explains a speaker's utterance.
+<!-- ; this inference depends upon whether only a single utterance or multiple utterances are observed. -->
+Multiple utterances heard in the same context can help resolve the meaning of each other, and thus yield different interpretations than if the utterances were heard in isolation.
+We thus generate predictions for our models by conditioning $L_1$ on the observation of a speaker using all four adjective alternatives to talk about four different individuals in addition to a single utterance in isolation (Fig.$\thinspace$\ref{fig:modelPredictions}, *multiple utterances*).
+Model predictions assume the following model parameters: $P(x) = \mathcal{N}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 1; \text{cost}(\mathit{not}) = 2$.^[
+Predictions are qualitatively similar when $\text{cost}(\mathit{un}) = \text{cost}(\mathit{not})$.
+]
+
+Upon hearing *not unhappy*, our *uncertain negation* model reasons that a truly compositional $\neg \neg \textit{happy}$ is implausible (intuitively because the speaker could have said the simpler *happy*) and interprets the utterance as signalling a slightly positive state (Fig.$\thinspace$\ref{fig:modelPredictions})
+When conditioning on a single utterance, uncertain negation does not differentiate antonyms (*unhappy*) from negated positives (*not happy*), as @Jespersen1917:Negation and @Blutner2004:pragmatics surmised.
+But when it hears multiple utterances in the same context, the model predicts that *unhappy* is more sad than *not happy*, producing the ordering hypothesized by @Krifka2007:Negated-antonyms in Fig.\ref{fig:happy-scale}.
+The *bonafide contraries* class of meanings also yields interpretations of negated antonyms as slightly positive, but predicts Krifka's ordering for both single and multiple utterance conditioning. 
+The *logical negation* class does not differentiate between negated antonyms and positives, nor between negated positives and antonyms.
 All models have more extreme interpretations when they condition on multiple utterances.
 <!-- The *uncertain negation* model, though, uniquely differentiates itself from the single utterance simulation: It now predicts a difference between negated positives and antonyms, and the ordering in Fig.$\thinspace$\ref{fig:happy-scale} . -->
 
@@ -457,11 +462,12 @@ rs.listener.wp.expectation %>%
 # Behavioral experiments
 
 
-The *uncertain negation model* predicts a partial ordering for antonyms and their negations when heard in isolation (with negated positives undifferentiated from antonyms), but a full ordering when present in the same context (Fig.$\thinspace$\ref{fig:modelPredictions}).
-As a control condition, we examine antonyms which do not have overt negation markers (e.g., *short*), for which the the lexica prior should be that of the *bonafide antonyms* case which predicts a full ordering regardless of context. 
-Behavioral experiments aim to test these predictions.
+The *uncertain negation model* predicts a partial ordering for morphological antonyms and their negations when heard in isolation (with antonyms $\approx$ negated positives), but a full ordering when present in the same context (Fig.$\thinspace$\ref{fig:modelPredictions}).
+As a control condition, we examine antonyms which do not have overt negation markers (e.g., *short*).
+These lexical antonyms should behave like *bonafide antonyms*, which predicts a full ordering regardless of context. 
+<!-- Behavioral experiments aim to test these predictions. -->
 <!-- \text{Expts.$\thinspace$1 $\&$ 2} were exploratory and informed our computational modeling. -->
-\text{Expt.$\thinspace$1} was exploratory to inform computational modeling.
+\text{Expt.$\thinspace$1} was exploratory and informed our computational modeling.
 \text{Expt.$\thinspace$2} is a larger, more stringent, preregistered (\url{osf.io/p7f25/}) replication.
 <!-- \mht{i feel like this paragraph and the one right after it could be merged somehow..} -->
 <!-- \mf{what about the official preregistration as OSF?} -->
@@ -474,7 +480,7 @@ Behavioral experiments aim to test these predictions.
 
 
 
-```{r modelPredictions, fig.cap="Listener model expected values for adjective interpretations on a normalized scale for the \\emph{uncertain negation} model and the \\emph{bonafide antonyms} and \\emph{logical negation} submodels. Paddles are vertically offset when overlapping.", fig.env = "figure", fig.pos = "t", fig.width=3.5, fig.align = "center"}
+```{r modelPredictions, fig.cap=" \\emph{Uncertain negation} listener model (Eq.1) posterior expectations on a normalized scale (x-axis) for different adjective types (color). The space of possible meanings is restricted for \\emph{bonafide antonyms} and \\emph{logical negation} simulations (Fig.2). Paddles are vertically-offset when overlapping.", fig.env = "figure", fig.pos = "t", fig.width=3.5, fig.align = "center"}
 load('cached_results/rsa_model_predictions.RData') # rs.listener.wp.expectation
 
 rs.listener.wp.expectation <- rs.listener.wp.expectation %>%
@@ -548,11 +554,11 @@ ggplot(rs.listener.wp.expectation %>%
                                 words = c("", "uncertain negation")))+
     geom_text(aes(x = x, y= y,label = words),
               inherit.aes = F,
-              color = 'black', size = 2.2, family = "Palatino",
+              color = 'black', size = 2.2, family = "Palatino", fontface = 'italic',
               data = data.frame(utterances = c(rep("single utterance",4), rep("multiple utterances", 4)),
                                 words = c("unhappy", "not happy", "not unhappy", "happy", "", "", "", ""),
-                                x = c(0.82, 0.7,0.82, 0.86),
-                                y = c(-0.6, -0.1, 0.3, 0.78)))+
+                                x = c(0.87, 0.78,0.78, 0.86),
+                                y = c(-0.63, -0.3, 0.3, 0.7)))+
     #geom_text(x = -0.05, y = 0.8, label = 'lexical antonyms', color = 'black', alpha = 0.6, size = 4, family = "Palatino")+
     #geom_text(x = -0.1, y = -0.5, label = 'SINGLE UTTERANCE', color = 'black', alpha = 0.8, family = "Palatino",
               #fontface = 'italic', size = 3)+
@@ -568,6 +574,30 @@ ggplot(rs.listener.wp.expectation %>%
     ylab("model interpretation")+
     scale_x_continuous(limits = c(-0.27, 1.1))+
     scale_y_continuous(limits = c(-0.8, 0.9), breaks = c(-0.5, 0, 0.5))+
+    geom_segment(aes(x=x, xend=xend, y=y, yend=yend),
+                 data = data.frame(
+                   x = c(0.89, -99), xend = c(0.93, -99), y = c(-0.5, -99), yend = c(-0.45, -99),
+                   utterances = c("single utterance", "multiple utterances")
+                 ), inherit.aes = F,
+                 arrow = arrow(length = unit(1, "mm")))+
+    geom_segment(aes(x=x, xend=xend, y=y, yend=yend),
+                 data = data.frame(
+                   x = c(0.83, -99), xend = c(0.88, -99), y = c(-0.3, -99), yend = c(-0.3, -99),
+                   utterances = c("single utterance", "multiple utterances")
+                 ), inherit.aes = F,
+                 arrow = arrow(length = unit(1, "mm")))+
+    geom_segment(aes(x=x, xend=xend, y=y, yend=yend),
+                 data = data.frame(
+                   x = c(0.83, -99), xend = c(0.88, -99), y = c(0.3, -99), yend = c(0.3, -99),
+                   utterances = c("single utterance", "multiple utterances")
+                 ), inherit.aes = F,
+                 arrow = arrow(length = unit(1, "mm")))+
+    geom_segment(aes(x=x, xend=xend, y=y, yend=yend),
+                 data = data.frame(
+                   x = c(0.87, -99), xend = c(0.92, -99), y = c(0.55, -99), yend = c(0.5, -99),
+                   utterances = c("single utterance", "multiple utterances")
+                 ), inherit.aes = F,
+                 arrow = arrow(length = unit(1, "mm")))+
     theme(axis.text.y = element_blank(), 
           axis.ticks.y = element_blank(),
       legend.position = 'bottom',
@@ -578,7 +608,7 @@ ggplot(rs.listener.wp.expectation %>%
         panel.spacing = unit(0, "lines"),
         axis.text.x = element_text(size = 8),
       axis.title.x = element_text(size = 8), 
-      legend.key.size = unit(0.25, "cm"))
+      legend.key.size = unit(0.3, "cm"))
 ```
 
 
@@ -604,14 +634,10 @@ The experiment took on average `r round(d.expt1.time.summary[[1, "aveTime"]],1)`
 
 ### Procedure
 
-On each trial, participants read a statement introducing a person using a gradable adjective of one of four *adjective types*: 
-<!-- $\textsc{positives}$ -->
-positives (e.g., *happy*, *tall*), 
-<!-- $\textsc{opposites}$  -->
-antonyms (e.g., *short*, *unhappy*), and their respective negations (e.g., *not* X). 
-There were two *antonym types* (mophological, e.g., *unhappy*; and lexical, e.g., *short*).
-Participants were asked to rate the character on a scale from "the most \textsc{positive} person" to "the most \textsc{antonym} person", which depended on the item, using a slider bar (\figref{fig:experiment-slides}A).
-Participants rated one sentence at a time (e.g., "Greg is not unhappy") and saw items from both antonym types throughout the experiment. 
+On each trial, participants read a statement introducing a person using a gradable adjective of one of four *adjective types*: positives (e.g., *happy*, *tall*), antonyms (e.g., *short*, *unhappy*), and their respective negations (*not* X).
+Antonyms were one of two types: morphological (e.g., *unhappy*) and lexical (e.g., *short*).
+Participants rated the character on a scale from "the most *positive* person" to "the most *antonym* person" (item-dependent) using a slider bar (\figref{fig:experiment-slides}A).
+Participants rated one sentence at a time and saw items from both antonym types throughout the experiment. 
 Each participant completed a total of 16 trials, with exactly 2 repetitions of each adjective type for each antonym type.
 
 ### Materials 
@@ -662,7 +688,7 @@ Critically, as predicted by the uncertain negation model, adjective sets with mo
 <!-- : $\textsc{opposite}_\textsc{neg} < \textsc{negated positive} < \textsc{negated opposite}_\textsc{neg} < \textsc{positive}$. -->
 
 To confirm these observations, we built a linear mixed model predicting the raw, unnormalized ratings in terms of fixed effects of *antonym type* (morphological vs. lexical), *adjective type* (Helmert coded in order: antonym, negated positive, negated antonym, positive)^[
- Throughout, we code adjective type using Helmert coding, which compares levels of a factor to the average of preceding levels, in order to compare anotnym vs. negated positive levels of the adjective type factor.
+ Throughout, we code adjective type using Helmert coding, which compares levels of a factor to the average of preceding levels, in order to compare antonym vs. negated positive levels of the adjective type factor.
 ], and their interaction; the model also included random intercepts and random slopes of *adjective type* by-participant and by-item.^[
   This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R [@lme4].]
 Consistent with our observations, the difference between the *antonym* vs. *negated positive* levels of adjective type interacted significantly with antonym type (morphological vs.\text{~}lexical): $\beta = `r round(rs1.expt1.coef["antonym_typelexical:st1","Estimate"],3)`$, $SE =  `r round(rs1.expt1.coef["antonym_typelexical:st1","Std. Error"],3)`$, t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 3)`$.
@@ -786,11 +812,11 @@ fig.expt1 <- ggplot(df.oneSlider.ci %>%
     xlab("")+
     coord_flip()+
     geom_rect(xmin = -0.025, 
-              xmax = 0.025, ymin = -1.5, ymax = 1.5, inherit.aes = F, alpha = 0.05,
+              xmax = 0.025, ymin = -1.5, ymax = 1.5, inherit.aes = F, alpha = 0.06,
               color = 'black')+
     geom_rect(xmin = 0.2-0.025, 
               xmax = 0.225, ymin = -1.5, ymax = 1.5, inherit.aes = F, alpha = 0.05,
-              fill = 'darkblue', color = 'black')+
+              color = 'black')+
     geom_rect(color = 'black')+
     geom_rect(data = df.oneSlider.ci %>% filter(antonym_type == "morphological" & adjective_type == "Negated positive"),
              inherit.aes = F, aes(xmin = condition_numeric-0.04, xmax = condition_numeric+0.02,
@@ -806,7 +832,7 @@ fig.expt1 <- ggplot(df.oneSlider.ci %>%
     geom_text(x = -0.1, y = -0.5, label = 'SINGLE UTTERANCE', color = 'black', alpha = 0.8, family = "Palatino",
               fontface = 'italic', size = 3)+
     scale_fill_manual(name="Adjective type",
-                    values = c("#5e3c99",  "#0570b0",  "#b2abd2", "#74a9cf","#fdb863","#e66101"),
+                    values = c( "#0570b0", "#5e3c99", "#74a9cf", "#b2abd2", "#fdb863","#e66101"),
                     guide = guide_legend(reverse=F),
                     breaks = c("Morphological antonym", "Negated morphological antonym", 
                                "Lexical antonym", "Negated lexical antonym", 
@@ -817,6 +843,7 @@ fig.expt1 <- ggplot(df.oneSlider.ci %>%
     scale_y_continuous(limits = c(-1.1,1.3), breaks = c(-1, 0, 1))+
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
           legend.position = 'bottom')
+
 ```
 
 ```{r expt2results, eval = F}
@@ -903,7 +930,7 @@ fig.expt2.multiple.legend <- ggplot(df.expt2.multiple %>%
     geom_text(x = -0.09, y = -0.75, label = 'MULTIPLE UTTERANCES', color = 'black', alpha = 0.8, family = "Palatino",
               fontface = 'italic', size = 4)+
     scale_color_manual(name="Adjective type",
-                    values = c("#5e3c99",  "#0570b0",  "#b2abd2", "#74a9cf","#fdb863","#e66101"),
+                    values = c( "#0570b0", "#5e3c99", "#74a9cf", "#b2abd2", "#fdb863","#e66101"),
                     guide = guide_legend(reverse=F),
                     breaks = c("Morphological antonym", "Negated morphological antonym", 
                                "Lexical antonym", "Negated lexical antonym", 
@@ -928,11 +955,11 @@ fig.expt2.single <- ggplot(df.expt2.single %>%
     xlab("")+
     coord_flip()+
     geom_rect(xmin = -0.025, 
-              xmax = 0.025, ymin = -1.5, ymax = 1.5, inherit.aes = F, alpha = 0.05,
+              xmax = 0.025, ymin = -1.5, ymax = 1.5, inherit.aes = F, alpha = 0.06,
               color = 'black')+
     geom_rect(xmin = 0.2-0.025, 
               xmax = 0.225, ymin = -1.5, ymax = 1.5, inherit.aes = F, alpha = 0.05,
-              fill = 'darkblue', color = 'black')+
+              color = 'black')+
     geom_rect(color = 'black')+
     geom_rect(data = df.expt2.single %>% filter(antonym_type == "morphological" & adjective_type_rescaled == "Negated positive"),
              inherit.aes = F, aes(xmin = condition_numeric-0.04, xmax = condition_numeric+0.02,
@@ -947,8 +974,10 @@ fig.expt2.single <- ggplot(df.expt2.single %>%
     geom_text(x = -0.05, y = 0.8, label = 'lexical antonyms', color = 'black', alpha = 0.6, size = 4, family = "Palatino")+
     geom_text(x = -0.1, y = -0.5, label = 'SINGLE UTTERANCE', color = 'black', alpha = 0.8, family = "Palatino",
               fontface = 'italic', size = 3)+
+    geom_segment(y = -0.84, yend = -0.74, x =0.04, xend=0.04)+
+    geom_text(y = -0.79, x =0.043, label = "*")+
     scale_fill_manual(name="Adjective type",
-                    values = c("#5e3c99",  "#0570b0",  "#b2abd2", "#74a9cf","#fdb863","#e66101"),
+                    values = c( "#0570b0", "#5e3c99", "#74a9cf", "#b2abd2", "#fdb863","#e66101"),
                     guide = guide_legend(reverse=F),
                     breaks = c("Morphological antonym", "Negated morphological antonym", 
                                "Lexical antonym", "Negated lexical antonym", 
@@ -960,9 +989,6 @@ fig.expt2.single <- ggplot(df.expt2.single %>%
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
           legend.position = 'bottom')
 
-
-
-
 fig.expt2.multiple <- ggplot(df.expt2.multiple %>%
            filter(!(antonym_type == "morphological" & adjective_type_rescaled %in% c("Negated positive", "Antonym"))), 
          aes(xmin = condition_numeric-0.03, xmax = condition_numeric+0.03,
@@ -972,11 +998,11 @@ fig.expt2.multiple <- ggplot(df.expt2.multiple %>%
     xlab("")+
     coord_flip()+
     geom_rect(xmin = -0.025, 
-              xmax = 0.025, ymin = -1.5, ymax = 1.5, inherit.aes = F, alpha = 0.05,
+              xmax = 0.025, ymin = -1.5, ymax = 1.5, inherit.aes = F, alpha = 0.06,
               color = 'black')+
     geom_rect(xmin = 0.2-0.025, 
               xmax = 0.225, ymin = -1.5, ymax = 1.5, inherit.aes = F, alpha = 0.05,
-              fill = 'darkblue', color = 'black')+
+              color = 'black')+
     geom_rect(color = 'black')+
     geom_rect(data = df.expt2.multiple %>% filter(antonym_type == "morphological" & adjective_type_rescaled == "Negated positive"),
              inherit.aes = F, aes(xmin = condition_numeric-0.03, xmax = condition_numeric+0.03,
@@ -992,7 +1018,7 @@ fig.expt2.multiple <- ggplot(df.expt2.multiple %>%
     geom_text(x = -0.1, y = -0.35, label = 'MULTIPLE UTTERANCES', color = 'black', alpha = 0.8, family = "Palatino",
               fontface = 'italic', size = 3)+
     scale_fill_manual(name="Adjective type",
-                    values = c("#5e3c99",  "#0570b0",  "#b2abd2", "#74a9cf","#fdb863","#e66101"),
+                    values = c( "#0570b0", "#5e3c99", "#74a9cf", "#b2abd2", "#fdb863","#e66101"),
                     guide = guide_legend(reverse=F),
                     breaks = c("Morphological antonym", "Negated morphological antonym", 
                                "Lexical antonym", "Negated lexical antonym", 
@@ -1257,7 +1283,7 @@ To do so, we considered data only from the *single utterances* conditions and bu
 and their interaction; the model also included random intercepts and random slopes of *adjective type* by-participant and by-item.
 Consistent with our hypothesis, the interaction between the *antonym* vs. *negated positive* levels of adjective type and antonym type (morphological vs.\text{~}lexical) was significant: $\beta = `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","Estimate"],3)`$, $SE =  `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","Std. Error"],4)`$, t$(`r round(rs1.implicit.coef["antonym_typelexant:adj_type1","df"], 1)`) = `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","t value"],2)`, p = `r round(rs1.implicit.coef["antonym_typelexant:adj_type1","Pr(>|t|)"], 4)`$. 
 We then analyzed the simple effects.
-Morphological antonyms were not significantly different than negated positives $\beta = `r format(rs1.implicit.simple.morph.coef["adj_type1","Estimate"], digits = 2, scientific = T)`$, $SE =  `r round(rs1.implicit.simple.morph.coef["adj_type1","Std. Error"],4)`$, t$(`r round(rs1.implicit.simple.morph.coef["adj_type1","df"], 1)`) = `r round(rs1.implicit.simple.morph.coef["adj_type1","t value"],2)`, p = `r round(rs1.implicit.simple.morph.coef["adj_type1","Pr(>|t|)"], 2)`$, lexical antonyms were significantly more negative than negated positives $\beta = `r -1*round(rs1.implicit.simple.lex.coef["adj_type1","Estimate"],3)`$, $SE =  `r round(rs1.implicit.simple.lex.coef["adj_type1","Std. Error"],3)`$, 
+Morphological antonyms were not significantly different than negated positives $\beta = `r format(rs1.implicit.simple.morph.coef["adj_type1","Estimate"], digits = 2, scientific = T)`$, $SE =  `r round(rs1.implicit.simple.morph.coef["adj_type1","Std. Error"],4)`$, t$(`r round(rs1.implicit.simple.morph.coef["adj_type1","df"], 1)`) = `r round(rs1.implicit.simple.morph.coef["adj_type1","t value"],2)`, p = `r round(rs1.implicit.simple.morph.coef["adj_type1","Pr(>|t|)"], 2)`$, while lexical antonyms were interpreted more negatively than negated positives $\beta = `r -1*round(rs1.implicit.simple.lex.coef["adj_type1","Estimate"],3)`$, $SE =  `r round(rs1.implicit.simple.lex.coef["adj_type1","Std. Error"],3)`$, 
 <!-- t$(`r round(rs1.implicit.simple.lex.coef["adj_type1","df"], 1)`) = `r round(rs1.implicit.simple.lex.coef["adj_type1","t value"],2)`,$ -->
 $p = `r round(rs1.implicit.simple.lex.coef["adj_type1","Pr(>|t|)"], 4)`$.^[
   The random effect structure for the simple effects models mirrored the full model. The only difference was that in analyzing the lexical antonyms, the random effect of adjective type by-item needed to be dropped in order for the model to converge.
@@ -1296,10 +1322,11 @@ We discovered and confirmed a surprising empirical result that challenges ``esta
 Our model that represents uncertainty about how to parse overt negation markers (*un-*, *not*) predicts this very result, while alternative models that treat negation with a fixed meaning fall short.
 While the items used in our experiment were all evaluative statements about people, we think it is not unreasonable to expect the asymmetries observed in our data to generalize to other negated antonyms.
 
-It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by @Krifka2007:Negated-antonyms for morphological antonyms when the listener hears multiple adjectival utterances in the same context (multiple utterances condition).
-This work thus carries with it an interesting account of a robust linguistic intuition: Potentially equivalent expressions receive differential interpretations when observed uttered by the same speaker in close proximity.
+It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by @Krifka2007:Negated-antonyms for morphological antonyms when a listener hears multiple adjectival utterances in the same context (*multiple utterances condition*).
+This work thus carries with it an account of a robust linguistic intuition: Potentially equivalent expressions receive differential interpretations when observed uttered by the same speaker in close proximity.
 Reasoning about lexical ambiguity, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings.
-This might provide an interesting rationale for *mutual exclusivity biases* [@Clark2009:Lexical-Meaning], something future work could help explore.
+More generally, the inferences modeled here can be seen as an instance of *mutual exclusivity* [@Markman1989], in which listeners resolve uncertainty about multiple elements of meaning simultaneously.
+<!-- This might provide an interesting rationale for *mutual exclusivity biases* [@Clark2009:Lexical-Meaning], something future work could help explore. -->
 
 Our formalization of lexical uncertainty about the meaning of natural language negation builds on a growing movement to treat the combinatorial rules of grammar as not totally separable from the lexicon [e.g., @bybee2006usage; @Odonnell2015productivity].
 Recent psycholinguistic evidence supports the idea that utterances which are heavily used will be processed as unique lexical entries while less frequent phrases will be understood compositionally [@MorganLevy2016:binomials]. 
@@ -1325,7 +1352,7 @@ We present a computational explanation for why this is so, and provide empirical
 <!-- \mht{politeness, further inferences? (not unhappy -- *normally unhappy in this situation*)} -->
   
 
-\vspace{1em} \fbox{\parbox[b][][c]{7.3cm}{\centering \footnotesize Experimental paradigms, computational models, and data for this paper can be found at \url{mhtess.github.io}.
+\vspace{1em} \fbox{\parbox[b][][c]{7.6cm}{\centering \footnotesize Experimental paradigms, computational models, analysis scripts, and data for this paper can be found at \url{https://mhtess.github.io}.
 }} \vspace{1em}
   
 # Acknowledgements
