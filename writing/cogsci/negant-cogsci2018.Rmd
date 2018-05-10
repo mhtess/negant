@@ -163,18 +163,21 @@ img <- png::readPNG("img/lexicon-model.png")
 grid::grid.raster(img)
 ```
 
-Does this model predict any qualitative differences between interpretations of positive adjectives (*happy*), antonyms (*unhappy*), negated positives (*not happy*) and negated antonyms (*not unhappy*)?
-Predictions depend on the space of possible meanings considered in the lexicon prior $P(\mathcal{L})$.
-There are three natural possibilities for this space of meanings (Fig.$\thinspace$\ref{fig:lexicon-model}).
-Our full *uncertain negation* model considers the full space of logically possible ways of mapping overt negation markers (*un-*, *not*) onto oppositional meanings (contraries and contradictions).
-Another possibility is for morphological negation (*un-*) to express a bonafide contrary meaning (a la *sad*), while maintaining uncertainty about particle negation (*not*; Fig.$\thinspace$\ref{fig:lexicon-model} purple dashes).
-A third class of meanings considers both negation markers to map only onto to contradictory meanings (the *logical negation* or *George Orwell* class of meanings; Fig.$\thinspace$\ref{fig:lexicon-model} orange solid lines).
-We consider these different spaces of possible meanings as model variants for purposes of comparison. 
+Any predicted qualitative differences between interpretations of positive adjectives (*happy*), antonyms (*unhappy*), negated positives (*not happy*) and negated antonyms (*not unhappy*) will depend on the space of meanings considered in the lexicon prior $P(\mathcal{L})$.
+<!-- Predictions depend on the space of possible meanings considered in the lexicon prior $P(\mathcal{L})$. -->
+There are three natural possibilities.
+One possibility is that negation markers map only onto contradictory meanings (the *logical negation* or *George Orwell* class of meanings; Fig.$\thinspace$\ref{fig:lexicon-model} orange solid lines).
+Alternatively, morphological negation (*un-*) could express a bonafide contrary meaning (a la *sad*; Fig.$\thinspace$\ref{fig:lexicon-model} purple dashes).
+Finally, both overt negation markers (*un-*, *not*) could be mapped to either oppositional meaning---contrary or contradiction---up to the constraints of compositionality described above (full *uncertain negation* model; all meanings shown in Fig.$\thinspace$\ref{fig:lexicon-model}).
+For maximal similarity to the full *uncertain negation* model, we allow the *bonafide anotnyms* model to maintain uncertainty about particle negation (*not*).^[
+The alternative of fixing the meaning of particle negation (*not*) to be logical negation turns out to not produce any qualitative difference from maintaining uncertainty about the meaning, in this model variant. The model infers that *not* should be treated as logical negation, given the other constraints in the lexicon.
+]
 
-For a given lexicon prior, listeners reason about which lexicon best explains a speaker's utterance.
-Multiple utterances heard in the same context can help resolve the meaning of each other, and thus yield different interpretations than if the utterances were heard in isolation.
-We thus generate predictions for our models by conditioning $L_1$ on the observation of a speaker using all four adjective alternatives to talk about four different individuals in addition to a single utterance in isolation (Fig.$\thinspace$\ref{fig:modelPredictions}, *multiple utterances*).
-Model predictions assume the following model parameters: $P(x) = \mathcal{N}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 1; \text{cost}(\mathit{not}) = 2$.^[
+For a given lexicon prior, listeners reason about which lexicon best explains a speaker's single utterance (Fig.$\thinspace$\ref{fig:modelPredictions}, *single utterance*).
+If a speaker uses multiple utterances in the same context, the listener may have even more information about her lexicon.
+<!-- Multiple utterances heard in the same context, however, can help resolve the meaning of each other, and thus yield different interpretations than if the utterances were heard in isolation. -->
+We thus also generate predictions for our models by conditioning $L_1$ on the observation of a speaker using all four adjective alternatives to describe four different individuals (Fig.$\thinspace$\ref{fig:modelPredictions}, *multiple utterances*).
+Model predictions assume the following minimally assumptive model parameters: $P(x) = \mathcal{N}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 1; \text{cost}(\mathit{not}) = 2$.^[
 Predictions are qualitatively similar when $\text{cost}(\mathit{un}) = \text{cost}(\mathit{not})$.
 ]
 
