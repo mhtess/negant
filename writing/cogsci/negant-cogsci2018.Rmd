@@ -648,8 +648,8 @@ Also, we test our second prediction that hearing multiple utterances in the same
 ### Participants
 
 We recruited 750 participants from MTurk.
-The experiment comprised of four between-subjects experimental conditions arranged in a 2x2 Latin Square design: *antonym type (morphological vs.\text{~}lexical)* X *context (single vs.\text{~}multiple utterances)*.
-300 participants were assigned to each of the *single utterance* conditions, and 75 participants were assigned to each of the *multiple utterances* conditions.
+The experiment comprised of four between-subjects experimental conditions arranged in a 2x2 design: *antonym type (morphological vs.\text{~}lexical)* X *context (single vs.\text{~}multiple utterances)*.
+300 participants were assigned to each *anotnym type* in the *single utterance* contexts, and 75 participants were assigned to each in the *multiple utterances* conditions.
 These numbers follow from the intention of getting approximately 45 ratings for each unique adjective in the experiment.
 
 The *single utterance* task took on average `r round(filter(d.time.summary, condition == "implicit")[[1,"aveTime"]], 1)` minutes and participants were compensated \$0.40; *multiple utterances* took on average `r round(filter(d.time.summary, condition == "explicit")[[1,"aveTime"]], 1)` minutes and participants were compensated \$0.80.
@@ -727,7 +727,7 @@ This work resolves an outstanding puzzle in natural language understanding: How 
 Here, we propose a theory of negated antonym interpretation by introducing negation into a pragmatic model of adjective interpretation. 
 But morphological antonyms (*unhappy*) do not behave like bonafide antonyms (*sad*).
 We discovered and confirmed a surprising empirical result that challenges ``established'' intuitions in linguistics: *unhappy* and *not happy* are not immediately differentiated, except when both are present in the same context.
-Our model that represents uncertainty about how to parse overt negation markers (*un-*, *not*) predicts this very result, while alternative models that treat negation with a fixed meaning fall short.
+Our model that represents uncertainty about how to interpret overt negation markers (*un-*, *not*) predicts this very result, while alternative models that treat negation with a fixed meaning fall short.
 While the items used in our experiment were all evaluative statements about people, we think it is not unreasonable to expect the asymmetries observed in our data to generalize to other negated antonyms.
 
 It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by @Krifka2007:Negated-antonyms for morphological antonyms when a listener hears multiple adjectival utterances in the same context (*multiple utterances condition*).
