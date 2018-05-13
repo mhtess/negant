@@ -727,7 +727,7 @@ Instead, speakers can use modifiers and morphemes to carve more precise meanings
 A person *not unhappy* is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
 
 This work provides a computational solution to an outstanding puzzle in natural language understanding: How to interpret double negatives [e.g., *not unhappy*; @Krifka2007:Negated-antonyms; @Rett2014:eval].
-We discovered and confirmed a surprising empirical result that challenges ``established'' intuitions in linguistics: *unhappy* and *not happy* are not immediately differentiated, except when both are present in the same context.
+We additionally discovered and confirmed a surprising empirical result that challenges ``established'' intuitions in linguistics: *unhappy* and *not happy* are not immediately differentiated, except when both are present in the same context.
 Our model that represents uncertainty about how to interpret overt negation markers (*un-*, *not*) predicts this very result, while alternative models that treat negation with a fixed meaning fall short.
 One limitation of this work is that we stipulate, rather than derive, differences in meaning for morphological vs. lexical antonym pairs [cf., @Rett2014:eval]. 
 <!-- @Krifka2007:Negated-antonyms critiques previous pragmatic theories for either being underdetermined [@Blutner2004:pragmatics] or making the wrong prediction [@Horn1991:Duplex].  -->
