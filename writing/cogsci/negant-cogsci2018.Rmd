@@ -97,7 +97,7 @@ If "Jones is not unhappy", does that mean that Jones is happy?
 *Negated antonyms* (e.g., "not unhappy") are thought to occupy a particular region of their associated scale (e.g., happiness), below  *positive adjectives* ("happy") but above *negated positives* ("not happy") and *antonyms* ("unhappy") [Fig.$\thinspace$\ref{fig:happy-scale}; @Krifka2007:Negated-antonyms].
 A straight-forward, compositional analysis, however, would map morphological negation via affixation (e.g., *un-*) and negation particles (e.g., adverbial *not*) to proposition-level negation ($\neg$) of standard logic. 
 Such a logically-transparent theory would predict that the two overt negation markers cancel each other out: *not unhappy* means $\neg \neg \textit{happy}$, or just *happy*.
-@orwell1946politics voices this opinion:
+@orwell1946politics voiced this opinion:
 
 \begin{quote}
 \footnotesize
@@ -107,7 +107,7 @@ Banal statements are given an appearance of profundity by means of the ``not un-
 Alternatively, *morphological antonyms* ("unhappy") could behave like *lexical antonyms* ("sad") which seem clearly to express *contrary opposition*. 
 Two contraries cannot both be true, but they can both be false [@Horn1989:Natural]: Jones may be neither happy nor sad, neither tall nor short. 
 *Not unhappy*, then, would compete with *happy* as a pragmatic alternative and so would be contextually strengthened to a more specific interpretation, namely to a neutral or indifferent state [@Horn1991:Duplex], contra @Jespersen1924's intuition that *not unhappy* is a slightly positive state.
-Such an analysis would further depend on the meaning of *not happy* [@Blutner2004:pragmatics], of which there is a little agreement: @Jespersen1917:Negation and @Blutner2004:pragmatics argue that it means the same as *unhappy*, while @Krifka2007:Negated-antonyms cites examples like: 
+Such an analysis would further depend on the meaning of *not happy* [@Blutner2004:pragmatics], of which there is little agreement: @Jespersen1917:Negation and @Blutner2004:pragmatics argue that it means the same as *unhappy*, while @Krifka2007:Negated-antonyms cites examples like: 
 
 \begin{quote}
 \footnotesize
@@ -125,7 +125,7 @@ Both syntactic [@Cable2017] or pragmatic [@Rett2014:eval] mechanisms could be at
 We propose a probabilistic model of pragmatic reasoning in the Rational Speech Act tradition [@Franke2015a; @Goodman2016:RSA], combining previous work on gradable adjectives [e.g., *tall*; @Lassiter2015; @Qing2014:Adjectives] with elements of lexical uncertainty [@Bergen2016].
 We formalize the hypothesis that uncertainty about the meaning of overt negation markers (*un-*, *not*) interacts with pragmatic reasoning to give rise to fine-grained interpretations in the moment.
 <!-- Our model interprets *not unhappy* as a slightly positive state and predicts qualitative differences between morphological antonyms (e.g., \{*happy*, *unhappy*\}) and lexical antonyms which lack overt negation markers (e.g., \{*tall, short*\}). -->
-These differences are shown to be sensitive to the presence of explicit alternative utterances, as exists in Krifkas's example above. 
+These differences are shown to be sensitive to the presence of explicit alternative utterances, as suggestsed by Krifkas's example above. 
 We compare model predictions to novel data from two experiments that measure interpretations for different kinds of adjectives in different contexts, uncovering subtle but reliable differences.
 
 # Computational model
@@ -140,7 +140,7 @@ Here, we introduce contrary and contradictory negations into a pragmatic model t
 Formally, if $Hx$ expresses that $x$ is happy, contradictory opposition is standard, proposition-level negation $\neg Hx$.
 Contrary opposition forms a new predicate $\tilde{H}x$ which introduces its own threshold $\theta_{\tilde{H}}$.
 The latter is not iterable [@Horn1989:Natural], so while it makes sense to iterate $\neg \neg Hx$, it is not possible to iterate contrary negation. 
-As a result, *not happy* and *unhappy* can be either $\neg Hx$ or $\tilde{H}x$, while *not unhappy* may be $\neg \neg Hx$ or $\neg \tilde{H}x$ (Fig.$\thinspace$\ref{fig:lexicon-model}).
+As a result, *not happy* and *unhappy* can mean either $\neg Hx$ or $\tilde{H}x$, while *not unhappy* may mean $\neg \neg Hx$ or $\neg \tilde{H}x$ (Fig.$\thinspace$\ref{fig:lexicon-model}).
 
 Listener uncertainty about the interpretation of negation markers can be modeled as uncertainty about the speaker's lexicon $\mathcal{L}$ [@Bergen2016].
 We combine this technique with the model of @Lassiter2015 that derives plausible thresholds $\theta$ for gradable adjective interpretation:
