@@ -158,8 +158,12 @@ The literal listener $L_0$ updates its prior beliefs $P(x)$ via an utterance's l
 where $\mathcal{L}(u, x, \theta)$ gives the truth-value of $u$ in lexicon $\mathcal{L}$ applied to state $x$ under threshold $\theta$.
 The pragmatic listener has uncertainty about $\theta$, which comes from an uninformed prior and is resolved by jointly reasoning about the likely degree $P(x)$, the likely lexicon $P(\mathcal{L})$, and the likelihood $S_1(u \mid x, \theta, \mathcal{L})$ that a cooperative information-maximizing speaker would utter the adjective given a degree $x$, threshold $\theta$, and lexicon $\mathcal{L}$.
 
-```{r lexicon-model, fig.pos = "t", fig.cap="Space of possible meanings in the lexicon prior for the \\emph{uncertain negation} model. The hypothesis space is restricted to the circled meanings for the \\emph{logical negation} and \\emph{bonafide contraries} subclasses."}
-img <- png::readPNG("img/lexicon-model.png")
+```{r lexicon-model, fig.pos = "t", fig.cap="Space of possible meanings in the lexicon prior for the \\emph{uncertain negation} model. The hypothesis space is restricted to the circled meanings for the \\emph{logical negation} and \\emph{bonafide contraries} subclasses.", cache = F}
+# ggdraw() + draw_image("img/lexicon-model2.pdf", scale = 1)+
+#   theme(plot.margin = unit(c(2,0,0,0), "pt"),
+#         panel.background = element_rect(colour = "black", size=1))
+
+img <- png::readPNG("img/lexicon-model2.png")
 grid::grid.raster(img)
 ```
 
