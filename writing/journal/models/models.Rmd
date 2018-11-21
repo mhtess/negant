@@ -1,0 +1,602 @@
+---
+title: "Understanding the model"
+output: html_notebook
+---
+
+
+```{r libraries}
+library(rwebppl)
+library(jsonlite)
+library(ggthemes)
+library(gganimate)
+library(tidyverse)
+library(knitr)
+theme_set(theme_few())
+orange.purple.color.palette <- 
+  c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
+```
+### Model utilities and meaning function
+
+```{r rsaBins}
+rsaBinsCoarse <- '
+var lowerBins = [
+	0,
+  0.01,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  0.99
+];
+
+var upperBins = [
+  0,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  0.99,
+  1
+];
+'
+```
+
+```{r rsaBinsGaussian}
+rsaBinsFineGauss <- '
+var lowerBins = [
+  -1.5,
+  -1.4,
+  -1.3,
+  -1.2,
+  -1.1,
+  -1.0,
+  -0.9,
+  -0.8,
+  -0.7,
+  -0.6,
+  -0.5,
+  -0.4,
+  -0.3,
+  -0.2,
+  -0.1,
+	0,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  1.0,
+  1.1,
+  1.2,
+  1.3,
+  1.4
+];
+
+var upperBins = [
+  -1.4,
+  -1.3,
+  -1.2,
+  -1.1,
+  -1.0,
+  -0.9,
+  -0.8,
+  -0.7,
+  -0.6,
+  -0.5,
+  -0.4,
+  -0.3,
+  -0.2,
+  -0.1,
+	0,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  1.0,
+  1.1,
+  1.2,
+  1.3,
+  1.4,
+  1.5
+];
+'
+```
+
+```{r rsaBinsGaussianCoarse}
+rsaBinsCoarseGauss <- '
+var lowerBins = [
+  -1.5,
+  -1.3,
+  -1.1,
+  -0.9,
+  -0.7,
+  -0.5,
+  -0.3,
+  -0.1,
+  0.1,
+  0.3,
+  0.5,
+  0.7,
+  0.9,
+  1.1,
+  1.3
+];
+
+var upperBins = [
+  -1.3,
+  -1.1,
+  -0.9,
+  -0.7,
+  -0.5,
+  -0.3,
+  -0.1,
+  0.1,
+  0.3,
+  0.5,
+  0.7,
+  0.9,
+  1.1,
+  1.3,
+  1.5
+];
+'
+rsaBinsCoarserGauss <- '
+var lowerBins = [
+  -1.5,
+  -1.1,
+  -0.7,
+  -0.3,
+  0.1,
+  0.5,
+  0.9,
+  1.3
+];
+
+var upperBins = [
+  -1.1,
+  -0.7,
+  -0.3,
+  0.1,
+  0.5,
+  0.9,
+  1.3,
+  1.7
+];
+'
+```
+
+```{r rsaBinsFine}
+rsaBinsFine <- '
+var lowerBins = [
+	0,
+  0.01,
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25,
+  0.3,
+  0.35,
+  0.4,
+  0.45,
+  0.5,
+  0.55,
+  0.6,
+  0.65,
+  0.7,
+  0.75,
+  0.8,
+  0.85,
+  0.9,
+  0.95,
+  0.99
+];
+
+var upperBins = [
+  0.01,
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25,
+  0.3,
+  0.35,
+  0.4,
+  0.45,
+  0.5,
+  0.55,
+  0.6,
+  0.65,
+  0.7,
+  0.75,
+  0.8,
+  0.85,
+  0.9,
+  0.95,
+  0.99,
+  1
+];
+'
+```
+
+```{r utils}
+utils <- '
+var displayObj = function(obj){
+  display(JSON.stringify(obj))
+}
+var round = function(x){
+  return Math.round(x*100)/100
+}
+
+var isNegation = function(utt){
+  return (utt.split("_")[0] == "not")
+};
+
+var hasNegModifier = function(utt){
+  return (utt.split("_")[0] == "not")
+};
+var hasNegMorph = function(utt){
+  return (utt.indexOf("un") > -1)
+};
+var roundTo3 = function(x){
+  return Math.round(x * 1000) / 1000
+}
+
+var midBins = map2(function(b1,b2){
+  return roundTo3((b2 - b1)/2 + b1)
+}, lowerBins, upperBins)
+
+var thetaBins = map2(function(b1, b2){
+  return roundTo3((b2-b1)/2 + b1);
+}, midBins.slice(0, midBins.length-1), midBins.slice(1))
+
+var avoidEnds = function(x){
+  return x >= 1 ? 0.99 : x == 0 ? 0.01 : x
+}
+
+var lb = 0, ub = 1, diff = 0.05;
+var bins = _.range(lb, ub + diff, diff)
+
+var DiscreteGaussian = function(mu, sigma){
+  Infer({model: function(){
+    categorical({
+      vs:midBins,
+      ps:map(function(x){
+            return Math.exp(Gaussian({mu, sigma}).score(x))
+     }, midBins)
+    })
+  }})
+}
+
+var DiscreteBeta = cache(function(a, b){
+  Infer({model: function(){
+    categorical({
+      vs:midBins,
+      ps:map(function(x){
+        // var xi = x >= 1 ? 0.99 : x == 0 ? 0.01 : x
+        Math.exp(Beta({a, b}).score(x))
+      }, midBins)
+    })
+  }})
+})
+'
+```
+
+# Uncertain "has threshold" RSA
+
+
+### this is the old uncertain parse model / new lexical uncertainty model
+
+```{r LUmodel}
+uncertainHasThresholdsRSA <- '
+var utterances = [
+  "happy",
+  "not_unhappy",
+  "not_happy",
+  "unhappy"
+];
+
+var cost_yes = 0;
+var cost_not = 2;
+var cost_un = 1;
+
+var uttCosts = map(function(u) {
+  var notCost = hasNegModifier(u) ? cost_not : 0
+  var unCost = hasNegMorph(u) ? cost_un : 0
+  var totalCost = notCost + unCost
+  return Math.exp(-totalCost)
+}, utterances)
+
+var utterancePrior = Infer({model: function(){
+  return utterances[discrete(uttCosts)]
+}});
+
+var speakerOptimality = 1;
+
+var LexiconPrior = Infer({
+model: function(){
+  var compositional_un = flip(lexicaPriorProbs.compositional_un[0])
+  var compositional_not =  flip(lexicaPriorProbs.compositional_not[0])
+ return {compositional_un, compositional_not}
+}})
+
+// displayObj(LexiconPrior)
+
+var meaning = function(words, state, thresholds, lexicon){
+  words == "happy" ? state > thresholds.happy :
+  words == "not_happy" ?  lexicon.compositional_not ? !(state > thresholds.happy) :
+      (state < thresholds.not_happy) :
+  words == "unhappy" ? lexicon.compositional_un ? !(state > thresholds.happy) :
+      (state < thresholds.unhappy) :
+  words == "not_unhappy" ?  lexicon.compositional_un ? (state > thresholds.happy) : !(state < thresholds.unhappy) : 
+  true
+};
+
+var listener0 = cache(function(utterance, thresholds, lexicon) {
+  Infer({model: function(){
+    // var state = sample(DiscreteBeta(1, 1));
+    // display(JSON.stringify(thresholds))
+    var state = sample(DiscreteGaussian(0, 0.75));
+    var m = meaning(utterance, state, thresholds, lexicon);
+   // display("l0 " + state + " " + m + " " + JSON.stringify(parsing))
+    condition(m);
+    return state;
+  }})
+}, 10000);
+
+var speaker1 = cache(function(state, thresholds, lexicon) {
+  Infer({model: function(){
+    var utterance = sample(utterancePrior);
+    // display(utterance)
+    var L0 = listener0(utterance, thresholds, lexicon);
+    factor(speakerOptimality*L0.score(state));
+    return utterance;
+  }})
+}, 10000);
+
+var listener1 = cache(function(list_of_utterances) {
+  Infer({model: function(){
+
+    var lexicon = sample(LexiconPrior)
+    // var state = sample(DiscreteBeta(1, 1));
+    var state = repeat(list_of_utterances.length, 
+      function(){ sample(DiscreteGaussian(0, 0.75)) })
+
+    var thresholds = {
+      happy: uniformDraw(thetaBins),
+      unhappy: lexicon.compositional_un ? "compositional" : uniformDraw(thetaBins),
+      not_happy: lexicon.compositional_not ? "compositional" : uniformDraw(thetaBins)
+    } 
+    //displayObj(lexicon)
+    //displayObj(thresholds)
+
+    map2(function(u, s){
+      var S1 = speaker1(s, thresholds, lexicon)
+      observe(S1, u)
+    }, list_of_utterances, state)
+
+    return extend(lexicon, {state: _.fromPairs(_.zip(list_of_utterances, state))})
+  }})
+}, 10000);
+'
+```
+
+```{r singleUtteranceModelCall}
+uncertainHasThresholdListenerCall <- '
+_.fromPairs(map(function(u){
+  display(u)
+  var post = listener1([u])
+  display(u + " __ ownThreshold(un) = " + expectation(post, function(x){return x.compositional_un }))
+  display(u + " __ ownThreshold(not) = " + expectation(post, function(x){return x.compositional_un }))
+  return [u, marginalize(post, "state")]
+}, utterances))
+'
+```
+
+```{r multipleUtterancesModelCall}
+multipleUtterancesListenerCall <- '
+var post = listener1(["happy", "not_happy", "unhappy", "not_unhappy"])
+display(" __ comp(un) = " + expectation(post, function(x){return x.compositional_un }))
+display(" __ comp(not) = " + expectation(post, function(x){return x.compositional_not }))
+marginalize(post, "state")
+'
+```
+
+
+```{r runSingle}
+rs.listener.wp.all4 <- webppl(paste(rsaBinsCoarserGauss,
+                                 utils, 
+                                 uncertainHasThresholdsRSA,
+                                 multipleUtterancesListenerCall,
+                                 sep = '\n'),
+                           data = list(compositional_un = 0.5, 
+                                       compositional_not = 0.5), 
+                           data_var = "lexicaPriorProbs")
+
+rs.listener.wp.all4.tidy <- rs.listener.wp.all4  %>%
+  gather(support, utterance, -prob) %>%
+  group_by(support, utterance) %>%
+  summarize(probs = sum(prob),
+            src = )
+%>%
+  ggplot(., aes( x = val, y = marginalProb))+
+  geom_col(position = position_dodge())+
+  facet_wrap(~key)
+
+rs.listener.wp %>%
+  gather(key, val, -prob) %>%
+  group_by(key, val) %>%
+  summarize(marginalProb = sum(prob)) %>%
+  ungroup() %>%
+  group_by(key) %>%
+  summarize(expval = sum(marginalProb * val)) %>%
+  kable(.)
+
+```
+
+
+
+```{r runLUmodel}
+model.variants = list(
+  "full uncertainty" = list(compositional_un = 0.5, compositional_not = 0.5),
+  "bonafide contraries" =  list(compositional_un = 0, compositional_not = 0.5),
+  "george orwell" =  list(compositional_un = 1, compositional_not = 1)
+)
+
+rs.listener.wp.tidy <- data.frame()
+rs.listener.wp.samples <- data.frame()
+rs.listener.wp.expectation <- data.frame()
+for (modelName in names(model.variants)){
+  lexiconPrior <- model.variants[[modelName]]
+  
+  # run model variant with 4 independent utterances
+  rs.listener.wp <- webppl(paste(rsaBinsCoarserGauss,
+                                   utils, 
+                                   uncertainHasThresholdsRSA,
+                                   uncertainHasThresholdListenerCall,
+                                   sep = '\n'),
+                             data = lexiconPrior, 
+                             data_var = "lexicaPriorProbs")
+  
+  # run mode variant with all 4 utterances simultaneous
+  rs.listener.wp.all4 <- webppl(paste(rsaBinsCoarserGauss,
+                                 utils, 
+                                 uncertainHasThresholdsRSA,
+                                 multipleUtterancesListenerCall,
+                                 sep = '\n'),
+                           data = lexiconPrior, 
+                           data_var = "lexicaPriorProbs")
+
+  rs.listener.wp.all4.tidy <- rs.listener.wp.all4  %>%
+    gather( utterance,support, -prob) %>%
+    group_by(support, utterance) %>%
+    summarize(probs = sum(prob),
+              src = modelName, utterances = 'simultaneous')
+    
+  rs.listener.wp.tidy.temp <- bind_rows(
+    bind_rows(
+        data.frame(rs.listener.wp$happy) %>% 
+          rename(support = happy) %>%
+          mutate(utterance = "happy"),
+        data.frame(rs.listener.wp$unhappy) %>% 
+          rename(support = unhappy) %>%
+          mutate(utterance = "unhappy"),
+        data.frame(rs.listener.wp$not_unhappy) %>% 
+          rename(support = not_unhappy) %>%
+          mutate(utterance = "not_unhappy"),
+        data.frame(rs.listener.wp$not_happy) %>% 
+          rename(support = not_happy) %>%
+          mutate(utterance = "not_happy")
+      ) %>% mutate(src = modelName, utterances = 'independent'),
+    rs.listener.wp.all4.tidy)
+  
+  rs.listener.wp.tidy <- bind_rows(
+    rs.listener.wp.tidy, rs.listener.wp.tidy.temp
+  )
+  
+  rs.listener.wp.expectation <- bind_rows(
+    rs.listener.wp.expectation, 
+    rs.listener.wp.tidy.temp %>%
+      group_by(utterances, utterance) %>% summarize(interpretation = sum(probs * support)) %>%
+      mutate(src = modelName)
+  )
+  
+  rs.listener.wp.samples <- bind_rows(
+    rs.listener.wp.samples, 
+    get_samples(rs.listener.wp.tidy.temp %>% filter(utterances == "independent") %>% rename(prob = probs), 10000) %>%
+      mutate(src = modelName, utterances = "independent"),
+    get_samples(rs.listener.wp.tidy.temp %>% filter(utterances == "simultaneous") %>% rename(prob = probs), 10000) %>%
+      mutate(src = modelName, utterances = "simultaneous")
+  )
+}
+
+
+rs.listener.wp.expectation <- rs.listener.wp.expectation%>%
+    mutate(utterance = factor(utterance,
+                            levels = c("unhappy",
+                                       "not_happy",
+                                       "not_unhappy",
+                                       "happy"),
+                            labels = c("Antonym",
+                                       "Negated positive",
+                                       "Negated antonym",
+                                       "Positive")))
+
+
+rs.listener.wp.samples <- rs.listener.wp.samples %>%
+    mutate(utterance = factor(utterance,
+                            levels = c("unhappy",
+                                       "not_happy",
+                                       "not_unhappy",
+                                       "happy"),
+                            labels = c("Antonym",
+                                       "Negated positive",
+                                       "Negated antonym",
+                                       "Positive")))
+```
+
+
+```{r}
+ggplot(rs.listener.wp.samples, 
+       aes( x = support,fill = utterance, color = utterance))+
+  geom_density(alpha = 0.4, size = 1.5, adjust = 4)+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=TRUE))+
+  scale_color_manual(name="Adjective type",
+                     values = orange.purple.color.palette,
+                     guide = guide_legend(reverse=TRUE))+
+  #geom_histogram(alpha = 0.4, size = 1.3, 
+                 # position = position_dodge(), binwidth = 0.2)+
+  #guides(fill = F, color = F)+
+  xlab("Degree (e.g., of happiness)")+
+  ylab("Posterior probability density")+
+  scale_x_continuous(breaks = c(-1, 0, 1), limits = c(-1.5, 1.5))+
+  facet_grid(utterances~src)
+
+#ggsave("figs/L1_posteriors_wCost3_alpha1.png", width = 6, height = 4)
+```
+
+
+```{r uncertainParsePosteriorExpectation}
+
+ggplot(rs.listener.wp.expectation, 
+       aes( x = src, y=interpretation,
+                 fill = utterance, color = utterance))+
+    geom_col(position = position_dodge(0.8), 
+             width = 0.8, color = 'black')+
+    scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=TRUE))+
+  xlab("")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))+
+  facet_wrap(~utterances)
+
+#ggsave("figs/L1_means_wCost3_alpha1.png", width = 4, height = 3.5)
+```
+
+Save results
+
+```{r}
+save(rs.listener.wp.expectation, file = '../cached_results/rsa_model_predictions.RData')
+save(rs.listener.wp.samples, file = '../cached_results/rsa_model_posteriorSamples.RData')
+```

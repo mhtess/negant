@@ -1,0 +1,305 @@
+---
+title: "4_L1"
+output: github_document
+---
+
+- `4_L1`: interpretation, one slider at a time,  16 trials. $0.40
+  - total experiment space: 20 adjective pairs (10 morphological negation; 10 lexical negation) x 4 forms = 80 items
+  - each subject does 16 trials ( 4 / form)
+  - target: 24 responses / item --> n = 120 ==> $57.60
+
+
+```{r libraries}
+library(tidyverse)
+library(tidyboot)
+library(ggthemes)
+library(langcog)
+library(knitr)
+library(lme4)
+library(lmerTest)
+theme_set(theme_few())
+project.prefix <- "L1_oneSlider"
+
+orange.purple.color.palette <- 
+  c("#e66101", "#b2abd2", "#fdb863", "#5e3c99")
+```
+
+```{r loadDataAndTime}
+d.l1.4 <- read.csv(paste("../data/", project.prefix,"/4_L1_1slider-trials.csv",
+   sep = "")) %>%
+  mutate(sentence_type = factor(sentence_type,
+                                levels = c("antonym",
+                                           "neg_positive",
+                                           "neg_antonym",
+                                           "positive"),
+                                labels = c("Antonym",
+                                           "Negated Positive",
+                                           "Negated Antonym",
+                                           "Positive")))
+  
+d.l1.4.time <- read.csv(paste("../data/", project.prefix,"/4_L1_1slider-time.csv", sep = ""))
+```
+
+
+
+Time to complete task
+
+```{r fig_timeInMinutes}
+ggplot(d.l1.4.time, aes(x = time)) +
+  geom_histogram()+
+  xlab("time in minutes")
+```
+
+
+```{r subjectComments}
+d.l1.4.comments <- read.csv(paste("../data/", project.prefix,"/4_L1_1slider-subject_information.csv", sep = ""))
+
+d.l1.4.comments %>% select(comments) %>% filter(comments != "") %>% kable()
+```
+
+Self-reported native language
+
+```{r selfReportEnglishNative}
+d.l1.4.nativeEnglish <- d.l1.4.comments %>% select(workerid ,language) %>% 
+  mutate(englishNative = grepl("eng", tolower(language)))
+
+table(d.l1.4.nativeEnglish$englishNative)
+```
+
+Remove participants who do not self-report English as native language
+
+```{r filterNonNativeEnglish}
+d.l1.natEng <- left_join(
+  d.l1.4, 
+  d.l1.4.nativeEnglish
+) %>%
+  filter(englishNative)
+
+## check that i've done the filtering correctly
+length(unique(d.l1.natEng$workerid))
+```
+
+Normalize ratings (by subject, subject off mean and divide by SD)
+
+```{r}
+d.l1.natEng <- d.l1.natEng %>%
+    group_by(workerid) %>%
+    mutate(meanRating = mean(response),
+            sdRating = sd(response)) %>%
+    ungroup() %>%
+    mutate(normalizedResponse = (response - meanRating) / sdRating)
+```
+
+
+# Visualize data
+
+
+Raw histograms
+
+```{r fig_histograms}
+d.l1.natEng %>%
+ggplot(., aes( x = normalizedResponse,
+                       fill = sentence_type))+
+  geom_histogram(position = position_dodge(), bins = 20)+
+  #geom_density(alpha = 0.3)+
+  facet_grid(negation~sentence_type)+
+  scale_fill_manual(values = orange.purple.color.palette)+
+  ylab("counts")+
+  xlab("slider ratings")+
+  ##scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
+  guides(fill = F)
+# ggsave(paste(
+#   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_histograms.pdf", sep = ""),
+#        width = 7, height = 3)
+```
+
+Bootstrapped CIs
+
+```{r fig_bootstrappedCIs}
+d.l1.4.boot <- df.trials %>%
+  group_by(adjective_type) %>%
+  multi_boot_standard(col = "response")
+
+d.l1.4.boot <- d.l1.natEng %>%
+  group_by(negation, sentence_type) %>%
+  multi_boot_standard(col = "normalizedResponse") %>%  
+  ungroup() %>%
+  mutate(negation = factor(negation, 
+                           levels = c("lexical", "morphological")))
+
+df.oneSlider.ci <- d.l1.4.boot
+save(df.oneSlider.ci, file = "../cached_results/oneSlider_bootstrappedCIs.RData")
+
+d.l1.4.boot %>%
+  ggplot(., aes(x = negation,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = sentence_type,
+              group = sentence_type
+              ))+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  geom_errorbar(position = position_dodge(0.8), color = 'black',
+                width = 0.4)+
+  #geom_hline(yintercept = 0.5, lty = 3)+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=TRUE))+
+  #coord_flip()+
+  #facet_wrap(~negation)+
+  #guides(fill = F)+
+  xlab("")+
+  ylab("mean normalized rating")+
+  scale_y_continuous(limits = c(-1,1.3), breaks = c(-1, 0, 1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+# ggsave(paste(
+#   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_bootstrapped.pdf", sep = ""),
+#        width = 6, height = 3.75)
+```
+
+By item
+
+```{r fig.width = 7, fig.height = 5}
+
+d.l1.4.boot.adj <- d.l1.natEng %>%
+  mutate(item = paste(antonym, "--", positive, sep = "")) %>% 
+  group_by(negation, item, sentence_type)  %>%
+  multi_boot_standard(col = "normalizedResponse") %>%
+  ungroup() %>%
+  mutate(negation = factor(negation, 
+                           levels = c("lexical", "morphological")))
+d.l1.4.boot.adj %>%
+  ggplot(., aes(x = item,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = sentence_type,
+              group = sentence_type))+
+  #geom_hline(yintercept = 0.5, lty = 3)+
+  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
+  scale_fill_manual(name="Adjective type",
+                    values = orange.purple.color.palette,
+                    guide = guide_legend(reverse=F))+
+  geom_errorbar(position = position_dodge(0.8), color = 'black',
+                width = 0.3)+
+  facet_wrap(~negation, scales = 'free') + 
+  #coord_flip()+
+  #guides(fill = F)+
+  xlab("")+
+  coord_flip()+
+  ylab("mean normalized rating")+
+  scale_y_continuous(limits = c(-1.5,1.5), breaks = c(-1, 0, 1))+
+  theme(#axis.text.x = 
+        #  element_text(angle = 45, hjust = 1, vjust = 1),
+        legend.position = 'bottom')
+
+#ggsave("~/Documents/research/talks/vagueness/frisem-2018-01/img/negant_lexical_bootstrapped_item.pdf", width = 8, height = 3.5)
+```
+
+# Regression models
+
+Helmert coding, maximal model, and model comparison to simpler model.
+
+```{r}
+# Helmert coding to compare Negated Positive with Antonym
+d.l1.natEng <- within(d.l1.natEng, {
+  st <- C(sentence_type, helmert, 3)
+  print(attributes(st))
+}) %>% 
+  mutate(negation = factor(negation, 
+                           levels = c("morphological", "lexical")))
+
+
+# maximal model
+## (adding + negation  by item or by subject fails to converge)
+rs.4.helmert.3 <- lmer(response ~ negation * st + 
+                       (1 + st | workerid) + 
+                       (1 + st | positive),
+                     data = d.l1.natEng)
+summary(rs.4.helmert.3)
+
+
+rs.4.helmert.2 <- lmer(response ~ negation * st + 
+                       (1 + st | workerid) + 
+                       (1 | positive),
+                     data = d.l1.natEng)
+
+# extra random effect of sentence_type by item accounts for significantly more variance
+anova(rs.4.helmert.2, rs.4.helmert.3)
+
+# model with inverse random effect structure doesn't converge
+```
+
+
+"Simple effects"
+
+```{r reg.simple.morph}
+
+rs.4.helmert.0.simple <- lmer(response ~ st + 
+                       (1 + st | workerid) + 
+                       (1 + st | positive),
+                     data = d.l1.natEng %>% 
+                       filter(negation == "morphological")
+                     )
+
+summary(rs.4.helmert.0.simple)
+```
+
+```{r reg.simple.lex}
+rs.4.helmert.0.simple.lex <- lmer(response ~ st + 
+                       (1 + st | workerid) + 
+                       (1 + st | positive),
+                     data = d.l1.natEng %>% 
+                       filter(negation == "lexical")
+                     )
+
+summary(rs.4.helmert.0.simple.lex)
+```
+
+## Exploratory stuff
+
+### Spilt half
+
+```{r}
+d.l1.4.splithalf <- d.l1.natEng %>%
+  mutate(splitHalf = ifelse(trial_num <= 8, "first", "second")) %>%
+  group_by(negation, sentence_type, splitHalf) %>%
+  multi_boot_standard(col = 'response')
+
+ggplot(d.l1.4.splithalf,
+       aes(x = splitHalf, fill = sentence_type,
+                                  y = mean, ymin = ci_lower,
+                                  ymax = ci_upper))+
+  geom_col(position = position_dodge(), color = 'black')+
+  scale_fill_solarized()+
+  geom_errorbar(position = position_dodge())+
+  facet_wrap(~negation)
+```
+
+### First vs. last rating
+
+```{r}
+
+d.l1.4.first.last <- bind_rows(
+  d.l1.4 %>%
+    group_by(workerid, negation, sentence_type) %>%
+    top_n(1, -trial_num) %>%
+    mutate(presentation = 'first'),
+  d.l1.4 %>%
+    group_by(workerid, negation, sentence_type) %>%
+    top_n(1, trial_num) %>%
+    mutate(presentation = 'last')
+)
+  
+
+d.l1.4.first.last.summary <- d.l1.4.first.last %>%
+  group_by(negation, sentence_type, presentation) %>%
+  multi_boot_standard(col = 'response')
+
+ggplot(d.l1.4.first.last.summary, aes(x = presentation, fill = sentence_type,
+                                  y = mean, ymin = ci_lower,
+                                  ymax = ci_upper))+
+  geom_col(position = position_dodge(), color = 'black')+
+  geom_errorbar(position = position_dodge())+
+  facet_wrap(~negation)
+
+#ggsave("~/Documents/research/negant/analysis/figs/split_half-3_L1.pdf", width =6 , height = 4)
+```
