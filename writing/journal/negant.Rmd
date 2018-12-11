@@ -128,7 +128,8 @@ Banal statements are given an appearance of profundity by means of the ``not un-
 
 # Introduction
 
-In logic, two negatives make a positive, but with words it's less clear what should happen.
+In logic, two negatives make a positive.
+With language, however, it's less clear what should happen:
 <!-- In language, however, it is than clear what should happen with double negatives. -->
 If "Jones is not unhappy", does that mean that Jones is happy?
 @Jespersen1924 suggested not:
@@ -137,11 +138,11 @@ If "Jones is not unhappy", does that mean that Jones is happy?
 [T]wo negatives do not exactly cancel one another [$\ldots$]; the longer expression is always weaker: ``this is not unknown to me'' or ``I am not ignorant of this'' means ``I am to some extent aware of it,'' etc. (p.$\thinspace$332)
 \end{quote}
 
-In other words, *negated antonyms* (e.g., "not unhappy") could occupy a particular region of their associated scale (e.g., happiness), below  *positive adjectives* ("happy") but above *negated positives* ("not happy") and *antonyms* ("unhappy") [Fig.$\thinspace$\ref{fig:happy-scale}; @Krifka2007:Negated-antonyms].
-Not everyone agrees with this intuition (e.g., Orwell's quote above), nor is there agreement about how to go from two negatives to a weak, positive interpretation.
-An antonym created by morphology (*morphological antonyms* e.g., "un"+"happy") could convey *contrary opposition*, which is often conveyed by antonyms which have their own lexical entry (*lexical antonyms* e.g., "sad").
+In other words, "not unhappy"  (a *negated antonym*) could indicate a degree of happiness below that indicated by "happy" (a  *positive adjective*) but above those of "not happy" and "unhappy" [*negated positives* and *antonyms*, respectively; Fig.$\thinspace$\ref{fig:happy-scale}; @Krifka2007:Negated-antonyms].
+This intuition is not uncontroversial (e.g., Orwell's quote above), nor is there agreement about how a listener derives a weakly positive itnerpretation from a double negative.
+Antonyms created by morphology (*morphological antonyms* e.g., "un"+"happy") could convey a *contrary* meaning, which is often conveyed by antonyms which have their own lexical entry (*lexical antonyms* e.g., "sad").
 The key fact about contaries is that they can both be false (unlike *contradictions*): Jones may be neither tall nor short (contraries) but a natural number cannot neither be even nor odd [contradictions; @Horn1989:Natural].
-In a pragmatic analysis, "not unhappy" would then compete with "happy" as an alternative description and would be contextually strengthened to a more specific interpretation, namely to a neutral or indifferent state [@Horn1991:Duplex], contra @Jespersen1924's intuition that "not unhappy" is a slightly positive state.
+Pragmatically, "not unhappy" should compete with "happy" as an alternative description, resulting in a contextually strengthened interpretation corresponding to a neutral or indifferent state [@Horn1991:Duplex], contra @Jespersen1924's intuition that "not unhappy" is a slightly positive state.
 Such an analysis, however, further depends on the meaning of "not happy" [@Blutner2004:pragmatics], of which there is also little agreement: @Jespersen1917:Negation and @Blutner2004:pragmatics argue that "not happy" means the same as "unhappy", while @Krifka2007:Negated-antonyms cites examples like: 
 
 \begin{quote}
@@ -169,10 +170,28 @@ grid::grid.raster(happy_scale)
 
 How does such a logical linguistic device---negation---give rise to a multiplicity of meanings?
 Both syntactic [@Cable2017] and pragmatic [@Rett2014:eval] mechanisms could be at play, but heretofore there have been no computational accounts tested against human behavioral data.
-We propose that *lexical uncertainty*---uncertainty in the meaning of words---pervades even the language of logical devices, which interacts with pragmatic reasoning to give rise to a panolpy of context-specific interpretations.
-Specifically, we posit that overt negation markers ("not", "un-") can convey either contrary or contradictory opposition, and that listeners retain uncertainty about the intended meaning *a priori*.
+We hypothesize that *lexical uncertainty*---uncertainty in the meaning of words---pervades even the language of logical devices, which interacts with pragmatic reasoning to give rise to a panolpy of context-specific interpretations.
+Specifically, we posit that overt negation markers ("not", "un-") can convey either contrary or contradictory opposition and that listeners resolve their uncertainty about the meaning in context.
 
-We formalize this *uncertain negation* hypothesis in a probabilistic model of pragmatic reasoning in the Rational Speech Act tradition [@Franke2015a; @Goodman2016:RSA], a recursive reasoning model wherein a pragmatic listener $L_{1}$ tries to resolve the intended meaning of an utterance $u$ (e.g., "Jones is not unhappy") by combining its prior beliefs about the degree of Jones' happiness $P(x)$, with the generative process of the utterance, a speaker model $S_1$ (Eqs.$\thinspace$\ref{eq:L1}-\ref{eq:L0}):
+Literally, a gradable adjective (e.g., "happy") is thought to be true if the degree associated with that adjective $x$  (e.g., the degree of happiness) is greater than some contextually determined threshold $\theta_1$: $\denote{happy}(x, \theta): x > \theta_1$ [@Kennedy2007].
+If a negation marker (e.g., "not") creates a contradictory statement, then the resulting meaning would simply be that the degree is less than or equal to the threshold: $\neg \denote{happy}(x, \theta_1): x \leq \theta_1$.
+Alternatively, negation could create a *contrary* meaning, where a new predicate is formed that gets assigned its own threshold $\theta_2$: $\denote{\tilde{happy}}(x, \theta_2): x < \theta_2$.
+Contradictory opposition is iterable ($\neg \neg Hx$) but contrary opposition is not [@Horn1989:Natural].
+As a result, a single negative (*not happy* and *unhappy*) can mean either $\neg happy$ or $\tilde{happy}$, while double negatives (*not unhappy*) may mean $\neg \neg happy$ or $\neg \tilde{happy}$ (Fig.$\thinspace$\ref{fig:lexicon-model}).
+Each possible meanings for negation results in a different lexicon $\mathcal{L}$ and the space of possible meanings can be considered as a prior distribution over possible lexica $P(\mathcal{L})$
+
+
+<!-- Formally, if $Hx$ expresses that $x$ is happy, contradictory opposition is standard, proposition-level negation $\neg Hx$: $Hx$ and $\neg Hx$ is a contradiction. -->
+<!-- Contrary opposition, on the other hand, forms a new predicate $\tilde{H}x$ which introduces its own threshold $\theta_{\tilde{H}}$. -->
+<!-- Thus, we propose a model where overt negation markers (*un-*, *not*) could be mapped to either oppositional meaning---contrary or contradiction---up to the constraints of compositionality (full *uncertain negation* model). -->
+
+
+
+<!-- The positive adjective "happy" is literally true if the degree of happiness is greater than some contextually-determined standard $\theta$,  -->
+<!-- pragmatic listener as having uncertainty  -->
+<!-- Since gradable adjectives like "happy" are vague and context-dependent,  -->
+
+In order to generate predictions, we formalize this *uncertain negation* hypothesis in a probabilistic model of pragmatic reasoning in the Rational Speech Act tradition [@Franke2015a; @Goodman2016:RSA], a recursive reasoning model wherein a pragmatic listener $L_{1}$ tries to resolve the intended meaning of an utterance $u$ (e.g., "Jones is not unhappy") by combining its prior beliefs about the degree of Jones' happiness $P(x)$, with the generative process of the utterance, a speaker model $S_1$ (Eqs.$\thinspace$\ref{eq:L1}-\ref{eq:L0}):
 Listener uncertainty about the interpretation of negation markers is modeled as uncertainty about the speaker's lexicon $\mathcal{L}$ [@Bergen2016].
 We combine this technique with the model of @Lassiter2015 that derives plausible thresholds $\theta$ for gradable adjective (e.g., happy) interpretation:
 
@@ -198,22 +217,17 @@ grid::grid.raster(img)
 ```
 
 
-Any predicted qualitative differences between interpretations of antonym pairs and their negations will depend on the space of meanings considered in the lexicon prior $P(\mathcal{L})$.
-Formally, if $Hx$ expresses that $x$ is happy, contradictory opposition is standard, proposition-level negation $\neg Hx$.
-Contrary opposition, on the other hand, forms a new predicate $\tilde{H}x$ which introduces its own threshold $\theta_{\tilde{H}}$.
-Contradictory opposition is iterable ($\neg \neg Hx$) but contrary opposition is not [@Horn1989:Natural].
-As a result, *not happy* and *unhappy* can mean either $\neg Hx$ or $\tilde{H}x$, while *not unhappy* may mean $\neg \neg Hx$ or $\neg \tilde{H}x$ (Fig.$\thinspace$\ref{fig:lexicon-model}).
-Thus, we propose a model where overt negation markers (*un-*, *not*) could be mapped to either oppositional meaning---contrary or contradiction---up to the constraints of compositionality (full *uncertain negation* model).
-
+<!-- Interpretations of antonym pairs and their negations depend on the meanings a listener considers in their prior distribution over possible lexica $P(\mathcal{L})$. -->
+<!-- Our concern in this work is on negation and thus we consider possible meanings of negation .  -->
 
 <!-- positive adjectives (*happy*), antonyms (*unhappy*), negated positives (*not happy*) and negated antonyms (*not unhappy*) -->
 <!-- Predictions depend on the space of possible meanings considered in the lexicon prior $P(\mathcal{L})$. -->
 We consider two other natural possibilities for the space of meanings in order to derive alternative models.
-One is that negation markers map only onto contradictory meanings (the *logical negation* or *George Orwell* class of meanings; Fig.$\thinspace$\ref{fig:lexicon-model} blue dashed lines).
-Alternatively, morphological negation (*un-*) could express a bonafide contrary meaning (a la *sad*; Fig.$\thinspace$\ref{fig:lexicon-model} purple fuzzy lines).^[
+One alternative is that negation markers map only onto contradictory meanings (the *logical negation* or *George Orwell* class of meanings; Fig.$\thinspace$\ref{fig:lexicon-model} blue dashed lines).
+Alternatively, morphological negation (*un-*) could express a bonafide contrary meaning (a la lexical antonyms like *sad*; Fig.$\thinspace$\ref{fig:lexicon-model} purple fuzzy lines).^[
   For maximal similarity to the full *uncertain negation* model, we allow the *bonafide antonyms* model to maintain uncertainty about particle negation (*not*).
   Instead, in the *bonafide antonyms* model, one could fix the meaning of particle negation (*not*) to be logical negation. 
-  This turns out to not produce any qualitative difference from maintaining uncertainty about *not*'s meaning. 
+  This choice turns out to not produce any qualitative difference from maintaining uncertainty about *not*'s meaning. 
 <!-- The model infers that *not* should be treated as logical negation, given the other constraints in the lexicon. -->
 ]
 
@@ -238,8 +252,7 @@ Alternatively, morphological negation (*un-*) could express a bonafide contrary 
 <!-- Here, we introduce contrary and contradictory negations into a pragmatic model that reasons about a speaker's likely $\theta$ [@Lassiter2015].  -->
 
 
-
-For a given lexicon prior, listeners reason about which lexicon best explains a speaker's single utterance (Fig.$\thinspace$\ref{fig:modelPredictions}, *single utterance*).
+Listeners reason about which lexicon best explains a speaker's single utterance (Fig.$\thinspace$\ref{fig:modelPredictions}, *single utterance*).
 If a speaker uses multiple utterances in the same context, the listener may have even more information about the speaker's lexicon.
 <!-- Multiple utterances heard in the same context, however, can help resolve the meaning of each other, and thus yield different interpretations than if the utterances were heard in isolation. -->
 We thus also generate predictions for our models by conditioning $L_1$ on the observation of a speaker using all four adjective alternatives to describe four different individuals in the same context (Fig.$\thinspace$\ref{fig:modelPredictions}, *multiple utterances*).
