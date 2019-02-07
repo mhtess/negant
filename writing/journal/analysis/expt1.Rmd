@@ -10,6 +10,7 @@ library(langcog)
 library(knitr)
 library(lme4)
 library(lmerTest)
+library(ggridges)
 theme_set(theme_few())
 project.prefix <- "4_L1_1slider"
 
@@ -60,7 +61,7 @@ tab1 <- xtable::xtable(
   caption = "Items in Experiment 1.")
 
 #save(tab1, file = "../cached_results/item_table_e12.RData")
-
+tab1
 ```
 
 
@@ -86,7 +87,7 @@ d.l1.7.comments <- read.csv(paste("../data/",
                  "-subject_information.csv", sep = "")) %>%
     mutate(age = as.numeric(as.character(age)))
 
-d.l1.7.comments %>% select(comments) %>% filter(comments != "") %>% kable()
+d.l1.7.comments %>% select(workerid, enjoyment, comments) %>% kable()
 ```
 
 #### Self-reported native language
@@ -134,8 +135,22 @@ d.l1.natEng <- d.l1.natEng %>%
     mutate(meanRating = mean(response),
             sdRating = sd(response)) %>%
     ungroup() %>%
-    mutate(normalizedResponse = (response - meanRating) / sdRating)
+    mutate(normalizedResponse = (response - meanRating) / sdRating) %>%
+  group_by(workerid, antonym_type, adjective_type) %>%
+  arrange(trial_num) %>%
+  mutate(presentation_num = ave(adjective_type==adjective_type, adjective_type, FUN=cumsum)) %>%
+  ungroup()
 ```
+
+```{r}
+d.l1.natEng %>%
+  group_by(workerid, antonym_type, adjective_type) %>%
+  count() %>%
+  group_by(antonym_type, adjective_type, n) %>%
+  count() %>%
+  kable()
+```
+
 
 
 # Visualize data
@@ -145,11 +160,29 @@ Raw histograms
 
 ```{r fig_histograms}
 d.l1.natEng %>%
-ggplot(., aes( x = normalizedResponse,
-                       fill = adjective_type))+
-  geom_density(alpha = 0.5)+
+  mutate(adjective_type = factor(adjective_type,
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_antonym", 
+                                      "positive"),
+                           labels = c("Sad /\n Unhappy",
+                                      "Not happy",
+                                      "Not sad /\n Not unhappy",
+                                      "Happy"))) %>%
+ggplot(., aes( x = normalizedResponse, y = adjective_type, fill = adjective_type))+
+  #geom_density(alpha = 0.5)+
+  geom_density_ridges(jittered_points = T, alpha = 0.8, scale = 0.8,
+                      position = position_points_jitter(width = 0.01, height = 0),
+                      point_shape = '|', point_size = 2.5, point_alpha = 0.5,
+                      #stat = "binline", bins = 20
+                      )+
   facet_wrap(~antonym_type, scales = 'free')+
-    scale_fill_manual(values = orange.purple.color.palette)+
+  scale_fill_solarized()+
+  guides(fill = F)+
+  ylab("")+
+  #scale_fill_manual(values = orange.purple.color.palette)+
+  scale_x_continuous(limits = c(-2.5, 2.5), expand = c(0.01, 0))+
+  scale_y_discrete(expand = c(0.05, 0))+
   xlab("slider ratings")
 # 
 # ggsave(paste(
@@ -157,6 +190,73 @@ ggplot(., aes( x = normalizedResponse,
 #        width = 6, height = 3)
 
 ```
+```{r}
+d.l1.natEng %>%
+  mutate(adjective_type = factor(adjective_type,
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_antonym", 
+                                      "positive"),
+                           labels = c("Sad /\n Unhappy",
+                                      "Not happy",
+                                      "Not sad /\n Not unhappy",
+                                      "Happy"))) %>%
+ggplot(., aes( x = response, y = adjective_type, fill = adjective_type))+
+  #geom_density(alpha = 0.5)+
+  geom_density_ridges(jittered_points = T, alpha = 0.8, scale = 0.8,
+                      position = position_points_jitter(width = 0.01, height = 0),
+                      point_shape = '|', point_size = 2.5, point_alpha = 0.5,
+                      #stat = "binline", bins = 20
+                      )+
+  facet_wrap(~antonym_type, scales = 'free')+
+  scale_fill_solarized()+
+  guides(fill = F)+
+  ylab("")+
+  #scale_fill_manual(values = orange.purple.color.palette)+
+  scale_x_continuous(limits = c(0, 1), expand = c(0.01, 0))+
+  scale_y_discrete(expand = c(0.05, 0))+
+  xlab("slider ratings")
+# 
+# ggsave(paste( 
+#   "~/Documents/research/negant/analysis/figs/cogsci_expt1_densities.pdf", sep = ""),
+#        width = 6, height = 3)
+
+```
+
+```{r}
+d.l1.natEng %>%
+  mutate(adjective_type = factor(adjective_type,
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_antonym", 
+                                      "positive"),
+                           labels = c("Sad /\n Unhappy",
+                                      "Not happy",
+                                      "Not sad /\n Not unhappy",
+                                      "Happy"))) %>%
+ggplot(., aes( x = response, y = adjective_type, fill = adjective_type))+
+  #geom_density(alpha = 0.5)+
+  geom_density_ridges(jittered_points = T, alpha = 0.8, scale = 0.8,
+                      position = position_points_jitter(width = 0.01, height = 0),
+                      point_shape = '|', point_size = 2.5, point_alpha = 0.5,
+                      #stat = "binline", bins = 20
+                      )+
+  facet_wrap(antonym_type~presentation_num, scales = 'free')+
+  scale_fill_solarized()+
+  guides(fill = F)+
+  ylab("")+
+  #scale_fill_manual(values = orange.purple.color.palette)+
+  scale_x_continuous(limits = c(0, 1), expand = c(0.01, 0))+
+  scale_y_discrete(expand = c(0.05, 0))+
+  xlab("slider ratings")
+# 
+# ggsave(paste( 
+#   "~/Documents/research/negant/analysis/figs/cogsci_expt1_densities.pdf", sep = ""),
+#        width = 6, height = 3)
+
+```
+
+
 
 #### Exploratory: By item histograms
 
@@ -176,15 +276,15 @@ d.l1.natEng %>%
 d.l1.natEng %>%
   filter(adjective_type == "neg_antonym", 
         antonym_type == "morphological") %>%
-  ggplot(., aes( x = normalizedResponse,
-                       fill = adjective_type))+
+  ggplot(., aes( x = response))+
   geom_histogram(position = position_dodge(), bins = 20)+
+  geom_vline(aes(xintercept = 0.5), color = 'red')+
   #geom_density(alpha = 0.3)+
-  facet_wrap(~positive, scales = 'free')+
+  facet_wrap(~"not " + antonym, scales = 'free', nrow = 2)+
   #scale_fill_manual(values = orange.purple.color.palette)+
   ylab("counts")+
   xlab("slider ratings")+
-  ##scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
+  scale_x_continuous(limits = c(-0.01, 1.01), breaks = c(0, 1))+
   guides(fill = F)
 ```
 
@@ -216,24 +316,138 @@ d.l1.4.boot %>%
                        fill = adjective_type,
               group = adjective_type
               ))+
-  geom_col(position = position_dodge(0.8), width = 0.8, color = 'black')+
-  geom_errorbar(position = position_dodge(0.8), color = 'black',
-                width = 0.4)+
+  geom_hline(yintercept = 0, lty = 2)+
+  geom_point(data = d.l1.natEng %>% mutate(adjective_type = factor(adjective_type, 
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_antonym", 
+                                      "positive"),
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated antonym",
+                                      "Positive"))), position = position_jitterdodge(),
+             inherit.aes = F, aes(x = adjective_type, y = normalizedResponse, color = adjective_type), 
+             alpha = 0.2)+
+  #geom_col(position = position_dodge(0.6), width = 0.6, alpha = 0.3, color = 'black')+
+  geom_linerange(position = position_dodge(0.6), color = 'black', size = 3)+
   #geom_hline(yintercept = 0.5, lty = 3)+
   # scale_fill_manual(name="Adjective type",
   #                   values = orange.purple.color.palette,
   #                   guide = guide_legend(reverse=TRUE))+
-  #coord_flip()+
+  coord_flip()+
+    scale_fill_solarized()+scale_color_solarized()+
   facet_wrap(~ antonym_type, scales = 'free')+
-  #guides(fill = F)+
+  guides(fill = F,color = F)+
   xlab("")+
-  ylab("mean normalized rating")+
+  ylab("mean normalized rating")#+
   #scale_y_continuous(limits = c(-1.5,0), breaks = c(-1, 0))+      #scale_y_continuous(limits = c(-1.5,1.5), breaks = c(-1, 0, 1))+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+  #theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 # ggsave(paste(
 #   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_bootstrapped.pdf", sep = ""),
 #        width = 6, height = 3.75)
 ```
+```{r}
+df.l1.resp.bs <- d.l1.natEng %>%
+  mutate(adjective_type = factor(adjective_type, 
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_antonym", 
+                                      "positive"),
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated antonym",
+                                      "Positive"))) %>%
+  group_by(antonym_type, adjective_type) %>%
+  multi_boot_standard(col = "response")
+
+df.l1.resp <- d.l1.natEng %>% mutate(adjective_type = factor(adjective_type, 
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_antonym", 
+                                      "positive"),
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated antonym",
+                                      "Positive")))
+save(df.l1.resp.bs, df.l1.resp, file = "df_l1_resp.RData")
+ggplot(df.l1.resp.bs, aes(x = adjective_type,
+                      y = mean,
+                       ymin = ci_lower, ymax = ci_upper,
+                       fill = adjective_type,
+              group = adjective_type
+              ))+
+  geom_hline(yintercept = 0.5, lty = 2)+
+  geom_point(data = df.l1.resp, position = position_jitterdodge(),
+             inherit.aes = F, 
+             aes(x = adjective_type, y = response, color = adjective_type), 
+             alpha = 0.2)+
+  geom_linerange(position = position_dodge(0.6), color = 'black', size = 3)+
+  
+  scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1))+
+  coord_flip()+
+  scale_fill_solarized()+
+  scale_color_solarized()+
+  facet_wrap(~ antonym_type, scales = 'free')+
+  guides(fill = F,color = F)+
+  xlab("")+
+  ylab("mean normalized rating")
+
+
+#++      #scale_y_continuous(limits = c(-1.5,1.5), breaks = c(-1, 0, 1))+
+  #theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+# ggsave(paste(
+#   "~/Documents/research/talks/vagueness/frisem-2018-01/img/", project.prefix, "_bootstrapped.pdf", sep = ""),
+#        width = 6, height = 3.75)
+```
+
+
+```{r}
+df.l1.resp.pres.bs <- d.l1.natEng %>%
+  mutate(adjective_type = factor(adjective_type, 
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_antonym", 
+                                      "positive"),
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated antonym",
+                                      "Positive"))) %>%
+  group_by(antonym_type, adjective_type, presentation_num) %>%
+  multi_boot_standard(col = "response")
+
+
+df.l1.resp.pres <- d.l1.natEng %>% mutate(adjective_type = factor(adjective_type, 
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_antonym", 
+                                      "positive"),
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated antonym",
+                                      "Positive")))
+save(df.l1.resp.pres.bs, df.l1.resp.pres, file = "df_l1_resp_pres.RData")
+
+ggplot(df.l1.resp.pres.bs,
+       aes(x = adjective_type, group = factor(presentation_num))) +
+  facet_wrap(~antonym_type, scales = "free") +
+  coord_flip() +
+  geom_hline(yintercept = 0.5, linetype = "dashed") +
+  geom_violin(data = df.l1.resp.pres, colour = "grey",
+              position = position_dodge(width = 0.75), alpha = 0,
+              aes(y = response,
+                  group = interaction(adjective_type, presentation_num))) +
+  geom_point(data = df.l1.resp.pres, position = position_jitterdodge(),
+             aes(y = response, color = adjective_type), alpha = 0.2) +
+  geom_linerange(aes(ymin = ci_lower, ymax = ci_upper),
+                 position = position_dodge(width = 0.75), size = 3) +
+  scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1)) +
+  scale_color_solarized(guide = FALSE) +
+  labs(x = "", y = "mean normalized rating")
+
+# ggsave("~/Desktop/negant_testFig.pdf",
+#        width = 9, height = 4)
+```
+
 
 #### By item
 
