@@ -24,7 +24,7 @@ function make_slides(f) {
     /* trial information for this block
      (the variable 'stim' will change between each of these values,
       and for each of these, present_handle will be run.) */
-    present : _.shuffle(exp.stimuli),
+    present : exp.stimuli,
 
     //this gets run only at the beginning of the block
     present_handle : function(stim) {
@@ -105,7 +105,6 @@ function make_slides(f) {
     present : _.shuffle(exp.stimuli),
 
     present_handle : function(stim) {
-      console.log(exp.stimuli)
       $(".err").hide();
       $(".prompt").empty();
       this.stim = stim;
@@ -246,41 +245,57 @@ function init() {
   exp.structure = ["i0"];
 
     exp.trial_order = [
-	"neg_positive",
-	"antonym",
-	"positive",
-	"neg_antonym",
-	"positive",
-	"antonym"
+	{
+	    form: "neg_positive"
+	},
+	{
+	    form: "antonym",
+	    word: "lexant"
+	},
+	{
+	    form: "positive"
+	},
+	{
+	    form: "neg_antonym",
+	    word: "morphant"
+	},
+	{
+	    form: "positive"
+	},
+	{
+	    form: "antonym",
+	    word: "morphant"
+	}
     ];
 
     exp.negations = ["neg_positive", "neg_antonym"]
     exp.antonyms = ["antonym", "neg_antonym"]
 
     var shuffledNames = _.shuffle(characters);
-    console.log(shuffledNames)
     var shuffledStims = _.shuffle(stimuli);
   exp.stimuli = [];
   for (i=0; i<exp.trial_order.length; i++){
-      var st = exp.trial_order[i];
-      var isNegation = exp.negations.includes(exp.trial_order[i])
-      var isAntonym = exp.antonyms.includes(exp.trial_order[i])
+      var st = exp.trial_order[i].form;
+      var isNegation = exp.negations.includes(st)
+      var isAntonym = exp.antonyms.includes(st)
 
       var adj = isNegation ?
                 "not " + shuffledStims[i][
-                  (isAntonym ? exp.antonym_type : "positive")
+                  (isAntonym ? exp.trial_order[i].word : "positive")
                 ] : shuffledStims[i][
-                  (isAntonym ? exp.antonym_type : "positive")
+                  (isAntonym ? exp.trial_order[i].word : "positive")
                 ];
       var adjType = isAntonym ? st.replace("antonym", exp.antonym_type) : st
       var stimulus = _.extend(
-        {
+          {
+	      trial_type: exp.trial_order[i],
           adjective_type: adjType,
             adjective: adj,
 	    name: shuffledNames[i].name
         }, shuffledStims[i])
     exp.stimuli.push(stimulus)
   }
+    console.log(exp.stimuli)
     
   if (exp.condition  == "all_four_sliders")  {
     exp.structure.push("multi_slider")

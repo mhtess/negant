@@ -219,7 +219,8 @@ function make_slides(f) {
 	    $(label + ' .ui-slider-handle').css({
 				"background":"#667D94",
 				"border-color": "#001F29"
-			});
+	    });
+	    $(label).css({"background":"#99D6EB"});
 	    $(label).slider("disable");
 	},
 	log_responses: function() {
