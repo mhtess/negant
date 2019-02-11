@@ -1,0 +1,25 @@
+.slider {
+  /* default is width 400 and margin 10 */
+	width: 500;
+	margin: 10px;
+}
+
+.err {
+	color: "red"
+}
+
+.slider_table .left {
+	text-align: right
+}
+
+.slider_table .right {
+	text-align: left
+}
+
+.sentence {
+    font-size: 18px;
+}
+
+.judgement {
+    font-size: 24px;
+}
