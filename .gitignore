@@ -13,3 +13,4 @@ packrat/lib*/
 *.aux
 *.out
 *.tex
+*~
