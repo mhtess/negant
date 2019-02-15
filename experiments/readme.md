@@ -47,3 +47,9 @@
   - target 45 ratings per set (1 antonym type): n = 75 (8.3 batches)
     - payment: $0.80 --> $72
     - total = $144 (for both antonym types)
+
+
+## Experiments 2019
+- `7_interpretation-1slider-nn`: Same as the morphological antonym version but instead of "not unhappy", participants see "not not happy"
+  - added memory_check trial
+  - $0.70, pilot n = 36 : 25.2 + 5.04 = 30.24
