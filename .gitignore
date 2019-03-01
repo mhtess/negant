@@ -12,5 +12,7 @@ packrat/lib*/
 *.blg
 *.aux
 *.out
-*.tex
 *~
+*.DS_Store
+*.fff
+*.ttt
