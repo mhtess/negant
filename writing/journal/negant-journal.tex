@@ -247,7 +247,7 @@ As a control condition, we examine antonyms which do not have overt negation mar
 These lexical antonyms should behave like \emph{bonafide antonyms}, which predicts a full ordering regardless of context.
 \text{Expt.$\thinspace$1} was exploratory and informed our computational modeling.
 \text{Expt.$\thinspace$2} is a larger, more stringent, preregistered (\url{osf.io/p7f25/}) replication.
-
+Finally, \text{Expt.$\thinspace$3} asks how specific the patterns of inferences are to morphological negation (\emph{un-}) as opposed to negation more broadly. 
 
 %\hypertarget{behavioral-experiments}{%
 \section{Experiment 1: Single utterances}
@@ -317,10 +317,10 @@ attractive, unattractive & beautiful, ugly \\
 %\hypertarget{results}{%
 \subsection{Results}\label{results}%}
 
-6 participants were excluded for self-reporting a native language other than English, leaving a remainder of 114 participants for these analyses.
+6 participants were excluded for self-reporting a native language other than English, leaving a remainder of 114 participants for these analyses, which resulted in on average 23 ratings for each unique adjective in our stimulus set.
 The qualitative predictions of our models concern the ordering within a set of alternatives for different antonym types (morphological vs.~lexical).
-To visualize the data, we compute normalized responses on a participant-wise basis (i.e., normalized response \(r'_{ij} = \frac{r_{ij} - mean_j}{sd_j}\) for trial \(i\) and participant \(j\)).
-Fig.$\thinspace$\ref{fig:expt-results}A shows the mean normalized responses and bootstrapped 95\% confidence intervals for each of the four adjective types for morphological and lexical antonyms.
+%To visualize the data, we compute normalized responses on a participant-wise basis (i.e., normalized response \(r'_{ij} = \frac{r_{ij} - mean_j}{sd_j}\) for trial \(i\) and participant \(j\)).
+\red{Fig.$\thinspace$\ref{fig:expt-results}A shows the empirical distributions for each of the four adjective types for both morphological and lexical antonyms adjective sets.}
 Critically, as predicted by the uncertain negation model, adjective sets with morphological antonyms show only a partial ordering, while those with lexical antonyms show a full ordering.
 
 To confirm these observations, we built a linear mixed model predicting the raw, unnormalized ratings in terms of fixed effects of \emph{antonym type} (morphological vs.~lexical), \emph{adjective type} (Helmert coded in order: antonym, negated positive, negated antonym, positive)\footnote{Throughout, we code adjective type using Helmert coding, which compares levels of a factor to the average of preceding levels, in order to compare antonym vs.~negated positive levels of the adjective type factor.}, and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.\footnote{This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R \cite{lme4}.}
@@ -341,12 +341,8 @@ This interpretation may be the result of participants attributing politeness to 
 \end{figure}
 
 \begin{figure*}[h]
-
-{\centering \includegraphics[width=0.95\linewidth]{figs/expt-results-1} 
-
-}
-
-\caption{Empirical ratings for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad''). Width of paddle denotes a bootstrapped 95\% confidence interval. Paddles are vertically-offset when overlapping. A: Expt. 1: Participants rated  adjectives in isolation; a single participant saw both morphological and lexical antonym items. B: Expt. 2: Participants rated adjectives in isolation (left) or simultaneously (right); each ribbon denotes a between-participant condition.}\label{fig:expt-results}
+\centering \includegraphics[width=0.95\linewidth]{figs/expt1_ridges_wCIs} 
+\caption{Experiment 1 results. Empirical distributions of responses for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad''). Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. White bars denote bootstrapped 95\% confidence intervals.}\label{fig:expt1-results}
 \end{figure*}
 
 %\hypertarget{experiment-2-single-and-multiple-utterances}{%
@@ -446,6 +442,8 @@ The relevant \emph{antonym} vs. \emph{negated positive} by adjective type (lexic
 %\hypertarget{discussion}{%
 \section{Discussion}\label{discussion}
 %}
+
+\mht{other thoughts: (a) dimensionality in antonyms (unhappy and sad map onto slightly different dimensions); (b) how much of this is specific to (American) English? [there is an oft intuition that Orwell believes this because he is british]; (c) relation to understatement more broadly}
 
 Many dimensional scales lack units.
 Speakers cannot say they are \emph{42 units happy} like they can say they are \emph{6'1" tall}.
