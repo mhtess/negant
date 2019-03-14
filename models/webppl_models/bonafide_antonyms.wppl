@@ -1,0 +1,251 @@
+var lowerBins = [
+	0,
+  0.01,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  0.99
+];
+
+var upperBins = [
+  0.01,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  0.99,
+  1
+];
+
+var lowerBinsFine = [
+	0,
+  0.01,
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25,
+  0.3,
+  0.35,
+  0.4,
+  0.45,
+  0.5,
+  0.55,
+  0.6,
+  0.65,
+  0.7,
+  0.75,
+  0.8,
+  0.85,
+  0.9,
+  0.95,
+  0.99
+];
+
+var upperBinsFine = [
+  0.01,
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25,
+  0.3,
+  0.35,
+  0.4,
+  0.45,
+  0.5,
+  0.55,
+  0.6,
+  0.65,
+  0.7,
+  0.75,
+  0.8,
+  0.85,
+  0.9,
+  0.95,
+  0.99,
+  1
+];
+
+var round = function(x){
+  return Math.round(x*100)/100
+}
+
+var isNot = function(u){
+  return u == "not"
+}
+
+var isUn = function(u){
+  return u == "un"
+}
+
+var hasNegModifier = function(utt){
+  return (utt.split("_")[0] == "not")
+};
+var hasNegMorph = function(utt){
+  return (utt.indexOf("un") > -1)
+};
+var roundTo3 = function(x){
+  return Math.round(x * 1000) / 1000
+}
+
+var midBins = map2(function(b1,b2){
+  return roundTo3((b2 - b1)/2 + b1)
+}, lowerBins, upperBins)
+
+var thetaBins = map2(function(b1, b2){
+  return roundTo3((b2-b1)/2 + b1);
+}, midBins.slice(0, midBins.length-1), midBins.slice(1))
+
+var avoidEnds = function(x){
+  return x >= 1 ? 0.99 : x == 0 ? 0.01 : x
+}
+
+var lb = 0, ub = 1, diff = 0.05;
+var bins = _.range(lb, ub + diff, diff)
+
+var DiscreteGaussian = function(mu, sigma){
+  Infer({model: function(){
+    categorical({
+      vs:midBins,
+      ps:map(function(x){Math.exp(Gaussian({mu, sigma}).score(x))}, midBins)
+    })
+  }})
+}
+
+var DiscreteBeta = cache(function(a, b){
+  Infer({model: function(){
+    categorical({
+      vs:midBins,
+      ps:map(function(x){
+        Math.exp(Beta({a, b}).score(x))
+      }, midBins)
+    })
+  }})
+})
+
+var meaning = function(words, state, thresholds){
+  return words == "happy" ? state > thresholds.happy :
+  words == "not_happy" ? !(state > thresholds.happy) :
+  words == "un_happy" ? state < thresholds.unhappy :
+  words == "not_un_happy" ? !(state < thresholds.unhappy) :
+  words == "not_not_happy" ? !!(state > thresholds.happy) :
+  words == "sad" ? state < thresholds.sad :
+  words == "not_sad" ? !(state < thresholds.sad) :
+  words == "neither_nor" ? (
+    !(state > thresholds.happy) &&
+    !(state < thresholds.unhappy)
+  ) :
+  true
+};
+
+
+var utteranceCost = function(u, cost_neg){
+  var c0 = 1;
+  var splitUtt = u.split("_")
+
+  var c1 = ( isNot(splitUtt[0]) || isUn(splitUtt[0]) ) ? cost_neg : 0
+  var c2 = ( isNot(splitUtt[1]) || isUn(splitUtt[1]) ) ? cost_neg : 0
+  return c0 + c1 + c2
+
+}
+
+var alternative_sets = {
+  a1: ["happy", "un_happy", "not_happy", "not_un_happy"],
+  a2: ["happy", "un_happy", "not_happy", "not_not_happy"],
+  a3: ["happy", "not_un_happy", "not_happy", "un_happy", "not_not_happy"],
+  a4: ["happy", "not_un_happy", "not_happy", "un_happy", "not_sad", "sad"],
+  a5: ["happy", "not_un_happy", "not_happy", "un_happy", "not_sad", "sad", "not_not_happy"],
+  a6: {
+    "happy": ["happy", "not_happy"],
+    "un_happy": ["happy", "un_happy", "not_un_happy"],
+    "not_un_happy": ["happy", "un_happy", "not_un_happy"],
+    "not_happy": ["happy", "not_happy"]
+  }
+}
+
+var listener0 = cache(function(utterance, thresholds) {
+  Infer({model: function(){
+    var state = sample(DiscreteBeta(1, 1));
+    var m = meaning(utterance, state, thresholds);
+    condition(m);
+    return state;
+  }})
+}, 10000);
+
+var speaker1 = cache(function(state, thresholds, opts, alt_utterances) {
+  Infer({model: function(){
+    var utterance = uniformDraw(alt_utterances);
+    // display(utterance)
+    var cost = utteranceCost(utterance, opts.cost_neg)
+    var L0 = listener0(utterance, thresholds);
+    var utility = opts.multiplicative_cost ? L0.score(state) * cost : L0.score(state) - cost;
+    factor(opts.speaker_optimality*utility);
+    return utterance;
+  }})
+}, 10000);
+
+var listener1 = cache(function(utterance, opts) {
+  Infer({model: function(){
+    // display(utterance)
+    // display(opts.alternative_utterances)
+    var alt_utterances = opts.alternative_utterances == "a6" ?
+      alternative_sets.a6[utterance] :
+      alternative_sets[opts.alternative_utterances]
+    // display(alt_utterances)
+    // display(alt_utterances.indexOf("un_happy"))
+    var thresholds = {
+      happy: uniformDraw(thetaBins),
+      unhappy: alt_utterances.indexOf("un_happy") > -1 ? uniformDraw(thetaBins) : -99,
+      sad: alt_utterances.indexOf("sad") > -1 ? uniformDraw(thetaBins) : -99
+    }
+    var state = sample(DiscreteBeta(1, 1));
+    var S1 = speaker1(state, thresholds, opts, alt_utterances)
+    observe(S1, utterance)
+    return state
+  }})
+}, 10000);
+
+var statePrior = DiscreteBeta(1, 1)
+
+// var all_opts = [
+//   {"speaker_optimality":1,"cost_neg":3,"multiplicative_cost":true,
+//     "alternative_utterances": ["happy", "not_un_happy", "not_happy", "un_happy", "not_sad", "sad"]},
+//   {"speaker_optimality":1,"cost_neg":3,"multiplicative_cost":false,
+//     "alternative_utterances": ["happy", "not_un_happy", "not_happy", "un_happy"]}
+// ]
+
+// var antonym_quartet = [
+//   "happy",
+//   "not_un_happy",
+//   "not_happy",
+//   "un_happy",
+//   // "neither_nor"
+// ];
+
+
+_.flatten(
+  map(function(opts){
+    // display(JSON.stringify(opts))
+    var all_utterances = opts.alternative_utterances == "a6" ?
+      _.keys(alternative_sets.a6) :
+      alternative_sets[opts.alternative_utterances]
+    map(function(u){
+      var post = listener1(u, opts)
+      map(function(s){
+        return extend(opts, {utterance: u, state: s, posterior_prob: Math.exp(post.score(s))})
+      }, sort(statePrior.support()))
+    }, all_utterances)
+  }, all_opts)
+)
