@@ -153,7 +153,7 @@ Banal statements are given an appearance of profundity by means of the ``not un-
 \section{Introduction}\label{introduction}%}
 
 In logic, two negatives make a positive.
-With natural language, however, it is not always clear what should happen:
+In natural language, however, it is not always clear what should happen:
 If \emph{Jones is not unhappy}, does that mean that Jones is happy?
 \citeA{Jespersen1924} suggested not:
 
@@ -161,29 +161,42 @@ If \emph{Jones is not unhappy}, does that mean that Jones is happy?
 [T]wo negatives do not exactly cancel one another [$\ldots$]; the longer expression is always weaker: ``this is not unknown to me'' or ``I am not ignorant of this'' means ``I am to some extent aware of it,'' etc. (p.$\thinspace$332)
 \end{quote}
 
-In other words, \enquote{not unhappy} (a \emph{negated antonym}) could indicate a degree of happiness below that indicated by \enquote{happy} (a \emph{positive adjective}) but above those of \enquote{not happy} and \enquote{unhappy} (\emph{negated positives} and \emph{antonyms}, respectively; Fig.\(\thinspace\)\ref{fig:happy-scale}; \citeNP{Krifka2007:Negated-antonyms}).
-This intuition is not uncontroversial---consider Orwell's quote above---nor is there agreement about how a listener derives a weakly positive interpretation from a double negative.
-Antonyms created by morphology (\emph{morphological antonyms} e.g., \enquote{un}+\enquote{happy}) could convey a \emph{contrary} meaning, which is often conveyed by antonyms which have their own lexical entry (\emph{lexical antonyms} e.g., \enquote{sad}).
-The key fact about contraries is that they can both be false (unlike logical \emph{contradictions}): Jones may be neither tall nor short (contraries) but a natural number cannot neither be even nor odd (contradictions; \citeNP{Horn1989:Natural}).
-Pragmatically, \enquote{not unhappy} should compete with \enquote{happy} as an alternative description, resulting in a contextually strengthened interpretation corresponding to a neutral or indifferent state \cite{Horn1991:Duplex}, contra \citeA{Jespersen1924}'s intuition that \enquote{not unhappy} is a slightly positive state.
-Such an analysis, however, further depends on the meaning of \enquote{not happy} (Blutner, 2004), of which there is also little agreement: \citeA{Jespersen1917:Negation} and \citeA{Blutner2004:pragmatics} believe that \enquote{not happy} means the same as \enquote{unhappy}, while \citeA{Krifka2007:Negated-antonyms} disagrees, citing examples like:
+In other words, \enquote{not unhappy} (a \emph{negated antonym}) could indicate a slightly positive state, below that of \enquote{happy}  but above a \emph{zone of indifference} (Sapir, 1944), where feelings that are neither positive nor negative reside. 
+This intuition is not uncontroversial (cf., Orwell's quote above), nor is there consensus about why a listener should derive a weakly positive interpretation from a double negative.
+The most straightforward analysis is that \enquote{not unhappy}  logically overlaps in meaning with \enquote{happy} (Figure~\ref{fig:happy-scale}A) and thus a speaker who chooses to say \enquote{not unhappy} must have meant \emph{not unhappy but not happy} via pragmatic implicature \cite{Horn1991:Duplex}. 
+Without further assumptions, however, this predicts an interpretation of \enquote{not unhappy} in the zone of indifference, contra \citeA{Jespersen1924}'s intuition that \enquote{not unhappy} is a slightly positive state.
+Further, the logic changes should a speaker consider producing \enquote{not happy} (Blutner, 2004),  though again, little agreement is to be found on what \enquote{not happy} means (Figure~\ref{fig:happy-scale}B): \citeA{Jespersen1917:Negation} and \citeA{Blutner2004:pragmatics} believe that \enquote{not happy} means the same as \enquote{unhappy}, while \citeA{Krifka2007:Negated-antonyms} disagrees, citing examples like:
 
 \begin{quote}
 It's an absolutely horrible feeling to be unhappy, and I don't even think I was unhappy, just not happy, if you know what I mean. \emph{(taken from the internet)}
 \end{quote}
 
+%Such an analysis, however, further depends on the meaning of \enquote{not happy} 
+%The resulting pragmatic interpretation of \enquote{not unhappy} then depends upon how many other 
+%
+%
+%resulting in a contextually strengthened interpretation corresponding to a neutral or indifferent state , contra \citeA{Jespersen1924}'s intuition that \enquote{not unhappy} is a slightly positive state.
+%
+%
+%those of \enquote{not happy} and \enquote{unhappy} (\emph{negated positives} and \emph{antonyms}, respectively; Fig.\(\thinspace\)\ref{fig:happy-scale}; \citeNP{Krifka2007:Negated-antonyms}).
 
+\begin{figure}[b]
+\centering \includegraphics{figs/happy-scale-2}  
+\caption{A: Theorized literal meanings of antonyms and their negations. B: How do listeners interpret \emph{not unhappy} and \emph{not happy}? }\label{fig:happy-scale}
+\end{figure}
 
 How does such a logical linguistic device---negation---give rise to a multiplicity of meanings?
 Both syntactic \cite{Cable2017} and pragmatic \cite{Rett2014:eval} mechanisms have been proposed, but heretofore there have been no computational accounts tested against human behavioral data.
-In addition, what constitutes the ground truth has been left to the intuitions of trained theorists, who very often disagree what the meanings of these terms.
+In addition, the ground truth as to the meaning of the language of negation has been left to the intuitions of trained theorists, who more often than not disagree on the basic facts. % come to different conclusions as to the meanings of these terms.
 We hypothesize that \emph{lexical uncertainty}---uncertainty in the meaning of words---pervades even the language of logical devices, which interacts with conversational reasoning to give rise to a panoply of context-specific interpretations.
-Specifically, we posit that overt negation markers (\enquote{not}, \enquote{un-}) can convey either contrary or contradictory opposition and that listeners resolve their uncertainty about the meaning in context.
+Specifically, we posit that overt negation markers (\enquote{not}, \enquote{un-}) can convey different kinds of negation and that listeners resolve their uncertainty about the meaning in context.
 
-\begin{figure}[h]
-\centering \includegraphics{figs/happy-scale-1}  
-\caption{Possible ordering of antonyms and their negations.}\label{fig:happy-scale}
-\end{figure}
+
+
+Negation is the semantic operation of forming an opposite, but there are multiple kinds of semantic opposition \cite{Horn1989:Natural}. 
+A contrary opposition is one where both predicates cannot be true at the same time, but both can be false (e.g., \emph{tall}~and~\emph{short}). 
+A contradictory opposition is one where the falsity of one predicate entails the truth of the other (e.g., even~vs.~odd positive integers). 
+We hypothesize that listeners have uncertainty about whether negation markers  (\enquote{not}, \enquote{un-}) express contradictory or contrary opposition and that this uncertainty interacts with the vagueness of gradable adjectives like \enquote{happy} to produce logically subtle meanings in context.
 
 Formally, a gradable adjective (e.g., \enquote{happy}) is thought to be literally true if the degree associated with that adjective \(x\) (e.g., the degree of happiness) is greater than some contextually-determined threshold \(\theta_1\): \(\mbox{ $[\![ happy ]\!]$}(x, \theta): x > \theta_1\) \cite{Kennedy2007}.
 If a negation marker (e.g., \enquote{not}) creates a contradictory statement, then the resulting meaning would simply be that the degree is less than or equal to the threshold: \(\neg \mbox{ $[\![ happy ]\!]$}(x, \theta_1): x \leq \theta_1\).
@@ -219,7 +232,7 @@ We compare the predictions of this uncertain negation model to three theoretical
 First, we compare to a vanilla RSA model which has neither uncertainty about negation nor vagueness about the meaning of the adjective \cite{Frank2012}.\footnote{
 The vanilla model assumes fixed-thresholds to the adjectives, and we assume antonyms convey contrary meanings. Therefore, we ascribe the following meanings to the adjectives: \enquote{happy} means \(>70\%\) on the happiness scale; \enquote{unhappy} means \(<30\%\).
 }
-Second, we compare to the vague RSA model of \citeA{Lassiter2015}, assuming that all negation marker entail contradictory negation (the \emph{logical negation} or \emph{George Orwell} model).
+Second, we compare to the vague RSA model of \citeA{Lassiter2015}, assuming that all negation markers entail contradictory negation (the \emph{logical negation} or \emph{George Orwell} model).
 Finally, we construct a \emph{bonafide antonyms} model, building on \citeA{Lassiter2015}'s vague RSA model but where morphological antonyms (\emph{un-}) convey contrary negation.
 
 %{]}
