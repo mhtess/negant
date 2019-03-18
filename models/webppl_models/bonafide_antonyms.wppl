@@ -151,13 +151,16 @@ var meaning = function(words, state, thresholds){
 };
 
 
-var utteranceCost = function(u, cost_neg){
-  var c0 = 1;
+var utteranceCost = function(u, cost_neg, multiplicative_cost) {
+  var c0 = multiplicative_cost ? 1 : 0;
+  var null_cost_incr = multiplicative_cost ? 1 : 0
   var splitUtt = u.split("_")
 
-  var c1 = ( isNot(splitUtt[0]) || isUn(splitUtt[0]) ) ? cost_neg : 0
-  var c2 = ( isNot(splitUtt[1]) || isUn(splitUtt[1]) ) ? cost_neg : 0
-  return c0 + c1 + c2
+  var c1 = ( isNot(splitUtt[0]) || isUn(splitUtt[0]) ) ? cost_neg : null_cost_incr
+  var c2 = ( isNot(splitUtt[1]) || isUn(splitUtt[1]) ) ? cost_neg : null_cost_incr
+
+  var full_Cost = multiplicative_cost ?  c0 * c1 * c2 : c0 + c1 + c2
+  return full_Cost
 
 }
 
@@ -175,6 +178,11 @@ var alternative_sets = {
   }
 }
 
+var cost_sets = {
+  false: [0, 2, 3],  // additive costs
+  true: [1, 1.5, 2] // multiplicative costs
+}
+
 var listener0 = cache(function(utterance, thresholds) {
   Infer({model: function(){
     var state = sample(DiscreteBeta(1, 1));
@@ -188,7 +196,7 @@ var speaker1 = cache(function(state, thresholds, opts, alt_utterances) {
   Infer({model: function(){
     var utterance = uniformDraw(alt_utterances);
     // display(utterance)
-    var cost = utteranceCost(utterance, opts.cost_neg)
+    var cost = utteranceCost(utterance, opts.cost_neg, opts.multiplicative_cost)
     var L0 = listener0(utterance, thresholds);
     var utility = opts.multiplicative_cost ? L0.score(state) * cost : L0.score(state) - cost;
     factor(opts.speaker_optimality*utility);
@@ -235,17 +243,27 @@ var statePrior = DiscreteBeta(1, 1)
 // ];
 
 
-_.flatten(
+_.flatten(_.flatten(
   map(function(opts){
     // display(JSON.stringify(opts))
     var all_utterances = opts.alternative_utterances == "a6" ?
       _.keys(alternative_sets.a6) :
       alternative_sets[opts.alternative_utterances]
-    map(function(u){
-      var post = listener1(u, opts)
-      map(function(s){
-        return extend(opts, {utterance: u, state: s, posterior_prob: Math.exp(post.score(s))})
-      }, sort(statePrior.support()))
-    }, all_utterances)
+    var cost_levels = cost_sets[opts.multiplicative_cost]
+    // display(cost_levels)
+    map(function(c){
+
+      map(function(u){
+        var listener_opts = extend(opts, {cost_neg: c} )
+        var post = listener1(u, listener_opts)
+        map(function(s){
+          return extend(opts, {utterance: u, state: s, cost_neg: c, posterior_prob: Math.exp(post.score(s))})
+        }, sort(statePrior.support()))
+
+      }, all_utterances)
+
+    }, cost_levels)
+
+
   }, all_opts)
-)
+))

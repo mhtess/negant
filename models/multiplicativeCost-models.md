@@ -4,7 +4,7 @@ MH Tessler
 March 11, 2019
 
 ``` r
-knitr::opts_chunk$set(warning=F, cache=T, message=F, sanitize = T)
+knitr::opts_chunk$set(warning=F, cache=F, message=F, sanitize = T)
 ```
 
 ``` r
@@ -41,7 +41,7 @@ If “sad” is in alternative set, new threshold for “sad”
 ``` r
 pragListener.params <- expand.grid(
   speaker_optimality = c(1, 3, 5),
-  cost_neg = c(0, 2, 4),
+  #cost_neg = c(0, 2, 4),
   multiplicative_cost = c(T, F),
   alternative_utterances = c("a1", "a2", "a3", "a4", "a5", "a6")
 )
@@ -56,7 +56,7 @@ pragListener.params <- expand.grid(
 
 rs.listener.wp.tidy <- webppl(program_file = "webppl_models/bonafide_antonyms.wppl",
                          data = pragListener.params,
-                         data_var = "all_opts")  %>%
+                         data_var = "all_opts") %>%
   bind_rows(.) 
 # %>%
 #          mutate(utterance = factor(utterance,
@@ -76,13 +76,14 @@ makeParameterTablePlot= function(df){
   # print(alternative_utterances)
   df %>%
   ggplot(., aes( x = state, fill = utterance, color = utterance))+
-  geom_density(alpha = 0.5, size = 1.3, adjust = 3)+
+  geom_density(alpha = 0.5, size = 1.3, adjust = 3, aes(y = ..scaled..))+
   scale_fill_solarized()+
   scale_color_solarized()+
   facet_grid(speaker_optimality~cost_neg, scales = 'free')+
-  labs(x = "Happiness (normalized scale)", y = "Posterior probability density",
+  labs(x = "Happiness (normalized scale)", y = "Posterior probability density (Scaled)",
        caption = "columns = cost of neg (same for 'un' and 'not')\n rows = speaker optimality")+
   scale_x_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  scale_y_continuous(breaks =c(0, 1), limits = c(0, 1))+
   theme(strip.text.y = element_text(angle  = 0))
 }
 ```
@@ -139,8 +140,10 @@ rs.listener.wp.tidy.samples %>%
 ```
 
 ![](multiplicativeCost-models_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
-\#\# Alternative Set 3: \[“happy”, “not unhappy”, “not happy”,
-“unhappy”, “not not happy”\]
+Parameter settings are too extreme for cost = 2, optimality =
+5.
+
+## Alternative Set 3: \[“happy”, “not unhappy”, “not happy”, “unhappy”, “not not happy”\]
 
 ### Additive costs
 
