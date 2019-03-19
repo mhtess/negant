@@ -190,25 +190,25 @@ In this paper, we derive the logic of double negation from a rational model of c
 \section{Modeling Double Negation}
 
 Negation is the semantic operation of forming an opposite, but there is more than one way to convey an opposite \cite{Horn1989:Natural}. 
-A \emph{contradictory opposition} is one where two predicates cannot both be true but they also cannot both be false (e.g., even~vs.~odd positive integers). 
-With a \emph{contrary opposition}, both can be false (e.g., \emph{tall}~and~\emph{short}). 
-We suggest that the disagreement as to whether or not \enquote{unhappy} and \enquote{not happy} convey the same meaning stems from uncertainty about the how the various kinds of semantic opposition map onto the natural language negation markers  (\enquote{not}, \enquote{un-}).
-Furthermore, we argue that negated antonym like \enquote{not unhappy} are the result of not only uncertainty about negation but how that uncertainty interacts the vagueness of predicates like \emph{happy} or \emph{tall}.
+A \emph{contradictory} opposition is one where two predicates cannot both be true but they also cannot both be false (e.g., even~vs.~odd positive integers). 
+\emph{Contrary} opposites, on the other hand, can both be false (e.g., \emph{tall}~and~\emph{short}). 
+We suggest that the disagreement as to whether or not the same meaning is conveyed by \enquote{unhappy} and \enquote{not happy} stems from uncertainty about the how the various kinds of semantic opposition map onto the natural language negation markers  (\enquote{not}, \enquote{un-}).
+Furthermore, we argue that interpreting negated antonyms like \enquote{not unhappy} not only involves uncertainty about negation but how that uncertainty interacts the vagueness of predicates like \emph{happy} or \emph{tall}.
 
 %We hypothesize that \emph{lexical uncertainty}---uncertainty in the meaning of words---pervades even the language of logical devices, which interacts with conversational reasoning to give rise to a panoply of context-specific interpretations.
 %Specifically, we posit that overt negation markers (\enquote{not}, \enquote{un-}) can convey different kinds of negation and that listeners resolve their uncertainty about the meaning in context.
 
-Formally, a scalar adjective (e.g., \enquote{happy}) is thought to be literally true if the degree associated with that adjective \(x\) (e.g., the degree of happiness) is greater than some contextually-determined threshold \(\theta_1\): \(\mbox{ $[\![ happy ]\!]$}(x, \theta): x > \theta_1\) \cite{Kennedy2007}.
-If a negation marker (e.g., \enquote{not}) creates a contradictory statement, then the resulting meaning would simply be that the degree is less than or equal to the threshold: \(\neg \mbox{ $[\![ happy ]\!]$}(x, \theta_1): x \leq \theta_1\).
+Formally, a scalar adjective (e.g., \enquote{happy}) is thought to be literally true when the degree associated with that adjective \(x\) (e.g., the degree of happiness) is greater than some contextually-determined threshold \(\theta_1\): \(\mbox{ $[\![ happy ]\!]$}(x, \theta): x > \theta_1\) \cite{Kennedy2007}.
+If a negation marker (e.g., \enquote{not}) creates a contradictory opposite, then the resulting meaning would simply be that the degree is less than or equal to the same threshold: \(\neg \mbox{ $[\![ happy ]\!]$}(x, \theta_1): x \leq \theta_1\).
 Alternatively, a \emph{contrary} meaning creates a new predicate, which is assigned its own threshold \(\theta_2\): \(\mbox{ $[\![ \tilde{happy} ]\!]$}(x, \theta_2): x < \theta_2\).
-Critically, for a speaker to produce a negated antonym necessarily involves 
+The act of producing a negated antonym (\enquote{not unhappy}) could then act as a signal towards the kinds of oppositions that the speaker had in mind (e.g., that the speaker intends to convey a contradictory negation of a contrary opposite).
 %\mht{i think this point could be moved to a model implementation appendix or footnote}
 %\red{Contradictory opposition can be iterated (\(\neg \neg Hx\)) but contrary opposition cannot \cite{Horn1989:Natural}.
 % As a result, a single negative (\enquote{not happy} and \enquote{unhappy}) can mean either \(\neg happy\) or \(\tilde{happy}\), while double negatives (\enquote{not unhappy}) may mean \(\neg \neg happy\) or \(\neg \tilde{happy}\) (Fig.\(\thinspace\)\ref{fig:lexicon-model}).}
 
 %In order to generate predictions, 
-We formalize these literal meanings in a probabilistic model of pragmatic reasoning, wherein a listener $L_1$ has uncertainty about how their interlocutor (speaker $S_1$) uses negation markers to convey contradictory~vs.~contrary negations, as a form of lexical uncertainty \cite{Bergen2016}.
-We also take into account the vagueness of scalar adjectives using the technique proposed by \citeA{Lassiter2015} to derive thresholds \(\theta\) for interpreting vague adjectives (e.g., happy) in context:
+We formalize these literal meanings in a probabilistic model of pragmatic reasoning, wherein a listener $L_1$ has uncertainty about how their interlocutor (speaker $S_1$) uses negation markers to convey contradictory~vs.~contrary negations as a form of lexical uncertainty \cite{Bergen2016}.
+We additionally take into account the vagueness of scalar adjectives using the technique proposed by \citeA{Lassiter2015} to derive thresholds \(\theta\) for interpreting vague adjectives (e.g., happy) in context:
 
 %We formalize this as a prior distribution over possible lexica for the speaker $P(\mathcal{L})$.
 %This model also takes into account the fact the scalar adjectives like \emph{happy} or \emph{tall} exhibit vagueness; i.e., there is no single, fixed $\theta$ beyond which the adjective is true. 
@@ -223,7 +223,7 @@ S_{1}(u \mid x, \theta, \mathcal{L}) &\propto \exp{(\alpha \cdot \ln {L_{0}(x \m
 L_{0}(x \mid u, \theta, \mathcal{L}) &\propto \mathcal{L}(u, x, \theta) \cdot P(x) \label{eq:L0}
 \end{align}
 
-Eqs.~\ref{eq:L1}--\ref{eq:L0} describe a recursive Bayesian model in the Rational Speech Act tradition \cite{Franke2015a, Goodman2016:RSA}, wherein a pragmatic listener $L_1$ resolves the meaning of an utterance by reasoning about a rational speaker $S_1$ would have bothered to produce said utterance.
+Eqs.~\ref{eq:L1}--\ref{eq:L0} describe a recursive Bayesian model in the Rational Speech Act tradition \cite{Franke2015a, Goodman2016:RSA}, wherein a pragmatic listener $L_1$ resolves the meaning of an utterance $u$ by reasoning about why a rational speaker $S_1$ would have bothered to produce said utterance.
 The speaker's decision (Eq.~\ref{eq:S1}) is a soft-max rational decision (with $\alpha$ degree of rationality) based on the utility of an utterance to convey their intended meaning to a naive ``literal' listener (Eq.~\ref{eq:L0}). 
 The intended meaning in this model is the value along a dimension referenced by an adjective (e.g., a degree of happiness).\footnote{
 	This meaning is a special case of modeling meaning as a probability distribution over degrees of happiness (e.g., the speaker has only a rough sense of their personal degree of happiness), in which case the speaker's utility would be a function of the KL divergence between the literal listener's prior and posterior distributions over the degree given the utterance. 
@@ -245,7 +245,7 @@ First, we compare to a vanilla RSA model which has neither uncertainty about neg
 The vanilla model assumes fixed-thresholds to the adjectives, and we assume antonyms convey contrary meanings. Therefore, we ascribe the following meanings to the adjectives: \enquote{happy} means \(>70\%\) on the happiness scale; \enquote{unhappy} means \(<30\%\).
 }
 Second, we compare to the vague RSA model of \citeA{Lassiter2015}, assuming that all negation markers entail contradictory negation (the \emph{logical negation} or \emph{George Orwell} model).
-Finally, we construct a \emph{bonafide antonyms} model, building on \citeA{Lassiter2015}'s vague RSA model by assuming morphological antonyms (\emph{un-}) convey contrary negation (e.g., \emph{unhappy} is to \emph{happy} how \emph{short} is to \emph{tall}).
+Finally, we construct a \emph{bonafide contraries} model, building on \citeA{Lassiter2015}'s vague RSA model by assuming morphological antonyms (\emph{un-}) convey contrary negation (e.g., \emph{unhappy} is to \emph{happy} how \emph{short} is to \emph{tall}).
 
 %{]}
 %--\textgreater{}
@@ -254,15 +254,14 @@ Upon hearing \enquote{not unhappy}, our \emph{uncertain negation} model reasons 
 interprets the utterance as signaling a slightly positive state (Fig.\(\thinspace\)\ref{fig:modelPredictions}).\footnote{Model predictions use the following minimally assumptive model parameters: \(P(x) = \mathcal{N}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 1 < \text{cost}(\mathit{not}) = 2\).
   Predictions are qualitatively similar when \(\text{cost}(\mathit{un}) = \text{cost}(\mathit{not})\).}
 At the same time, the uncertain negation model does not differentiate \enquote{unhappy} (antonyms) from \enquote{not happy} (negated positives), as \citeA{Jespersen1917:Negation} and \citeA{Blutner2004:pragmatics} surmised.
+This pattern of judgments is uniquely predicted by the \emph{uncertain negation} model.
+The \emph{bonafide contraries} model also yields interpretations of negated antonyms as slightly positive, but predicts that \enquote{unhappy} (morphological antonym) signals a more negative state than \enquote{not happy} (negated positive).
+The \emph{logical negation} model does not differentiate between negated antonyms and positives, nor between negated positives and antonyms.
 
-The model draws these inferences by reasoning about which lexicon best explains a speaker's single utterance (Fig.\(\thinspace\)\ref{fig:modelPredictions}, \emph{single utterance}).
+The \emph{uncertain negation} model's predictions are derived by reasoning about which lexicon best explains a speaker's utterance (Fig.\(\thinspace\)\ref{fig:modelPredictions}, \emph{single utterance}).
 Hearing multiple utterances by the same speaker, however, can provide the listener more information about the speaker's lexicon, via a mutual-exclusitivity type effect.
 The formal modeling approach we take hear naturally allows for this extension by conditioning \(L_1\) on the observation of a speaker using multiple adjective alternatives to describe different referents (e.g., \enquote{John is not happy. Bill is unhappy}; Fig.\(\thinspace\)\ref{fig:modelPredictions}, \emph{multiple utterances}).
 When the model hears multiple utterances in the same context, the model does indeed predict a meaning difference between \enquote{unhappy} and \enquote{not happy}: \enquote{unhappy} is more sad than \enquote{not happy}, producing the ordering hypothesized by \citeA{Krifka2007:Negated-antonyms} in Fig.\ref{fig:happy-scale}.
-
-This pattern of judgments is uniquely predicted by the \emph{uncertain negation} model.
-The \emph{bonafide contraries} models also yields interpretations of negated antonyms as slightly positive, but predicts Krifka's ordering for both single and multiple utterance conditioning.
-The \emph{logical negation} class does not differentiate between negated antonyms and positives, nor between negated positives and antonyms.
 All models have more extreme interpretations when they condition on multiple utterances.
 
 \section{Overview of Experiments}
