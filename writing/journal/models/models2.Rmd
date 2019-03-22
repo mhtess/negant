@@ -1,0 +1,200 @@
+---
+title: "Exploring alternative utts and model parameters"
+output: github_document
+author: "MH Tessler"
+date: March 11, 2019
+---
+
+
+```{r eval = T}
+knitr::opts_chunk$set(warning=F, cache=F, message=F, sanitize = T)
+```
+
+```{r}
+library(rwebppl)
+library(jsonlite)
+library(ggthemes)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+theme_set(theme_few())
+```
+
+
+# Model simulations
+
+- Vanilla RSA
+- George Orwell
+- Bonafide antonyms
+- Uncertain negation
+
+- All assume additive cost function
+
+- Speaker optimality: [1, 3, 5]
+- Cost (per neg): [0, 2, 4]
+
+```{r runListener}
+
+pragListener.params <- expand.grid(
+  speaker_optimality = c(1, 2),
+  #cost_neg = c(0, 2, 4),
+  multiplicative_cost = c(F)
+)
+
+
+# pragListener.params <- expand.grid(
+#   speaker_optimality = c(1),
+#   cost_neg = c(1),
+#   multiplicative_cost = c(T),
+#   alternative_utterances = c("a1")
+# )
+
+rs.listener.wp.tidy <- webppl(program_file = "negant-allModels.wppl",
+                         data = pragListener.params,
+                         data_var = "all_opts") %>%
+  bind_rows(.) 
+# %>%
+#          mutate(utterance = factor(utterance,
+#                             levels = c("un_happy",
+#                                        "not_happy",
+#                                        "not_un_happy",
+#                                        "happy"),
+#                           labels = c( "unhappy","not happy",  "not unhappy","happy")))
+
+rs.listener.wp.tidy.samples <- get_samples(rs.listener.wp.tidy %>% 
+                                             rename(prob = posterior_prob), 2000)
+```
+
+```{r}
+makeParameterTablePlot= function(df){
+  # print(multiplicative_cost)
+  # print(alternative_utterances)
+  df %>%
+  ggplot(., aes( x = state, fill = utterance, color = utterance))+
+  geom_density(alpha = 0.5, size = 1.3, adjust = 3, aes(y = ..scaled..))+
+  scale_fill_solarized()+
+  scale_color_solarized()+
+  facet_grid(speaker_optimality~cost_neg, scales = 'free')+
+  labs(x = "Happiness (normalized scale)", y = "Posterior probability density (Scaled)",
+       caption = "columns = cost of neg (same for 'un' and 'not')\n rows = speaker optimality")+
+  scale_x_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  scale_y_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  theme(strip.text.y = element_text(angle  = 0))
+}
+```
+
+
+
+## George Orwell model
+
+### Uniform priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "georgeOrwell",
+         prior == "uniform") %>%
+  makeParameterTablePlot(.)
+```
+
+### Gaussian priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "georgeOrwell",
+         prior == "gaussian") %>%
+  makeParameterTablePlot(.)
+```
+
+### U_shaped priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "georgeOrwell",
+         prior == "u_shaped") %>%
+  makeParameterTablePlot(.)
+```
+## Vanilla RSA
+
+### Uniform priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "vanillaRSA",
+         prior == "uniform") %>%
+  makeParameterTablePlot(.)
+```
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "vanillaRSA",
+         prior == "gaussian") %>%
+  makeParameterTablePlot(.)
+```
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "vanillaRSA",
+         prior == "u_shaped") %>%
+  makeParameterTablePlot(.)
+```
+
+
+## Bonafide antonyms
+
+### Uniform priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "bonafideAntonyms",
+         prior == "uniform") %>%
+  makeParameterTablePlot(.)
+```
+
+### Gaussian priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "bonafideAntonyms",
+         prior == "gaussian") %>%
+  makeParameterTablePlot(.)
+```
+
+### U-shaped priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "bonafideAntonyms",
+         prior == "u_shaped") %>%
+  makeParameterTablePlot(.)
+```
+
+
+
+## Uncertain negation
+
+### Uniform priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "uncertainNegation",
+         prior == "uniform") %>%
+  makeParameterTablePlot(.)
+```
+
+
+## gaussian priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "uncertainNegation",
+         prior == "gaussian") %>%
+  makeParameterTablePlot(.)
+```
+
+## u_shaped priors
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  filter(multiplicative_cost == F, modelName == "uncertainNegation",
+         prior == "u_shaped") %>%
+  makeParameterTablePlot(.)
+```
