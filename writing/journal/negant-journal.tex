@@ -344,8 +344,8 @@ Finally, \text{Expt.$\thinspace$3} asks how specific the patterns of inferences 
 
 
 \begin{figure}[t]
-\centering \includegraphics{figs/modelPredictions-1} 
-\caption{ \emph{Uncertain negation} listener model (Eq.1) posterior expectations on a normalized scale (x-axis) for different adjective types (color). The space of possible meanings is restricted for \emph{bonafide antonyms} and \emph{logical negation} simulations (Fig.2). Paddles are vertically-offset when overlapping.}\label{fig:modelPredictions}
+\centering \includegraphics{figs/alternativeModels_dists.pdf} 
+\caption{Model predictions for interpretations of antonym pairs and their negations. Model predictions use the following minimally assumptive model parameters: $P(x) = \text{Uniform}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = \text{cost}(\mathit{not}) = 3$}.\label{fig:modelPredictions}
 \end{figure}
 
 %\hypertarget{experiment-1-single-utterances}{%
@@ -408,7 +408,7 @@ attractive, unattractive & beautiful, ugly \\
 6 participants were excluded for self-reporting a native language other than English, leaving a remainder of 114 participants for these analyses, which resulted in on average 23 ratings for each unique adjective in our stimulus set.
 The qualitative predictions of our models concern the ordering within a set of alternatives for different antonym types (morphological vs.~lexical).
 %To visualize the data, we compute normalized responses on a participant-wise basis (i.e., normalized response \(r'_{ij} = \frac{r_{ij} - mean_j}{sd_j}\) for trial \(i\) and participant \(j\)).
-\red{Fig.$\thinspace$\ref{fig:expt-results}A shows the empirical distributions for each of the four adjective types for both morphological and lexical antonyms adjective sets.}
+Fig.$\thinspace$\ref{fig:expt1-results} shows the empirical distributions for each of the four adjective types for both morphological and lexical antonyms adjective sets.
 Critically, as predicted by the uncertain negation model, adjective sets with morphological antonyms show only a partial ordering, while those with lexical antonyms show a full ordering.
 
 To confirm these observations, we built a linear mixed model predicting the raw, unnormalized ratings in terms of fixed effects of \emph{antonym type} (morphological vs.~lexical), \emph{adjective type} (Helmert coded in order: antonym, negated positive, negated antonym, positive)\footnote{Throughout, we code adjective type using Helmert coding, which compares levels of a factor to the average of preceding levels, in order to compare antonym vs.~negated positive levels of the adjective type factor.}, and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.\footnote{This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R \cite{lme4}.}
@@ -563,13 +563,16 @@ The only difference in this experiment is that participants are presented with t
 
 %\hypertarget{discussion}{%
 \section{Discussion}\label{discussion}
-%}
-Many dimensions that language can pick out have no units.
-Speakers cannot say they are \emph{42 units happy} like they can say they are \emph{6'1" tall}.
-Instead, speakers can use modifiers and morphemes to carve more precise meanings from otherwise vague dimensions.
-A person \emph{not unhappy} is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
 
-This work provides a computational solution to an outstanding puzzle in natural language understanding: How to interpret double negatives (e.g., \emph{not unhappy}; Krifka, 2007; Rett, 2014).
+\mht{Discuss Horn's analysis as division of pragmatic labor. Does the fact that we need some cost for this to get off the ground provide some resonance for Horn (1991)'s analysis?}
+%}
+%\mht{this opening paragraph is more about vagueness than uncertain negation...}
+%Many dimensions that language can pick out have no units.
+%Speakers cannot say they are \emph{42 units happy} like they can say they are \emph{6'1" tall}.
+%Instead, speakers can use modifiers and morphemes to carve more precise meanings from otherwise vague dimensions.
+%A person \emph{not unhappy} is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
+
+This paper provides a computational solution to an outstanding puzzle in natural language understanding: How to interpret double negatives (e.g., \emph{not unhappy}; Krifka, 2007; Rett, 2014).
 We additionally discovered and confirmed a surprising empirical result that challenges ``established'' intuitions in linguistics: \emph{unhappy} and \emph{not happy} are not immediately differentiated, except when both are present in the same context.
 Our model that represents uncertainty about how to interpret overt negation markers (\emph{un-}, \emph{not}) predicts this very result, while alternative models that treat negation markers as only carrying a single possible meaning fall short.
 
@@ -578,15 +581,23 @@ This work thus carries with it an account of a robust linguistic intuition: Pote
 Reasoning about lexical ambiguity, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings.
 More generally, the inferences modeled here can be seen as an instance of \emph{mutual exclusivity} (Markman, 1989), in which listeners resolve uncertainty about multiple elements of meaning simultaneously.
 
-In our final experiment, we showed that blatantly double negative statements such as \emph{not not happy} receive an interpretation identical to that of more conventional negated antonyms (\emph{not unhappy}), even when both alternatives are presented in the same context. 
+In our final experiment, we showed that blatantly double negative statements such as \emph{not not happy} receive an interpretation similar to that of more conventional negated antonyms (\emph{not unhappy}) as indicating a slightly positive state. 
 The fact that \emph{not not happy} is differentiated in meaning from the simple \emph{happy} suggests the same word (\emph{not}) can be interpreted in two different ways (i.e., conveying contradictory~vs.~contrary negation) within a single utterance. 
-At the same time, expressions of double negation (\emph{not not}, \emph{not un-}) were not differentiated by listeners even when presented in the same context, suggesting that language understanding respects the logical possibilities that the rules of semantic opposition permit  \cite{Horn1989:Natural}.
-These results suggest both a radical but bounded view of the uncertainty of linguistic expressions. 
+This result suggests a radical view of uncertainty about negation markers, where the uncertainty is not only resolved at the level of individual speakers but that it can be computed for each individual usage of a word.
+%At the same time, expressions of double negation (\emph{not not}, \emph{not un-}) were not differentiated by listeners even when presented in the same context, suggesting that language understanding respects the logical possibilities that the rules of semantic opposition permit  \cite{Horn1989:Natural}.
+%These results suggest both a radical but bounded view of the uncertainty of linguistic expressions. 
 
 Our formalization of lexical uncertainty about the meaning of natural language negation builds on a growing movement to treat the combinatorial rules of grammar as not totally separable from the lexicon (e.g., Bybee, 2006; O'Donnell, 2015).
 Recent psycholinguistic evidence supports the idea that utterances which are heavily used will be processed as unique lexical entries while less frequent phrases will be understood compositionally (Morgan \& Levy, 2016).
 The two types of negation meaning we considered---contrary and contradictory opposition---can be seen as a \emph{lexicalized} form of opposition (with the adjective receiving its own threshold variable) and a \emph{compositional} rule (logical negation), respectively.
 In our modeling, we assumed all lexica (all logically-possible interpretations of negation) were equally likely \emph{a priori}: A further test of our negation uncertainty model would be to see if frequency can serve as a proxy for this prior over lexica.
+
+In this paper, we aimed to explain the modal interpretations of antonym pairs and their negations, but both intuition and our empirical data suggest more nuance and variability in participants' intuitions. 
+Consistently across our experiments, we found that negated antonyms received a modal interpretation that is slightly positive; at the same time, negated antonyms reliably elicited a slightly negative interpretation as well (e.g., the meaning expressed by ``he's not [un]reliable \emph{but he is kind of flaky}'', with prosodic focus on [un-]).
+This interpretation may be the result of participants attributing politeness to the speaker: Not unreliable may be an indirect way of saying that a person is not reliable \cite{Yoon2017}.
+\red{[Horn ``not unaware'']}
+\red{[midpoint responses? ]}
+All our experiments involve utterances conveyed in text with minimal contexts; future work should investigate the relevant context and prosodic cues that can be used to derive diverse interpretations from antonym pairs and their negations.
 
 To negate is to make true false, but for statements that are truly vague, the behavior of negation is not so obvious.
 We present a computational explanation for why this is so, and provide empirical data that sheds new light on the age old question of meaning and opposition.

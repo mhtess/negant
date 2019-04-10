@@ -1,0 +1,26 @@
+,,,,,,
+Model Name,Vagueness,Different kinds of negation,“happy”,“un-”,“not ”,Description
+Vanilla RSA,No,Yes,$x > 0.7$,$x < 0.3$,$x < 0.7$,Hard-coded contraries and contradictions
+George Orwell,Yes,No,$x > \theta$,$x < \theta$,$x < \theta$,Only Contradictions
+"Contraries and Contradictions
+",Yes,Yes,$x > \theta_1$,$x  < \theta_2$,$x < \theta_1$,"Contraries and Contradictions
+"
+Uncertain negation,Yes,In principle,$x > \theta_1$,"$x  < \theta_2$ or
+$x < \theta_1$","$x  < \theta_2$ or
+$x < \theta_1$",Uncertain how “un” and “not” correspond with contrary vs. contradictory negation
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
