@@ -77,8 +77,8 @@
 
 %  \title{Not unreasonable: Uncertainty in the language of negation}
 %  \title{Not unreasonable: Multiple opposite meanings are entertained when understanding negation}
-\title{Not stating the opposite: Double negations result in nonredundant meanings}
-%\title{When two negatives don't make a positive}
+%\title{Not stating the opposite: Double negations result in nonredundant meanings}
+\title{Two negatives don't exactly make a positive}
     \author{Michael Henry Tessler\textsuperscript{1}~\& Michael Franke\textsuperscript{2}}
     \date{}
   
@@ -127,13 +127,14 @@
 Correspondence concerning this article should be addressed to Michael Henry Tessler, 43 Vassar St, Cambridge, MA 02139. E-mail: \url{tessler@mit.edu}}
 
 \abstract{
-One useful function of communication is to convey the opposite of a proposition, but natural languages provide multiple ways of stating the opposite: A person who is \emph{not happy} might be \emph{unhappy}, \emph{sad}, or perhaps neither, just \emph{not happy}. Intuition suggests, contra standard logic, that two negatives do not make a positive but rather create nonredundant meanings: A person \emph{not unhappy} is not exactly \emph{happy}.
-We hypothesize this behavior stems from listeners entertaining multiple opposite meanings for negation markers like \emph{not} and \emph{un-}; then, a speaker who uses two negation provides a clear signal that they intend the negations in a nonredundant manner.
+Logic tells us that two negatives make a positive, but in natural language, things are not so black and white: A person \emph{not unhappy} is not exactly \emph{happy}, though is possibly more positive than neutral.
+We hypothesize the nonredundancy of double negatives stems from listeners entertaining multiple opposite meanings for negation markers like \emph{not} and \emph{un-}, which we derive in a computational model of language understanding. %; then, a speaker who uses two negations signals that she intends the negations in a nonredundant manner.
+%We often want to express the exact opposite of a proposition, but natural languages provide multiple ways of stating the opposite: A person who is \emph{not happy} might be \emph{unhappy}, \emph{sad}, or perhaps neither, just \emph{not happy}. Intuition suggests, contra standard logic, that two negatives do not make a positive but rather create nonredundant meanings: 
 %Rather than being redundant, we hypothesize that negation markers entertain a multiplicity of possible meanings, which allows allows listeners to derive fine-grained distinctions among semantically equivalent alternatives. 
-We formalize this hypothesis in a computational model of language understanding and show that double negations are predicted to have more subtle meanings than the simple positive expressions.
-The uncertain negation hypothesis also makes surprising additional predictions about single negations conveyed in distinct manners (\emph{unhappy}~vs.~\emph{not happy}): The two are predicted to have identical meanings when presented in isolation, but when a speaker uses both in the same context, \emph{unhappy} should be more negative than \emph{not happy}. 
-Finally, the model predicts that blatant double negations (ones that use same negation marker twice e.g., \emph{not not happy}) should too have nonredundant meanings. 
-Three behavioral experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted by the model. 
+%We formalize this hypothesis in a computational model of language understanding and show that double negations are predicted to have more subtle meanings than their associated simple positive expressions (like \emph{happy}).
+This uncertain negation hypothesis makes surprising additional predictions about single negations conveyed in distinct manners (\emph{unhappy}~vs.~\emph{not happy}): The two are predicted to have identical meanings when presented in isolation, but not when a speaker uses both in the same context. %, \emph{unhappy} should be more negative than \emph{not happy}. 
+The most radical view on uncertainty in the meaning of negation would additionally predict that even a speaker using the same negation marker twice (e.g., \emph{not not happy}) should too result in nonredundant meanings. 
+Three experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted.
 These findings suggest that speakers can exploit uncertainty in meanings even about one of the most logical elements of language: negation.}
 
 \begin{document}
@@ -183,12 +184,12 @@ Banal statements are given an appearance of profundity by means of the ``not un-
 %\hypertarget{introduction}{%
 \section{Introduction}\label{introduction}%}
 
-Language reflects thought, but we think and feel in ways that are not always easily expressible in words.
+Language is used to convey our thoughts, but we think and feel in ways that are not always easily expressible in words.
 Sometimes it takes psychologists to coin a new term to express a subtle feeling, like being \emph{plateaued} \cite{bardwick1986plateauing} or residing in a \emph{zone of indifference} \cite{sapir1944grading}.
 But everyday language users will use the tools available to them, at time they want to convey their message, to navigate and communicate the gradations of their thoughts and feelings \red{(something from the reference game using impoverished language / language evolution / convention formation literature?)}. 
 Double negations are a classic example of such a contortion.
 
-In logic, two negatives make a positive, but in natural language, that does not seem to be the case:
+%In logic, two negatives make a positive, but in natural language, that does not seem to be the case:
 When Obama said that the time to negotiate was \emph{not unlimited}, why did he not just say that the time was limited? 
 If \emph{Mary is not unhappy}, does that mean that Marry is happy?
 \citeA{Jespersen1924} suggested not:
@@ -198,19 +199,19 @@ If \emph{Mary is not unhappy}, does that mean that Marry is happy?
 [T]wo negatives do not exactly cancel one another [$\ldots$]; the longer expression is always weaker: ``this is not unknown to me'' or ``I am not ignorant of this'' means ``I am to some extent aware of it,'' etc. (p.$\thinspace$332) 
 \end{quote}
 
-In other words, \enquote{not unhappy} (a \emph{negated antonym}) could indicate a slightly positive state, below that of \enquote{happy}  and perhaps not neutral. %, where feelings that are neither positive nor negative reside. 
+In other words, \enquote{not unhappy} (a \emph{negated antonym}) could indicate a slightly positive state, below that of \enquote{happy}  and perhaps greater than neutral. %, where feelings that are neither positive nor negative reside. 
 Such a subtle, nonredundant behavior of double negations (\emph{not} + \emph{un-}) is troubling from a formal perspective. 
 Negation is one of the basic logical elements of language and yet it seems to have the ability to step out of its logical cage.
 Understanding how double negations work can help clarify legal language, in which double negations are surprisingly common \cite{tiersma1999legal}.
-Also, insofar as nonredundent meanings can be expressed through double negations, such language could provide new avenues for understanding the language of emotions, like how it feels to be \emph{not unhappy} \cite{Lindquist2015, Satpute2016}. Moreover, a better understanding of such phenomena will provide deeper insight into how we manipulate and contort language to navigate and communicate the gradations of our conceptual landscape. 
+Also, insofar as nonredundent meanings can be expressed through double negations, such language could provide new avenues for understanding the language of emotions, like how it feels to be \emph{not unhappy} \cite{Lindquist2015, Satpute2016}. 
+%Moreover, a better understanding of such phenomena will provide deeper insight into how we manipulate and contort language to navigate and communicate the gradations of our conceptual landscape. 
 
 %This intuition is not universally shared (cf., Orwell's quote above), nor is there consensus about why a listener should derive a weakly positive interpretation from a double negative.
 Understanding linguistic expressions in context often involves reasoning about what else a speaker could have said \cite{Grice1975}.
 For example, the degrees of happiness for which \enquote{not unhappy} logically applies overlaps with the set of those associated with \enquote{happy} (Figure~\ref{fig:happy-scale}A); thus, the speaker who chooses to say \enquote{not unhappy} probably does not intend to convey a state that could have been communicated directly by \enquote{happy} \cite{Horn1991:Duplex}.
-As described, this analysis indicates only that \enquote{not unhappy} conveys neutral feelings: \emph{neither happy nor unhappy}, contra the intuition expressed by \citeA{Jespersen1924} that \enquote{not unhappy} indicates a slightly positive state.
-It is plausible that listeners entertain other possibilities regarding what the speaker could have said: The speaker could have said single negations (\enquote{not happy} or \enquote{unhappy}; \cite{Blutner2004:pragmatics}).
-Introducing new alternatives, however, only raises more questions: Are \enquote{unhappy} and \enquote{not happy} different in meaning?
-\cite{Jespersen1917:Negation} and \cite{Blutner2004:pragmatics} believe the two expressions have the same meaning, while \citeA{Krifka2007:Negated-antonyms} disagrees, citing examples like:
+This communicative logic, however, indicates only that \enquote{not unhappy} conveys neutral feelings: \emph{neither happy nor unhappy}, and not the intuition expressed by \citeA{Jespersen1924} that \enquote{not unhappy} indicates a slightly positive state.
+Listeners could entertain other possibilities regarding what the speaker could have said such as \enquote{not happy} or \enquote{unhappy} \cite{Blutner2004:pragmatics}, but this only raises more questions: Are \enquote{unhappy} and \enquote{not happy} different in meaning?
+\citeA{Jespersen1917:Negation} and \citeA{Blutner2004:pragmatics} argued the two expressions have the same meaning, while \citeA{Krifka2007:Negated-antonyms} disagrees, citing examples like:
 
 \begin{quote}
 \emph{It's an absolutely horrible feeling to be unhappy, and I don't even think I was unhappy, just not happy, if you know what I mean.} %\emph{(taken from the internet)}
@@ -242,28 +243,42 @@ How does such a logical linguistic device---negation---give rise to a multiplici
 Both syntactic \cite{Cable2017} and pragmatic \cite{Rett2014:eval} mechanisms have been proposed, but heretofore there have been no computational accounts tested against human behavioral data.
 %In this paper, we 
 %In addition, the ground truth as to the meaning of the language of negation has been left to the intuitions of trained theorists, who more often than not disagree on the basic facts. % come to different conclusions as to the meanings of these terms.
-In this paper, we test a number of hypotheses concerning the logic of double negation against behavioral measurements. 
-We find that the subtle patterns of naive listener intuitions can only be explained by uncertainty about the meaning of negation.
+In this paper, we formalize and test the hypothesis that human listeners are uncertain about the meaning of negation, and that rational, communicative reasoning can be used to derive subtle meanings in the moment. 
+Such an account points to a new avenue for exploitation by speakers: The meanings of logical words that explicitly convey negation carry a variety of interpretations.
 
 \section{Modeling Double Negation}
 
-Negation is the semantic operation of forming an opposite, but there is more than one way to convey an opposite \cite{Horn1989:Natural}. 
-A positive integer must be either even or odd, because even and odd are \emph{contradictory} opposites: They cannot both be true but they also cannot both be false. 
-On the other hand, a building could be tall, short, or neither tall nor short because tall and short are \emph{contrary} opposites: They cannot both be true but they can both be false. 
-Contradictory opposition can be iterated (e.g., a number that is not not even is even) while contrary opposition cannot (e.g., a building that is not not tall is likely not tall).\footnote{
+Negation is the semantic operation of forming an opposite, but there is more than one way to convey an opposite. 
+An integer must be either even or odd, because even and odd are \emph{contradictory} opposites: Contradictions cannot both be true but they also cannot both be false. 
+On the other hand, a person could be tall, short, or neither tall nor short, because tall and short are \emph{contrary} opposites: Contraries cannot both be true but they can both be false. 
+Formally, a contradictory opposition turns predicate $H$ into $\neg H$; contrary opposition turns $H$ into $\tilde{H}$. 
+Contradictory opposition can be iterated ($\neg \neg H$) while contrary opposition cannot (i.e., $\tilde{\tilde{H}}$ is not a logical possibility;  \citeNP{Horn1989:Natural}).
+
+
+
+% \(\neg \neg happy\) 
+%The opposite of $(x > \theta_1)$ is either $(x \leq \theta_1)$ or $(x < \theta_2)$.
+
+
+
+.\footnote{
 Another example of iterated contradictory meaning is the intended meaning behind ``the enemy of my enemy is my friend''.
 } 
 %With these basic facts, we provide an informal description of our model before moving onto its formal characterization.
  %\red{(e.g., there is no unshort)}.\% \cite{Horn1989:Natural}.
 %QAs a result, a single negative (\enquote{not happy} and \enquote{unhappy}) can mean either \(\neg happy\) or \(\tilde{happy}\), while double negatives (\enquote{not unhappy}) may mean \(\neg \neg happy\) or \(\neg \tilde{happy}\) (Fig.\(\thinspace\)\ref{fig:lexicon-model}).}
 
-We propose that the logical distinction between contradictory~vs.~contrary opposition does not manifest in natural language markers (\enquote{not}, \enquote{un-}) in a stable, context-invariant manner. 
-Rather, we imagine listeners maintain uncertainty about this logical mapping and resolve their uncertainty in context (Figure \ref{fig:meanings}).  
-Thus, a listener who hears only a single adjective phrase in isolation (e.g., \enquote{Jones is unhappy}) has no basis from which to decide whether a contrary or contradiction is intended. 
-Such uncertainty should lead a listener to impart no meaning difference between an isolated \emph{not happy} and \emph{unhappy}.
-A listener who hears double negations like \emph{not unhappy}, however, is in a better position to evaluate the meaning of each component. 
-Because contraries do not iterate, the only logical possibilities for the whole expression is a double contradiction or a contradiction about a contrary: A double contradiction carries the same meaning as a positive adjective (\emph{happy}) and thus a rational speaker would not have bothered to say \emph{not unhappy} (a more complex expression) if a double contradiction was their intention, so they likely were contradicting a contrary.
-This mutual-exclusivity kind of reasoning is also predicted to occur were a speaker to use two distinct negations in the same context (e.g., \enquote{Jones is not happy, while Smith is unhappy}, also Krifka's example above); that is, the model predicts that \emph{unhappy} is intended to convey more negative feelings than \emph{not happy} when the model observes the speaker using both kinds of negation in the same context.
+We propose that the logical distinction between contradictory~vs.~contrary opposition manifests in natural language markers (\enquote{not}, \enquote{un-}) in an unstable way.% and that  listeners maintain uncertainty about the mapping between logical negations and natural language negation% (\enquote{not}, \enquote{un-}) in a stable, context-invariant manner. 
+%We imagine and resolve their uncertainty in context.  
+A listener who hears statements involving negation reasons over a hypothesis space of logical possibilities (Figure \ref{fig:meanings}). 
+Because contraries do not iterate, a double negative like \emph{not unhappy} could convey a double contradiction ($\neg \neg H$) or a contradiction about a contrary ($\neg \tilde{H}$): The former carries the same meaning as a positive adjective (\emph{happy}) whereas the latter conveys a distinct meaning. 
+Intuitively, a rational speaker whose goal is to convey $H$ (or, $\neg \neg H$) would avoid the double negative construction because it is more verbose; thus, a sophisticated listener could backwards infer that a speaker who does use a double negative means to convey the expression with a unique meaning: $\neg \tilde{H}$.
+This uncertain negation hypothesis further predicts that \emph{not happy} and \emph{unhappy} have the same set of possible meanings, and thus is not obvious whether the two expressions mean something distinct from one another. 
+%\mht{he}
+%This hypothesis further predicts that a listener who hears only a single adjective phrase in isolation (e.g., \enquote{unhappy}) has no basis from which to decide whether a contrary or contradiction was intended, and thus the listener should impart no meaning difference between an isolated .
+%and thus a rational speaker would not have bothered to say \emph{not unhappy} (a more complex expression) if a double contradiction was their intention, so they likely were contradicting a contrary.
+
+%This mutual-exclusivity kind of reasoning is also predicted to occur were a speaker to use two distinct negations in the same context (e.g., \enquote{Jones is not happy, while Smith is unhappy}, also Krifka's example above); that is, the model predicts that \emph{unhappy} is intended to convey more negative feelings than \emph{not happy} when the model observes the speaker using both kinds of negation in the same context.
 %Thus, hearing a double negation does provide sufficient evidence to the listener that the speaker intends two different kinds of negation. 
 %\mht{do we want to say here that we are looking at the negation of scalar adjectives, as opposed to other negation like phenomena?}
 %Then, interpreting negated antonyms of scalar adjectives like \enquote{not unhappy} involves not only reasoning about negation but how various kinds of negation interact with the vagueness of scalar adjectives like \emph{happy} or \emph{tall}.
@@ -277,22 +292,28 @@ Both ``not happy'' and ``unhappy'' could signal either contradictory $\neg H$ or
 \label{fig:meanings}
 \end{figure}
 
+\mht{can we model this as an L2, where Lassiter adj model is modularized into $P(x \mid u, \mathcal{L})$ and we don't need to talk about thresholds?}
+\begin{align}
+P_L(x, \mathcal{L} \mid u) &\propto P_S(u \mid x, \mathcal{L}) \cdot P(x) \cdot P(\mathcal{L}) \\
+P_S(u \mid x, \mathcal{L}) &\propto \exp{(\alpha \cdot \ln {P(x \mid u, \mathcal{L})} - \text{cost}(u))} \label{eq:S1}
+\end{align}
+
+
 %We hypothesize that \emph{lexical uncertainty}---uncertainty in the meaning of words---pervades even the language of logical devices, which interacts with conversational reasoning to give rise to a panoply of context-specific interpretations.
 %Specifically, we posit that overt negation markers (\enquote{not}, \enquote{un-}) can convey different kinds of negation and that listeners resolve their uncertainty about the meaning in context.
 
-We formalize this logic in a computational model for interpreting double negations by drawing on the tools of formal semantics and probabilistic models of pragmatics \cite{Franke2015a, Goodman2016:RSA}. 
-Such a computational model allows us to better understand the conditions under which the above logic actually results in the interpretations we posit; it also allows us to understand the contribution of the vagueness of predicates like \enquote{happy} or \enquote{tall} (i.e., that there is no single threshold beyond which a person qualifies as tall). 
-Formally, a scalar adjective (e.g., \enquote{happy} or $H$) is thought to be literally true when the degree associated with that adjective \(x\) (e.g., the degree of happiness) is greater than some contextually-determined threshold \(\theta_1\): \(\mbox{ $[\![H]\!]$}(x, \theta): x > \theta_1\) \cite{Kennedy2007}.
+We formalize this logic in a computational model drawing on the tools of formal semantics and probabilistic models of pragmatics \cite{Franke2015a, Goodman2016:RSA}. 
+This formal model allows us to interrogate the conditions under which the above logic actually results in the interpretations we posit.
+%; it also allows us to understand the contribution of the vagueness of predicates like \enquote{happy} or \enquote{tall} (i.e., that there is no single threshold beyond which a person qualifies as tall). 
+Formally, a scalar adjective (e.g., \enquote{happy} or $H$) is thought to be literally true when the degree associated with that adjective \(x\) (e.g., the degree of happiness) is greater than some contextually-determined threshold \(\theta_1\): \(\mbox{ $[\![H]\!]$}(x, \theta_1): x > \theta_1\) \cite{Kennedy2007}.
 %If a negation marker (e.g., \enquote{not}) creates a 
 The contradictory opposite of such a meaning is simply that the degree is less than or equal to that same threshold: \(\neg \mbox{ $[\![H]\!]$}(x, \theta_1): x \leq \theta_1\).
 The contrary opposite, on the other hand, creates a new predicate, which for a gradable adjective takes the form of a function with its own, distinct threshold \(\theta_2\): \(\mbox{ $[\![ \tilde{H} ]\!]$}(x, \theta_2): x \leq \theta_2\).
 % which can in principle receive a different value than threshold $\theta_1$ for the positive adjective
 If listeners are uncertain about how \enquote{not} and \enquote{un-} map onto these logical meanings, then negated positives like \enquote{not happy} and morphological antonyms like \enquote{unhappy} could in principle take either meaning. 
-The hypothesis space of meanings for negated antonyms like \enquote{not unhappy} is constrained by the fact that contraries do not iterate; thus, negated antonyms either correspond to a double application of contradictory negation or a contradiction of a contrary. \footnote{
-	The contradictory operation turns predicate $H$ into $\neg H$; a contrary turns $H$ into $\tilde{H}$. ``not un-H'' can then be either \(\neg \neg H\) or \(\neg (\tilde{H})\). Cashing these meanings out in terms of scalar adjectives, the order of operations need not matter: \(\neg (\tilde{H})\) $= \tilde{(\neg H)}$ , because both imply two sign-changes and one tokenization of a new threshold.
-% \(\neg \neg happy\) 
-%The opposite of $(x > \theta_1)$ is either $(x \leq \theta_1)$ or $(x < \theta_2)$.
-}
+The hypothesis space of meanings for negated antonyms like \enquote{not unhappy} is constrained by the fact that contraries do not iterate; thus, negated antonyms either correspond to a double application of contradictory negation or a contradiction of a contrary. \footnote{``not un-H'' can then be either \(\neg \neg H\) or \(\neg (\tilde{H})\). Cashing these meanings out in terms of scalar adjectives, the order of operations need not matter: \(\neg (\tilde{H})\) $= \tilde{(\neg H)}$ , because both imply two sign-changes and one tokenization of a new threshold.}
+
+
 
 
 %The act of producing a negated antonym (\enquote{not unhappy}) can then act as a signal towards the kinds of oppositions that the speaker had in mind (e.g., that the speaker intends to convey a contradictory negation of a contrary opposite).
