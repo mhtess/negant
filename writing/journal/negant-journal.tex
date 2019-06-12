@@ -190,7 +190,7 @@ But everyday language users will use the tools available to them, at time they w
 Double negations are a classic example of such a contortion.
 
 %In logic, two negatives make a positive, but in natural language, that does not seem to be the case:
-When Obama said that the time to negotiate was \emph{not unlimited}, why did he not just say that the time was limited? 
+%When Obama said that the time to negotiate was \emph{not unlimited}, why did he not just say that the time was limited? 
 If \emph{Mary is not unhappy}, does that mean that Marry is happy?
 \citeA{Jespersen1924} suggested not:
 
@@ -244,36 +244,33 @@ Both syntactic \cite{Cable2017} and pragmatic \cite{Rett2014:eval} mechanisms ha
 %In this paper, we 
 %In addition, the ground truth as to the meaning of the language of negation has been left to the intuitions of trained theorists, who more often than not disagree on the basic facts. % come to different conclusions as to the meanings of these terms.
 In this paper, we formalize and test the hypothesis that human listeners are uncertain about the meaning of negation, and that rational, communicative reasoning can be used to derive subtle meanings in the moment. 
-Such an account points to a new avenue for exploitation by speakers: The meanings of logical words that explicitly convey negation carry a variety of interpretations.
+Such an account points to a new avenue for exploitation by speakers: The meanings of seemingly logical words that explicitly convey negation carry a variety of interpretations.
 
 \section{Modeling Double Negation}
 
 Negation is the semantic operation of forming an opposite, but there is more than one way to convey an opposite. 
-An integer must be either even or odd, because even and odd are \emph{contradictory} opposites: Contradictions cannot both be true but they also cannot both be false. 
-On the other hand, a person could be tall, short, or neither tall nor short, because tall and short are \emph{contrary} opposites: Contraries cannot both be true but they can both be false. 
+\emph{Contradictory} opposites cannot both be false, such as an integer being either even or odd (\emph{even} and \emph{odd} are contradictions).
+\emph{Contrary} opposites, on the other hand, can both be false: A person could be neither tall nor short (\emph{tall} and \emph{short} are contraries). 
 Formally, a contradictory opposition turns predicate $H$ into $\neg H$; contrary opposition turns $H$ into $\tilde{H}$. 
-Contradictory opposition can be iterated ($\neg \neg H$) while contrary opposition cannot (i.e., $\tilde{\tilde{H}}$ is not a logical possibility;  \citeNP{Horn1989:Natural}).
+Contradictory opposition can be iterated ($\neg \neg H$) as in the intended meaning behind ``the enemy of my enemy is my friend''; standard logic does not allow for the iteration of contrary opposition (i.e., $\tilde{\tilde{H}}$ is not a logical possibility;  \citeNP{Horn1989:Natural}).
 
 
 
 % \(\neg \neg happy\) 
 %The opposite of $(x > \theta_1)$ is either $(x \leq \theta_1)$ or $(x < \theta_2)$.
-
-
-
-.\footnote{
-Another example of iterated contradictory meaning is the intended meaning behind ``the enemy of my enemy is my friend''.
-} 
+%.\footnote{
+%Another example of iterated contradictory meaning is the intended meaning behind ``the enemy of my enemy is my friend''.
+%} 
 %With these basic facts, we provide an informal description of our model before moving onto its formal characterization.
  %\red{(e.g., there is no unshort)}.\% \cite{Horn1989:Natural}.
 %QAs a result, a single negative (\enquote{not happy} and \enquote{unhappy}) can mean either \(\neg happy\) or \(\tilde{happy}\), while double negatives (\enquote{not unhappy}) may mean \(\neg \neg happy\) or \(\neg \tilde{happy}\) (Fig.\(\thinspace\)\ref{fig:lexicon-model}).}
 
-We propose that the logical distinction between contradictory~vs.~contrary opposition manifests in natural language markers (\enquote{not}, \enquote{un-}) in an unstable way.% and that  listeners maintain uncertainty about the mapping between logical negations and natural language negation% (\enquote{not}, \enquote{un-}) in a stable, context-invariant manner. 
+We propose that the logical distinction between contradictory~vs.~contrary opposition manifests in natural language markers (\enquote{not}, \enquote{un-}) in an unstable way. % and that  listeners maintain uncertainty about the mapping between logical negations and natural language negation% (\enquote{not}, \enquote{un-}) in a stable, context-invariant manner. 
 %We imagine and resolve their uncertainty in context.  
 A listener who hears statements involving negation reasons over a hypothesis space of logical possibilities (Figure \ref{fig:meanings}). 
-Because contraries do not iterate, a double negative like \emph{not unhappy} could convey a double contradiction ($\neg \neg H$) or a contradiction about a contrary ($\neg \tilde{H}$): The former carries the same meaning as a positive adjective (\emph{happy}) whereas the latter conveys a distinct meaning. 
-Intuitively, a rational speaker whose goal is to convey $H$ (or, $\neg \neg H$) would avoid the double negative construction because it is more verbose; thus, a sophisticated listener could backwards infer that a speaker who does use a double negative means to convey the expression with a unique meaning: $\neg \tilde{H}$.
-This uncertain negation hypothesis further predicts that \emph{not happy} and \emph{unhappy} have the same set of possible meanings, and thus is not obvious whether the two expressions mean something distinct from one another. 
+Because contraries do not iterate, a double negative like \emph{not unhappy} could convey a double contradiction ($\neg \neg H$) or a contradiction about a contrary ($\neg \tilde{H}$): The former carries the same meaning as $H$ (\emph{happy}) whereas the latter conveys a distinct meaning. 
+Intuitively, a rational speaker whose goal is to convey $H$ (or, $\neg \neg H$) would avoid the double negative construction because it is more verbose; thus, a sophisticated listener could backwards infer that a speaker who uses a double negative means to convey the expression with a unique meaning: $\neg \tilde{H}$.
+This uncertain negation hypothesis further predicts that \emph{not happy} and \emph{unhappy} inherit the same set of possible meanings; \emph{a priori} it is not obvious whether the two expressions mean something distinct from one another. 
 %\mht{he}
 %This hypothesis further predicts that a listener who hears only a single adjective phrase in isolation (e.g., \enquote{unhappy}) has no basis from which to decide whether a contrary or contradiction was intended, and thus the listener should impart no meaning difference between an isolated .
 %and thus a rational speaker would not have bothered to say \emph{not unhappy} (a more complex expression) if a double contradiction was their intention, so they likely were contradicting a contrary.
@@ -698,9 +695,9 @@ This paper provides a computational solution to an outstanding puzzle in natural
 We additionally discovered and confirmed a surprising empirical result that challenges ``established'' intuitions in linguistics: \emph{unhappy} and \emph{not happy} are not immediately differentiated, except when both are present in the same context.
 Our model that represents uncertainty about how to interpret overt negation markers (\emph{un-}, \emph{not}) predicts this very result, while alternative models that treat negation markers as only carrying a single possible meaning fall short.
 
-It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by Krifka (2007) for morphological antonyms when a listener hears multiple adjectival utterances in the same context (\emph{multiple utterances condition}).
-This work thus carries with it an account of a robust linguistic intuition: Potentially equivalent expressions receive differential interpretations when observed uttered by the same speaker in close proximity.
-Reasoning about lexical ambiguity, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings.
+It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by \citeA{Krifka2007:Negated-antonyms} for morphological antonyms (\emph{unhappy} $<$ \emph{not happy} $<$ \emph{not unhappy} $<$ \emph{happy}), when a listener hears multiple adjectival utterances in the same context (Experiment 2; \emph{multiple utterances condition}).
+This work thus carries with it an account of a robust linguistic intuition: Potentially equivalent expressions receive differential interpretations when observed uttered by the same speaker in close proximity.\mht{are the other lexical uncertainty papers not an instance of this general point as well?}
+Reasoning about multiple meanings for words, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings.
 More generally, the inferences modeled here can be seen as an instance of \emph{mutual exclusivity} (Markman, 1989), in which listeners resolve uncertainty about multiple elements of meaning simultaneously.
 
 In our final experiment, we showed that blatantly double negative statements such as \emph{not not happy} receive an interpretation similar to that of more conventional negated antonyms (\emph{not unhappy}) as indicating a slightly positive state. 
@@ -716,14 +713,19 @@ In our modeling, we assumed all lexica (all logically-possible interpretations o
 
 In this paper, we aimed to explain the modal interpretations of antonym pairs and their negations, but both intuition and our empirical data suggest more nuance and variability in judgments.
 Consistently across our experiments, we found that negated antonyms received a modal interpretation that is slightly positive; at the same time, negated antonyms reliably elicited a slightly negative interpretation as well (e.g., the meaning expressed by ``he's not [un]reliable \emph{but he is kind of flaky}'', with prosodic focus on [un-]).
-This interpretation may be the result of participants attributing politeness to the speaker: Not unreliable may be an indirect way of saying that a person is not reliable \cite{Yoon2017}.
-There are also examples dating back to at least \red{Bolinger (1972)} that point the usage of double negatives in understatement: In the appropriate context, ``I was not unaware of the problem'' could mean \emph{I was damn well aware of the problem}; we do not find any evidence that such interpretations were garnered in our experiments. 
+This interpretation may be the result of participants attributing politeness to the speaker: \emph{Not unreliable} may be an indirect way of saying that a person is not reliable \cite{Yoon2017}.
+Double negatives can also be employed in understatement \red{Bolinger (1972)}: In the appropriate context, ``I was not unaware of the problem'' could mean \emph{I was damn well aware of the problem}; we do not find any evidence that such interpretations were garnered in our minimal contexts used in our experiments. 
 %\red{[Horn ``not unaware'']}
 %\red{[midpoint responses? ]}
-All our experiments involve utterances conveyed in text with minimal contexts; future work should investigate the relevant context and prosodic cues that can be used to derive diverse interpretations from antonym pairs and their negations.
+%All our experiments involve utterances conveyed in text with minimal contexts;
+Future work should investigate the relevant context and prosodic cues that can be used to derive diverse interpretations from antonym pairs and their negations.
 
-To negate is to make true false, but for statements that are truly vague, the behavior of negation is not so obvious.
-We present a computational explanation for why this is so, and provide empirical data that sheds new light on the age old question of meaning and opposition.
+The fact that the meaning of explicit negation markers like \emph{not} and \emph{un-} is uncertain provides an ambiguity that can be exploited by speakers.
+If a speaker claims an individual is ``not not guilty``, the speaker can ambiguously convey that the individual is innocent and that they are at least somewhat (but perhaps not completely) guilty.
+Such an obfuscation can lead to confusion within listeners or divergent beliefs across listeners, with some people believing in innocence and others in guilt.
+Future work should investigate the reality of this possibility as well as forces to mitigate the effects of the plausibly deniable misinformation that lays in the language of negation.
+%To negate is to make true false, but for statements that are truly vague, the behavior of negation is not so obvious.
+%We present a computational explanation for why this is so, and provide empirical data that sheds new light on the age old question of meaning and opposition.
 
 %\mht{other thoughts: (a) dimensionality in antonyms (unhappy and sad map onto slightly different dimensions); (b) how much of this is specific to (American) English? [there is an oft intuition that Orwell believes this because he is british]; (c) relation to understatement more broadly}
 
