@@ -75,6 +75,57 @@
 \def\footnote{\protect\rmarkdownfootnote}
 
 
+
+% these packages are needed to insert results 
+% obtained from R into the LaTeX document
+\usepackage{pgfplotstable}
+\usepackage{csvsimple}
+\usepackage{siunitx}
+
+% set the name of the folder in which the CSV files with 
+% information from R is stored
+\newcommand{\datafoldername}{csv_data_4_tex}
+
+% the following code defines the convenience functions
+% as described in the main text below
+
+% rlgetvalue returns whatever is the in cell of the CSV file
+% be it string or number; it does not format anything
+\newcommand{\rlgetvalue}[4]{\csvreader[filter strcmp={\mykey}{#3},
+             late after line = {{,}\ }, late after last line = {{}}]
+            {\datafoldername/#1}{#2=\mykey,#4=\myvalue}{\myvalue}}
+
+% rlgetvariable is a shortcut for a specific CSV file (myvars.csv) in which
+% individual variables that do not belong to a larger chunk can be stored
+\newcommand{\rlgetvariable}[1]{\csvreader[]{\datafoldername/myvars.csv}{#1=\myvar}{\myvar}\xspace}
+
+% rlnum format a decimal number
+\newcommand{\rlnum}[2]{\num[output-decimal-marker={.},
+                             exponent-product = \cdot,
+                             round-mode=places,
+                             round-precision=#2,
+                             group-digits=false]{#1}}
+
+\newcommand{\rlnumsci}[2]{\num[output-decimal-marker={.},
+                          scientific-notation = true,
+                             exponent-product = \cdot,
+                             round-mode=places,
+                             round-precision=#2,
+                             group-digits=false]{#1}}
+
+\newcommand{\rlgetnum}[5]{\csvreader[filter strcmp={\mykey}{#3},
+             late after line = {{,}\ }, late after last line = {{}}]
+            {\datafoldername/#1}{#2=\mykey,#4=\myvalue}{\rlnum{\myvalue}{#5}}}
+
+\newcommand{\rlgetnumsci}[5]{\csvreader[filter strcmp={\mykey}{#3},
+             late after line = {{,}\ }, late after last line = {{}}]
+            {\datafoldername/#1}{#2=\mykey,#4=\myvalue}{\rlnumsci{\myvalue}{#5}}}
+
+
+
+
+
+
 %  \title{Not unreasonable: Uncertainty in the language of negation}
 %  \title{Not unreasonable: Multiple opposite meanings are entertained when understanding negation}
 %\title{Not stating the opposite: Double negations result in nonredundant meanings}
@@ -127,13 +178,13 @@
 Correspondence concerning this article should be addressed to Michael Henry Tessler, 43 Vassar St, Cambridge, MA 02139. E-mail: \url{tessler@mit.edu}}
 
 \abstract{
-Logic tells us that two negatives make a positive, but in natural language, things are not so black and white: A person \emph{not unhappy} is not exactly \emph{happy}, though is possibly more positive than neutral.
-We hypothesize the nonredundancy of double negatives stems from listeners entertaining multiple opposite meanings for negation markers like \emph{not} and \emph{un-}, which we derive in a computational model of language understanding. %; then, a speaker who uses two negations signals that she intends the negations in a nonredundant manner.
+Logic tells us that two negatives make a positive, but in natural language, things are not so black and white: A person \emph{not unhappy} is not entirely \emph{happy}, though is possibly more happy than unhappy.
+We hypothesize the nonredundancy of double negatives stems from listeners entertaining multiple opposite meanings for negation markers like \emph{not} and \emph{un-}, which we formalize in a computational model of language understanding. %; then, a speaker who uses two negations signals that she intends the negations in a nonredundant manner.
 %We often want to express the exact opposite of a proposition, but natural languages provide multiple ways of stating the opposite: A person who is \emph{not happy} might be \emph{unhappy}, \emph{sad}, or perhaps neither, just \emph{not happy}. Intuition suggests, contra standard logic, that two negatives do not make a positive but rather create nonredundant meanings: 
 %Rather than being redundant, we hypothesize that negation markers entertain a multiplicity of possible meanings, which allows allows listeners to derive fine-grained distinctions among semantically equivalent alternatives. 
 %We formalize this hypothesis in a computational model of language understanding and show that double negations are predicted to have more subtle meanings than their associated simple positive expressions (like \emph{happy}).
-This uncertain negation hypothesis makes surprising additional predictions about single negations conveyed in distinct manners (\emph{unhappy}~vs.~\emph{not happy}): The two are predicted to have identical meanings when presented in isolation, but not when a speaker uses both in the same context. %, \emph{unhappy} should be more negative than \emph{not happy}. 
-The most radical view on uncertainty in the meaning of negation would additionally predict that even a speaker using the same negation marker twice (e.g., \emph{not not happy}) should too result in nonredundant meanings. 
+In addition to predicting nonredundant meanings for double negatives, this uncertain negation hypothesis makes surprising additional predictions about single negations (\emph{unhappy}~vs.~\emph{not happy}): The two are predicted to have identical meanings when presented in isolation, but not when a speaker uses both in the same context. %, \emph{unhappy} should be more negative than \emph{not happy}. 
+The most radical view of uncertainty in the meaning of negation additionally predicts that an utterance involving the same negation marker twice (e.g., \emph{not not happy}) should too have a nonredundant interpretation. 
 Three experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted.
 These findings suggest that speakers can exploit uncertainty in meanings even about one of the most logical elements of language: negation.}
 
@@ -467,6 +518,7 @@ We recruited 120 participants from Amazon's Mechanical Turk (MTurk).
 This number was arrived at with the intention of getting approximately 25 ratings for each unique item in the experiment.
 In all experiments, participants were restricted to those with U.S. IP addresses and at least a 95\% work approval rating; in addition, participants who self-reported a native language other than English were excluded.
 The experiment took on average 3 minutes and participants were compensated \$0.40.
+%\rlgetnum{expt1_time_summary.csv}{}{}{aveTime}{0}
 
 %\hypertarget{procedure}{%
 \subsubsection{Procedure}\label{procedure}
@@ -519,7 +571,10 @@ Fig.$\thinspace$\ref{fig:expt1-results} shows the empirical distributions for ea
 Critically, as predicted by the uncertain negation model, adjective sets with morphological antonyms show only a partial ordering, while those with lexical antonyms show a full ordering.
 
 To confirm these observations, we built a linear mixed model predicting the raw, unnormalized ratings in terms of fixed effects of \emph{antonym type} (morphological vs.~lexical), \emph{adjective type} (Helmert coded in order: antonym, negated positive, negated antonym, positive)\footnote{Throughout, we code adjective type using Helmert coding, which compares levels of a factor to the average of preceding levels, in order to compare antonym vs.~negated positive levels of the adjective type factor.}, and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.\footnote{This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R \cite{lme4}.}
-Consistent with our observations, the difference between the \emph{antonym} vs. \emph{negated positive} levels of adjective type interacted significantly with antonym type (morphological vs.\text{~}lexical; \(\beta = 0.03\), t\((16) = 2.40, p = 0.03\)).
+Consistent with our observations, the difference between the \emph{antonym} vs. \emph{negated positive} levels of adjective type interacted significantly with antonym type (morphological vs.\text{~}lexical; \(\beta = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{df}{0}) = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{t.value}{2}, p = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{Pr...t..}{3}\)).
+
+
+%","Estimate"],3)`$,  t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 3)`$).
 
 We also observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated lower than negated lexical antonyms (e.g., \emph{not tall}; Fig.$\thinspace$\ref{fig:expt-results}A).
 Closer investigation of responses revealed that negated antonyms (and not other adjective types) received a bimodal distribution: Most ratings were slightly positive but a clearly distinguishable minority distribution of ratings were slightly negative (e.g., \emph{not dishonest} meaning \emph{not honest}).
@@ -626,24 +681,33 @@ Results for each adjective type in each condition are shown in Fig.$\thinspace$\
 \label{fig:expt2-results}
 \end{figure*}
 
+
 As we did in \text{Expt.$\thinspace$1}, we evaluate our hypothesis that morphological antonyms behave like the \emph{uncertain negation} model (i.e., show a partial ordering) while lexical antonyms show a true ordering (like \emph{bonafide contraries}).
 We considered data only from the \emph{single utterances} conditions and built a linear mixed model predicting the unnormalized ratings in terms of \emph{antonym type} (morphological vs.\text{~}lexical), \emph{adjective type} (Helmert coded in order: antonym, negated positive, negated antonym, positive) and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.
-Consistent with our hypothesis, the interaction between the \emph{antonym} vs.\text{~}\emph{negated positive} levels of adjective type and antonym type (morphological vs.\text{~}lexical) was significant (\(\beta = 0.01\), t\((565) = 2.68, p = 0.01\)).
+Consistent with our hypothesis, the interaction between the \emph{antonym} vs.\text{~}\emph{negated positive} levels of adjective type and antonym type (morphological vs.\text{~}lexical) was significant (\(\beta =  \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{Estimate}{3}
+\), t\(( \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{df}{0}) =  \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{t.value}{2}, p =  \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{Pr...t..}{3}\)).
 We then analyzed the simple effects.
-Morphological antonyms were not significantly different than negated positives (\(\beta = 5.3e-05\), t\((52) = 0.02, p = 0.98\)), while lexical antonyms were interpreted more negatively than negated positives (\(\beta = -0.01\), t\((280) = 3.66\),
-\(p = 0.00\)).\footnote{The random effect structure for the simple effects models mirrored the full model. The only difference was that in analyzing the lexical antonyms, the random effect of adjective type by-item needed to be dropped in order for the model to converge.}
+Morphological antonyms were not significantly different than negated positives (\(\beta = \rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{Estimate}{2}\), t\((\rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{df}{0}) = \rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{t.value}{3}, p = \rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{Pr...t..}{3}\)), while lexical antonyms were interpreted more negatively than negated positives (\(\beta = \rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{Estimate}{3}\), t\((\rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{df}{0}) = \rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{t.value}{2}, p < 0.001 \)).\footnote{The random effect structure for the simple effects models mirrored the full model. The only difference was that in analyzing the lexical antonyms, the random effect of adjective type by-item needed to be dropped in order for the model to converge.}
+
+
+%\rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{Pr...t..}{2}
+
+%The relevant *antonym* vs. *negated positive* by adjective type (lexical, morphological) by context three-way interaction was in the direction of lexical antonyms showing a larger *antonym* vs. *negated positive* difference in the explicit context, but it was not significant ($\beta = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Estimate"],3)`$,  t$(`r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","df"], 0)`) = `r round(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","t value"],2)`, p = `r format(rs3.3way.coef["adj_type1:antonym_typelexant:conditionexplicit","Pr(>|t|)"], digits = 2)`$).
 
 Our second main hypothesis is that context (single vs.\text{~}multiple utterances) modulates the interpretive difference between morphological antonyms and negated positives.
 Specifically, we predict that morphological antonyms will be interpreted more negatively than negated positives in a context with multiple utterances.
 To evaluate this hypothesis, we considered data only from the morphological antonyms conditions and built a linear mixed model predicting the raw, unnormalized ratings in terms of adjective type,
 context (single vs.~multiple utterances) and their interaction; the model also included random intercepts and random slopes of adjective type by-participant and by-item.
-This interaction was also significant (\(\beta = 0.03\), t\((6457) = 6.73, p = 1.9e-11\)), and in the correct direction (see Fig.\text{~}\ref{fig:expt2-results}).
+This interaction was also significant (\(\beta = \rlgetnum{expt2_glmer_morphological.csv}{Rowname}{conditionexplicit:adj_type1}{Estimate}{3}\), t\((\rlgetnum{expt2_glmer_morphological.csv}{Rowname}{conditionexplicit:adj_type1}{df}{0}) = \rlgetnum{expt2_glmer_morphological.csv}{Rowname}{conditionexplicit:adj_type1}{t.value}{2}, p < 0.001\)), and in the correct direction (see Fig.\text{~}\ref{fig:expt2-results}).
+
+% \rlgetnum{expt2_glmer_morphological.csv}{Rowname}{conditionexplicit:adj_type1}{Pr...t..}{2}
 
 The predictions of the \emph{uncertain negation} model are ambiguous about the relevant three-way interaction ( \emph{antonym} vs. \emph{negated positive} by lexical vs. morphological adjective type by context).
 On the one hand, for the \emph{antonym} vs. \emph{negated positive} contrast, the model predicts no difference in meaning for morphological antonyms when presented in isolation, but does does predict meaning differences when the alternatives are presented together, whereas the difference is expected to occur for lexical antonyms in both context conditions.
 On the other hand, the model's inferences about the likely meaning of all of the adjectives gets further differentiated as a result of being presented in the same context (i.e., all adjectives get more specific interpretations).
 Thus, it is not clear \emph{a priori} that the model predicts a three-way interaction nor the direction of the interaction.
-Thus, as an exploratory analysis, we examined these effects in a full three-way interactive model, and the found the relevant three-way interaction was in the direction of lexical antonyms showing a larger \emph{antonym} vs. \emph{negated positive} difference in the explicit context; this effect was not significant (\(\beta = 0.01\), t\((469) = 1.64, p = 0.1\)).
+Thus, as an exploratory analysis, we examined these effects in a full three-way interactive model, and the found the relevant three-way interaction was in the direction of lexical antonyms showing a larger \emph{antonym} vs. \emph{negated positive} difference in the explicit context; this effect was not significant (\(\beta =  \rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{Estimate}{3}
+\), t\(( \rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{df}{0}) =  \rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{t.value}{2}, p =  \rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{Pr...t..}{3}\)).
 
 \section{Experiment 3: Blatant double negatives}\label{experiment-3-notnot}
 
