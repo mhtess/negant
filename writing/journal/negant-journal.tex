@@ -220,10 +220,6 @@ These findings suggest that even one of the most logical elements of language---
 (Pride and Prejudice)
 \end{quote}
 
-\begin{quote}
-\emph{Let me be clear: America wants to resolve this issue through diplomacy, and we believe that there is still time and space to do so, but that time is not unlimited.}
-(Barack Obama, in an address to the UN concerning the Iran Nuclear Deal)
-\end{quote}
 
 \begin{quote}
 \emph{
@@ -238,9 +234,10 @@ Banal statements are given an appearance of profundity by means of the ``not un-
 
 Language is used to convey our thoughts, but we think and feel in ways that are not always easily expressible in words.
 Sometimes it takes psychologists to coin a new term to express a subtle feeling, like being \emph{plateaued} \cite{bardwick1986plateauing} or residing in a \emph{zone of indifference} \cite{sapir1944grading}.
-But everyday language users will use the tools available to them, at time they want to convey their message, to navigate and communicate the gradations of their thoughts and feelings \red{(something from the reference game using impoverished language / language evolution / convention formation literature?)}. 
-
-Double negations are a classic example of such a contortion.
+But everyday language users will use the tools available to them, at time they want to convey their message, to navigate and communicate the gradations of their thoughts and feelings (e.g., through metaphoric language; \citeNP{lakoff2008}).
+%Metaphoric language is an obvious example \cite<e.g.,>{lakoff2008}
+% \red{(something from the reference game using impoverished language / language evolution / convention formation literature?)}. 
+Double negations are a classical and puzzling example of such a contortion.
 %In logic, two negatives make a positive, but in natural language, that does not seem to be the case:
 %When Obama said that the time to negotiate was \emph{not unlimited}, why did he not just say that the time was limited? 
 If \emph{Mary is not unhappy}, does that mean that Marry is happy?
@@ -260,7 +257,7 @@ Also, insofar as nonredundent meanings can be expressed through double negations
 
 %This intuition is not universally shared (cf., Orwell's quote above), nor is there consensus about why a listener should derive a weakly positive interpretation from a double negative.
 Understanding linguistic expressions in context often involves reasoning about what else a speaker could have said \cite{Grice1975}.
-For example, the degrees of happiness for which \enquote{not unhappy} logically applies overlaps with the set of those associated with \enquote{happy} (Figure~\ref{fig:happy-scale}A); thus, the speaker who chooses to say \enquote{not unhappy} probably does not intend to convey a state that could have been communicated directly by \enquote{happy} \cite{Horn1991:Duplex}.
+For example, the kinds of feelings for which \enquote{not unhappy} logically applies overlaps with those associated with \enquote{happy} (Figure~\ref{fig:happy-scale}A); thus, the speaker who chooses to say \enquote{not unhappy} probably does not intend to convey a state that could have been communicated directly by \enquote{happy} \cite{Horn1991:Duplex}.
 This logic, however, indicates only that \enquote{not unhappy} is not the same as happy, and so the full meaning would be \emph{neither happy nor unhappy}, contra the intuition that \enquote{not unhappy} indicates a slightly positive state (expressed by \citeA{Jespersen1924}).
 Listeners could entertain other possibilities regarding what the speaker could have said such as \enquote{not happy} or \enquote{unhappy} \cite{Blutner2004:pragmatics}, but this only raises more questions: Are \enquote{unhappy} and \enquote{not happy} different in meaning?
 \citeA{Jespersen1917:Negation} and \citeA{Blutner2004:pragmatics} argued the two expressions have the same meaning, while \citeA{Krifka2007:Negated-antonyms} disagrees, citing examples like:
@@ -292,7 +289,7 @@ Listeners could entertain other possibilities regarding what the speaker could h
 \end{figure}
 
 How does such a logical linguistic device---negation---give rise to a multiplicity of meanings?
-Both syntactic \cite{Cable2017} and pragmatic \cite{Rett2014:eval} mechanisms have been proposed, but heretofore there have been no computational accounts tested against human behavioral data.
+Both syntactic \cite{Cable2017} and pragmatic \cite{Rett2014:eval} mechanisms have been proposed, but heretofore there have been no formalized accounts tested against human behavioral data.
 %In this paper, we 
 %In addition, the ground truth as to the meaning of the language of negation has been left to the intuitions of trained theorists, who more often than not disagree on the basic facts. % come to different conclusions as to the meanings of these terms.
 In this paper, we formalize and test the hypothesis that human listeners are uncertain about the meaning of negation, and that rational, communicative reasoning can be used to derive subtle meanings in the moment. 
@@ -356,11 +353,11 @@ This formal model allows us to interrogate the conditions under which the above 
 %; it also allows us to understand the contribution of the vagueness of predicates like \enquote{happy} or \enquote{tall} (i.e., that there is no single threshold beyond which a person qualifies as tall). 
 Formally, a scalar adjective (e.g., \enquote{happy} or $H$) is thought to be literally true when the degree associated with that adjective \(x\) (e.g., the degree of happiness) is greater than some contextually-determined threshold \(\theta_1\): \(\mbox{ $[\![H]\!]$}(x, \theta_1): x > \theta_1\) \cite{Kennedy2007}.
 %If a negation marker (e.g., \enquote{not}) creates a 
-The contradictory opposite of such a meaning is simply that the degree is less than or equal to that same threshold: \(\neg \mbox{ $[\![H]\!]$}(x, \theta_1): x \leq \theta_1\).
+The contradictory opposite of such a meaning is simply that the degree is less than or equal to that same threshold: \( \mbox{ $[\![\neg H]\!]$}(x, \theta_1): x \leq \theta_1\).
 The contrary opposite, on the other hand, creates a new predicate, which for a gradable adjective takes the form of a function with its own, distinct threshold \(\theta_2\): \(\mbox{ $[\![ \tilde{H} ]\!]$}(x, \theta_2): x \leq \theta_2\).
 % which can in principle receive a different value than threshold $\theta_1$ for the positive adjective
 If listeners are uncertain about how \enquote{not} and \enquote{un-} map onto these logical meanings, then negated positives like \enquote{not happy} and morphological antonyms like \enquote{unhappy} could in principle take either meaning. 
-The hypothesis space of meanings for negated antonyms like \enquote{not unhappy} is constrained by the fact that contraries do not iterate; thus, negated antonyms either correspond to a double application of contradictory negation or a contradiction of a contrary. \footnote{``not un-H'' can then be either \(\neg \neg H\) or \(\neg (\tilde{H})\). Cashing these meanings out in terms of scalar adjectives, the order of operations need not matter: \(\neg (\tilde{H})\) $= \tilde{(\neg H)}$ , because both imply two sign-changes and one tokenization of a new threshold.}
+The hypothesis space of meanings for negated antonyms like \enquote{not unhappy} is constrained by the fact that contraries do not iterate; thus, negated antonyms either correspond to a double application of contradictory negation or a contradiction of a contrary.\footnote{``not un-H'' can then be either \(\neg \neg H\) or \(\neg (\tilde{H})\). Cashing these meanings out in terms of scalar adjectives, the order of operations need not matter: \(\neg (\tilde{H})\) $= \tilde{(\neg H)}$ , because both imply two sign-changes and one tokenization of a new threshold.}
 
 
 
@@ -392,7 +389,7 @@ L_{1}(x, \theta, \mathcal{L} \mid u) &\propto S_{1}(u \mid x, \theta, \mathcal{L
 The literal listener \(L_0\) (Eq. \ref{eq:L0}) updates their prior beliefs over the degree \(P(x)\) via an utterance's literal meaning in lexicon \(\mathcal{L}\),
 where \(\mathcal{L}(u, x, \theta)\) gives the truth-value of the utterance \(u\) in lexicon \(\mathcal{L}\) when applied to degree \(x\) (e.g., for $u= $\enquote{happy}, $\mathcal{L}$ returns a 1 when $x>\theta$ and a 0 when  $x\leq\theta$).
 The speaker (Eq.~\ref{eq:S1}) is a soft-max rational agent (with degree of rationality  $\alpha$) who aims to act in accordance with a standard, information-theoretic utility function that tracks how well an utterance conveys the speaker's intended meaning $x$ to this literal listener---$\ln {L_{0}(x \mid u, \theta, \mathcal{L}}$)---while taking into account the cost of the utterance---$\text{cost}(u)$.
-We assume that negation created by morphology (e.g., ``un-'' + happy) adds cost to the utterance as does creating a negation using the particle ``not'', and that the cost of ``un-'' is less than the cost of ``not''.\footnote{The uncertain negation model's qualitative predictions are sensitive to the exact values of the parameters. The predictions we show are invariant to cost so long as $\text{cost}(``un'') \leq \text{cost}(``not'')$ and $alpha$ is relatively small. Our goal is to show, under intuitively plausible parameter values, the uncertain negation model has the capacity to the make the predictions we describe; none of the alternative models we articulate have the capacity to make the unique predictions of the uncertain negation model.}
+We assume that negation created by morphology (e.g., ``un-'' + happy) adds cost to the utterance as does creating a negation using the particle ``not'', and that the cost of ``un-'' is less than the cost of ``not''.\footnote{The uncertain negation model's qualitative predictions are sensitive to the exact values of the parameters. The predictions we show are invariant to cost so long as $\text{cost}(``un'') \leq \text{cost}(``not'')$ and $\alpha$ is relatively small. Our goal is to show, under intuitively plausible parameter values, the uncertain negation model has the capacity to the make the predictions we describe; none of the alternative models we articulate have the capacity to make the unique predictions of the uncertain negation model.}
 The intended meaning in this model is the value along a dimension referenced by an adjective (e.g., a degree of happiness).\footnote{
 	This meaning is a special case of modeling meaning as a probability distribution over degrees of happiness (e.g., the speaker has only a rough sense of their personal degree of happiness), in which case the speaker's utility would be a function of the KL divergence between the literal listener's prior and posterior distributions over the degree given the utterance. 
 }
@@ -467,14 +464,14 @@ Crucially, this inference results in the \emph{Uncertain negation} model predict
 
 \begin{figure}[t]
 \centering \includegraphics{figs/alternativeModels_dists.pdf} 
-\caption{Model predictions for interpretations of antonym pairs and their negations. Model predictions use the following minimally assumptive model parameters: $P(x) = \text{Uniform}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 2; \text{cost}(\mathit{not}) = 3$.}.\label{fig:modelPredictions}
+\caption{Model predictions for interpretations of antonym pairs and their negations. The \emph{Uncertain Negation} model shows unique qualitative patterns, exhibiting qualities of both the \emph{George Orwell} and \emph{Bonafide Contraries} models when the utterances are presented in isolation (Single Utterance condition); when utterances are presented in the same context (Multiple Utterances condition), \emph{Uncertain Negation} makes predictions similar to the \emph{Bonafide Contraries} model. Model predictions use the following minimally assumptive model parameters: $P(x) = \text{Uniform}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 2; \text{cost}(\mathit{not}) = 3$.}.\label{fig:modelPredictions}
 \end{figure}
 
 \section{Overview of Experiments}
 
 The \emph{uncertain negation model} predicts a partial ordering for morphological antonyms and their negations when heard in isolation (with antonyms \(\approx\) negated positives), but a full ordering when present in the same context (Fig.\(\thinspace\)\ref{fig:modelPredictions}).
 As a control condition, we examine antonyms which do not have overt negation markers (e.g., \emph{short}).
-These lexical antonyms should behave like \emph{bonafide antonyms}, which predicts a full ordering regardless of context.
+These lexical antonyms should behave as described by the \emph{Bonafide Contraries} model, which predicts a full ordering regardless of context.
 \text{Expt.$\thinspace$1} was exploratory and informed our computational modeling.
 \text{Expt.$\thinspace$2} is a larger, more stringent, preregistered (\url{osf.io/p7f25/}) replication.
 Finally, \text{Expt.$\thinspace$3} asks how specific the patterns of inferences are to morphological negation (\emph{un-}) as opposed to negation more broadly. 
@@ -568,7 +565,7 @@ attractive, unattractive & beautiful, ugly \\
 6 participants were excluded for self-reporting a native language other than English, leaving a remainder of 114 participants for these analyses, which resulted in on average 23 ratings for each unique adjective in our stimulus set.
 The qualitative predictions of our models concern the ordering within a set of alternatives for different antonym types (morphological vs.~lexical).
 %To visualize the data, we compute normalized responses on a participant-wise basis (i.e., normalized response \(r'_{ij} = \frac{r_{ij} - mean_j}{sd_j}\) for trial \(i\) and participant \(j\)).
-Fig.$\thinspace$\ref{fig:expt1-results} shows the empirical distributions for each of the four adjective types for both morphological and lexical antonyms adjective sets.
+Figure \ref{fig:expt1-results} shows the empirical distributions for each of the four adjective types for both morphological and lexical antonyms adjective sets.
 Critically, as predicted by the uncertain negation model, adjective sets with morphological antonyms show only a partial ordering, while those with lexical antonyms show a full ordering.
 
 To confirm these observations, we built a linear mixed model predicting the raw, unnormalized ratings in terms of fixed effects of \emph{antonym type} (morphological vs.~lexical), \emph{adjective type} (Helmert coded in order: antonym, negated positive, negated antonym, positive)\footnote{Throughout, we code adjective type using Helmert coding, which compares levels of a factor to the average of preceding levels, in order to compare antonym vs.~negated positive levels of the adjective type factor.}, and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.\footnote{This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R \cite{lme4}.}
@@ -577,7 +574,7 @@ Consistent with our observations, the difference between the \emph{antonym} vs. 
 
 %","Estimate"],3)`$,  t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 3)`$).
 
-We also observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated lower than negated lexical antonyms (e.g., \emph{not tall}; Fig.$\thinspace$\ref{fig:expt-results}A).
+We also observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated lower than negated lexical antonyms (e.g., \emph{not tall}; Figure \ref{fig:expt1-results}).
 Closer investigation of responses revealed that negated antonyms (and not other adjective types) received a bimodal distribution: Most ratings were slightly positive but a clearly distinguishable minority distribution of ratings were slightly negative (e.g., \emph{not dishonest} meaning \emph{not honest}).
 This weakly negative interpretation for negated antonyms was present at least somewhat in every item and in most participants.
 This interpretation may be the result of participants attributing politeness to the speaker: \emph{Not dishonest} may be an indirect way of saying that a person is not honest (Yoon, Tessler, Goodman, \& Frank, 2017).
@@ -593,7 +590,7 @@ This interpretation may be the result of participants attributing politeness to 
 
 \begin{figure*}[h]
 \centering \includegraphics[width=0.95\linewidth]{figs/expt1_ridges_wCIs} 
-\caption{Experiment 1 results. Empirical distributions of responses for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad''). Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. White bars denote bootstrapped 95\% confidence intervals.}\label{fig:expt1-results}
+\caption{Experiment 1 results. Empirical distributions of responses for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad''). Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt1-results}
 \end{figure*}
 
 %\hypertarget{experiment-2-single-and-multiple-utterances}{%
@@ -612,7 +609,7 @@ Also, we test our second prediction that hearing multiple utterances in the same
 %}
 
 We recruited 750 participants from MTurk.
-The experiment comprised of four between-subjects experimental conditions arranged in a 2x2 design: \emph{antonym type (morphological vs.\text{~}lexical)} X \emph{context (single vs.\text{~}multiple utterances)}.
+The experiment comprised of four between-subjects experimental conditions arranged in a 2x2 design: \emph{antonym type} (morphological vs. lexical) X \emph{context} (single vs. multiple utterances).
 300 participants were assigned to each \emph{antonym type} in the \emph{single utterance} contexts, and 75 participants were assigned to each in the \emph{multiple utterances} conditions.
 These numbers follow from the intention of getting approximately 45 ratings for each unique adjective in the experiment.
 The \emph{single utterance} task took on average 3 minutes and participants were compensated \$0.40; \emph{multiple utterances} took on average 5 minutes and participants were compensated \$0.80.
@@ -622,7 +619,7 @@ Exclusion criterion, sample size, procedure, and the analysis described below we
 \subsubsection{Materials}\label{materials-1}
 %}
 
-To best isolate the contribution of morphological vs.\text{~}lexical antonyms, we curated adjective sets consisting of words for properties of people, such that both types of antonyms existed for the same positive adjective (e.g., \emph{happy} \(\rightarrow\) \emph{unhappy}, \emph{sad}; \text{Table$\thinspace$2}).
+To best isolate the contribution of morphological vs.\text{~}lexical antonyms, we curated adjective sets consisting of words for properties of people, such that both types of antonyms existed for the same positive adjective (e.g., \emph{happy} \(\rightarrow\) \emph{unhappy}, \emph{sad}; \text{Table 4}).
 Lexical antonyms were selected from a set of possibilities produced from a small survey (n=18) on MTurk eliciting \enquote{opposites} for a list of 30 positive-form adjectives which had morphological antonyms (asking participants in the same experimental context as our interpretation studies, \enquote{What is the opposite of e.g., \emph{forgiving}?}).
 From the list of freely-produced opposites (the vast majority of which were not morphological), the first author chose the one that intuitively best conveyed the same scalar dimension as the morphological antonym and which was not already used as a lexical antonym for another item (e.g., opposite of \emph{forgiving} \(\rightarrow\) \emph{resentful}; opposite of \emph{kind} \(\rightarrow\) \emph{cruel}, because opposite of \emph{friendly} \(\rightarrow\) \emph{mean}).
 Ten out of the original 30 items were dropped for either not having such a well-suited lexical antonym (e.g., \emph{moral}) or for having a well-suited lexical antonym that conflicted with another item (e.g., \emph{compassionate} \(\rightarrow\) \emph{cold}, but also \emph{affectionate} \(\rightarrow\) \emph{cold}).
@@ -678,7 +675,7 @@ Results for each adjective type in each condition are shown in Fig.$\thinspace$\
 
 \begin{figure*}[h]
 \centering \includegraphics[width=0.95\linewidth]{figs/expt2_ridges_wCIs} 
-\caption{Experiment 2 results. Empirical distributions of responses for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad'') for the single utterance and multiple utterances conditions. Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. Width of white rectangles denotes bootstrapped 95\% confidence intervals.}
+\caption{Experiment 2 results. Empirical distributions of responses for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad'') for the single utterance and multiple utterances conditions. Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. Width of white rectangles denotes bootstrapped 95\% confidence intervals for the means.}
 \label{fig:expt2-results}
 \end{figure*}
 
@@ -688,7 +685,7 @@ We considered data only from the \emph{single utterances} conditions and built a
 Consistent with our hypothesis, the interaction between the \emph{antonym} vs.\text{~}\emph{negated positive} levels of adjective type and antonym type (morphological vs.\text{~}lexical) was significant (\(\beta =  \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{Estimate}{3}
 \), t\(( \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{df}{0}) =  \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{t.value}{2}, p =  \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{Pr...t..}{3}\)).
 We then analyzed the simple effects.
-Morphological antonyms were not significantly different than negated positives (\(\beta = \rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{Estimate}{2}\), t\((\rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{df}{0}) = \rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{t.value}{3}, p = \rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{Pr...t..}{3}\)), while lexical antonyms were interpreted more negatively than negated positives (\(\beta = \rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{Estimate}{3}\), t\((\rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{df}{0}) = \rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{t.value}{2}, p < 0.001 \)).\footnote{The random effect structure for the simple effects models mirrored the full model. The only difference was that in analyzing the lexical antonyms, the random effect of adjective type by-item needed to be dropped in order for the model to converge.}
+Morphological antonyms were not significantly different than negated positives (\(\beta = \rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{Estimate}{2}\), t\((\rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{df}{0}) = \rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{t.value}{3}, p = \rlgetnum{expt2_glmer_singleUtt_morphological.csv}{Rowname}{adj_type1}{Pr...t..}{3}\)), while lexical antonyms were interpreted more negatively than negated positives (\(\beta = \rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{Estimate}{3}\), t\((\rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{df}{0}) = \rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{t.value}{2}, p < 0.001 \)).\footnote{The random effect structure for the simple effects models mirrored the full model. The only difference was that in analyzing the lexical antonyms, the random by-item slope for adjective type needed to be dropped in order for the model to converge.}
 
 
 %\rlgetnum{expt2_glmer_singleUtt_lexical.csv}{Rowname}{adj_type1}{Pr...t..}{2}
@@ -741,7 +738,7 @@ Our main hypothesis concerns the interpretation of blatantly double negative sta
 
 \begin{figure*}[h]
 \centering \includegraphics[width=0.95\linewidth]{figs/expt3_ridges_wCIs} 
-\caption{\red{[Pilot data]} Experiment 3 results. Empirical distributions of responses for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad''). Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. White bars denote bootstrapped 95\% confidence intervals.}\label{fig:expt3-results}
+\caption{\red{[Pilot data]} Experiment 3 results. Empirical distributions of responses for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad''). Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt3-results}
 \end{figure*}
 
 
@@ -757,11 +754,12 @@ Our main hypothesis concerns the interpretation of blatantly double negative sta
 %A person \emph{not unhappy} is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
 
 This paper provides a computational solution to an outstanding puzzle in natural language understanding: How to interpret double negatives (e.g., \emph{not unhappy}; Krifka, 2007; Rett, 2014).
-We additionally discovered and confirmed a surprising empirical result that challenges ``established'' intuitions in linguistics: \emph{unhappy} and \emph{not happy} are not immediately differentiated, except when both are present in the same context.
+We additionally discovered and confirmed a surprising empirical result: \emph{unhappy} and \emph{not happy} are not immediately differentiated, except when both are present in the same context.
 Our model that represents uncertainty about how to interpret overt negation markers (\emph{un-}, \emph{not}) predicts this very result, while alternative models that treat negation markers as only carrying a single possible meaning fall short.
 
 It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by \citeA{Krifka2007:Negated-antonyms} for morphological antonyms (\emph{unhappy} $<$ \emph{not happy} $<$ \emph{not unhappy} $<$ \emph{happy}), when a listener hears multiple adjectival utterances in the same context (Experiment 2; \emph{multiple utterances condition}).
-This work thus carries with it an account of a robust linguistic intuition: Potentially equivalent expressions receive differential interpretations when observed uttered by the same speaker in close proximity.\mht{are the other lexical uncertainty papers not an instance of this general point as well?}
+This work thus carries with it an account of a robust linguistic intuition: Potentially equivalent utterances receive differential interpretations when produced by the same speaker in close proximity.\mht{are the other lexical uncertainty papers not an instance of this general point as well?}
+\mf{I think so. But we do set ourselves off. Maybe like so: "Other recent accounts (Krifka, Cable, Rett) derive similar predictions based on quite different kinds of assumptions, but our modeling here makes further predictions about the context-dependence of these inferences."}
 Reasoning about multiple meanings for words, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings.
 More generally, the inferences modeled here can be seen as an instance of \emph{mutual exclusivity} (Markman, 1989), in which listeners resolve uncertainty about multiple elements of meaning simultaneously.
 
