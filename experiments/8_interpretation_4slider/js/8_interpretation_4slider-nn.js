@@ -17,6 +17,71 @@ function make_slides(f) {
     }
   });
 
+  slides.botcaptcha  = slide({
+    name: "botcaptcha",
+    // amount of trials to enter correct response
+    trial: 0,
+    start: function(){
+      $("#fail").hide()
+      // define possible speaker and listener names
+      // fun fact: 10 most popular names for boys and girls
+      var speaker = _.shuffle(["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Thomas", "Charles"])[0];
+      var listener = _.shuffle(["Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica", "Sarah", "Margaret"])[0];
+
+      var story = speaker + ' says to ' + listener + ': "It\'s a beautiful day, isn\'t it?"'
+
+      $("#story").html(story)
+      $("#question").html("Who is " + speaker + " talking to?" +
+    "<br><strong>Note: please type your answer in lower-case.")
+
+      // don't allow enter press in text field
+      $('#listener-response').keypress(function(event) {
+          if (event.keyCode == 13) {
+              event.preventDefault();
+          }
+      });
+
+      // don't show any error message
+      $("#error").hide();
+      $("#error_incorrect").hide();
+      $("#error_2more").hide();
+      $("#error_1more").hide();
+      this.listener = listener, this.speaker = speaker
+    },
+    button:  function() {
+        response = $("#listener-response").val().replace(" ","");
+
+        // response correct
+        // if (this.listener.toLowerCase() == response.toLowerCase()) {
+        if (this.listener.toLowerCase() == response) {
+            // exp.catch_trials.botresponse = $("#listener-response").val();
+            exp.go();
+
+        // response false
+        } else {
+            this.trial = this.trial + 1;
+            $("#error_incorrect").show();
+            if (this.trial == 1) {
+                $("#error_2more").show();
+            } else if (this.trial == 2) {
+                $("#error_2more").hide();
+                $("#error_1more").show();
+            } else {
+                $("#error_incorrect").hide();
+                $("#error_1more").hide();
+                $("#next").hide();
+                $('#quest-response').css("opacity", "0.2");
+                $('#listener-response').prop("disabled", true);
+                $("#error").show();
+                $("#fail").show()
+
+            };
+        };
+      }
+
+      //$("#next").on("click",);
+      //}
+  })
 
 
     slides.memory_check = slide({
@@ -353,7 +418,7 @@ function init() {
 
   // exp.condition = _.sample(["all_four_sliders", "one_by_one"]);
   exp.condition = "all_four_sliders"
-  exp.structure = ["i0"];
+  exp.structure = ["i0", "botcaptcha"];
   // exp.structure = [];
   // console.log(_.unique(characters).length)
   var shuffledNames = _.shuffle(characters);
