@@ -632,6 +632,7 @@ We refer to a collection of the four associated adjective forms---positives, ant
 10 adjective sets were constructed for each antonym type (total 20) from an informal survey of the linguistics literature and taken from a list of \enquote{common opposites} available online (Table 1).\footnote{\url{http://www.enchantedlearning.com/wordlist/opposites.shtml}}
 Each trial of the experiment used an adjective from a distinct adjective set (e.g., if a participant rated \emph{unhappy}, they rated no other adjective from the \{\emph{happy}, \emph{unhappy}, \ldots{}\} set).
 
+
 \begin{table}[h]
 \centering
 \begingroup\fontsize{10pt}{11pt}\selectfont
@@ -662,7 +663,7 @@ attractive, unattractive & beautiful, ugly \\
 The qualitative predictions of our models concern the ordering within a set of alternatives for different antonym types (morphological vs.~lexical).
 %To visualize the data, we compute normalized responses on a participant-wise basis (i.e., normalized response \(r'_{ij} = \frac{r_{ij} - mean_j}{sd_j}\) for trial \(i\) and participant \(j\)).
 Figure \ref{fig:expt1-results} shows the empirical distributions for each of the four adjective types for both morphological and lexical antonyms adjective sets.
-Critically, as predicted by the uncertain negation model, adjective sets with morphological antonyms show only a partial ordering, while those with lexical antonyms show a full ordering.
+Critically, as predicted by the uncertain negation model, adjective sets with morphological antonyms show only a partial ordering, with negated positives (e.g., \emph{not happy}) and morphological antonyms (e.g., \emph{unhappy}) receiving the same ratings; at the same time, the adjective sets with with lexical antonyms show a full ordering (i.e., all adjective types receive distinct interpretations).
 
 To confirm these observations, we built a linear mixed model predicting the raw, unnormalized ratings in terms of fixed effects of \emph{antonym type} (morphological vs.~lexical), \emph{adjective type} (Helmert coded in order: antonym, negated positive, negated antonym, positive)\footnote{Throughout, we code adjective type using Helmert coding, which compares levels of a factor to the average of preceding levels, in order to compare antonym vs.~negated positive levels of the adjective type factor.}, and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.\footnote{This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R \cite{lme4}.}
 Consistent with our observations, the difference between the \emph{antonym} vs. \emph{negated positive} levels of adjective type interacted significantly with antonym type (morphological vs.\text{~}lexical; \(\beta = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{df}{0}) = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{t.value}{2}, p = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{Pr...t..}{3}\)).
@@ -670,10 +671,17 @@ Consistent with our observations, the difference between the \emph{antonym} vs. 
 
 %","Estimate"],3)`$,  t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 3)`$).
 
-We also observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated lower than negated lexical antonyms (e.g., \emph{not tall}; Figure \ref{fig:expt1-results}).
-Closer investigation of responses revealed that negated antonyms (and not other adjective types) received a bimodal distribution: Most ratings were slightly positive but a clearly distinguishable minority distribution of ratings were slightly negative (e.g., \emph{not dishonest} meaning \emph{not honest}).
+We also observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated overall lower than negated lexical antonyms (e.g., \emph{not tall}; Figure \ref{fig:expt1-results}).
+Negated antonyms received a distinct bimodal distribution wherein most ratings were slightly positive but a clearly distinguishable minority distribution of ratings were slightly negative (e.g., \emph{not dishonest} meaning \emph{not honest}).
 This weakly negative interpretation for negated antonyms was present at least somewhat in every item and in most participants.
-This interpretation may be the result of participants attributing politeness to the speaker: \emph{Not dishonest} may be an indirect way of saying that a person is not honest (Yoon, Tessler, Goodman, \& Frank, 2017).
+This interpretation may be the result of participants attributing politeness to the speaker.
+In fact, when speakers care about a listener's self-image, human participants tend to endorse indirect utterances more:  \emph{Not dishonest} may be an indirect way of saying that a person is not honest \cite{Yoon2017}.
+
+While we note the differences between lexical and morphological antonyms in this experiment, the direct comparison of these two kinds of adjectives is difficult. 
+We have coded the antonyms in the morphological sets as positive and negative (or, antonym) by appealing to the morphology (e.g., \emph{happy} is the positive adjective, while \emph{unhappy} is the antonym); a similar assignment of the lexical antonyms to positive and negative is not always possible.
+Some pairs have a clear unmarked form: \emph{tall} is the positive adjective because when describing the height of a person, we say \emph{six feet tall} and not \emph{six feet short}.
+For items that did not have a clear unmarked form (e.g., \emph{fat} and \emph{skinny}), we assigned the adjective that conveyed a greater amount to be the positive (i.e., fat conveys more weight than skinny); thus, the positive adjective is not necessarily the socially more desirable feature. 
+Because of these differences between lexical and morphological antonym sets, we curated a more tightly controlled set of materials for Experiments 2 \& 3. 
 
 \begin{figure}[hbt]
 
