@@ -123,9 +123,6 @@
 
 
 
-
-
-
 %  \title{Not unreasonable: Uncertainty in the language of negation}
 %  \title{Not unreasonable: Multiple opposite meanings are entertained when understanding negation}
 %\title{Not stating the opposite: Double negations result in nonredundant meanings}
@@ -173,6 +170,8 @@
 \usepackage{booktabs}
 \usepackage{xcolor}
 
+\usepackage[]{xspace}
+
 \begin{document}
 \maketitle
 
@@ -196,9 +195,11 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
+\newcommand{\ourmodel}{Flexible Negation\xspace}
+
 \mf{I notice that the way words are referred to in the text here is inconsistent in itself and with the main text. The main text uses italics, here most often it's quotes. I didn't correct anything because I might be missing something subtle.}
 
-Here we describe the details of the computational models used to generate the predictions for the various hypotheses (\emph{Aristotle}, \emph{George Orwell}, \emph{Tessler \& Franke} or \emph{Uncertain Negation}) in the paper.
+Here we describe the details of the computational models used to generate the predictions for the various hypotheses (\emph{Aristotle}, \emph{George Orwell}, \emph{Tessler \& Franke} or \emph{\ourmodel}) in the paper.
 In addition, we present the by-item breakdowns of the empirical results, with some description.
 
 
@@ -219,7 +220,7 @@ In addition, we present the by-item breakdowns of the empirical results, with so
  %\red{(e.g., there is no unshort)}.\% \cite{Horn1989:Natural}.
 %QAs a result, a single negative (\enquote{not happy} and \enquote{unhappy}) can mean either \(\neg happy\) or \(\tilde{happy}\), while double negatives (\enquote{not unhappy}) may mean \(\neg \neg happy\) or \(\neg \tilde{happy}\) (Fig.\(\thinspace\)\ref{fig:lexicon-model}).}
 
-Our primary hypothesis is that the logical distinction between contradictory~vs.~contrary opposition manifests in natural language markers (\enquote{not}, \enquote{un-}) in an uncertain way. % and that  listeners maintain uncertainty about the mapping between logical negations and natural language negation% (\enquote{not}, \enquote{un-}) in a stable, context-invariant manner. 
+Our primary hypothesis is that the logical distinction between contradictory~vs.~contrary opposition manifests in natural language markers (\enquote{not}, \enquote{un-}) in an flexible way. % and that  listeners maintain uncertainty about the mapping between logical negations and natural language negation% (\enquote{not}, \enquote{un-}) in a stable, context-invariant manner. 
 %We imagine and resolve their uncertainty in context.  
 A listener who hears statements involving negation reasons over a hypothesis space of possibilities about the mappings between natural language negation markers  (\enquote{not}, \enquote{un-}) and the negation operations of contradictory and contrary opposition.
 \emph{Contradictory} opposites cannot both be true and they cannot both be false, such as an integer being either even or odd (\emph{even} and \emph{odd} are contradictions).
@@ -229,7 +230,7 @@ Contrary opposition turns $H$ into a new predicate $\tilde{H}$, but standard log
 %The hypothesis space of meanings is constrained by those definitions.
 %Because contraries do not iterate, a double negative like \emph{not unhappy} could convey a double contradiction ($\neg \neg H$) or a contradiction about a contrary ($\neg \tilde{H}$): The former carries the same meaning as $H$ (\emph{happy}) whereas the latter conveys a distinct meaning. 
 %Intuitively, a rational speaker whose goal is to convey $H$ (or, $\neg \neg H$) would avoid the double negative construction because it is more verbose; thus, a sophisticated listener could backwards infer that a speaker who uses a double negative means to convey the expression with a unique meaning: $\neg \tilde{H}$.
-%This uncertain negation hypothesis further predicts that \emph{not happy} and \emph{unhappy} inherit the same set of possible meanings; \emph{a priori} it is not obvious whether the two expressions mean something distinct from one another. 
+%This \ourmodel hypothesis further predicts that \emph{not happy} and \emph{unhappy} inherit the same set of possible meanings; \emph{a priori} it is not obvious whether the two expressions mean something distinct from one another. 
 %\mht{he}
 %This hypothesis further predicts that a listener who hears only a single adjective phrase in isolation (e.g., \enquote{unhappy}) has no basis from which to decide whether a contrary or contradiction was intended, and thus the listener should impart no meaning difference between an isolated .
 %and thus a rational speaker would not have bothered to say \emph{not unhappy} (a more complex expression) if a double contradiction was their intention, so they likely were contradicting a contrary.
@@ -242,7 +243,7 @@ Contrary opposition turns $H$ into a new predicate $\tilde{H}$, but standard log
 
 %\begin{figure}[h]
 %\centering \includegraphics[width=0.8\textwidth]{figs/schematicMeanings}  
-%\caption{Set of possible meanings for antonym pairs and their negations for the uncertain negation model. 
+%\caption{Set of possible meanings for antonym pairs and their negations for the \ourmodel model. 
 %Both ``not happy'' and ``unhappy'' could signal either contradictory $\neg H$ or contrary $\tilde{H}$ negation.
 %``Not unhappy'' can signal a double contradiction  $\neg \neg H$  or a contradiction of a contrary  $ \neg \tilde{H}$. A double contrary $\tilde{\tilde{H}}$ is not logically possible. A double contradiction  $\neg \neg H$  is pragmatically unlikely, because the same meaning is expressed by just the simple positive $H$. Scales on the right denote hypothetical interpretations of the different meanings.}
 %\label{fig:meanings}
@@ -302,7 +303,7 @@ The literal listener \(L_0\) (Eq. \ref{eq:L0}) updates their prior beliefs over 
 where \(\mathcal{L}(u, x, \theta)\) gives the truth-value of the utterance \(u\) in lexicon \(\mathcal{L}\) when applied to degree \(x\) (e.g., for $u= $\enquote{happy}, $\mathcal{L}$ returns a 1 when $x>\theta$ and a 0 when  $x\leq\theta$).
 The representation of prior beliefs $P(x)$ encodes prior expectations about the degree (e.g., how happy people are likely to be), which we assume for simplicity to be a uniform distribution. 
 The speaker (Eq.~\ref{eq:S1}) is a soft-max rational agent (with degree of rationality  $\alpha$) who aims to act in accordance with a standard, information-theoretic utility function that tracks how well an utterance conveys the speaker's intended meaning $x$ (i.e., the degree of happiness) to this literal listener---$\ln {L_{0}(x \mid u, \theta, \mathcal{L}}$)---while taking into account the cost of the utterance---$\text{cost}(u)$.
-We assume that negation created by morphology (e.g., ``un-'' + happy) adds cost to the utterance as does creating a negation using the particle ``not'', and that the cost of ``un-'' is less than the cost of ``not''.\footnote{The uncertain negation model's qualitative predictions are sensitive to the exact values of the parameters. The predictions we show are invariant to cost so long as $\text{cost}(un) \leq \text{cost}(not)$ and $\alpha$ is relatively small. Our goal is to show, under intuitively plausible parameter values consistent with the literature using Rational Speech Act models, that the uncertain negation model has the capacity to the make the predictions we describe; none of the alternative models we articulate have the capacity to make the unique predictions of the uncertain negation model.}
+We assume that negation created by morphology (e.g., ``un-'' + happy) adds cost to the utterance as does creating a negation using the particle ``not'', and that the cost of ``un-'' is less than the cost of ``not''.\footnote{The \ourmodel model's qualitative predictions are sensitive to the exact values of the parameters. The predictions we show are invariant to cost so long as $\text{cost}(un) \leq \text{cost}(not)$ and $\alpha$ is relatively small. Our goal is to show, under intuitively plausible parameter values consistent with the literature using Rational Speech Act models, that the \ourmodel model has the capacity to the make the predictions we describe; none of the alternative models we articulate have the capacity to make the unique predictions of the \ourmodel model.}
 The intended meaning in this model is the value along a dimension referenced by an adjective (e.g., a degree of happiness).\footnote{
 	This meaning is a special case of modeling meaning as a probability distribution over degrees of happiness (e.g., the speaker has only a rough sense of the relevant degree of happiness), in which case the speaker's utility would be a function of the KL divergence between the literal listener's prior and posterior distributions over the degree given the utterance. 
 }
@@ -314,22 +315,22 @@ The pragmatic listener (Eq.~\ref{eq:L1}) interprets an utterance by reasoning ab
 %\begin{figure}
 %\centering
 %\includegraphics{figs/lexicon-model-1.pdf}
-%\caption{\label{fig:lexicon-model}Space of possible meanings in the lexicon prior for the \emph{logical negation}, \emph{bonafide contraries}, and the full \emph{uncertain negation} models.}
+%\caption{\label{fig:lexicon-model}Space of possible meanings in the lexicon prior for the \emph{logical negation}, \emph{bonafide contraries}, and the full \emph{\ourmodel} models.}
 %\end{figure}
 
 
 
-In the main text, we compare the predictions of this uncertain negation model to two theoretically-interesting alternative models: one in which negation markers only map onto contradictory negation (the \emph{George Orwell} hypothesis) and one in which ``un-'' denotes contrary negation while ``not'' denotes contradictory negation (the \emph{Aristotle} hypothesis). 
-Both of these models plus the uncertain negation model presented in the main text incorporate vagueness into the meaning of the adjective (i.e., adjectives mean that the degree of happiness of greater than some threshold $\theta$ which is inferred by the listener).
+In the main text, we compare the predictions of this \ourmodel model to two theoretically-interesting alternative models: one in which negation markers only map onto contradictory negation (the \emph{George Orwell} hypothesis) and one in which ``un-'' denotes contrary negation while ``not'' denotes contradictory negation (the \emph{Aristotle} hypothesis). 
+Both of these models plus the \ourmodel model presented in the main text incorporate vagueness into the meaning of the adjective (i.e., adjectives mean that the degree of happiness of greater than some threshold $\theta$ which is inferred by the listener).
 Here, we additionally compare these models to two other simpler alternatives in which there is no vagueness about the meaning of the adjective. 
 First, we compare to a ``Vanilla RSA'' model which has neither lexical uncertainty about negation nor vagueness in the meaning of the adjective \cite{Frank2012}; we assume for this model an Aristotelean analysis of the negation markers (``not'' means contradiction; ``un-'' means contrary) operating over fixed threshold meanings: \enquote{happy} means \(>70\%\) on the happiness scale; \enquote{unhappy} means \(<30\%\).
 We call this model \emph{Aristotle no vagueness}.
-Second, we compare to an uncertain negation model without vagueness. 
+Second, we compare to an \ourmodel model without vagueness. 
 This model has the same fixed threshold meanings for the adjectival utterances but has uncertainty as to whether or not ``un'' and ``not'' convey contradictory~vs.~contrary negation. 
 We omit the predictions of the logically possible \emph{George Orwell} (no vagueness) model, because they are not qualitatively different from the model with vagueness.
 %Second, we compare to the Vague RSA model of \citeA{Lassiter2015}, assuming that all negation markers entail contradictory negation (the \emph{logical negation} or \emph{George Orwell} model).
 %Finally, we construct a \emph{bonafide contraries} model, building on \citeA{Lassiter2015}'s Vague RSA model by assuming morphological antonyms (\emph{un-}) convey contrary negation (e.g., \emph{unhappy} is to \emph{happy} how \emph{short} is to \emph{tall}) while the negation particular \emph{not} conveys contradictory negation.
-%Finally, we construct fixed-threshold version of the Uncertain Negation model: this model is a lexical uncertainty model in the style of \citeA{Bergen2016}, which differs from our Uncertain Negation model only in its treatment of the semantics of the adjective as fixed as opposed to vague. 
+%Finally, we construct fixed-threshold version of the \ourmodel model: this model is a lexical uncertainty model in the style of \citeA{Bergen2016}, which differs from our \ourmodel model only in its treatment of the semantics of the adjective as fixed as opposed to vague. 
 
 \begin{table}[t]
 \centering
@@ -341,8 +342,8 @@ Aristotle no Vagueness                                                    & $x >
 Aristotle with Vagueness                                 & $x > \theta_1$ & $x  < \theta_2$                  & $x \leq \theta_1$                   \\% & Contraries and Contradictions \\
 George Orwell with Vagueness                                                 & $x > \theta$   & $x < \theta$                     & $x < \theta$                     \\% & Only Contradictions \\
 %Vanilla Lexical Uncertainty & No       & In Principle                         & $x > 0.7 $ & $x  < 0.3$ or   $x  < 0.7$              &  $x  < 0.3$ or   $x  < 0.7$                       \\% & Contraries and Contradictions \\
-Uncertain Negation  no Vagueness                                & $x > 0.7$ & $x  < 0.3$ or $x \leq 0.7$ & $x  < 0.3$ or $x \leq 0.7$ \\ %& Uncertain how “un” and “not” correspond with contrary vs. contradictory negation \\
-Uncertain Negation   with Vagueness                               & $x > \theta_1$ & $x  < \theta_2$ or $x < \theta_1$ & $x  < \theta_2$ or $x \leq \theta_1$ \\ %& Uncertain how “un” and “not” correspond with contrary vs. contradictory negation \\
+\ourmodel  no Vagueness                                & $x > 0.7$ & $x  < 0.3$ or $x \leq 0.7$ & $x  < 0.3$ or $x \leq 0.7$ \\ %& Uncertain how “un” and “not” correspond with contrary vs. contradictory negation \\
+\ourmodel   with Vagueness                               & $x > \theta_1$ & $x  < \theta_2$ or $x < \theta_1$ & $x  < \theta_2$ or $x \leq \theta_1$ \\ %& Uncertain how “un” and “not” correspond with contrary vs. contradictory negation \\
 \bottomrule
 \end{tabularx}
 \endgroup
@@ -353,7 +354,7 @@ Uncertain Negation   with Vagueness                               & $x > \theta_
 
 \begin{figure}[t]
 \centering \includegraphics{figs/alternativeModels_all5_fine_dists.pdf} 
-\caption{Model predictions for interpretations of antonym pairs and their negations. The \emph{Uncertain Negation} model shows unique qualitative patterns, exhibiting qualities of both the \emph{George Orwell} and \emph{Bonafide Contraries} models when the utterances are presented in isolation (Single Utterance condition); when utterances are presented in the same context (Multiple Utterances condition), \emph{Uncertain Negation} makes predictions similar to the \emph{Bonafide Contraries} model. Model predictions use the following minimally assumptive model parameters: $P(x) = \text{Uniform}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 2; \text{cost}(\mathit{not}) = 3$.}.\label{fig:modelPredictions}
+\caption{Model predictions for interpretations of antonym pairs and their negations. The \emph{\ourmodel} model shows unique qualitative patterns, exhibiting qualities of both the \emph{George Orwell} and \emph{Bonafide Contraries} models when the utterances are presented in isolation (Single Utterance condition); when utterances are presented in the same context (Multiple Utterances condition), \emph{\ourmodel} makes predictions similar to the \emph{Bonafide Contraries} model. Model predictions use the following minimally assumptive model parameters: $P(x) = \text{Uniform}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 2; \text{cost}(\mathit{not}) = 3$.}.\label{fig:modelPredictions}
 \end{figure}
 \newpage
 
@@ -367,23 +368,23 @@ A unique pattern of data is predicted by each model.
 By design, the \emph{George Orwell} model does not distinguish different kinds of negation, and a double negation like \enquote{not unhappy} returns the same distribution as the positive adjective (\enquote{happy}).
 When we hard-code different thresholds for \enquote{happy} and \enquote{unhappy} in the Vanilla RSA model, the model reasons that \enquote{not unhappy} does not communicate the same region of the space as \enquote{happy}; instead, the model restricts its interpretation to the neutral zone (i.e., \emph{not unhappy but not happy}); the same logic plays out for \enquote{not happy}, which receives the same neutral-feelings interpretation. 
 The model that represents the vagueness of an adjective like \enquote{happy} and treats \enquote{unhappy} as a \emph{bonafide contrary} predicts the intuitive ordering expressed by \citeA{Krifka2007:Negated-antonyms}: \emph{unhappy} $<$ \emph{not happy} $<$ \emph{not unhappy} $<$ \emph{happy}, with \emph{not unhappy} receiving a slightly positive interpretation.
-Finally, the full uncertain negation model predicts a different ordering: The uncertain negation model does not differentiate \enquote{unhappy} (antonyms) from \enquote{not happy} (negated positives), as \citeA{Jespersen1917:Negation} and \citeA{Blutner2004:pragmatics} surmised.
-At the same time, upon hearing \enquote{not unhappy}, the \emph{uncertain negation} model reasons that a truly compositional \(\neg \neg \textit{happy}\) is implausible because the speaker could have just said the simpler \enquote{happy} and
+Finally, the full \ourmodel model predicts a different ordering: The \ourmodel model does not differentiate \enquote{unhappy} (antonyms) from \enquote{not happy} (negated positives), as \citeA{Jespersen1917:Negation} and \citeA{Blutner2004:pragmatics} surmised.
+At the same time, upon hearing \enquote{not unhappy}, the \emph{\ourmodel} model reasons that a truly compositional \(\neg \neg \textit{happy}\) is implausible because the speaker could have just said the simpler \enquote{happy} and
 interprets the utterance as signaling a slightly positive state (Fig.\(\thinspace\)\ref{fig:modelPredictions}).
-%This pattern of judgments is uniquely predicted by the \emph{uncertain negation} model.
+%This pattern of judgments is uniquely predicted by the \emph{\ourmodel} model.
 %The \emph{bonafide contraries} model also yields interpretations of negated antonyms as slightly positive, but predicts that \enquote{unhappy} (morphological antonym) signals a more negative state than \enquote{not happy} (negated positive).
 %The \emph{logical negation} model does not differentiate between negated antonyms and positives, nor between negated positives and antonyms.
 
 
 
 
-The \emph{uncertain negation} model's predictions are derived by reasoning about which lexicon best explains a speaker's utterance (Fig.\(\thinspace\)\ref{fig:modelPredictions}, \emph{single utterance}).
+The \emph{\ourmodel} model's predictions are derived by reasoning about which lexicon best explains a speaker's utterance (Fig.\(\thinspace\)\ref{fig:modelPredictions}, \emph{single utterance}).
 Hearing multiple utterances by the same speaker, however, can provide the listener with more information about the speaker's lexicon, as in \citeA{Krifka2007:Negated-antonyms}'s example above (``I wasn't unhappy, just not happy''). 
 The formal modeling approach we take here naturally allows for this extension by simply providing \(L_1\) with multiple adjective phrases; we condition each model on the observation of a speaker using all four adjective alternatives to describe different referents (e.g., \enquote{Sue is happy. Steve is not happy. Bill is unhappy. Barb is not unhappy.}; Fig.\(\thinspace\)\ref{fig:modelPredictions}, \emph{multiple utterances}).
 Hearing multiple utterances has no effect on the Vanilla RSA model because it ascribes no uncertainty in meaning to the linguistic messages.
 The models that do account for the vagueness of predicates derive more extreme differences in interpretations between utterances that could have different meanings (e.g., the difference between ``happy'' and ``not unhappy'' for \emph{Bonafide contraries} is greater when it hears multiple utterances).
 This inference results from the fact that the listener has more evidence that the speaker intends different meanings for the different linguistic messages by virtue of the fact that the speaker used different messages.
-Crucially, this inference results in the \emph{Uncertain negation} model predicting a meaning difference between \enquote{unhappy} and \enquote{not happy}: \enquote{unhappy} is more sad than \enquote{not happy}, producing the ordering hypothesized by \citeA{Krifka2007:Negated-antonyms} when both are used in the same context.
+Crucially, this inference results in the \emph{\ourmodel} model predicting a meaning difference between \enquote{unhappy} and \enquote{not happy}: \enquote{unhappy} is more sad than \enquote{not happy}, producing the ordering hypothesized by \citeA{Krifka2007:Negated-antonyms} when both are used in the same context.
 %All models have more extreme interpretations when they condition on multiple utterances.
 
 \section{Item analysis}
@@ -417,7 +418,7 @@ Here we show the item variability in the data sets.
 \subsubsection{Single utterance condition: Morphological antonym pairs}
 
 
-Figure \ref{fig:items_morph_singleUtt_expt2} shows the by-item results for the morphological antonym pairs from the single utterance condition (each rating presented in isolation). Ratings for \emph{positive} adjectives (e.g., happy, forgiving) are highly consistent across items, though some items (e.g., affectionate) have a hint of bi-modality, which might indicate pragmatic competition with a stronger scalar alternative \cite<e.g., loving; >{van2016scalar}. Negated positives (e.g., ``not happy'') are also largely consistent, again with some items (e.g., attractive) indicating a bi-modal distribution of responses, with one of the modes consistent with an effect of \emph{negative strengthening} \cite<cf.,>{Ruytenbeek2017, Gotzner2018}. Such bi-modalities also appears for the morphological antonym for some items (e.g., ``intolerant''). These bimodalities for negated positives and morphological antonyms are convergent evidence for our uncertain negation account, wherein listeners entertain multiple possible meanings for negation markers. 
+Figure \ref{fig:items_morph_singleUtt_expt2} shows the by-item results for the morphological antonym pairs from the single utterance condition (each rating presented in isolation). Ratings for \emph{positive} adjectives (e.g., happy, forgiving) are highly consistent across items, though some items (e.g., affectionate) have a hint of bi-modality, which might indicate pragmatic competition with a stronger scalar alternative \cite<e.g., loving; >{van2016scalar}. Negated positives (e.g., ``not happy'') are also largely consistent, again with some items (e.g., attractive) indicating a bi-modal distribution of responses, with one of the modes consistent with an effect of \emph{negative strengthening} \cite<cf.,>{Ruytenbeek2017, Gotzner2018}. Such bi-modalities also appears for the morphological antonym for some items (e.g., ``intolerant''). These bimodalities for negated positives and morphological antonyms are convergent evidence for our \ourmodel account, wherein listeners entertain multiple possible meanings for negation markers. 
 
 \subsubsection{Single utterance condition: Lexical antonym pairs}
 
