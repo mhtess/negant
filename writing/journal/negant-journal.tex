@@ -219,10 +219,20 @@ These findings suggest that even one of the most logical elements of language---
 \newpage
 
 
+%\begin{quote}
+%\emph{When Mr. Collins said any thing of which his wife might reasonably be ashamed, which certainly was not unseldom, she involuntarily turned her eye on Charlotte.}
+%(Pride and Prejudice) \mf{Is  this example ideal? It reads to me like a ``damn well often'' case mentioned at the very end of the paper as well.}
+%\end{quote}
+
 \begin{quote}
-\emph{When Mr. Collins said any thing of which his wife might reasonably be ashamed, which certainly was not unseldom, she involuntarily turned her eye on Charlotte.}
-(Pride and Prejudice) \mf{Is  this example ideal? It reads to me like a ``damn well often'' case mentioned at the very end of the paper as well.}
+\emph{Although Buck wished he could live with his family, his journal entries paint a picture of a man who has a little bored but not unhappy.}
+\cite{marten2011sing} (p.197) 
 \end{quote}
+
+%\begin{quote}
+%\emph{The silence of history seems to prove this much, that Sheshian was not unhappy under their unrenowned administration; and to be not unhappy, is at least a very tolerable condition.}
+%(Belle Assemblée: Or, Court and Fashionable Magazine; Containing Interesting and Original Literature, and Records of the Beau-monde, Volume 1, Part 2)
+%\end{quote}
 
 \begin{quote}
 \emph{I've been waiting for you all week. Don't you know that it is rotten time to not not be me?}
@@ -330,18 +340,18 @@ used distinct messages in specific combinations.
 
 %To preview our findings, we find support for our \emph{\ourmodel} hypothesis across three experiments. 
 
-Our novel flexible negation hypothesis is not just an account of a few particular linguistic puzzles, but is a case study in how language users manipulate and contort language to navigate and communicate the gradations of their conceptual landscape.
-The general idea in the background is that listeners rationalize utterances of speakers, even if, or especially, when they are unexpected \cite{Grice1975}.
-Consequently, when listeners observe an utterance of a double negation like \emph{not unhappy}, they  look for ways of rationalizing why the speaker has not used the simpler expression \emph{happy}, if that is the meaning that she wants to communicate.
-Interestingly, if even logical vocabulary, like negation markers, is prone to flexible interpretation, it is to be expected that speakers will also exploit this flexibility in speech production.
-Although we do not explore flexible language use from the speaker's point of view in this paper, the \ourmodel model would predict that speakers who want to say two things at once (e.g., speaking to two different audiences) can take advantage of this ambiguity to meet their personal communicative goals. 
-Pinning down the meanings of these simple linguistic expressions in a carefully controlled experimental setting, as we do below, will help map out the space of possible meanings available to speakers and listeners in the wild. \mf{please cut, shorten, tweak; maybe not mention speaker production at all?}
 
 Since linguistic meanings, like mental representations, are not directly observable, we formalize all hypotheses in probabilistic models of rational communication which provide the necessary linking function between these semantic hypotheses and observable behavior \cite{FrankGoodman2014:Inferring-word-,FrankeScholler2016:Semantic-values}. 
 The basic architecture of these models is such that a listener interprets an utterance like \emph{not unhappy} as being intentionally produced by a speaker trying to communicate a degree of, say, happiness to the listener  \cite<Rational Speech Act models; >{Franke2015a, Goodman2016:RSA}.
 The models spelled out in the SI conservatively combine previous ideas on the interpretation of gradable adjectives \cite{Kennedy2007, Lassiter2015} and ambiguity in the meanings of words \cite{Bergen2016}. 
 Previous accounts have proposed both syntactic \cite{Cable2017} and pragmatic \cite{Rett2014:eval} mechanisms before, but heretofore there have been no formalized accounts tested against human behavioral data.
 
+Our novel \ourmodel hypothesis is not just an account of a few particular linguistic puzzles, but is a case study in how language users manipulate and contort language to navigate and communicate the gradations of their conceptual landscape.
+The general idea in the background is that listeners rationalize utterances of speakers, especially when the utterances are unexpected \cite{Grice1975}.
+Consequently, when listeners observe an utterance of a double negation like \emph{not unhappy}, they  look for ways of rationalizing why the speaker has not used the simpler expression \emph{happy}, if that is the meaning that she wants to communicate.
+Interestingly, if even logical vocabulary, like negation markers, is prone to flexible interpretation, it is to be expected that speakers will also exploit this flexibility in speech production (e.g., by saying two things at once, as in the case of ``dog whistling'').
+%Although we do not explore flexible language use from the speaker's point of view in this paper, the \ourmodel model would predict that speakers who want to say two things at once (e.g., speaking to two different audiences) can take advantage of this ambiguity to meet their personal communicative goals. 
+Pinning down the meanings of these simple linguistic expressions in a carefully controlled experimental setting, as we do below, will help map out the space of possible meanings available to speakers and listeners in the wild. 
 
 
 %Might the contrary~vs.~contradiction distinction shed light on the meaning of double negatives?
@@ -355,8 +365,8 @@ Previous accounts have proposed both syntactic \cite{Cable2017} and pragmatic \c
 
 
 \begin{figure}[t]
-\centering\includegraphics{figs/happy-scale3}
-\caption{Space of alternative hypotheses. A: Logical relations among negation markers under three different models of meaning. B: Literal meanings of antonym quartets on a happiness scale under three different models of meaning. \mf{replace label for our model?}}\label{fig:happy-scale}
+\centering\includegraphics{figs/happy-scale4}
+\caption{Space of alternative hypotheses. A: Logical relations among negation markers under three different models of meaning. B: Literal meanings of antonym quartets on a happiness scale under three different models of meaning.  \label{fig:happy-scale}}
 \end{figure}
 
 
@@ -381,12 +391,13 @@ Previous accounts have proposed both syntactic \cite{Cable2017} and pragmatic \c
 
 \begin{figure}[t]
 \centering \includegraphics[width=0.8\textwidth]{figs/schematicMeanings}  
-\caption{Model with uncertainty about the meaning of negation reasons over a hypothesis space of possible meanings for antonym pairs and their negations.
- Red bars denote the range of happiness values that are literally compatible with the adjective.
+\caption{The \ourmodel model reasons over a hypothesis space of possible meanings for antonym pairs and their negations.
 Both \emph{not happy} and \emph{unhappy} could signal either contradictory $\neg H$ or contrary negation $\tilde{H}$.
 \emph{Not unhappy} can signal a double contradiction  $\neg \neg H$  or a contradiction of a contrary  $ \neg \tilde{H}$.
 Contrary negation $\tilde{}$ cannot take wide scope over other negation operators (see SI). 
-A double contradiction  $\neg \neg H$  is pragmatically unlikely, because the same meaning is expressed by just the simple positive $H$.}
+A double contradiction  $\neg \neg H$  is pragmatically unlikely, because the same meaning is expressed by just the simple positive $H$.
+ Red bars denote the range of happiness values that are literally compatible with the adjective.
+}
 \label{fig:meanings}
 \end{figure}
 
@@ -706,13 +717,19 @@ The qualitative predictions of our models concern the ordering within a set of a
 Figure \ref{fig:expt1-results} shows the empirical distributions for each of the four adjective types for both morphological and lexical antonyms adjective sets.
 Critically, as predicted by the \ourmodel model, adjective sets with morphological antonyms show only a partial ordering, with negated positives (e.g., \emph{not happy}) and morphological antonyms (e.g., \emph{unhappy}) receiving the same ratings; at the same time, the adjective sets with with lexical antonyms show a full ordering (i.e., all adjective types receive distinct interpretations).
 
-To confirm these observations, we built a linear mixed model predicting the raw ratings in terms of fixed effects of \emph{antonym type} (morphological vs.~lexical), \emph{adjective type} (Helmert coded in order: antonym, negated positive, negated antonym, positive)\footnote{Throughout, we code adjective type using Helmert coding, which compares levels of a factor to the average of preceding levels, in order to compare antonym vs.~negated positive levels of the adjective type factor.}, and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.\footnote{This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R \cite{lme4}.}
-Consistent with our observations, the difference between the \emph{antonym} vs.~\emph{negated positive} \mf{this is comparing a factor to a factor level; we should say what the coding scheme is, if applicable what the default level is and then write something like \emph{lexical} vs~\emph{negated positive}, right?}levels of adjective type interacted significantly with antonym type (morphological vs.\text{~}lexical; \(\beta = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{df}{0}) = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{t.value}{2}, p = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:st1}{Pr...t..}{3}\)).\mf{double-check if this is right: $\beta$ estimate and $p$ accidentally receive the same value?} \mf{Double-CheckL: reporting a significant interaction (even if in the right direction) might not enough for the conclusions we want to draw from this. If \emph{antonym type} is dummy-coded with default \emph{morhpological}, we'd need to report significance of at least the first Helmert-contrast, right?}
+To confirm these observations, we built a linear mixed model predicting the raw ratings in terms of fixed effects of \emph{antonym type} (morphological vs.~lexical; dummy-coded with morphological default level), \emph{adjective type} (forward-difference coded in order: antonym, negated positive, negated antonym, positive)\footnote{Forward difference coding compares adjacent-levels of a factor, which allows for the following comparisons: antonym vs.~negated positive, negated positive vs.~negated antonym, negated antonym vs.~positive.}, and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.\footnote{This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R \cite{lme4}.}
+Consistent with our observations, the difference between the \emph{antonym} vs.~\emph{negated positive} 
+%\mf{this is comparing a factor to a factor level; we should say what the coding scheme is, if applicable what the default level is and then write something like \emph{lexical} vs~\emph{negated positive}, right?}
+levels of adjective type interacted significantly with antonym type (morphological vs. lexical; \(\beta = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type1}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type1}{df}{0}) = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type1}{t.value}{2}, p = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type1}{Pr...t..}{3}\)) such that the difference between negated positives and antonyms was stronger for lexical antonyms than morphological antonyms.
+At the same time, the negated positive vs. antonyms contrast was not significantly different for the morphological antonyms (e.g., \emph{unhappy} vs. \emph{not happy}; \(\beta = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type1}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type1}{df}{0}) = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type1}{t.value}{2}, p = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type1}{Pr...t..}{3}\)).
+Running the same model with the antonym type coded with lexical antonyms as the default level reveals that the negated positive vs. antonyms contrast was significantly different for the lexical antonyms (e.g., \emph{short} vs. \emph{not tall}; \(\beta = \rlgetnum{expt1_helmert_summary_lexBase.csv}{Rowname}{adjective_type1}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary_lexBase.csv}{Rowname}{adjective_type1}{df}{0}) = \rlgetnum{expt1_helmert_summary_lexBase.csv}{Rowname}{adjective_type1}{t.value}{2}, p = \rlgetnum{expt1_helmert_summary_lexBase.csv}{Rowname}{adjective_type1}{Pr...t..}{3}\)).
+%\mf{double-check if this is right: $\beta$ estimate and $p$ accidentally receive the same value?} \mf{Double-CheckL: reporting a significant interaction (even if in the right direction) might not enough for the conclusions we want to draw from this. If \emph{antonym type} is dummy-coded with default \emph{morhpological}, we'd need to report significance of at least the first Helmert-contrast, right?}
  
 
 %","Estimate"],3)`$,  t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 3)`$).
 
-We also observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated overall lower than negated lexical antonyms (e.g., \emph{not tall}; Figure \ref{fig:expt1-results}).
+We observe further that negated morphological antonyms (e.g., \emph{not unhappy}) were rated differently and lower than positives (e.g., \emph{happy}; \(\beta = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type3}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type3}{df}{0}) = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type3}{t.value}{2}, p <0.001\)). 
+We additionally observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated overall lower than negated lexical antonyms (e.g., \emph{not tall}; Figure \ref{fig:expt1-results}), which manifested as an interaction in the negated antonym vs. positive contrast with the lexical vs. morphological items (\(\beta = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{df}{0}) = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{t.value}{2}, p = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{Pr...t..}{3}\)) .
 Negated antonyms received a distinct bimodal distribution wherein most ratings were slightly positive but a clearly distinguishable minority distribution of ratings were slightly negative (e.g., \emph{not dishonest} meaning \emph{not honest}).
 This weakly negative interpretation for negated antonyms was present at least somewhat in every item and in most participants.
 This interpretation may be the result of participants attributing politeness to the speaker.
@@ -723,8 +740,7 @@ We have coded the antonyms in the morphological sets as positive and negative (o
 Some pairs have a clear unmarked form: \emph{tall} is the positive adjective because when describing the height of a person, we say \emph{six feet tall} and not \emph{six feet short}.
 For items that did not have a clear unmarked form (e.g., \emph{fat} and \emph{skinny}), we assigned the adjective that conveyed a greater amount to be the positive (i.e., fat conveys more weight than skinny); thus, the positive adjective is not necessarily the socially more desirable feature.\footnote{
 In addition, in the empirical data, we see a bimodal distribution of responses for the negated lexical antonyms and negated positives; thus, one may be concerned that this bimodal distribution is the result of an improper assignment of lexical antonyms to either the positive or antonym form (e.g., \emph{skinny} is actually the positive adjective and \emph{fat} is the antonym). 
-If this were so, we would expect this bi-modality to occur across the items but not within items; however, when we look at the item-wise distributions of responses, we do not see clear evidence for this (see Supplement).
-This bimodality occurs within several items of lexical antonyms. \mf{last sentence is hard to understand, maybe rephrase, explain or drop?}
+If this were so, we would expect this bi-modality to occur across the items but not within items; however, when we look at the item-specific distributions of responses, we do not see clear evidence for this, but rather we see the bi-modality occurring within several items from the lexical sets (see SI).
 }
 Because of the differences between lexical and morphological antonym sets, we curated a more tightly controlled set of materials for Experiments 2 \& 3. \mf{If space allows, maybe reiterate that this experiment was exploratory?}
 
