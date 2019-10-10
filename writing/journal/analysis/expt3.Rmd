@@ -12,6 +12,12 @@ library(tidyverse)
 library(jsonlite)
 library(tidyboot)
 library(brms)
+library(knitr)
+library(ggstance)
+
+library(ggridges)
+library(viridis)
+
 ```
 
 
@@ -102,12 +108,10 @@ d.full.nativeEnglish %>%
 
 # Trials
 
-
-
 ```{r filterNonNativeEnglish}
 d.full.natEng <- left_join(
-  d.full, 
-  d.full.nativeEnglish
+  df.trials %>% mutate(workerid = as.character(workerid)), 
+  d.full.nativeEnglish  %>% mutate(workerid = as.character(workerid))
 ) %>%
   filter(englishNative)
 
@@ -115,16 +119,17 @@ d.full.natEng <- left_join(
 length(unique(d.full.natEng$workerid))
 ```
 
-```{r}
 
-```
 
 ```{r}
 df.trials.filtered <- left_join(
-  df.trials, 
+  d.full.natEng, 
   df.memory
 ) %>%
   filter(n_correct >= 7)
+
+## check that i've done the filtering correctly
+length(unique(df.trials.filtered$workerid))
 ```
 
 
@@ -188,25 +193,23 @@ d.full.boot.pres <- d.full.natEng %>%
                                       "neg_positive",
                                       "neg_neg_positive", 
                                       "positive"),
-                           labels = c("Unhappy",
-                                      "Not happy",
-                                      "Not not happy",
-                                      "Happy"))) %>%
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated negated positive",
+                                      "Positive"))) %>%
   group_by(antonym_type, adjective_type_rescaled) %>%
   #group_by(antonym_type, adjective_type, splitHalf) %>%
-  multi_boot_standard(col = "response")
-
-
+  tidyboot_mean(column = response)
 d.full.natEng.refactor <- d.full.natEng %>%
    mutate(adjective_type_rescaled = factor(adjective_type_rescaled,
                             levels = c("antonym",
                                       "neg_positive",
                                       "neg_neg_positive", 
                                       "positive"),
-                           labels = c("Unhappy",
-                                      "Not happy",
-                                      "Not not happy",
-                                      "Happy")))
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated negated positive",
+                                      "Positive")))
 
   ggplot(d.full.natEng.refactor, 
          aes( x = response, y = adjective_type_rescaled, fill = ..x..))+
@@ -240,7 +243,7 @@ d.full.natEng.refactor <- d.full.natEng %>%
 
 # ggsave(paste(
 #   "~/projects/negant/writing/journal/figs/expt3_ridges_wCIs.pdf", sep = ""),
-#        width = 4.5, height = 3)
+#        width = 5, height = 3)
 ```
 
 
@@ -257,8 +260,6 @@ my.forward.diff
 #assigning the forward difference coding to race.f
 contrasts(d.full.natEng.refactor$adjective_type_rescaled) = my.forward.diff
 #the regression
-summary(lm(write ~ race.f, hsb2))
-
 
 rs.lmer.expt3 <- lmer(response ~ 1 + adjective_type_rescaled +
                        (1 + adjective_type_rescaled | workerid) + 
@@ -266,7 +267,14 @@ rs.lmer.expt3 <- lmer(response ~ 1 + adjective_type_rescaled +
                      data = d.full.natEng.refactor 
                      )
 
-summary(rs.lmer.expt3)
+rs.lmer.expt3.summary <- summary(rs.lmer.expt3)
+
+rs.lmer.expt3.summary$coefficients %>%
+  data.frame(.) %>%
+  mutate(Rowname = row.names(.)) %>%
+  write_csv(., path = '../../journal/csv_data_4_tex/expt3_glmer_adjective.csv')
+
+
 ```
 
 
@@ -279,5 +287,60 @@ rs.lmer.expt3.negnegpos <- lmer(response ~ 1  +
                        mutate(response = response - 0.5)
                      )
 
-summary(rs.lmer.expt3.negnegpos)
+rs.lmer.expt3.negnegpos.summary <- summary(rs.lmer.expt3.negnegpos)
+
+rs.lmer.expt3.negnegpos.summary$coefficients %>%
+  data.frame(.) %>%
+  mutate(Rowname = row.names(.)) %>%
+  write_csv(., path = '../../journal/csv_data_4_tex/expt3_notnot_vs_baseline.csv')
+
 ```
+
+
+#### Exploratory: by item facets of bootstrapped CIs
+
+```{r explore_byItem95CIs}
+d.full.natEng %>% 
+     mutate(adjective_type_rescaled = factor(adjective_type_rescaled,
+                           levels =c("antonym",
+                                      "neg_positive",
+                                      "neg_neg_positive",
+                                     "positive"),
+                           labels = c("Un-adj",
+                                      "Not adj",
+                                      "Not not adj", 
+                                      "Adj")),
+            pos_ant = paste(morphant, " -- ", positive, "  ", sep = "")) %>%
+ggplot(., aes( x = response, y = adjective_type_rescaled, fill = ..x..))+
+  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5)+
+  geom_density_ridges_gradient(
+    jittered_points = T, alpha = 0.8, scale = 0.7,
+    position = position_points_jitter(width = 0.01, height = 0),
+    point_shape = '|', point_size = 2.5, point_alpha = 0.4,
+    rel_min_height = 0.01, gradient_lwd = 1,
+        quantile_lines= T, quantiles = 2
+    )+
+  # geom_linerangeh(data = d.full.boot.item %>% filter(condition == "implicit", antonym_type == "morphant"),
+  #   inherit.aes = F,
+  #   aes(xmin = ci_lower, xmax = ci_upper, y = adjective_type_rescaled),
+  #   size = 1.25, color = 'white')+
+  facet_wrap(~pos_ant)+
+  scale_fill_viridis(option = "C")+
+  #scale_color_viridis(option = "C", limits = c(0, 1))+
+  guides(fill = F, color = F)+
+  ylab("")+
+  scale_x_continuous(limits = c(0, 1), breaks = c(0, 1),
+                     expand = c(0.01, 0))+
+  scale_y_discrete(expand = expand_scale(mult = c(0.05, .30)))+
+  xlab("slider ratings")+
+  theme(strip.text.y = element_text(angle = 0))
+# 
+
+
+
+ggsave(paste(
+  "~/projects/negant/writing/journal/figs/expt3_byItem_densities.pdf", sep = ""),
+       width = 12, height = 8)
+```
+
+
