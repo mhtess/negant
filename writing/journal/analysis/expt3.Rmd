@@ -14,14 +14,12 @@ library(tidyboot)
 library(brms)
 library(knitr)
 library(ggstance)
-
 library(ggridges)
 library(viridis)
-
 ```
 
 
-```{r load.data}
+```{r load.data, eval = F}
 data.paths <- c("../../../mturk/8_4slider_nn-prereg/production-results/")
 
 df.subject <- data.frame()
@@ -69,8 +67,17 @@ for (data.path in data.paths){
     )
   }
 }
-
+write_csv(df.trials, "../data/expt3-trials.csv")
+write_csv(df.subject, "../data/expt3-subjInfo.csv")
+write_csv(df.attention, "../data/expt3-catch_trials.csv")
 ```
+
+```{r load data}
+df.trials <- read_csv("../data/expt3/expt3-trials.csv")
+df.subject <- read_csv("../data/expt3/expt3-subject_information.csv")
+df.attention <- read_csv("../data/expt3/expt3-catch_trials.csv")
+```
+
 
 # Memory check
 
@@ -108,67 +115,59 @@ d.full.nativeEnglish %>%
 
 # Trials
 
-```{r filterNonNativeEnglish}
-d.full.natEng <- left_join(
-  df.trials %>% mutate(workerid = as.character(workerid)), 
-  d.full.nativeEnglish  %>% mutate(workerid = as.character(workerid))
-) %>%
-  filter(englishNative)
-
-## check that i've done the filtering correctly
-length(unique(d.full.natEng$workerid))
-```
-
-
-
-```{r}
-df.trials.filtered <- left_join(
-  d.full.natEng, 
-  df.memory
-) %>%
-  filter(n_correct >= 7)
-
-## check that i've done the filtering correctly
-length(unique(df.trials.filtered$workerid))
-```
-
-
-# Visualize data
-
 #### Normalize ratings (by subject, subject off mean and divide by SD)
 
 Also recode antonyms (in dataframe, morph antonyms and lexical antonyms are coded as two different types). Here, we recode them to be the same level of a factor (but with different levels of a differnt factor: antonym_type)
 
-```{r normalizedRatingsForViz}
-d.full.natEng <- df.trials.filtered %>%
+
+```{r filterNonNativeEnglish}
+d.full.natEng <- left_join(
+    df.trials, 
+    d.full.nativeEnglish
+  ) %>%
+    filter(englishNative) %>%  #Remove participants who do not self-report English as native language 
+  left_join(., df.memory) %>%
+  filter(n_correct >= 7) %>% 
     group_by(workerid) %>%
-    mutate(meanRating = mean(response),
-            sdRating = sd(response)) %>%
+    mutate(meanRating = mean(response), sdRating = sd(response)) %>%
     ungroup() %>%
+  rowwise() %>%
     mutate(normalizedResponse = (response - meanRating) / sdRating) %>%
-  #Code antonyms (morpholoigical & lexical) as antonyms (rather than two distinct categories)
-  mutate(adjective_type = as.character(adjective_type),
-         adjective_type_rescaled = ifelse( 
+  mutate(
+    adjective_type = as.character(adjective_type),
+    #Code antonyms (morpholoigical & lexical) as antonyms (rather than two distinct categories)
+    adjective_type_rescaled = ifelse( 
            adjective_type %in% c("lexant", "morphant"), "antonym", 
            ifelse( 
              adjective_type %in% c("neg_lexant", "neg_morphant"), "neg_antonym",
              adjective_type)
            ),
-         adjective_type_rescaled = factor(adjective_type_rescaled,
-                                     levels = c("antonym",
-                                                "neg_positive",
-                                                "neg_neg_positive",
-                                                "positive")),
-        antonym_type = factor(antonym_type, levels = c("morphant", "lexant"))
-    ) %>%
-    group_by(workerid, antonym_type, adjective_type) %>%
+     adjective_type_rescaled = factor(adjective_type_rescaled,
+                                 levels = c("antonym",
+                                            "neg_positive",
+                                            "neg_neg_positive",
+                                            "positive")),
+    antonym_type = factor(antonym_type, levels = c("morphant", "lexant")),
+    condition = factor(condition, levels = c("implicit", "explicit")),
+    item = ifelse(antonym_type == "lexant",
+                 paste(lexant, "--", positive, sep = ""),
+                 paste(morphant, "--", positive, sep = "")),
+   antonym = ifelse(antonym_type == "lexant", 
+                    as.character(lexant), 
+                    as.character(morphant))
+  ) %>%
+  group_by(workerid, antonym_type, adjective_type) %>%
   arrange(trial_num) %>%
-  mutate(presentation_num = ave(adjective_type==adjective_type, adjective_type, FUN=cumsum)) %>%
+  mutate(presentation_num = ave(adjective_type==adjective_type, 
+                                adjective_type, FUN=cumsum)) %>%
   ungroup() %>%
   rowwise() %>%
   mutate(splitHalf = ifelse(trial_num <= 8, "first", "second"))
 
+## check that i've done the filtering correctly
+length(unique(d.full.natEng$workerid))
 ```
+
 
 
 
@@ -216,18 +215,24 @@ d.full.natEng.refactor <- d.full.natEng %>%
   #geom_histogram(position = position_dodge(), bins = 25)+
   geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5)+
   geom_density_ridges_gradient(
-    jittered_points = T, alpha = 0.8, scale = 0.7,
-    position = position_points_jitter(width = 0.01, height = 0),
-    point_shape = '|', point_size = 2.5, point_alpha = 0.1,
-    rel_min_height = 0.01, gradient_lwd = 1.
-    )+
+    jittered_points = T,  scale = 0.85,
+    #position = position_points_jitter(width = 0.01, height = 0),
+    #point_shape = '|', point_size = 2.5, point_alpha = 0.3,
+    rel_min_height = 0.01, gradient_lwd = 1,
+    stat = 'binline', bins = 25, draw_baseline = F
+  ) +
   geom_linerangeh(data = d.full.boot.pres,
     inherit.aes = F,
     aes(xmin = ci_lower, xmax = ci_upper, 
-        y = as.numeric(adjective_type_rescaled)+0.2),
+        y = as.numeric(adjective_type_rescaled)+0.15),
     size = 1.25, color = 'white')+
+  geom_point(data = d.full.boot.pres,
+    inherit.aes = F,
+    aes(x = mean,
+        y = as.numeric(adjective_type_rescaled)+0.15),
+    size = 2, color = 'white', shape = 3)+
   #facet_grid(condition~antonym_type)+
-  scale_fill_viridis(option = "C")+
+  scale_fill_viridis(option = "E")+
   #scale_color_viridis(option = "C", limits = c(0, 1))+
   guides(fill = F, color = F)+
   ylab("")+

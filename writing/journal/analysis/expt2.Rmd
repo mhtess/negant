@@ -49,7 +49,7 @@ orange.purple.color.palette <-
 
 ## Load data
 
-```{r loadData}
+```{r loadData, eval = F, echo = F}
 d.1s.morph <- loadData("7_1slider_morph") %>%
   mutate(condition = 'implicit')
 d.1s.lex <- loadData("7_1slider_lex") %>%
@@ -80,6 +80,15 @@ d.4s.lex.subj <- loadSubjComments("8_4slider_lex") %>%
          condition = 'explicit')
 
 d.full.comments <- bind_rows(d.1s.morph.subj, d.1s.lex.subj, d.4s.morph.subj, d.4s.lex.subj)
+
+
+# write_csv(d.full, "../data/expt2/expt2-trials.csv")
+# write_csv(d.full.comments, "../data/expt2/expt2-subject_information.csv")
+```
+
+```{r load data}
+d.full <- read_csv("../data/expt2/expt2-trials.csv")
+d.full.comments <- read_csv("../data/expt2/expt2-subject_information.csv")
 ```
 
 ##### Self-reported native language
@@ -193,18 +202,24 @@ d.full.natEng %>%
 ggplot(., aes( x = response, y = adjective_type_rescaled, fill = ..x..))+
   geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5)+
   geom_density_ridges_gradient(
-    jittered_points = T, alpha = 0.8, scale = 0.7,
-    position = position_points_jitter(width = 0.01, height = 0),
-    point_shape = '|', point_size = 2.5, point_alpha = 0.1,
-    rel_min_height = 0.01, gradient_lwd = 1.
-    )+
+    jittered_points = T,  scale = 0.85,
+    #position = position_points_jitter(width = 0.01, height = 0),
+    #point_shape = '|', point_size = 2.5, point_alpha = 0.3,
+    rel_min_height = 0.01, gradient_lwd = 1,
+    stat = 'binline', bins = 25, draw_baseline = T
+  ) +
   geom_linerangeh(data = d.full.boot.pres,
     inherit.aes = F,
     aes(xmin = ci_lower, xmax = ci_upper, 
-        y = as.numeric(adjective_type_rescaled) +0.2),
-    size = 1.25, color = 'white')+
+        y = as.numeric(adjective_type_rescaled) +0.15),
+    size = 1.5, color = 'white')+
+  geom_point(data = d.full.boot.pres,
+    inherit.aes = F,
+    aes(x = mean,
+        y = as.numeric(adjective_type_rescaled)+0.15),
+    size = 2, color = 'white', shape = 3)+
   facet_grid(condition~antonym_type)+
-  scale_fill_viridis(option = "C")+
+  scale_fill_viridis(option = "E")+
   #scale_color_viridis(option = "C", limits = c(0, 1))+
   guides(fill = F, color = F)+
   ylab("")+
@@ -213,6 +228,9 @@ ggplot(., aes( x = response, y = adjective_type_rescaled, fill = ..x..))+
   scale_y_discrete(expand = expand_scale(mult = c(0.05, .30)))+
   xlab("slider ratings")+
   theme(strip.text.y = element_text(angle = 0))
+
+
+
 # 
 
 # ggsave(paste(fig.path,
