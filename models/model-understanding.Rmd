@@ -12,6 +12,7 @@ library(tidyverse)
 library(knitr)
 theme_set(theme_few())
 ```
+
 ```{r rsaBins}
 rsaBinsCoarse <- '
 var lowerBins = [
@@ -178,7 +179,6 @@ var meaning = function(words, state, thresholds){
 
 # Separate thresholds RSA
 
-
 ```{r rsa-separateThresholds}
 rsa <- '
 var utterances = [
@@ -196,21 +196,21 @@ var individualCosts = {
   not_unhappy: 1.5
 }
 
-var cost_yes = 0;
-var cost_neg = 2;
 
-var uttCosts = map(function(u) {
-  return isNegation(u) ? Math.exp(-cost_neg) : Math.exp(-cost_yes)
+var utteranceCost = function(u, cost_neg){
+  var cost_yes = 1;
+ return isNegation(u) ? cost_neg : cost_yes
+}
+
+// var uttCosts = map(function(u) {
+  // return isNegation(u) ? Math.exp(-cost_neg) : Math.exp(-cost_yes)
   // return Math.exp(-individualCosts[u])
-}, utterances)
+// }, utterances)
 
-var utterancePrior = Infer({model: function(){
-  return utterances[discrete(uttCosts)]
-}});
+// var utterancePrior = Infer({model: function(){
+  // return utterances[discrete(uttCosts)]
+// }});
 
-
-var speakerOptimality = 1;
-var speakerOptimality2 = 1;
 
 var listener0 = cache(function(utterance, thresholds) {
   Infer({model: function(){
@@ -231,11 +231,13 @@ var singleAdj_speaker1 = cache(function(state, thresholds) {
   }})
 }, 10000);
 
-var speaker1 = cache(function(state, thresholds) {
+var speaker1 = cache(function(state, thresholds, opts) {
   Infer({model: function(){
-    var utterance = sample(utterancePrior);
+    var utterance = uniformDraw(utterances);
+    var cost = utteranceCost(utterance, opts.cost_neg)
     var L0 = listener0(utterance, thresholds);
-    factor(speakerOptimality*L0.score(state));
+    var utility = opts.multiplicative_cost ? L0.score(state) * cost : L0.score(state) - cost;
+    factor(opts.speaker_optimality*utility);
     return utterance;
   }})
 }, 10000);
@@ -243,7 +245,7 @@ var speaker1 = cache(function(state, thresholds) {
 var greaterThanThresholdBins = _.range(lb, ub, diff)
 var lessThanThresholdBins = _.range(lb+diff, ub+diff, diff)
 
-var listener1 = cache(function(utterance) {
+var listener1 = cache(function(utterance, opts) {
   Infer({model: function(){
     var thresholds = {
       happy: uniformDraw(thetaBins),
@@ -253,7 +255,7 @@ var listener1 = cache(function(utterance) {
     var state = sample(DiscreteBeta(1, 1));
     // var state = sample(DiscreteGaussian(0.5, 0.2));
 
-    var S1 = speaker1(state, thresholds)
+    var S1 = speaker1(state, thresholds, opts)
     observe(S1, utterance)
     return state
   }})
@@ -264,10 +266,18 @@ var listener1 = cache(function(utterance) {
 
 ```{r wpplCalls}
 listenerCall <- '
-_.fromPairs(map(function(u){
-  var post = listener1(u)
-  return [u, post]
-}, utterances))
+var statePrior = DiscreteBeta(1, 1)
+_.flatten(
+  map(function(opts){
+    map(function(u){
+      // display(opts)
+      var post = listener1(u, opts)
+      map(function(s){
+        return extend(opts, {utterance: u, state: s, posterior_prob: Math.exp(post.score(s))})
+      }, sort(statePrior.support()))
+    }, utterances)
+  }, all_opts)
+)
 '
 
 speakerCall <- '
@@ -324,8 +334,10 @@ _.flatten(map(function(tH){
 '
 ```
 
+## Speaker and literal listener runs
+
 ```{r runSpeaker}
-rs.wp <- webppl(paste(utils, meaningFn, rsa, speakerCall,  sep = '\n'))
+rs.wp <- webppl(paste(rsaBinsCoarse, utils, meaningFn, rsa, speakerCall,  sep = '\n'))
 
 rs.tidy <- data.frame(rs.wp) %>%
   gather(utt, prob, -state, -happy_theta, -unhappy_theta)
@@ -333,8 +345,8 @@ rs.tidy <- data.frame(rs.wp) %>%
 
 
 ```{r runliteral}
-rs.wp.l0 <- webppl(paste(utils, meaningFn, rsa, literalListenerCall,  sep = '\n'))
-rs.wp.singleAdjSpeaker <- webppl(paste(utils, meaningFn, rsa, singleAdjSpeakerCall,  sep = '\n'))
+rs.wp.l0 <- webppl(paste(rsaBinsCoarse, utils, meaningFn, rsa, literalListenerCall,  sep = '\n'))
+rs.wp.singleAdjSpeaker <- webppl(paste(rsaBinsCoarse, utils, meaningFn, rsa, singleAdjSpeakerCall,  sep = '\n'))
 rs.tidy.singleAdjSpeaker <- data.frame(rs.wp.singleAdjSpeaker) %>%
   gather(utt, prob, -state, -happy_theta)
 ```
@@ -344,55 +356,63 @@ rs.tidy.singleAdjSpeaker <- data.frame(rs.wp.singleAdjSpeaker) %>%
 Faceting by thresholds
 ```{r facet-threshold}
 ggplot(rs.tidy %>%
-         filter(happy_theta %in% c(0.1,  0.7),
-                unhappy_theta %in% c(0.2, 0.6)) %>%
+         # filter((happy_theta == 0.103 & unhappy_theta == 0.6) |
+         #          (happy_theta == 0.6 & unhappy_theta == 0.103)) %>%
+         filter((happy_theta == 0.3 & unhappy_theta == 0.6) |
+                  (happy_theta == 0.6 & unhappy_theta == 0.3)) %>%
          mutate(utt = factor(utt,
-                            levels = c("unhappy",
+                            levels = rev(c("not_unhappy",
                                        "not_happy",
-                                       "not_unhappy",
-                                       "happy"),
-                          labels = c("short", "not tall", "not short", "tall"))), 
+                                       "unhappy",
+                                       "happy")),
+                          labels = rev(c("not unhappy","not happy",  "unhappy", "happy")))), 
        aes( x = state, y = prob, color = utt))+
-  geom_line(size = 1.5)+#aes(frame = happy_theta))+
+  geom_line(size = 1.5, alpha = 0.9)+#aes(frame = happy_theta))+
   scale_color_solarized()+
-  facet_grid(unhappy_theta~happy_theta)+
+  theme_black()+
+  facet_wrap(~happy_theta+ unhappy_theta)+
   ylab("Speaker production probability")+
   xlab("Height")+
   scale_x_continuous(breaks = c(0, 1))+
   scale_y_continuous(breaks = c(0, 1))+
   theme(strip.text.y = element_text(angle = 0))
 
-ggsave(paste("~/Documents/research/talks/vagueness/frisem-2018-01/img/S1_4thetas.pdf", sep = ""), width = 6, height = 4)
+ggsave(paste(fig.path, "model_S1_fixedThetas_2configs.pdf",  sep = ""),
+       width = 7, height = 3)
 ```
 
 with fixed unhappy_theta
 
+**Broken**
+
 ```{r}
-fig.theta.marg <- rs.tidy %>%
-  filter(unhappy_theta == 0.25) %>%
-      mutate(utt = factor(utt,
-                            levels = c("unhappy",
-                                       "not_happy",
-                                       "not_unhappy",
-                                       "happy"),
-                          labels = c("short", "not tall", "not short", "tall"))) %>%
+rs.tidy %>%
+  filter(unhappy_theta == 0.2) %>%
+   mutate(utt = factor(utt,
+                      levels = rev(c("not_unhappy",
+                                 "not_happy",
+                                 "unhappy",
+                                 "happy")),
+                    labels = rev(c("not unhappy","not happy",  "unhappy", "happy")))) %>% 
   ggplot(., aes( x = state, y = prob, color = utt))+
-  geom_line(aes(frame = happy_theta), size = 2)+
+  geom_line(size = 2)+
   scale_color_solarized()+
+  theme_black()+
   scale_x_continuous(breaks = c(0, 0.5, 1))+
   scale_y_continuous(breaks = c(0, 0.5, 1))+
-  ggtitle("'short' threshold = 0.25; 'tall' threshold = ")+
-  ylab("Speaker production probability")+
-  xlab("Height (normalized scale)")+
-  theme(text = element_text(size = 16))
+  theme(text = element_text(size = 16))+
+  labs(title = "'unhappy' threshold = 0.2; 'happy' threshold =: {frame_time}", 
+       x = "happiness (normalized scale)", y = "Speaker production probability") +
+  transition_time(happy_theta) +
+  ease_aes('linear')
 
-gganimate(fig.theta.marg, interval = 0.3, 
-          ani.width=500, ani.height=400, paste("~/Documents/research/talks/vagueness/frisem-2018-01/img/S1_unhappyTheta0.5.gif", sep = ""))
+#animate(fig.theta.marg, fps = 1/0.3, ani.width=500, ani.height=400)
+# anim_save( paste(fig.path,"S1_unhappyTheta0.5.gif", sep = ""))
 
 #ggsave("figs/S1_uttXstateXthetas_wCost.pdf", width = 20, height = 14)
 ```
 
-literal listener with moving happy threhsolds
+### literal listener with moving happy threhsolds
 
 ```{r}
 fig.l0.mov <- rs.wp.l0 %>%
@@ -406,35 +426,59 @@ fig.l0.mov <- rs.wp.l0 %>%
   xlab("Height (normalized scale)")+
   theme(text = element_text(size = 16))
 
-gganimate(fig.l0.mov, interval = 0.6, 
-          ani.width=500, ani.height=400, paste("~/Documents/research/talks/vagueness/frisem-2018-01/img/L0.gif", sep = ""))
+# gganimate(fig.l0.mov, interval = 0.6, 
+#           ani.width=500, ani.height=400, paste("~/Documents/research/talks/vagueness/frisem-2018-01/img/L0.gif", sep = ""))
 
 
 rs.wp.l0 %>%
   filter(happy_theta %in% c(0.200, 0.5, 0.8)) %>%
   ggplot(., aes( x = state, y = l0 ))+
-  geom_line(size = 2)+
+  geom_line(size = 2, color = 'white')+
   facet_wrap(~happy_theta) +
+  theme_black()+
   #geom_vline(aes(xintercept = happy_theta), lty = 3)+
   scale_x_continuous(breaks = c(0, 1))+
-  scale_y_continuous(breaks = c(0, 0.2))+
-  ylab("Literal posterior probability")+
-  xlab("Height (normalized scale)")+
-  ggtitle("Literal interpretations for 3 thresholds")+
+  scale_y_continuous(breaks = c(0, 0.3))+
+  ylab("Posterior probability mass")+
+  xlab("Happiness (normalized scale)")+
+  #ggtitle("Literal interpretations for 3 thresholds")+
   theme(text = element_text(size = 16))
 
-ggsave(paste("~/Documents/research/talks/vagueness/frisem-2018-01/img/L0_3thetas.pdf", sep = ""), width = 6, height = 4)
+#ggsave( paste(fig.path,"L0_3thetas.pdf", sep = ""), width = 7, height = 3)
 
 ```
 
-single adjective speaker with moving threshold
+
+```{r}
+rs.tidy.singleAdjSpeaker %>%
+    filter(happy_theta %in% c(0.200, 0.5, 0.8),
+           !(state %in% c(0.005, 0.995))) %>%
+      mutate(utt = factor(utt,
+                            levels = c("happy",
+                                       "silence"),
+                          labels = c("happy", "null"))) %>%
+  ggplot(., aes( x = state, y = prob, fill = utt))+
+  geom_col(position = position_dodge())+
+  scale_fill_solarized()+
+  theme_black()+
+  facet_wrap(~happy_theta)+
+  scale_x_continuous(breaks = c(0, 1))+
+  scale_y_continuous(breaks = c(0, 0.5, 1))+
+  ylab("Speaker production probability")+
+  xlab("Degree of happiness")+
+  theme(text = element_text(size = 16))
+ggsave( paste(fig.path,"S1_3thetas.pdf", sep = ""), width = 7, height = 3.7)
+
+```
+
+### single adjective speaker with moving threshold
 
 ```{r}
 fig.s1.singleadj.marg <- rs.tidy.singleAdjSpeaker %>%
       mutate(utt = factor(utt,
                             levels = c("happy",
                                        "silence"),
-                          labels = c("tall", "null"))) %>%
+                          labels = c("happy", "null"))) %>%
   ggplot(., aes( x = state, y = prob, fill = utt))+
   geom_col(aes(frame = happy_theta), color = 'black', position = position_dodge())+
   scale_fill_solarized()+
@@ -445,8 +489,8 @@ fig.s1.singleadj.marg <- rs.tidy.singleAdjSpeaker %>%
   xlab("Height (normalized scale)")+
   theme(text = element_text(size = 16))
 
-gganimate(fig.s1.singleadj.marg, interval = 0.3, 
-          ani.width=500, ani.height=400, paste("~/Documents/research/talks/vagueness/frisem-2018-01/img/S1_singleAdj.gif", sep = ""))
+# gganimate(fig.s1.singleadj.marg, interval = 0.3, 
+#           ani.width=500, ani.height=400, paste("~/Documents/research/talks/vagueness/frisem-2018-01/img/S1_singleAdj.gif", sep = ""))
 
 ```
 
@@ -471,56 +515,71 @@ ggplot(rs.marginal, aes( x = state, y = marginalProb, color = utt))+
   scale_x_continuous(breaks =c(0, 1))+
   scale_y_continuous(breaks = c(0, 0.5))
 
-ggsave("figs/S1_uttMarginals_wCost3_alpha1.png", width = 6, height = 3.7)
+#ggsave("figs/S1_uttMarginals_wCost3_alpha1.png", width = 6, height = 3.7)
 ```
+
+
+
+## Pragmatic listener runs
 
 "Not Unhappy" is semantically equivalent to "happy". The higher the state, the more likely "happy" (and "not unhappy") is to be produced by a speaker (because it's more likely to be true, given the uniform priors on thresholdse). 
 
 In the midpoint, "happy" / "not unhappy" is less true, and "unhappy"/ "not happy" is more true. 
 
 ```{r runListener}
-rs.listener.wp <- webppl(paste(utils, meaningFn, rsa, listenerCall,  sep = '\n'))
 
-rs.listener.wp.tidy <- bind_rows(
-  data.frame(rs.listener.wp$happy) %>% 
-    mutate(utterance = "happy"),
-  data.frame(rs.listener.wp$unhappy) %>% 
-    mutate(utterance = "unhappy"),
-  data.frame(rs.listener.wp$not_unhappy) %>% 
-    mutate(utterance = "not_unhappy"),
-  data.frame(rs.listener.wp$not_happy) %>% 
-    mutate(utterance = "not_happy")
+pragListener.params <- expand.grid(
+  speaker_optimality = c(1, 3, 5, 10),
+  cost_neg = c(1, 3, 5, 10),
+  multiplicative_cost = c(T, F)
 )
 
+rs.listener.wp.tidy <- webppl(paste(rsaBinsCoarse,utils, 
+                               meaningFn, rsa, 
+                               listenerCall,  sep = '\n'),
+                         data = pragListener.params,
+                         data_var = "all_opts")
 
-rs.listener.wp.tidy.samples <- get_samples(
-  rs.listener.wp.tidy %>% rename(prob = probs), 10000) %>%
-    mutate(utterance = factor(utterance,
-                            levels = c("unhappy",
+rs.listener.wp.tidy.samples <- get_samples(bind_rows(rs.listener.wp.tidy) %>% rename(prob = posterior_prob), 10000) %>%
+         mutate(utterance = factor(utterance,
+                            levels = rev(c("not_unhappy",
                                        "not_happy",
-                                       "not_unhappy",
-                                       "happy")))
+                                       "unhappy",
+                                       "happy")),
+                          labels = rev(c("not unhappy","not happy",  "unhappy", "happy"))))
+
+
+
 
 ggplot(rs.listener.wp.tidy.samples %>%
-         filter(utterance == "happy") %>%
-         mutate(utterance = factor(utterance, levels = c("happy"),
-                                   labels = c("tall"))), 
-       aes( x = support,fill = utterance, color = utterance))+
-  geom_density(alpha = 0.4, size = 1.3, aes(x=x),data = 
-                 data.frame(x = rnorm(n = 10000, 
-                                      mean = 0.5, sd = 0.2),
-                            utterance = "prior"))+
-  geom_density(alpha = 0.7, size = 1.3, adjust = 3)+
+         filter(multiplicative_cost),
+         # mutate(utterance = factor(utterance, levels = c("happy"),
+         #                           labels = c("tall"))), 
+       aes( x = state, fill = utterance, color = utterance))+
+  # geom_density(alpha = 0.4, size = 1.3, aes(x=x),data = 
+  #                data.frame(x = rnorm(n = 10000, 
+  #                                     mean = 0.5, sd = 0.2),
+  #                           utterance = "prior"))+
+  geom_density(alpha = 0.5, size = 1.3, adjust = 3)+
   scale_fill_solarized()+
   scale_color_solarized()+
+  facet_grid(speaker_optimality~cost_neg)+
+  # scale_fill_manual(values = c("#e41a1c"))+
+  # scale_color_manual(values = c("#e41a1c"))+
+  #scale_color_manual(values = c("#268bd2", "#859900"))+
   #guides(fill = F, color = F)+
-  xlab("Height (normalized scale)")+
+  xlab("Happiness (normalized scale)")+
   ylab("Posterior probability density")+
-  scale_x_continuous(breaks =c(0, 1), limits = c(-0.5, 1))+
-  scale_y_continuous(breaks = c(0, 2))+
+  #theme_black()+
+  scale_x_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  #scale_y_continuous(breaks = c(0, 2))+
   theme(legend.title = element_blank())
 
-ggsave(paste("~/Documents/research/talks/vagueness/frisem-2018-01/img/L1_singleAdj_gaussian.pdf", sep = ""), width = 6, height = 4)
+# ggsave(paste(fig.path, "model_L1_wCost3_alpha1.pdf",  sep = ""),
+#        width = 5.5, height = 3.5)
+# ggsave(paste(fig.path, "model_L1_happy_wCost3_alpha1.pdf",  sep = ""),
+#        width = 5.5, height = 3.5)
+#ggsave(paste("~/Documents/research/talks/vagueness/frisem-2018-01/img/L1_singleAdj_gaussian.pdf", sep = ""), width = 6, height = 4)
 #ggsave("figs/L1_posteriors_wCost3_alpha1.png", width = 6, height = 4)
 ```
 
@@ -547,7 +606,7 @@ rs.listener.wp.tidy %>%
   xlab("")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 
-ggsave("figs/L1_means_wCost3_alpha1.png", width = 4, height = 3.5)
+#ggsave("figs/L1_means_wCost3_alpha1.png", width = 4, height = 3.5)
 ```
 
 ```{r}
@@ -617,6 +676,8 @@ var meaning = function(words, state, thresholds, parsing){
 
 var compositional_un_prior = 0.5;
 var compositional_not_prior = 0.5;
+// var compositional_un_prior = 1;
+// var compositional_not_prior = 1;
 // var un_not_lexical_prior = not_lexical_prior*un_lexical_prior;
 
 var listener0 = cache(function(utterance, thresholds, parsing) {
@@ -628,7 +689,7 @@ var listener0 = cache(function(utterance, thresholds, parsing) {
    // display("l0 " + state + " " + m + " " + JSON.stringify(parsing))
     condition(m);
     return state;
-  }})
+  }, method: "enumerate"})
 }, 10000);
 
 var speaker1 = cache(function(state, thresholds, parsing) {
@@ -638,16 +699,17 @@ var speaker1 = cache(function(state, thresholds, parsing) {
     var L0 = listener0(utterance, thresholds, parsing);
     factor(speakerOptimality*L0.score(state));
     return utterance;
-  }})
+  }, method: "enumerate"})
 }, 10000);
 
-var listener1 = cache(function(utterance) {
+var listener1 = cache(function(list_of_utterances) {
   Infer({model: function(){
 
     var happy_threshold = uniformDraw(thetaBins);
     var compositional_un = flip(compositional_un_prior)
+    // var compositional_not = utterance == "not_unhappy" && compositional_un ? true :  flip(compositional_not_prior)
     var compositional_not = flip(compositional_not_prior)
-
+    
     var unhappy_threshold = compositional_un ? "happy_threshold" : uniformDraw(thetaBins)
     var not_happy_threshold = compositional_not ? "happy_threshold" : uniformDraw(thetaBins);
     var not_unhappy_threshold = -99;
@@ -663,13 +725,24 @@ var listener1 = cache(function(utterance) {
 
     var parsing = {compositional_un, compositional_not}
 
-    var state = sample(DiscreteBeta(1, 1));
+   // var state = sample(DiscreteBeta(1, 1));
     // var state = sample(DiscreteGaussian(0, 0.5));
+   var state = repeat(list_of_utterances.length, 
+      function(){ sample(DiscreteBeta(1, 1)) })
+      
+     map2(function(u, s){
+      // display(s)
+       var S1 = speaker1(s, thresholds, parsing)
+      // display(u + " " + S1.score(u))
+       observe(S1, u)
+    }, list_of_utterances, state)
 
-    var S1 = speaker1(state, thresholds, parsing)
-    observe(S1, utterance)
-    return extend(parsing, {state})
-  }})
+    return extend(parsing, {state: _.fromPairs(_.zip(list_of_utterances, state))})
+    
+    // var S1 = speaker1(state, thresholds, parsing)
+    // observe(S1, list_of_utterances)
+    // return extend(parsing, {state})
+  }, method: "enumerate"})
 }, 10000);
 '
 ```
@@ -678,53 +751,124 @@ var listener1 = cache(function(utterance) {
 uncertainHasThresholdListenerCall <- '
 _.fromPairs(map(function(u){
   display(u)
-  var post = listener1(u)
+  var post = listener1([u])
   display(u + " __ Comp(un) = " + expectation(post, function(x){return x.compositional_un}))
   display(u + " __ Comp(not) = " + expectation(post, function(x){return x.compositional_not}))
-  return [u, marginalize(post, "state")]
+  return [u, post]
+//  return [u, marginalize(post, "state")]
 }, utterances))
 '
 #uncertainHasThresholdListenerCall<- 'listener1("unhappy")'
 ```
 
+
+```{r multipleUtterancesModelCall}
+multipleUtterancesListenerCall <- '
+// var post = listener1(["happy", "not_happy", "unhappy", "not_unhappy"])
+//var post = listener1(["not_unhappy", "unhappy","not_happy", "happy"])
+var post = listener1(["not_unhappy", "unhappy","not_happy", "happy"])
+display(" __ comp(un) = " + expectation(post, function(x){return x.compositional_un }))
+display(" __ comp(not) = " + expectation(post, function(x){return x.compositional_not }))
+//marginalize(post, "state")
+post
+'
+```
+
 ```{r runUncertainHasThresholdListener}
 rs.listener.wp.2 <- webppl(paste(rsaBinsCoarse,
-                                 utils, uncertainHasThresholdsRSA, uncertainHasThresholdListenerCall,  sep = '\n'))
+                                 utils, uncertainHasThresholdsRSA,
+                                 #uncertainHasThresholdListenerCall, 
+                                 multipleUtterancesListenerCall, # takes 6 min to run
+                                 sep = '\n'))
 
-rs.listener.wp.tidy.2 <- bind_rows(
-  data.frame(rs.listener.wp.2$happy) %>% 
-    mutate(utterance = "happy"),
-  data.frame(rs.listener.wp.2$unhappy) %>% 
-    mutate(utterance = "unhappy"),
-  data.frame(rs.listener.wp.2$not_unhappy) %>% 
-    mutate(utterance = "not_unhappy"),
-  data.frame(rs.listener.wp.2$not_happy) %>% 
-    mutate(utterance = "not_happy")
-)
+# rs.listener.wp.tidy.2 <- bind_rows(
+#   data.frame(rs.listener.wp.2$happy) %>%
+#     mutate(utterance = "happy") %>%
+#     rename(support.state = support.state.happy),
+#   data.frame(rs.listener.wp.2$unhappy) %>%
+#     mutate(utterance = "unhappy")%>%
+#     rename(support.state = support.state.unhappy),
+#   data.frame(rs.listener.wp.2$not_unhappy) %>%
+#     mutate(utterance = "not_unhappy")%>%
+#     rename(support.state = support.state.not_unhappy),
+#   data.frame(rs.listener.wp.2$not_happy) %>%
+#     mutate(utterance = "not_happy")%>%
+#     rename(support.state = support.state.not_happy)
+# ) %>%
+#   rename(prob = probs)
 
+rs.listener.wp.tidy.2 <- rs.listener.wp.2 %>%
+  gather(utterance, support.state, starts_with("state")) %>%
+  mutate(utterance = gsub("state.","", utterance))
 
-rs.listener.wp.tidy.samples.2 <- get_samples(
-  rs.listener.wp.tidy.2 %>% rename(prob = probs), 10000) %>%
+rs.listener.wp.tidy.samples.2 <- get_samples(rs.listener.wp.tidy.2 %>% 
+    group_by(utterance, support.state) %>%
+    summarize(prob = sum(prob)) %>%
+    ungroup(), 10000) %>%
+    #rename(prob = probs), 10000) %>%
     mutate(utterance = factor(utterance,
-                            levels = c("unhappy",
+                            levels = rev(c("not_unhappy",
                                        "not_happy",
-                                       "not_unhappy",
-                                       "happy")))
+                                       "unhappy",
+                                       "happy")),
+                          labels = rev(c("not unhappy","not happy",  "unhappy", "happy"))))
 
 ggplot(rs.listener.wp.tidy.samples.2, 
-       aes( x = support,fill = utterance, color = utterance))+
-#  geom_density(alpha = 0.4, size = 1.3)+
+       aes( x = support.state,fill = utterance, color = utterance))+
+  geom_density(alpha = 0.4, size = 1.3, adjust = 3)+
   scale_fill_solarized()+
-  geom_histogram(alpha = 0.4, size = 1.3)+
+  theme_black()+
+#  geom_histogram(alpha = 0.4, size = 1.3)+
   scale_color_solarized()+
   xlab("Degree of happiness")+
-  facet_wrap(~utterance)+
+  #facet_wrap(~utterance)+
   ylab("Posterior probability density")+
   scale_x_continuous(breaks =c(0, 1))+
   scale_y_continuous(breaks = c(0, 2))
 
+ggsave(paste(fig.path, "model_L1_uncertainNeg_wCost3_alpha1_4utts.pdf",  sep = ""),
+       width = 5.5, height = 3.5)
 #ggsave("figs/L1_posteriors_wCost3_alpha1.png", width = 6, height = 4)
 ```
+
+```{r}
+
+rs.listener.wp.tidy.2 %>%
+  select(support.compositional_not, support.compositional_un, utterance, prob) %>%
+  mutate(probs = as.numeric(as.character(prob))) %>%
+  #unique() %>%
+  gather(key, val, -utterance, -prob) %>%
+  group_by(key, val, utterance) %>%
+  summarize(marginalprob = sum(prob)) %>%
+  ungroup() %>%
+  mutate(parsed_meaning = factor(key,
+                                 levels = c("support.compositional_not",
+                                            "support.compositional_un"),
+                                 labels = c("not...", "un-"))) %>%
+      mutate(utterance = factor(utterance,
+                            levels = rev(c("not_unhappy",
+                                       "not_happy",
+                                       "unhappy",
+                                       "happy")),
+                          labels = rev(c("not unhappy","not happy",  "unhappy", "happy")))) %>% 
+  filter(val == TRUE) %>%
+  ggplot(., aes(x = utterance, y = marginalprob, group = parsed_meaning, 
+                alpha = parsed_meaning,
+                fill = utterance))+
+  geom_col(position = position_dodge(), color = 'white')+
+  theme_black()+
+  guides(alpha = guide_legend(title = ""))+
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "white")+
+  scale_alpha_manual(values = c(0.6, 1))+
+    scale_fill_solarized()+
+  scale_y_continuous(limits = c(0, 0.75), breaks = c(0, 0.75))+
+  ylab("Probability of compositional interpretation")
+
+ggsave(paste(fig.path, "model_L1_uncNeg_lexicon_wCost3_alpha1.pdf",  sep = ""),
+       width = 5.5, height = 4)
+
+```
+
 ```{r}
 rs.listener.wp.tidy.2 %>%
   group_by(utterance) %>%
@@ -1241,3 +1385,322 @@ rs.listener.wp.tidy.2 %>%
 
 Fixed alternatives model: 
 - cost to "un": makes "unhappy more extreme"
+
+# QUD Change model
+
+
+```{r rsa-qudChange}
+fixedThresholdModel <- '
+var utterances = [
+  "happy",
+  "not_unhappy",
+  "not_happy",
+  "unhappy"
+  // "silence"
+  // "neither_nor"
+];
+
+var cost_yes = 0;
+var cost_not = 2;
+var cost_un = 2;
+
+
+
+var utterancePrior = cache(function(utterances){
+  var uttCosts = map(function(u) {
+    var notCost = hasNegModifier(u) ? cost_not : 0
+    var unCost = hasNegMorph(u) ? cost_un : 0
+    var totalCost = notCost + unCost
+    return Math.exp(-totalCost)
+  }, utterances)
+
+  return Infer({model: function(){
+    return utterances[discrete(uttCosts)]
+  }})
+})
+
+var speakerOptimality = 1;
+var speakerOptimality2 = 1;
+
+var meaning = function(words, state){
+  words == "happy" ? state > 0.7 :
+  words == "not_happy" ? state <= 0.7 :
+  words == "unhappy" ? state < 0.3 :
+  words == "not_unhappy" ? state >= 0.3 :
+  true
+};
+
+// var StatePrior = Categorical({
+  // vs:[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+  // ps:[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+// })
+
+var StatePrior =  DiscreteBeta(1, 1)
+
+var listener0 = cache(function(utterance, qud) {
+  Infer({model: function(){
+    var state = sample(StatePrior);
+    var qudVal = qud == "state" ? state : meaning(qud, state)
+    var m = meaning(utterance, state);
+    condition(m);
+    return qudVal;
+  }, method: "enumerate"})
+}, 10000);
+
+var speaker1 = cache(function(state, qud) {
+  Infer({model: function(){
+    var utterance = sample(utterancePrior(utterances));
+    var qudVal = qud == "state" ? state : meaning(qud, state)
+    // var utterance = sample(utterancePrior(
+      // qud =="happy" ? ["happy", "not_happy"] :
+      // qud =="unhappy" ? ["unhappy", "not_unhappy"] :
+      // utterances
+    // ))
+    var L0 = listener0(utterance, qud);
+    factor(speakerOptimality*L0.score(qudVal));
+    return utterance;
+  }, method: "enumerate"})
+}, 10000);
+
+var listener1 = cache(function(list_of_utterances) {
+  Infer({model: function(){
+   var state = repeat(list_of_utterances.length, function(){ sample(StatePrior) })
+   // var qud = list_of_utterances[0]  == "unhappy" ? "state" :
+//       list_of_utterances[0]  == "not_happy" ? "happy" : 
+  //    list_of_utterances[0]  == "not_unhappy" ? "unhappy" : 
+  //    list_of_utterances[0]  == "happy" ? "state" : 
+  //    "state"
+   //  display(qud)
+    var qud = "state"
+     
+     map2(function(u, s){
+      // display(s)
+       var S1 = speaker1(s, qud)
+      // display(u + " " + S1.score(u))
+       observe(S1, u)
+    }, list_of_utterances, state)
+
+    return {state: _.fromPairs(_.zip(list_of_utterances, state))}
+    
+  }, method: "enumerate"})
+}, 10000);
+'
+```
+
+
+
+```{r rsa-fixedSemantics}
+fixedThresholdModel <- '
+var utterances = [
+  "happy",
+  "not_unhappy",
+  "not_happy",
+  "unhappy"
+  // "silence"
+  // "neither_nor"
+];
+
+var cost_yes = 0;
+var cost_not = 2;
+var cost_un = 1;
+
+var uttCosts = map(function(u) {
+  var notCost = hasNegModifier(u) ? cost_not : 0
+  var unCost = hasNegMorph(u) ? cost_un : 0
+  var totalCost = notCost + unCost
+  return Math.exp(-totalCost)
+}, utterances)
+
+var utterancePrior = Infer({model: function(){
+    return utterances[discrete(uttCosts)]
+}})
+
+var speakerOptimality = 5;
+var speakerOptimality2 = 1;
+
+var meaning = function(words, state){
+  words == "happy" ? state > 0.8 :
+  words == "not_happy" ? state <= 0.8 :
+  words == "unhappy" ? state < 0.3 :
+  words == "not_unhappy" ? state >= 0.3 :
+  true
+};
+
+// var StatePrior = Categorical({
+  // vs:[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+  // ps:[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+// })
+
+var StatePrior =  DiscreteBeta(1, 1)
+
+var listener0 = cache(function(utterance) {
+  Infer({model: function(){
+    var state = sample(StatePrior);
+    var m = meaning(utterance, state);
+    condition(m);
+    return state;
+  }, method: "enumerate"})
+}, 10000);
+
+var speaker1 = cache(function(state) {
+  Infer({model: function(){
+    var utterance = sample(utterancePrior);
+    var L0 = listener0(utterance);
+    factor(speakerOptimality*L0.score(state));
+    return utterance;
+  }, method: "enumerate"})
+}, 10000);
+
+var listener1 = cache(function(list_of_utterances) {
+  Infer({model: function(){
+   var state = repeat(list_of_utterances.length, function(){ sample(StatePrior) })
+
+     map2(function(u, s){
+      // display(s)
+       var S1 = speaker1(s)
+      // display(u + " " + S1.score(u))
+       observe(S1, u)
+    }, list_of_utterances, state)
+
+    return {state: _.fromPairs(_.zip(list_of_utterances, state))}
+    
+  }, method: "enumerate"})
+}, 10000);
+'
+```
+
+```{r wpplCalls-changeQUD}
+fixedThresholdListenerCall <- '
+_.fromPairs(map(function(u){
+  display(u)
+  var post = listener1([u])
+  display(u + " __ Comp(un) = " + expectation(post, function(x){return x.compositional_un}))
+  display(u + " __ Comp(not) = " + expectation(post, function(x){return x.compositional_not}))
+  return [u, post]
+//  return [u, marginalize(post, "state")]
+}, utterances))
+'
+#uncertainHasThresholdListenerCall<- 'listener1("unhappy")'
+```
+
+
+```{r multipleUtterancesQUDModelCall}
+multipleUtterancesFixedThresholdListenerCall <- '
+// var post = listener1(["happy", "not_happy", "unhappy", "not_unhappy"])
+//var post = listener1(["not_unhappy", "unhappy","not_happy", "happy"])
+var post = listener1(["not_unhappy", "unhappy","not_happy", "happy"])
+display(" __ comp(un) = " + expectation(post, function(x){return x.compositional_un }))
+display(" __ comp(not) = " + expectation(post, function(x){return x.compositional_not }))
+//marginalize(post, "state")
+post
+'
+```
+
+```{r fixedThresholdSpeakerCall}
+speakerCall <- '
+_.flatten(
+  map(function(s){
+     // console.log(s + " th " + tH + " tu " + tU)
+    var speakProbs = speaker1(s)
+     return {  
+        state: s,
+        "happy": Math.exp(speakProbs.score("happy")),
+        "unhappy": Math.exp(speakProbs.score("unhappy")),
+        "not_unhappy": Math.exp(speakProbs.score("not_unhappy")),
+        "not_happy": Math.exp(speakProbs.score("not_happy"))
+      }
+  }, midBins)
+)
+'
+```
+
+
+```{r runQUDListener}
+rs.listener.wp.fixed <- webppl(paste(rsaBinsCoarse,
+                                 utils, 
+                                 fixedThresholdModel,
+                                 fixedThresholdListenerCall,
+                                 #multipleUtterancesListenerCall, # takes 6 min to run
+                                 sep = '\n'))
+
+rs.listener.wp.tidy.fixed <- bind_rows(
+  data.frame(rs.listener.wp.fixed$happy) %>%
+    mutate(utterance = "happy") %>%
+    rename(support.state = state.happy),
+  data.frame(rs.listener.wp.fixed$unhappy) %>%
+    mutate(utterance = "unhappy")%>%
+    rename(support.state = state.unhappy),
+  data.frame(rs.listener.wp.fixed$not_unhappy) %>%
+    mutate(utterance = "not_unhappy")%>%
+    rename(support.state = state.not_unhappy),
+  data.frame(rs.listener.wp.fixed$not_happy) %>%
+    mutate(utterance = "not_happy")%>%
+    rename(support.state = state.not_happy)
+) %>%
+  rename(prob = probs)
+
+# rs.listener.wp.tidy.2 <- rs.listener.wp.2 %>%
+#   gather(utterance, support.state, starts_with("state")) %>%
+#   mutate(utterance = gsub("state.","", utterance))
+
+rs.listener.wp.tidy.samples.fixed <- get_samples(rs.listener.wp.tidy.fixed %>%
+    group_by(utterance, support.state) %>%
+    summarize(prob = sum(prob)) %>%
+    ungroup(), 10000) %>%
+    #rename(prob = probs), 10000) %>%
+    mutate(utterance = factor(utterance,
+                            levels = rev(c("not_unhappy",
+                                       "not_happy",
+                                       "unhappy",
+                                       "happy")),
+                          labels = rev(c("not unhappy","not happy",  "unhappy", "happy"))))
+
+ggplot(rs.listener.wp.tidy.samples.fixed, 
+       aes( x = support.state, fill = utterance, color = utterance))+
+  geom_density(alpha = 0.4, size = 1.3, adjust = 4)+
+  #geom_bar(position = position_dodge(), alpha = 0.4, size = 1.3)+
+  scale_fill_solarized()+
+  theme_black()+
+#  geom_histogram(alpha = 0.4, size = 1.3)+
+  scale_color_solarized()+
+  xlab("Degree of happiness")+
+  #facet_wrap(~utterance)+
+  ylab("Posterior probability density")+
+  scale_x_continuous(breaks =c(0, 1))#+
+  #scale_y_continuous(breaks = c(0, 2))
+
+#ggsave(paste(fig.path, "model_L1_fixedSemantics_1utts_negationImpliesPolarQud_allUtts.pdf",  sep = ""),
+ #      width = 5.5, height = 3.5)
+
+# ggsave(paste(fig.path, "model_L1_fixedSemantics_1utts_stateQud_costNot2Un1_opt5.pdf",  sep = ""),
+#        width = 5.5, height = 3.5)
+```
+
+```{r runFixedSpeaker}
+rs.wp.fs <- webppl(paste(rsaBinsCoarse, utils, meaningFn,                                  fixedThresholdModel,speakerCall,
+                      sep = '\n'))
+
+rs.tidy <- data.frame(rs.wp.fs) %>%
+  gather(utt, prob, -state)
+
+ggplot(rs.tidy %>%
+         mutate(utt = factor(utt,
+                            levels = rev(c("not_unhappy",
+                                       "not_happy",
+                                       "unhappy",
+                                       "happy")),
+                          labels = rev(c("not unhappy","not happy",  "unhappy", "happy")))), 
+       aes( x = state, y = prob, color = utt))+
+  geom_line(size = 1.5, alpha = 0.9)+#aes(frame = happy_theta))+
+  scale_color_solarized()+
+  theme_black()+
+  ylab("Speaker production probability")+
+  xlab("Height")+
+  scale_x_continuous(breaks = c(0, 1))+
+  scale_y_continuous(breaks = c(0, 1))+
+  theme(strip.text.y = element_text(angle = 0))
+
+# ggsave(paste(fig.path, "model_S1_fixedThetaSpeaker_costNot2Un1_opt5.pdf", 
+#              sep = ""),
+#        width = 5, height = 3)
+```
