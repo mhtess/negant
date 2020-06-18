@@ -1,6 +1,8 @@
 ---
 title: "Understanding the model"
-output: html_notebook
+output: github_document
+author: "MH Tessler"
+date: March 11, 2019
 ---
 
 
@@ -316,7 +318,7 @@ var utterances = [
 ];
 
 var cost_yes = 0;
-var cost_not = 2;
+var cost_not = 1;
 var cost_un = 1;
 
 var uttCosts = map(function(u) {
@@ -360,7 +362,7 @@ var listener0 = cache(function(utterance, thresholds, lexicon) {
    // display("l0 " + state + " " + m + " " + JSON.stringify(parsing))
     condition(m);
     return state;
-  }})
+  }, method: "enumerate"})
 }, 10000);
 
 var speaker1 = cache(function(state, thresholds, lexicon) {
@@ -370,7 +372,7 @@ var speaker1 = cache(function(state, thresholds, lexicon) {
     var L0 = listener0(utterance, thresholds, lexicon);
     factor(speakerOptimality*L0.score(state));
     return utterance;
-  }})
+  }, method: "enumerate"})
 }, 10000);
 
 var listener1 = cache(function(list_of_utterances) {
@@ -395,7 +397,7 @@ var listener1 = cache(function(list_of_utterances) {
     }, list_of_utterances, state)
 
     return extend(lexicon, {state: _.fromPairs(_.zip(list_of_utterances, state))})
-  }})
+  }, method: "enumerate"})
 }, 10000);
 '
 ```
@@ -423,21 +425,26 @@ marginalize(post, "state")
 
 
 ```{r runSingle}
-rs.listener.wp.all4 <- webppl(paste(rsaBinsCoarserGauss,
+rs.listener.test <- webppl(paste(rsaBinsCoarserGauss,
                                  utils, 
                                  uncertainHasThresholdsRSA,
-                                 multipleUtterancesListenerCall,
+                                 #'listener1(["not_unhappy"])',
                                  sep = '\n'),
                            data = list(compositional_un = 0.5, 
                                        compositional_not = 0.5), 
                            data_var = "lexicaPriorProbs")
 
+rs.listener.test %>%
+  select(-state.not_unhappy) %>%
+  group_by(compositional_un, compositional_not) %>%
+  summarize(probs = sum(prob))
+
+# if the cost is equal, the Uncertain Neg model still prefers a compositional "not" and non compositional "un" to the alternative (though overall there is a preference for both being noncompositional)
+
 rs.listener.wp.all4.tidy <- rs.listener.wp.all4  %>%
   gather(support, utterance, -prob) %>%
   group_by(support, utterance) %>%
-  summarize(probs = sum(prob),
-            src = )
-%>%
+  summarize(probs = sum(prob)) %>%
   ggplot(., aes( x = val, y = marginalProb))+
   geom_col(position = position_dodge())+
   facet_wrap(~key)

@@ -17,6 +17,8 @@ library(ggthemes)
 library(tidyverse)
 library(ggplot2)
 library(knitr)
+library(ggridges)
+library(viridis)
 theme_set(theme_few())
 ```
 
@@ -36,7 +38,7 @@ theme_set(theme_few())
 ```{r runListener}
 
 pragListener.params <- expand.grid(
-  speaker_optimality = c(1, 2),
+  speaker_optimality = c(1),
   #cost_neg = c(0, 2, 4),
   multiplicative_cost = c(F)
 )
@@ -63,6 +65,177 @@ rs.listener.wp.tidy <- webppl(program_file = "negant-allModels.wppl",
 
 rs.listener.wp.tidy.samples <- get_samples(rs.listener.wp.tidy %>% 
                                              rename(prob = posterior_prob), 2000)
+
+# save(rs.listener.wp.tidy.samples,
+#      file = "negant-uncNeg-singleThreeMulti_costun2_3-sop1_3_5_sansBothContrary.RData")
+
+# save(rs.listener.wp.tidy.samples,
+#      file = "negant-2LUmodels_4conditions_so2_3_cost22_23_results.RData")
+
+#load("negant-2LUmodels_4conditions_so2_3_cost22_23_results.RData")
+
+
+
+
+
+ load("negant-4models_bothConditions_so1_costun2_costnot3_fineBins_results.RData")
+# 
+ rs.listener.wp.tidy.samples.4cond <- rs.listener.wp.tidy.samples
+#   
+ load("negant-4models_bothConditions_so1_costun2_costnot3_results.RData")
+# 
+rs.listener.wp.tidy.samples <- bind_rows(
+  rs.listener.wp.tidy.samples.4cond, rs.listener.wp.tidy.samples
+)
+# 
+ distinct(rs.listener.wp.tidy.samples , modelName, cost_un, cost_not)
+```
+
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  #filter(!(modelName == "vanillaRSA")) %>%
+  filter(cost_un == 2, cost_not == 3) %>%
+  filter(condition %in% c("single_utterance", "multiple_utterances")) %>%
+  filter(modelName %in% c("georgeOrwell", "bonafideAntonyms", "uncertainNegation")) %>%
+  #filter(speaker_optimality == 1, cost_neg == 3, prior == 'uniform') %>%
+  mutate(modelName = factor(modelName, levels = c(#"vanillaRSA", 
+                                                  "bonafideAntonyms",
+                                                  "georgeOrwell",
+                                                  #"fixedLexUnc",
+                                                   "uncertainNegation"
+                                                  ),
+                            labels = c(#"Aristotle\nno Vagueness",
+                                       # "Aristotle\nwith Vagueness", 
+                                      # "George Orwell\nwith Vagueness",
+                                       # "Uncertain Negation\nno Vagueness",
+                                       # "Uncertain Negation\nwith Vagueness"
+                                      "Aristotle",
+                                      "George Orwell",
+                                      "Flexible Negation"
+                                       )),
+        Utterance = factor(utterance,
+                           levels = c("un_happy",
+                                      "not_happy",
+                                      "not_un_happy",
+                                     "happy"),
+                           labels = c("Unhappy",
+                                      "Not happy",
+                                      "Not unhappy", 
+                                      "Happy")),
+        condition = factor(condition, levels = c("single_utterance", "multiple_utterances" ,"two_utterances", "three_utterances"),
+                           labels = c("Single\nutterance", "Multiple\nutterances", "Two\nutterances", "Three\nutterances"))) %>%
+ggplot(., aes( x = state, y = Utterance, fill = ..x..))+
+  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5)+
+  #geom_density(alpha = 0.5, size = 1, adjust = 3)+#, aes(y = ..scaled..))+
+  #scale_fill_solarized()+
+  #scale_color_solarized()+
+  #facet_grid(speaker_optimality~cost_not+cost_un, scales = 'free')+
+  labs(x = "Happiness (normalized scale)", y = "Probability density")+
+  #scale_x_continuous(breaks =c(0, 1), limits = c(0, 1), labels=c(-1, 1))+
+  #scale_y_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  #guides(fill = guide_legend(reverse = T))+
+  theme(strip.text.y = element_text(angle  = 0),
+        legend.position = 'bottom')+
+  #facet_grid(condition~modelName, scales = 'free')
+  geom_density_ridges_gradient(
+    #jittered_points = T, 
+    alpha = 0.8, 
+    scale = 0.85,
+    #position = position_points_jitter(width = 0.01, height = 0),
+    #point_shape = '|', point_size = 2.5, point_alpha = 0.1,
+    #rel_min_height = 0.005, 
+    gradient_lwd = 1,
+    bandwidth = 0.07,
+    quantile_lines= T, quantiles = 2,
+    size =1.2
+    )+
+  # stat_density_ridges(
+  #   geom = "density_ridges_gradient", 
+  #   bandwidth = 0.07,
+  #   rel_min_height = 0.01, gradient_lwd = 1#calc_ecdf = TRUE,
+  # #  quantiles = 4, quantile_lines = TRUE
+  # )+
+  # geom_linerangeh(data = d.full.boot.pres,
+  #   inherit.aes = F,
+  #   aes(xmin = ci_lower, xmax = ci_upper, 
+  #       y = as.numeric(adjective_type_rescaled) +0.2),
+  #   size = 1.25, color = 'white')+
+  #facet_grid(condition ~modelName + speaker_optimality+cost_un + cost_not, scales = 'free')+
+  facet_grid(condition ~modelName, scales = 'free')+
+  scale_fill_viridis(option = "C")+
+  #scale_color_viridis(option = "C", limits = c(0, 1))+
+  guides(fill = F, color = F)+
+  ylab("")+
+  # scale_x_continuous(#limits = c(0, 1), #breaks = c(0, 1),
+  #                    #expand = c(0.01, 0), 
+  #                    labels = c(-1, 1))+
+  scale_x_continuous(breaks =c(0, 1), limits = c(0, 1), labels=c(-1, 1))+
+  scale_y_discrete(expand = expand_scale(mult = c(0.05, .30)))+
+  #xlab("slider ratings")+
+  theme(strip.text.y = element_text(angle = 0))
+# 
+
+
+ # ggsave(
+ #  #"~/projects/negant/writing/journal/figs/alternativeModels_all5_fine_dists.pdf",
+ #  #"~/projects/negant/writing/journal/figs/uncNeg_singleThreeMulti_costun2_3_MElexPrior_dists.pdf",
+ #  "~/projects/negant/writing/journal/figs/alternativeModels_dists4.pdf",
+ #       width = 8, height = 4)
+```
+
+## Test two utterances
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+    #filter(modelName == "uncertainNegation") %>%
+    #filter(cost_not == 3, cost_un == 1) %>%
+    mutate(Utterance = factor(utterance,
+                           levels = rev(c("un_happy",
+                                      "not_happy",
+                                      "not_un_happy",
+                                      "happy")),
+                           labels = rev(c("Unhappy",
+                                      "Not happy",
+                                      "Not unhappy",
+                                      "Happy"))),
+        speaker_optimality = factor(speaker_optimality),
+        cost_un = factor(cost_un),
+        cost_not = factor(cost_not)) %>% 
+ggplot(., aes( x = state, fill = Utterance))+
+  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5)+
+  geom_density(alpha = 0.5, size = 1, adjust = 3, aes(y = ..scaled..))+
+  scale_fill_solarized()+
+  scale_color_solarized()+
+  facet_grid(modelName+speaker_optimality~ cost_not+cost_un+ condition, scales = 'free')+
+  labs(x = "Happiness (normalized scale)", y = "Probability density (scaled)")+
+  scale_x_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  scale_y_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  guides(fill = guide_legend(reverse = T))+
+  theme(strip.text.y = element_text(angle  = 0),
+        legend.position = 'bottom')
+  # geom_density_ridges_gradient(
+  #   alpha = 0.8, scale = 0.7, adjust = 3,
+  #   rel_min_height = 0.01, gradient_lwd = 1,  
+  #   quantile_lines = T, 
+  #   quantiles = c(0.5)
+  #   )+
+  # facet_wrap(~modelName, nrow = 1)+
+  # scale_fill_viridis(option = "C")+
+  # #scale_color_viridis(option = "C", limits = c(0, 1))+
+  # guides(fill = F, color = F)+
+  # ylab("Posterior probability density (scaled)")+
+  # scale_x_continuous(limits = c(0, 1), breaks = c(0, 1),
+  #                    expand = c(0.01, 0))+
+  # scale_y_discrete(expand = expand_scale(mult = c(0.05, .30)))+
+  # xlab("Happiness (normalized scale)")+
+  # theme(strip.text.y = element_text(angle = 0))
+# 
+
+
+# ggsave(
+#   "~/projects/negant/writing/journal/figs/lexUncFixed_uncNeg_4conditions.pdf",
+#        width = 13, height = 8)
 ```
 
 ```{r}
