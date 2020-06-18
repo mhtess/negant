@@ -1,0 +1,60 @@
+---
+title: "Reviewer inspired alternative models"
+author: "MH Tessler"
+date: "6/18/2020"
+output: html_document
+---
+
+
+```{r eval = T}
+knitr::opts_chunk$set(warning=F, cache=F, message=F, sanitize = T)
+```
+
+```{r}
+library(rwebppl)
+library(jsonlite)
+library(ggthemes)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(ggridges)
+library(viridis)
+theme_set(theme_few())
+```
+
+# Model simulations
+
+- All assume additive cost function
+
+- Speaker optimality: [1, 2, 3, 5, 10]
+- Cost (per neg): [0, 1, 2, 3, 4]
+
+```{r runListener}
+
+pragListener.params <- expand.grid(
+  speaker_optimality = c(1),
+  # cost_un = c(2),
+  # cost_not = c(3),
+  #speaker_optimality = c(1),
+  #cost_neg = c(0, 1, 2, 3, 4),
+  multiplicative_cost = c(F)
+)
+
+rs.listener.wp.tidy <- webppl(program_file = "webppl/negant-varyAlt.wppl",
+                         data = pragListener.params,
+                         data_var = "all_opts") %>%
+  bind_rows(.) 
+
+rs.listener.wp.tidy.samples <- get_samples(
+  rs.listener.wp.tidy %>% rename(prob = posterior_prob), 
+  2000
+  ) %>%
+  mutate(multiplicative_cost = factor(multiplicative_cost),
+         modelName = factor(modelName),
+         prior = factor(prior),
+         utterance = factor(utterance),
+         modelName = factor(modelName))
+         
+# save(rs.listener.wp.tidy.samples,
+#      file = "negant-uncNeg_paramSweep_results.RData")
+```

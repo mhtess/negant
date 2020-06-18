@@ -1,0 +1,322 @@
+var lowerBins = [
+  0,
+  0.01,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  0.99
+];
+
+var upperBins = [
+  0.01,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  0.99,
+  1
+];
+
+var lowerBinsFine = [
+  0,
+  0.01,
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25,
+  0.3,
+  0.35,
+  0.4,
+  0.45,
+  0.5,
+  0.55,
+  0.6,
+  0.65,
+  0.7,
+  0.75,
+  0.8,
+  0.85,
+  0.9,
+  0.95,
+  0.99
+];
+
+var upperBinsFine = [
+  0.01,
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25,
+  0.3,
+  0.35,
+  0.4,
+  0.45,
+  0.5,
+  0.55,
+  0.6,
+  0.65,
+  0.7,
+  0.75,
+  0.8,
+  0.85,
+  0.9,
+  0.95,
+  0.99,
+  1
+];
+
+var round = function(x) {
+  return Math.round(x * 100) / 100
+}
+
+var isNot = function(u) {
+  return u == "not"
+}
+
+var isUn = function(u) {
+  return u == "un"
+}
+
+var hasNegModifier = function(utt) {
+  return (utt.split("_")[0] == "not")
+};
+var hasNegMorph = function(utt) {
+  return (utt.indexOf("un") > -1)
+};
+var roundTo3 = function(x) {
+  return Math.round(x * 1000) / 1000
+}
+
+var midBins = map2(function(b1, b2) {
+  return roundTo3((b2 - b1) / 2 + b1)
+}, lowerBins, upperBins)
+
+var thetaBins = map2(function(b1, b2) {
+  return roundTo3((b2 - b1) / 2 + b1);
+}, midBins.slice(0, midBins.length - 1), midBins.slice(1))
+
+var neutralThetaBins = sort(thetaBins).slice(1, (thetaBins.length / 2))
+
+var avoidEnds = function(x) {
+  return x >= 1 ? 0.99 : x == 0 ? 0.01 : x
+}
+
+var lb = 0,
+  ub = 1,
+  diff = 0.05;
+var bins = _.range(lb, ub + diff, diff)
+
+var DiscreteGaussian = function(mu, sigma) {
+  Infer({
+    model: function() {
+      categorical({
+        vs: midBins,
+        ps: map(function(x) {
+          Math.exp(Gaussian({
+            mu,
+            sigma
+          }).score(x))
+        }, midBins)
+      })
+    }
+  })
+}
+
+var DiscreteBeta = cache(function(a, b) {
+  Infer({
+    model: function() {
+      categorical({
+        vs: midBins,
+        ps: map(function(x) {
+          Math.exp(Beta({
+            a,
+            b
+          }).score(x))
+        }, midBins)
+      })
+    }
+  })
+})
+
+var aristotleLexicon = {
+  happy: function(state, thresholds) {
+    return state > thresholds.happy
+  },
+  not_happy: function(state, thresholds) {
+    return !(state > thresholds.happy)
+  },
+  un_happy: function(state, thresholds) {
+    return state < thresholds.un_happy
+  },
+  not_un_happy: function(state, thresholds) {
+    return !(state < thresholds.un_happy)
+  },
+  neutral: function(state, thresholds) {
+    return (state > 0.5 - thresholds.neutral) && (state < 0.5 + thresholds.neutral)
+  },
+  name: "un_contrary"
+}
+
+
+var utteranceCost = function(u, cost_not, cost_un, multiplicative_cost) {
+  var c0 = multiplicative_cost ? 1 : 0;
+  var null_cost_incr = multiplicative_cost ? 1 : 0
+  var splitUtt = u.split("_")
+
+  var c1 = isNot(splitUtt[0]) ? cost_not : isUn(splitUtt[0]) ? cost_un : null_cost_incr
+  var c2 = isNot(splitUtt[1]) ? cost_not : isUn(splitUtt[1]) ? cost_un : null_cost_incr
+
+  var full_Cost = multiplicative_cost ? c0 * c1 * c2 : c0 + c1 + c2
+  return full_Cost
+
+}
+
+var alternatives = {
+  varyingAlt: {
+    happy: ["happy", "un_happy", "not_happy", "not_un_happy",  "neutral"],
+    not_happy: ["happy", "un_happy", "not_happy", "not_un_happy", "neutral"],
+    un_happy: ["happy", "un_happy", "not_happy", "not_un_happy",  "neutral"],
+    not_un_happy: ["happy", "un_happy", "not_happy", "not_un_happy",  "neutral"]
+  },
+  varyingAlt_onlyNotHappy: {
+    happy: ["happy", "un_happy", "not_happy", "not_un_happy"],
+    not_happy: ["happy", "un_happy", "not_happy", "not_un_happy", "neutral"],
+    un_happy: ["happy", "un_happy", "not_happy", "not_un_happy"],
+    not_un_happy: ["happy", "un_happy", "not_happy", "not_un_happy"]
+  }
+}
+
+
+var cost_sets = {
+  false: [1, 2, 3], // additive costs
+  true: [1, 1.125, 1.25, 1.5, 2] // multiplicative costs
+}
+
+var listener0 = cache(function(utterance, thresholds, StatePrior, lexicon, modelName) {
+  Infer({
+    model: function() {
+      var state = sample(StatePrior);
+      var meaningFn = lexicon[utterance]
+      var m = meaningFn(state, thresholds);
+      condition(m);
+      return state;
+    },
+    method: "enumerate"
+  })
+}, 10000);
+
+var speaker1 = cache(function(state, thresholds, opts, StatePrior, lexicon, alt_utts, modelName) {
+  Infer({
+    model: function() {
+      var utterance = uniformDraw(alt_utts);
+      var cost = utteranceCost(utterance, opts.cost_not, opts.cost_un, opts.multiplicative_cost)
+      var L0 = listener0(utterance, thresholds, StatePrior, lexicon, modelName);
+      var utility = opts.multiplicative_cost ? L0.score(state) * cost : L0.score(state) - cost;
+      factor(opts.speaker_optimality * utility);
+      return utterance;
+    },
+    method: "enumerate"
+  })
+}, 10000);
+
+var contains = function(lst, el) {
+  lst.indexOf(el) > -1
+}
+
+var listener1 = cache(function(utterance, opts, StatePrior, modelName) {
+  Infer({
+    model: function() {
+
+      var lexicon = aristotleLexicon
+      var thresholds = {
+        happy: uniformDraw(thetaBins),
+        un_happy: uniformDraw(thetaBins),
+        neutral: uniformDraw(neutralThetaBins)
+      }
+
+      var alt_utts = alternatives[modelName][utterance]
+      var state = sample(StatePrior);
+      var S1 = speaker1(state, thresholds, opts, StatePrior, lexicon, alt_utts, modelName)
+      observe(S1, utterance)
+      return state
+    },
+    method: "enumerate"
+  })
+}, 10000);
+
+var both_state_priors = {
+  uniform: DiscreteBeta(1, 1),
+  "u_shaped": DiscreteBeta(0.5, 0.5),
+  gaussian: DiscreteGaussian(0.5, 0.5)
+}
+
+var prior_names = [
+  "uniform" //,
+  // "gaussian",
+  // "u_shaped"
+]
+
+var all_models = [
+  "varyingAlt_onlyNotHappy",
+  "varyingAlt"
+]
+// var all_opts = [{"speaker_optimality":1,"multiplicative_cost":false,
+//                											cost_not: 3,
+//											cost_un: 2}]
+// var all_opts = [{"speaker_optimality":1,"multiplicative_cost":false}]
+// listener1(alternatives.happy[0], all_opts[0], both_state_priors.uniform, "dd")
+
+_.flatten(_.flatten(_.flatten(_.flatten(_.flatten(
+  map(function(modelName) {
+    display(JSON.stringify(modelName))
+
+    map(function(prior_name) {
+      var statePrior = both_state_priors[prior_name]
+      map(function(opts) {
+        var all_utterances = _.keys(alternatives[modelName])
+        var cost_levels = cost_sets[opts.multiplicative_cost]
+
+        map(function(c1) {
+          map(function(c2) {
+
+            map(function(u) {
+              var listener_opts = extend(opts, {
+                cost_not: c1,
+                cost_un: c2
+              })
+              var post = listener1(u, listener_opts, statePrior, modelName)
+              map(function(s) {
+                return extend(opts, {
+                  modelName: modelName,
+                  prior: prior_name,
+                  utterance: u,
+                  state: s,
+                  cost_not: c1,
+                  cost_un: c2,
+                  posterior_prob: Math.exp(post.score(s)),
+                })
+              }, sort(statePrior.support()))
+
+            }, all_utterances)
+          }, cost_levels)
+        }, cost_levels)
+      }, all_opts)
+    }, prior_names)
+  }, all_models)
+)))))
+
+
+// neutralThetaBins
