@@ -22,7 +22,7 @@ library(viridis)
 theme_set(theme_few())
 ```
 
-# Model simulations
+# Varying Alternatives model
 
 - All assume additive cost function
 
@@ -57,4 +57,75 @@ rs.listener.wp.tidy.samples <- get_samples(
          
 # save(rs.listener.wp.tidy.samples,
 #      file = "negant-uncNeg_paramSweep_results.RData")
+```
+
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  ggplot(., aes( x = state, fill = utterance, color = utterance))+
+  geom_density(alpha = 0.5, size = 1.3, adjust = 3, aes(y = ..scaled..))+
+  scale_fill_solarized()+
+  scale_color_solarized()+
+  facet_grid(cost_un~modelName + speaker_optimality + cost_not, 
+             scales = 'free')+
+  labs(x = "Happiness (normalized scale)", y = "Posterior probability density (Scaled)")+
+  scale_x_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  scale_y_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  theme(strip.text.y = element_text(angle  = 0))
+```
+
+
+# QUD change model
+
+
+```{r qudChange}
+
+pragListener.params <- expand.grid(
+  speaker_optimality = c(1),
+  # cost_un = c(2),
+  # cost_not = c(3),
+  #speaker_optimality = c(1),
+  #cost_neg = c(0, 1, 2, 3, 4),
+  multiplicative_cost = c(F)
+)
+
+rs.listener.wp.tidy <- webppl(program_file = "webppl/negant-qudChange.wppl",
+                         data = pragListener.params,
+                         data_var = "all_opts") %>%
+  bind_rows(.)
+
+rs.listener.wp.tidy.samples <- get_samples(
+  rs.listener.wp.tidy %>% rename(prob = posterior_prob), 
+  2000
+  ) %>%
+  mutate(multiplicative_cost = factor(multiplicative_cost),
+         modelName = factor(modelName),
+         prior = factor(prior),
+         utterance = factor(utterance),
+         modelName = factor(modelName))
+         
+# save(rs.listener.wp.tidy.samples,
+#      file = "negant-uncNeg_paramSweep_results.RData")
+```
+
+```{r}
+rs.listener.wp.tidy %>%
+  filter(modelName == "qud_polar", cost_un == 2, cost_not == 2) %>%
+  spread(utterance, posterior_prob)
+```
+
+
+
+```{r}
+rs.listener.wp.tidy.samples %>%
+  ggplot(., aes( x = state, fill = utterance, color = utterance))+
+  geom_density(alpha = 0.5, size = 1.3, adjust = 3, aes(y = ..scaled..))+
+  scale_fill_solarized()+
+  scale_color_solarized()+
+  facet_grid(cost_un~modelName + speaker_optimality + cost_not, 
+             scales = 'free')+
+  labs(x = "Happiness (normalized scale)", y = "Posterior probability density (Scaled)")+
+  scale_x_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  scale_y_continuous(breaks =c(0, 1), limits = c(0, 1))+
+  theme(strip.text.y = element_text(angle  = 0))
 ```
