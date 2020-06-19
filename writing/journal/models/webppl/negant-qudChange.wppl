@@ -200,10 +200,9 @@ var alternatives = {
     not_un_happy: ["happy", "un_happy", "not_happy", "not_un_happy"]
   },
   qud_polar: {
-    happy: ["happy", "un_happy", "not_happy", "not_un_happy"],
-    not_happy: ["happy", "not_happy"],
-    un_happy: ["happy", "un_happy", "not_happy", "not_un_happy"],
-    not_un_happy: ["un_happy", "not_un_happy"]
+    state: ["happy", "un_happy", "not_happy", "not_un_happy"],
+    happy: ["happy", "not_happy"],
+    un_happy: ["un_happy", "not_un_happy"]
   }
 }
 
@@ -218,7 +217,8 @@ var listener0 = cache(function(utterance, thresholds, StatePrior, lexicon, model
     model: function() {
       var state = sample(StatePrior);
       var meaningFn = lexicon[utterance]
-      var qudVal = qud == "state" ? state : meaningFn(qud, state)
+      var qudFn = lexicon[qud]
+      var qudVal = qud == "state" ? state : qudFn(state, thresholds)
 
       var m = meaningFn(state, thresholds);
       condition(m);
@@ -228,17 +228,23 @@ var listener0 = cache(function(utterance, thresholds, StatePrior, lexicon, model
   })
 }, 10000);
 
-var speaker1 = cache(function(state, thresholds, opts, StatePrior, lexicon, alt_utts, modelName, qud) {
+var speaker1 = cache(function(qudVal, thresholds, opts, StatePrior, lexicon, modelName, qud) {
   Infer({
     model: function() {
-      var utterance = uniformDraw(alt_utts);
+
+
+      var utterance = uniformDraw(alternatives["qud_polar"][qud]);
+      // display(utterance)
       var cost = utteranceCost(utterance, opts.cost_not, opts.cost_un, opts.multiplicative_cost)
-      var qudFn = lexicon[utterance]
-
-      var qudVal = qud == "state" ? state : qudFn(qud, state)
-
+      // var qudFn = lexicon[utterance]
+      // var qudVal = qud == "state" ? state : qudFn(qud, state, thresholds)
+      // display(qudVal)/
+      // display(JSON.stringify(thresholds) + " " + qudVal + " " + utterance)
       var L0 = listener0(utterance, thresholds, StatePrior, lexicon, modelName, qud);
+      // display(JSON.stringify(L0))
+      // display("after L0")
       var utility = opts.multiplicative_cost ? L0.score(qudVal) * cost : L0.score(qudVal) - cost;
+      // display(utility)
       factor(opts.speaker_optimality * utility);
       return utterance;
     },
@@ -282,16 +288,21 @@ var listener1 = cache(function(utterance, opts, StatePrior, modelName) {
 
       var lexicon = aristotleLexicon;
 
+      var qud = categorical({vs: ["happy", "un_happy", "state"], ps: [1, 1, 2]});
+      // display(qud)
       var thresholds = {
-        happy: uniformDraw(thetaBins),
-        un_happy: uniformDraw(thetaBins)
+        happy: qud == "unhappy" ? -99 : uniformDraw(thetaBins),
+        un_happy: qud == "happy" ? -99 : uniformDraw(thetaBins)
       }
 
-      var qud = utt_to_qud(utterance, utt_to_qud_probs[modelName])
-
-      var alt_utts = alternatives["qud_polar"][utterance]
       var state = sample(StatePrior);
-      var S1 = speaker1(state, thresholds, opts, StatePrior, lexicon, alt_utts, modelName, qud)
+
+      var qudFn = lexicon[qud]
+      var qudVal = qud == "state" ? state : qudFn(state, thresholds)
+
+      var S1 = speaker1(qudVal, thresholds, opts, StatePrior, lexicon, modelName, qud)
+      // display(JSON.stringify(thresholds) + " " + qudVal + " " + utterance)
+
       observe(S1, utterance)
       return state
     },
@@ -313,8 +324,10 @@ var prior_names = [
 
 var all_models = [
   "qud_polar",
-  "qud_polar_soft",
-  "qud_polar_soft_symmetric"
+  "qud_polar_uncneg"
+  //,
+  // "qud_polar_soft"//,
+  // "qud_polar_soft_symmetric"
 ]
 
 // var all_opts = [{"speaker_optimality":1,"multiplicative_cost":false,
@@ -330,7 +343,7 @@ _.flatten(_.flatten(_.flatten(_.flatten(_.flatten(
     map(function(prior_name) {
       var statePrior = both_state_priors[prior_name]
       map(function(opts) {
-        var all_utterances = _.keys(alternatives["qud_polar"])
+        var all_utterances = _.keys(alternatives["varyingAlt_onlyNotHappy"])
         var cost_levels = cost_sets[opts.multiplicative_cost]
 
         map(function(c1) {
@@ -342,6 +355,19 @@ _.flatten(_.flatten(_.flatten(_.flatten(_.flatten(
                 cost_un: c2
               })
               var post = listener1(u, listener_opts, statePrior, modelName)
+
+              // map(function(s) {
+              //   return extend(opts, {
+              //     modelName: modelName,
+              //     prior: prior_name,
+              //     utterance: u,
+              //     state: s,
+              //     cost_not: c1,
+              //     cost_un: c2,
+              //     posterior_prob: Math.exp(post.score(s)),
+              //   })
+              // }, sort(statePrior.support()))
+
               map(function(s) {
                 return extend(opts, {
                   modelName: modelName,
@@ -352,7 +378,9 @@ _.flatten(_.flatten(_.flatten(_.flatten(_.flatten(
                   cost_un: c2,
                   posterior_prob: Math.exp(post.score(s)),
                 })
-              }, sort(statePrior.support()))
+              }, sort(post.support()))
+
+
 
             }, all_utterances)
           }, cost_levels)
@@ -362,5 +390,6 @@ _.flatten(_.flatten(_.flatten(_.flatten(_.flatten(
   }, all_models)
 )))))
 
+// midBins
 
 // neutralThetaBins
