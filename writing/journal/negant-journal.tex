@@ -130,15 +130,15 @@
 %  \title{Not unreasonable: Multiple opposite meanings are entertained when understanding negation}
 %\title{Not stating the opposite: Negation as an uncertain operation}
 %\title{Two negatives don't exactly make a positive}
-\title{Why two negatives don't make a positive}
-    \author{Michael Henry Tessler\textsuperscript{1}~\& Michael Franke\textsuperscript{2}}
+\title{Not unreasonable: Why two negatives don't make a positive}
+    \author{Michael Henry Tessler\textsuperscript{1,3}~\& Michael Franke\textsuperscript{2}}
     \date{}
   
 \shorttitle{Flexible negation in language}
 \affiliation{
 \vspace{0.5cm}
-\textsuperscript{1} Massachusetts Institute of Technology\\\textsuperscript{2} University of Osnabr\"{u}ck}
-\keywords{semantics; pragmatics; negation; Bayesian cognitive model; Rational Speech Act\newline\indent Word count: X}
+\textsuperscript{1} Massachusetts Institute of Technology, Department of Brain and Cognitive Sciences\\\textsuperscript{2} University of Osnabr\"{u}ck, Department of Cognitive Sciences\\\textsuperscript{3} Stanford University, Department of Psychology}
+\keywords{language; pragmatics; negation; Bayesian cognitive model; Rational Speech Act  \newline\indent Word count: 4129}
 \usepackage{csquotes}
 \usepackage{upgreek}
 \captionsetup{font=singlespacing,justification=justified}
@@ -182,17 +182,22 @@
 
 Correspondence concerning this article should be addressed to Michael Henry Tessler, 43 Vassar St, Cambridge, MA 02139. E-mail: \url{tessler@mit.edu}}
 
+%\abstract{
+%Logic tells us that two negatives make a positive, but in natural language, things are not so black and white: A person \emph{not unhappy} may not be entirely \emph{happy}.
+%We hypothesize that innovative uses of double negatives like \emph{not unhappy} stem from listeners entertaining multiple meanings for negation markers like \emph{not} and \emph{un-}, which context can then help disambiguate. 
+% %; then, a speaker who uses two negations signals that she intends the negations in a nonredundant manner.
+%%We often want to express the exact opposite of a proposition, but natural languages provide multiple ways of stating the opposite: A person who is \emph{not happy} might be \emph{unhappy}, \emph{sad}, or perhaps neither, just \emph{not happy}. Intuition suggests, contra standard logic, that two negatives do not make a positive but rather create nonredundant meanings: 
+%%Rather than being redundant, we hypothesize that negation markers entertain a multiplicity of possible meanings, which allows allows listeners to derive fine-grained distinctions among semantically equivalent alternatives. 
+%%We formalize this hypothesis in a computational model of language understanding and show that double negations are predicted to have more subtle meanings than their associated simple positive expressions (like \emph{happy}).
+%We formalize this hypothesis in a computational model of language understanding, which predicts that \emph{not unhappy} means something different than simple \emph{happy} but also makes surprising additional predictions about single negations (\emph{unhappy}~vs.~\emph{not happy}): The two mean the same thing when presented in isolation, but not when a speaker uses both in the same context. %, \emph{unhappy} should be more negative than \emph{not happy}. 
+%The most radical view of uncertainty in negation additionally predicts that an utterance involving the same negation marker twice (e.g., \emph{not not happy}) should mean something different than just \emph{happy}.
+%Three experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted.
+%These findings suggest that even one of the most logical elements of language---negation---can mean many things at once.}
+
 \abstract{
-Logic tells us that two negatives make a positive, but in natural language, things are not so black and white: A person \emph{not unhappy} may not be entirely \emph{happy}.
-We hypothesize that innovative uses of double negatives like \emph{not unhappy} stem from listeners entertaining multiple meanings for negation markers like \emph{not} and \emph{un-}, which context can then help disambiguate. 
- %; then, a speaker who uses two negations signals that she intends the negations in a nonredundant manner.
-%We often want to express the exact opposite of a proposition, but natural languages provide multiple ways of stating the opposite: A person who is \emph{not happy} might be \emph{unhappy}, \emph{sad}, or perhaps neither, just \emph{not happy}. Intuition suggests, contra standard logic, that two negatives do not make a positive but rather create nonredundant meanings: 
-%Rather than being redundant, we hypothesize that negation markers entertain a multiplicity of possible meanings, which allows allows listeners to derive fine-grained distinctions among semantically equivalent alternatives. 
-%We formalize this hypothesis in a computational model of language understanding and show that double negations are predicted to have more subtle meanings than their associated simple positive expressions (like \emph{happy}).
-We formalize this hypothesis in a computational model of language understanding, which predicts that \emph{not unhappy} means something different than simple \emph{happy} but also makes surprising additional predictions about single negations (\emph{unhappy}~vs.~\emph{not happy}): The two mean the same thing when presented in isolation, but not when a speaker uses both in the same context. %, \emph{unhappy} should be more negative than \emph{not happy}. 
-The most radical view of uncertainty in negation additionally predicts that an utterance involving the same negation marker twice (e.g., \emph{not not happy}) should mean something different than just \emph{happy}.
-Three experiments confirm consistent orderings of interpretations that interact with the presentational context in the way predicted.
-These findings suggest that even one of the most logical elements of language---negation---can mean many things at once.}
+Logic tells us that two negatives make a positive, but in language, things are not so black and white: A person \emph{not unhappy} may not be entirely \emph{happy}. We hypothesize that innovative uses of double negatives like \emph{not unhappy} stem from listeners entertaining flexible meanings for negation markers like \emph{not} and \emph{un-}, which context can then help disambiguate. We formalize this hypothesis in a computational model of language understanding, which predicts that \emph{not unhappy} means something different than \emph{happy}. The model predicts additionally that single negations (\emph{unhappy} vs. \emph{not happy}) are not interpreted differently, except if a speaker uses both in the same context. 
+Across three experiments ($n= 945$), we confirm these predictions experimentally and further find that double negations that flagrantly use the same negation marker twice (e.g., \emph{not not happy}) are interpreted in subtle ways.  These findings suggest that even one of the most logical elements of language—negation—can mean many things at once.
+}
 
 \begin{document}
 \maketitle
@@ -224,24 +229,22 @@ These findings suggest that even one of the most logical elements of language---
 %(Pride and Prejudice) \mf{Is  this example ideal? It reads to me like a ``damn well often'' case mentioned at the very end of the paper as well.}
 %\end{quote}
 
-\begin{quote}
-\emph{Although Buck wished he could live with his family, his journal entries paint a picture of a man who was a little bored but not unhappy.}
-\cite{marten2011sing} (p.197) 
-\end{quote}
+%\begin{quote}
+%\emph{Although Buck wished he could live with his family, his journal entries paint a picture of a man who was a little bored but not unhappy.}
+%\cite{marten2011sing} (p.197) 
+%\end{quote}
 
 %\begin{quote}
 %\emph{The silence of history seems to prove this much, that Sheshian was not unhappy under their unrenowned administration; and to be not unhappy, is at least a very tolerable condition.}
 %(Belle Assemblée: Or, Court and Fashionable Magazine; Containing Interesting and Original Literature, and Records of the Beau-monde, Volume 1, Part 2)
 %\end{quote}
+%
+%\begin{quote}
+%\emph{I've been waiting for you all week. Don't you know that it is a rotten time to not not be me?}
+%(El-P, ``Works every time (feat.~Paul Banks)'') 
+%\end{quote}
 
-\begin{quote}
-\emph{I've been waiting for you all week. Don't you know that it is rotten time to not not be me?}
-(El-P, ``Works every time (feat.~Paul Banks)'') 
-\end{quote}
-
-\begin{quote}
-\emph{
-Banal statements are given an appearance of profundity by means of the ``not un-'' formation. [$\ldots$] It should be possible to laugh the ``not un-'' formation out of existence by memorizing this sentence: ``A not unblack dog was chasing a not unsmall rabbit across a not ungreen field.'' }
+\begin{quote}\emph{Banal statements are given an appearance of profundity by means of the ``not un-'' formation. [$\ldots$] It should be possible to laugh the ``not un-'' formation out of existence by memorizing this sentence: ``A not unblack dog was chasing a not unsmall rabbit across a not ungreen field.'' }
 \cite{orwell1946politics} (p.$\thinspace$357)
 %(Orwell, 1946; )
 \end{quote}
@@ -250,29 +253,40 @@ Banal statements are given an appearance of profundity by means of the ``not un-
 %\hypertarget{introduction}{%
 \section{Introduction}\label{introduction}%}
 
-Language is used to convey our thoughts, but we think and feel in ways that are not always easily expressible in words.
+Language conveys our thoughts, but we think and feel in ways that are challenging to express in words.
 Occasionally, speakers will coin a new term to express a subtle feeling, like being ``plateaued'' \cite{bardwick1986plateauing} or residing in a ``zone of indifference'' \cite{sapir1944grading}.
-But we also use the tools already available to us, at the time we want to convey our message, to navigate and communicate the gradations of our thoughts and feelings (e.g., through metaphoric language; \citeNP{lakoff2008}).
+But we also use the linguistic devices already available to us to create new, perhaps delicate meanings (e.g., through metaphors; \citeNP{lakoff2008}).
+ %to navigate and communicate the gradations of our thoughts and feelings 
+ 
+The construction of novel meanings from familiar parts is on ready display in constructions involving two negations: A person \emph{not unhappy} is probably not entirely happy.
+The interpretation of double negatives is important from a logical perspective \cite{Horn1989:Natural, Krifka2007:Negated-antonyms} as well as a legal one, where such constructions are surprisingly common \cite{tiersma1999legal}.
+%Also,
+% insofar as novel meanings can be expressed through the iterative application of the same logical operation (i.e., two negatives), 
+Understanding why somebody would say a double negative like \emph{I'm not unhappy} could also provide a window into richer conceptual spaces like emotions \cite{Lindquist2015, Satpute2016}, where the usage of negation can modulate physiological responses \cite{Herbert2011}.
+
 %Metaphoric language is an obvious example \cite<e.g.,>{lakoff2008}
 % \red{(something from the reference game using impoverished language / language evolution / convention formation literature?)}. 
 
-Compositionality enables productive language use, and double negations are a classic example of using simple linguistic tools to convey subtle meanings.
+
+%\emph{how does it feel to be not unhappy}?;
+
+%Compositionality enables productive language use, and double negations are a classic example of using simple linguistic tools to convey subtle meanings.
 %One can easily express the opposite of a feeling by deploying a negation marker, but sometimes multiple options exist. 
 %One could say ``I'm not happy'' or ``I'm unhappy''. 
 %In logic, two negatives make a poitive, but in natural language, that does not seem to be the case:
 %When Obama said that the time to negotiate was \emph{not unlimited}, why did he not just say that the time was limited? 
-If Mary is \emph{not unhappy}, does that mean she is \emph{happy}?
-It doesn't seem exactly right:
+%If Mary is \emph{not unhappy}, does that mean she is \emph{happy}?
+%It doesn't seem exactly right:
 
 %\citeA{Jespersen1924} suggested not:
 
-
+A common, intuition about the meaning of double negatives is expressed by \citeA{Jespersen1924}:
 \begin{quote}
-[T]wo negatives do not exactly cancel one another [$\ldots$]; the longer expression is always weaker: ``this is not unknown to me'' or ``I am not ignorant of this'' means ``I am to some extent aware of it,'' etc. \cite{Jespersen1924} (p.$\thinspace$332) 
+[T]wo negatives do not exactly cancel one another [$\ldots$]; the longer expression is always weaker: ``this is not unknown to me''  [$\ldots$] means ``I am to some extent aware of it,'' etc. \cite{Jespersen1924} (p.$\thinspace$332) 
 \end{quote}
 \noindent In other words, \emph{not unhappy} (a \emph{negated antonym}) should indicate a slightly positive state, below that of \emph{happy}  but perhaps more positive than neutral (i.e., above the zone of indifference; \citeNP{sapir1944grading}). %, where feelings that are neither positive nor negative reside. 
-The intuitions are subtle, not universally agreed upon (see Orwell's 1946 quote above), and further complicated by the fact that the meanings of \emph{not happy} and \emph{unhappy} are not obviously different from one another.
-Some argue that the two expressions have the same meaning \cite<e.g.,>{Jespersen1917:Negation, Blutner2004:pragmatics}, while others disagree \cite<e.g., >{Krifka2007:Negated-antonyms}, citing examples like:
+These intuitions are subtle, not universally agreed upon, and further complicated by the fact that the meaning of double negations (\emph{not unhappy})  invariably depends upon the meaning of the component, single negations (\emph{not happy}, \emph{unhappy}), which are also hard to pin down. % are also not obviously different from one another.
+Some argue the single negations have the same meaning \cite<e.g.,>{Jespersen1917:Negation, Blutner2004:pragmatics}, while others disagree \cite<e.g., >{Krifka2007:Negated-antonyms}, citing examples like:
 
 
 %Standard approaches to understanding the meaning of linguistic expressions in context often involve reasoning about what not only what a speaker said but what else a speaker could have said \cite{Grice1975}.
@@ -283,15 +297,6 @@ Some argue that the two expressions have the same meaning \cite<e.g.,>{Jespersen
 It's an absolutely horrible feeling to be unhappy, and I don't even think I was unhappy, just not happy, if you know what I mean.%\emph{(taken from the internet)}
 \end{quote}
 
-The interpretation of double negatives is interesting from both a logical perspective \cite{Horn1989:Natural, Krifka2007:Negated-antonyms} as well as a legal one, where double negations are surprisingly common \cite{tiersma1999legal}.
-Also, insofar as novel meanings can be expressed through the iterative application of the same logical operation (i.e., two negatives), understanding this language could provide a window into richer conceptual spaces like emotions \cite{Lindquist2015, Satpute2016}, where negation has been shown to modulate physiological responses \cite{Herbert2011}. 
-%\emph{how does it feel to be not unhappy}?;
-
-Theorizing about the meaning of negation goes back to Aristotle, who noted that there are several opposites.
-\emph{Contradictory} opposites must have opposite truth values, e.g., \enquote{No humans are rational} and \enquote{Some humans are rational}. 
-\emph{Contrary} opposites cannot both be true, but can both be false, e.g., \enquote{All humans are rational} and \enquote{No humans are rational}  (Figure \ref{fig:opp-square}A). 
-% Formally, a contradictory opposition turns a predicate $H$ into $\neg H$, and contradictory opposition can be iterated ($\neg \neg H$; e.g., \emph{the enemy of my enemy is my friend}).
-% Contrary opposition turns $H$ into a new predicate $\tilde{H}$, but standard logic does not allow for the iteration of contrary opposition (i.e., $\tilde{\tilde{H}}$ is not a logical possibility;  \citeNP{Horn1989:Natural}).
 
 
 \begin{figure}[t]
@@ -299,29 +304,52 @@ Theorizing about the meaning of negation goes back to Aristotle, who noted that 
 \caption{Contraries and contradictions as two different kinds of negation. A: Aristotle's classic square of opposition applied to quantifiers (all, some, none). B: An Aristotelean analysis of negated antonyms (happy, unhappy, not unhappy). C: Interpretations of negated antonyms in terms of \emph{degrees of happiness} under an Aristotelean analysis.}\label{fig:opp-square}
 \end{figure}
 
-How should the negation markers \emph{not} and \emph{un-} (used here as a stand-in for morphological negation markers like \emph{in-}, \emph{im-}, \emph{dis-}, etc.) map onto the different kinds of negation?
-An Aristotelean hypothesis would assign one to be a contradictory opposite and another to be a contrary (Figure \ref{fig:opp-square}B); a double negative (\emph{not unhappy}) in this analysis would convey a contradiction of a contrary, resulting in a meaning distinct from that of the positive adjective (\emph{happy}), while also enforcing that the contrary (\emph{unhappy}) has a more negative meaning than the contradiction (\emph{not happy}; Figure \ref{fig:opp-square}C; \citeNP{Horn1991:Duplex, Krifka2007:Negated-antonyms}).
-An Orwellian analysis, on the other hand, only acknowledges contradictory opposition as an interpretation for negation markers; \emph{unhappy} and \emph{not happy} have the same interpretation, and doubles-negatives are posited to be entirely redundant \cite<Figure \ref{fig:happy-scale};>{orwell1946politics}.\footnote{Models are named mnemonically. Aristotle and Orwell did not defend these models themselves.}
+
+Theorizing about the meaning of negation goes back to Aristotle, who noted that there are multiple ways of conveying an opposite meaning.
+\emph{Contradictory} opposites must have opposite truth values, e.g., \enquote{No humans are rational} and \enquote{Some humans are rational}. 
+\emph{Contrary} opposites cannot both be true, but can both be false, e.g., \enquote{All humans are rational} and \enquote{No humans are rational}  (Figure \ref{fig:opp-square}A). 
+% Formally, a contradictory opposition turns a predicate $H$ into $\neg H$, and contradictory opposition can be iterated ($\neg \neg H$; e.g., \emph{the enemy of my enemy is my friend}).
+% Contrary opposition turns $H$ into a new predicate $\tilde{H}$, but standard logic does not allow for the iteration of contrary opposition (i.e., $\tilde{\tilde{H}}$ is not a logical possibility;  \citeNP{Horn1989:Natural}).
+
+
+How should negations that use the particle \emph{not} and those formed by morphology (\emph{un-}, \emph{in-}, \emph{im-}, \emph{dis-}, etc.) map onto contraries~vs.~contradictions?
+A straightforward, Aristotelean hypothesis would assign one to be a contradictory opposite (\emph{not}) and another to be a contrary (\emph{un-}; Figure \ref{fig:opp-square}B); a double negative (\emph{not unhappy}) in this analysis would convey a contradiction of a contrary, resulting in a meaning distinct from that of the positive adjective (\emph{happy}), while also enforcing a difference between the two single negations (\emph{unhappy} $<$ \emph{not happy}) (Figure \ref{fig:opp-square}C; \citeNP{Horn1989:Natural, Horn1991:Duplex, Krifka2007:Negated-antonyms}).
+An Orwellian analysis, on the other hand, only acknowledges contradictory opposition (\emph{unhappy} $=$ \emph{not happy}) and two negatives would be entirely redundant \cite<\emph{not unhappy} = \emph{happy}; Figure \ref{fig:happy-scale};>{orwell1946politics}.\footnote{Models are named mnemonically. Aristotle and Orwell did not defend these models themselves.}
 % \footnote{Though we refer to these models as \emph{Aristotle} and \emph{George Orwell}, they are derived from different mappings of English negation markers onto logical operations. Aristotle did not speak English, and thus would personally have not had much to say about \emph{not} or \emph{un-} as we understand them. George Orwell was an English speaker, though not a formal linguist or scientist. The important feature of these individuals was that their ideas have natural analogues to the semantic question we ask here.}
 
+\begin{figure}[t]
+\centering\includegraphics{figs/happy-scale5}
+\caption{Space of alternative hypotheses. A: Logical relations among negation markers under three different models of meaning. B: Literal meanings of antonym quartets on a happiness scale under three different models of meaning.  \label{fig:happy-scale}}
+\end{figure}
 
-We propose a third, hybrid alternative: the logical distinction between contradictory~vs.~contrary opposition creates an ambiguity in the meanings negation markers. 
-This \ourmodel model predicts that listeners interpret double negatives as distinct from simple positives not because the negation markers have \emph{a priori} different meanings (as the Aristotelean analysis supposes), but because people entertain a hypothesis space of logical possibilities when interpreting negation markers, which context can then help disambiguate (Figure \ref{fig:meanings}).
+\begin{figure}[t]
+\centering \includegraphics[width=0.8\textwidth]{figs/schematicMeanings}  
+\caption{The \ourmodel model reasons over a hypothesis space of possible meanings for antonym pairs and their negations.
+Both \emph{not happy} and \emph{unhappy} could signal either contradictory $\neg H$ or contrary negation $\tilde{H}$.
+\emph{Not unhappy} can signal a double contradiction  $\neg \neg H$  or a contradiction of a contrary  $ \neg \tilde{H}$.
+Contrary negation $\tilde{}$ cannot take wide scope over other negation operators (see SI). 
+A double contradiction  $\neg \neg H$  is pragmatically unlikely, because the same meaning is expressed by just the simple positive $H$.
+ Red bars denote the range of happiness values that are literally compatible with the adjective.
+}
+\label{fig:meanings}
+\end{figure}
+
+We propose a hybrid alternative: the logical distinction between contradictory~vs.~contrary opposition creates an ambiguity in the meanings of negation markers. 
+This \ourmodel model predicts that listeners interpret double negatives as distinct from simple positives not because the negation markers have \emph{a priori} different meanings (as the Aristotelean analysis supposes), but because pragmatic reasoning---why would a speaker bother to use two distinct forms of negation?---can help disambiguate what is otherwise an uncertain hypothesis space of logical possibilities (Figure \ref{fig:meanings}).
 % \footnote{
 % Since contraries do not iterate, the \ourmodel hypothesis entertains that a double negative like \emph{not unhappy} could convey a double contradiction ($\neg \neg H$, like the Orwellian) or a contradiction about a contrary ($\neg \tilde{H}$, like the Aristotelean): The former carries the same meaning as $H$ (\emph{happy}) whereas the latter conveys a distinct meaning. 
 % }
 When uncertain, listeners can use pragmatic reasoning to disambiguate the meaning of a double
 negative like \emph{not unhappy}, while simultaneously showing no interpretative difference
-between the distinct single negations (\emph{not happy}~vs.~\emph{unhappy}) when they are heard
+between the distinct single negations (\emph{not happy}~vs.~\emph{unhappy}) when heard
 in isolation (Figure \ref{fig:modelPredictions}, \emph{single utterances}). This model makes
 the additional prediction, though, that when several negation markers are heard in the same
 context (e.g., \citeNP{Krifka2007:Negated-antonyms}'s example above: ``I don't think I was
-\emph{unhappy}, just \emph{not happy}''), that listeners can draw an interpretative difference
+\emph{unhappy}, just \emph{not happy}''), that listeners will draw an interpretative difference
 between these two (Figure \ref{fig:modelPredictions}, \emph{multiple utterances}). These
 inferences result from the fact that the listener has more evidence that the speaker associates
-different meanings for the different linguistic messages by virtue of the fact that the speaker
-used distinct messages in specific combinations.
-
+different meanings with the different linguistic messages because the speaker
+used distinct messages in the same context.
 
 %Our \emph{\ourmodel} model's predictions are derived by reasoning about which meanings (contrary vs. contradiction) best explains a speaker's utterance (Figure \ref{fig:meanings}).
 %Hearing multiple utterances by the same speaker, however, can provide the listener more information about how the speaker uses language,
@@ -341,21 +369,33 @@ used distinct messages in specific combinations.
 %To preview our findings, we find support for our \emph{\ourmodel} hypothesis across three experiments. 
 
 
+Our \ourmodel hypothesis is not just an account of a few particular linguistic puzzles, but is a case study in how language users contort language to navigate and communicate the gradations of their conceptual landscape.
+Broadly, listeners rationalize utterances of speakers, especially when the utterances are unexpected \cite{Grice1975}.
+%A listener who hears a double negation like \emph{not unhappy} looks for ways of rationalizing why the speaker has not used the simpler expression \emph{happy}.
+The strongest form of this hypothesis as applied to negation is that the actual markers (\emph{not} \& \emph{un-}) are irrelevant to the reasoning and interpretation; all that need occur is that a speaker use two negation markers. 
+In our final experiment, we investigate the dependence on linguistic form by having participants interpret expressions that flagrantly use the same negation marker twice (e.g., \emph{not not happy}).
+% in a way analogous to how they interpret negated antonyms that use distinct negation markers (e.g., \emph{not unhappy}). 
+%Double negatives that flagrantly use the same negation marker twice are a strong test of the \ourmodel hypothesis, because 
+In order to make sense of the utterance in a principled way, listeners would have to ascribe different meanings to the two different instances of \emph{not} (i.e., the utterance would indicate a contradiction of a contrary). 
+%We investigate this possibility in Experiment 3.
+
+
+\begin{figure}[h!]
+\centering \includegraphics[width=\textwidth]{figs/alternativeModels_dists4.pdf} 
+\caption{\small Model predictions for interpretations of antonym pairs and their negations under the three hypotheses. Black line shows the median of the distributions, in order to facilitate qualitative comparisons. \emph{Aristotle} draws a distinction between all adjective types both when the adjective is heard in isolation (single utterance) and when adjectives are heard in the same context (multiple utterances). \emph{George Orwell} never draws a meaning difference between the adjectives, even when they are heard in the same context. The \emph{\ourmodel} model generates a unique pattern of predictions:  When adjectives are heard in isolation, the model draws no difference in meaning between \emph{not happy} and \emph{unhappy} but does distinguish \emph{not unhappy} from \emph{happy}; when the adjectives are heard in the same context, the model distinguishes among all the adjectives. Dashed line denotes the mid-point of the scale. Model predictions use minimally assumptive model parameters described in the SI.}
+%: $P(x) = \text{Uniform}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 2; \text{cost}(\mathit{not}) = 3$.}.
+\label{fig:modelPredictions}
+\end{figure}
+
+ 
+Like mental representations, linguistic meanings are not directly observable; thus, we formalize all hypotheses---Arsitotelean, Orwellean, \ourmodel---in models of pragmatic communication that assume listeners interpret utterances as rational social actions taken by speakers \cite{FrankGoodman2014:Inferring-word-,FrankeScholler2016:Semantic-values}. 
+Building on work in the Rational Speech Act framework, the basic architecture of our models is such that a listener interprets an utterance like \emph{not unhappy} as being intentionally produced by a speaker trying to communicate a degree of, say, happiness to the listener  \cite{Franke2015a, Goodman2016:RSA}.
+The models spelled out in the SI conservatively combine previous ideas on the interpretation of gradable adjectives \cite{Kennedy2007, Lassiter2015}, ambiguity in the meanings of words \cite{Bergen2016}, and pragmatic reasoning \cite{Goodman2016:RSA}.
+%Previous accounts have proposed both syntactic \cite{Cable2017} and pragmatic \cite{Rett2014:eval} mechanisms before, but heretofore there have been no formalized accounts tested against human behavioral data.
 
 
 
-Since linguistic meanings, like mental representations, are not directly observable, we formalize all hypotheses in probabilistic models of rational communication which provide the necessary linking function between these semantic hypotheses and observable behavior \cite{FrankGoodman2014:Inferring-word-,FrankeScholler2016:Semantic-values}. 
-The basic architecture of these models is such that a listener interprets an utterance like \emph{not unhappy} as being intentionally produced by a speaker trying to communicate a degree of, say, happiness to the listener  \cite<Rational Speech Act models; >{Franke2015a, Goodman2016:RSA}.
-The models spelled out in the SI conservatively combine previous ideas on the interpretation of gradable adjectives \cite{Kennedy2007, Lassiter2015} and ambiguity in the meanings of words \cite{Bergen2016}. 
-Previous accounts have proposed both syntactic \cite{Cable2017} and pragmatic \cite{Rett2014:eval} mechanisms before, but heretofore there have been no formalized accounts tested against human behavioral data.
 
-Our novel \ourmodel hypothesis is not just an account of a few particular linguistic puzzles, but is a case study in how language users manipulate and contort language to navigate and communicate the gradations of their conceptual landscape.
-The general idea in the background is that listeners rationalize utterances of speakers, especially when the utterances are unexpected \cite{Grice1975}.
-Consequently, when listeners observe an utterance of a double negation like \emph{not unhappy}, they look for ways of rationalizing why the speaker has not used the simpler expression \emph{happy}, if that were the meaning that she wanted to communicate.
-The most extreme form of this hypothesis is that the actual negation markers (\emph{not} \& \emph{un-}) are irrelevant to the conversational reasoning and interpretation; all that need occur is that a speaker use two negation markers. 
-Thus, we also investigate  the dependence on linguistic form by asking whether participants interpret double negatives that flagrantly use the same negation marker twice (e.g., \emph{not not happy}) in a way analogous to how they interpret negated antonyms that use distinct negation markers (e.g., \emph{not unhappy}). 
-Double negatives that flagrantly use the same negation marker twice are a strong test of the \ourmodel hypothesis, because in order to make sense of the utterance in a principled way, listeners would have to ascribe different meanings to the two different instances of \emph{not} (i.e., the utterance would indicate a contradiction of a contrary). 
-We investigate this possibility in Experiment 3.
 
 %If we find interpretations are analogous to negated antonyms which use distinct negation markers (e.g., \emph{not unhappy}), that would suggest that communicative reasoning can contort the basic logic of language 
 %The \ourmodel hypothesis also raises questions about the boundary conditions of the flexibility: If even logical vocabulary, like negation markers, is prone to flexible interpretation, then what are its limits?
@@ -375,10 +415,7 @@ We investigate this possibility in Experiment 3.
 %We imagine and resolve their uncertainty in context.  
 
 
-\begin{figure}[t]
-\centering\includegraphics{figs/happy-scale4}
-\caption{Space of alternative hypotheses. A: Logical relations among negation markers under three different models of meaning. B: Literal meanings of antonym quartets on a happiness scale under three different models of meaning.  \label{fig:happy-scale}}
-\end{figure}
+
 
 
 
@@ -400,36 +437,19 @@ We investigate this possibility in Experiment 3.
 %formalizes the uncertain opposites hypothesis as a case of \emph{lexical uncertainty} \cite{Bergen2016}. 
 
 
-\begin{figure}[t]
-\centering \includegraphics[width=0.8\textwidth]{figs/schematicMeanings}  
-\caption{The \ourmodel model reasons over a hypothesis space of possible meanings for antonym pairs and their negations.
-Both \emph{not happy} and \emph{unhappy} could signal either contradictory $\neg H$ or contrary negation $\tilde{H}$.
-\emph{Not unhappy} can signal a double contradiction  $\neg \neg H$  or a contradiction of a contrary  $ \neg \tilde{H}$.
-Contrary negation $\tilde{}$ cannot take wide scope over other negation operators (see SI). 
-A double contradiction  $\neg \neg H$  is pragmatically unlikely, because the same meaning is expressed by just the simple positive $H$.
- Red bars denote the range of happiness values that are literally compatible with the adjective.
-}
-\label{fig:meanings}
-\end{figure}
-
-
-
-\begin{figure}[t]
-\centering \includegraphics{figs/alternativeModels_dists4.pdf} 
-\caption{Model predictions for interpretations of antonym pairs and their negations under the three hypotheses. Black line shows the median of the distributions, in order to facilitate qualitative comparisons. \emph{Aristotle} draws a distinction between all adjective types both when the adjective is heard in isolation (single utterance) and when adjectives are heard in the same context (multiple utterances). \emph{George Orwell} never draws a meaning difference between the adjectives, even when they are heard in the same context. The \ourmodel model a unique pattern of predictions:  When adjectives are heard in isolation, the model draws no difference in meaning between \emph{not happy} and \emph{unhappy} but does distinguish \emph{not unhappy} from \emph{happy}; when the adjectives are heard in the same context, the model distinguishes among all the adjectives. Dashed line denotes the mid-point of the scale. Model predictions use minimally assumptive model parameters described in the SI.}
-%: $P(x) = \text{Uniform}(0, 1); \alpha = 1; \text{cost}(\mathit{un}) = 2; \text{cost}(\mathit{not}) = 3$.}.
-\label{fig:modelPredictions}
-\end{figure}
 
 
 
 
-We design experiments to test the four behavioral predictions that result from our \ourmodel model (Figure \ref{fig:modelPredictions}): (1.) Negated antonyms (\emph{not unhappy}) receive different interpretations than simple positives (\emph{happy}); (2.) Negated antonyms tend to receive a slightly positive interpretation (\emph{a la} \citeA{Jespersen1924}'s intuition above); (3.) Negated positives and morphological antonyms (\emph{not happy} and \emph{unhappy}) receive the same interpretation when presented in isolation; (4.) Negated positives and morphological antonyms receive different interpretations when presented in the same context. 
-%We test these predictions across three experiments using antonyms constructed by morphology (e.g., ``un-'' + adjective).
-We expect these predictions to apply to words with explicit negation markers (e.g., antonyms constructed by morphology such as \emph{un-} + \emph{happy}); as a control condition, we examine antonyms which do not have overt negation (e.g., \emph{tall} vs.~\emph{short}).
-Experiment 1 was exploratory and informed our computational modeling.
-Experiment 2 is a larger, more stringent, preregistered test of the four behavioral predictions outlined above.
-Finally, Experiment 3 interrogates how specific the patterns of inferences are to morphological negation (\emph{un-}) as opposed to negation more broadly by testing double negatives that use the same negation marker  (i.e., flagrant double negatives; e.g., \emph{not not happy}).
+
+
+
+%We design experiments to test the four behavioral predictions that result from our \ourmodel model (Figure \ref{fig:modelPredictions}): (1.) Negated antonyms (\emph{not unhappy}) receive different interpretations than simple positives (\emph{happy}); (2.) Negated antonyms tend to receive a slightly positive interpretation (\emph{a la} \citeA{Jespersen1924}'s intuition above); (3.) Negated positives and morphological antonyms (\emph{not happy} and \emph{unhappy}) receive the same interpretation when presented in isolation; (4.) Negated positives and morphological antonyms receive different interpretations when presented in the same context. 
+%%We test these predictions across three experiments using antonyms constructed by morphology (e.g., ``un-'' + adjective).
+%We expect these predictions to apply to words with explicit negation markers (e.g., antonyms constructed by morphology such as \emph{un-} + \emph{happy}); as a control condition, we examine antonyms which do not have overt negation (e.g., \emph{tall} vs.~\emph{short}).
+%Experiment 1 was exploratory and informed our computational modeling.
+%Experiment 2 is a larger, more stringent, preregistered test of the four behavioral predictions outlined above.
+%Finally, Experiment 3 interrogates how specific the patterns of inferences are to morphological negation (\emph{un-}) as opposed to negation more broadly by testing double negatives that use the same negation marker  (i.e., flagrant double negatives; e.g., \emph{not not happy}).
 
 
 
@@ -719,14 +739,25 @@ Each participant completed a total of 16 trials, with exactly 2 repetitions of e
 No participant saw two instances from the same adjective set.
 
 
+\begin{figure}[bt]
+{\centering \includegraphics[width=0.7\linewidth]{figs/experiment-slides-1} 
+
+}
+\caption{Example experimental trials for (A) single utterance (Expts.~1, 2) and (B) multiple utterances (Expts.~2, 3) conditions. ``in the world'' wording for endpoints was used in Expts.~2 \& 3. (A) shows a trial from a morphological antonym set while (B) shows a lexical antonym set.}\label{fig:experiment-slides}
+\end{figure}
+
+\begin{figure}[h]
+\centering \includegraphics[width=0.95\linewidth]{figs/expt1_directlabel_hist} 
+\caption{ Experiment 1 results. Empirical histograms of responses for adjective sets with morphological antonyms (e.g., \emph{happy/unhappy}) and lexical antonyms (e.g., \emph{tall/short}). Dashed line indicates the midpoint of the scale.  White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt1-results}
+\end{figure}
 %\hypertarget{results}{%
 \subsection{Results}\label{results}%}
 
-6 participants were excluded for self-reporting a native language other than English, leaving a remainder of 114 participants for these analyses, which resulted in on average 23 ratings for each unique adjective in our stimulus set.
+Six participants were excluded for self-reporting a native language other than English, leaving a remainder of 114 participants for these analyses, which resulted in an average of 23 ratings for each unique adjective in our stimulus set.
 The qualitative predictions of our models concern the ordering within a set of alternatives for different antonym types (morphological vs.~lexical).
 %To visualize the data, we compute normalized responses on a participant-wise basis (i.e., normalized response \(r'_{ij} = \frac{r_{ij} - mean_j}{sd_j}\) for trial \(i\) and participant \(j\)).
 Figure \ref{fig:expt1-results} shows the empirical distributions for each of the four adjective types for both morphological and lexical antonyms adjective sets.
-Critically, as predicted by the \ourmodel model, adjective sets with morphological antonyms show only a partial ordering, with negated positives (e.g., \emph{not happy}) and morphological antonyms (e.g., \emph{unhappy}) receiving the same ratings; at the same time, the adjective sets with with lexical antonyms show a full ordering (i.e., all adjective types receive distinct interpretations).
+Critically, as predicted by the \ourmodel model, adjective sets with morphological antonyms show only a partial ordering, with negated positives (e.g., \emph{not happy}) and morphological antonyms (e.g., \emph{unhappy}) receiving the same ratings; at the same time, the adjective sets with lexical antonyms show a full ordering (i.e., all adjective types receive distinct interpretations).
 
 To confirm these observations, we built a linear mixed model predicting the raw ratings in terms of fixed effects of \emph{antonym type} (morphological vs.~lexical; dummy-coded with morphological default level), \emph{adjective type} (forward-difference coded in order: antonym, negated positive, negated antonym, positive)\footnote{Forward difference coding compares adjacent-levels of a factor, which allows for the following comparisons: antonym vs.~negated positive, negated positive vs.~negated antonym, negated antonym vs.~positive.}, and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.\footnote{This, and all subsequent regression models, were the maximal mixed-effects model that converged for the data set that additionally explained significantly more variance than models with simpler mixed-effects structures, using the \texttt{lme4} package in R \cite{lme4}.}
 Consistent with our observations, the difference between the \emph{antonym} vs.~\emph{negated positive} 
@@ -741,10 +772,9 @@ Running the same model with the antonym type coded with lexical antonyms as the 
 
 We observe further that negated morphological antonyms (e.g., \emph{not unhappy}) were rated differently and lower than positives (e.g., \emph{happy}; \(\beta = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type3}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type3}{df}{0}) = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{adjective_type3}{t.value}{2}, p <0.001\)). 
 We additionally observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated overall lower than negated lexical antonyms (e.g., \emph{not tall}; Figure \ref{fig:expt1-results}), which manifested as an interaction in the negated antonym vs. positive contrast with the lexical vs. morphological items (\(\beta = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{Estimate}{3}\), t\((\rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{df}{0}) = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{t.value}{2}, p = \rlgetnum{expt1_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{Pr...t..}{3}\)) .
-Negated antonyms received a distinct bimodal distribution wherein most ratings were slightly positive but a clearly distinguishable minority distribution of ratings were slightly negative (e.g., \emph{not dishonest} meaning \emph{not honest}).
+Negated antonyms received a distinct bimodal distribution wherein most ratings were slightly positive but a minority distribution of ratings were slightly negative (e.g., \emph{not dishonest} meaning \emph{not honest}).
 This weakly negative interpretation for negated antonyms was present at least somewhat in every item and in most participants.
-This interpretation may be the result of participants attributing politeness to the speaker.
-In fact, when speakers care about a listener's self-image, human participants tend to endorse indirect utterances more:  \emph{Not dishonest} may be an indirect way of saying that a person is not honest \cite{Yoon2017}.
+This interpretation may be the result of participants attributing politeness to the speaker; when speakers care about a listener's self-image, human participants tend to endorse utterances with negation:  \emph{Not dishonest} may be an indirect way of saying that a person is not honest \cite{Yoon2017}.
 
 While we note the differences between lexical and morphological antonyms in this experiment, the direct comparison of these two kinds of adjectives is difficult. 
 We have coded the antonyms in the morphological sets as positive and negative (or, antonym) by appealing to the morphology (e.g., \emph{happy} is the positive adjective, while \emph{unhappy} is the antonym); a similar assignment of the lexical antonyms to positive and negative is not always possible.
@@ -755,28 +785,17 @@ If this were so, we would expect this bi-modality to occur across the items but 
 }
 Because of these differences between lexical and morphological antonym sets, we treated this experiment as exploratory and curated a more tightly controlled set of materials for Experiments 2 \& 3.
 
-\begin{figure}[hbt]
 
-{\centering \includegraphics[width=0.7\linewidth]{figs/experiment-slides-1} 
-
-}
-
-\caption{Example experimental trials for (A) single utterance (Expts.~1, 2) and (B) multiple utterances (Expts.~2, 3) conditions. ``in the world'' wording for endpoints was used in Expts.~2 \& 3. (A) shows a trial from a morphological antonym set while (B) shows a lexical antonym set.}\label{fig:experiment-slides}
-\end{figure}
-
-\begin{figure*}[h]
-\centering \includegraphics[width=0.95\linewidth]{figs/expt1_directlabel} 
-\caption{Experiment 1 results. Empirical distributions of responses for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad''). Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt1-results}
-\end{figure*}
 
 %\hypertarget{experiment-2-single-and-multiple-utterances}{%
 \section{Experiment 2: Negation with Implicit Contrasts}\label{experiment-2-single-and-multiple-utterances}
 %}
 
-\text{Expt.$\thinspace$1} revealed an asymmetry: Lexical antonyms (e.g., \emph{short}) were clearly distinguished from negated positives (e.g., \emph{not tall}), whereas morphological antonyms were not (e.g., \emph{unhappy} \(\approx\) \emph{not happy}).
-In \text{Expt.$\thinspace$1}, our adjective sets varied both in terms of their antonym type (morphological vs.\text{~}lexical) as well as the actual degree scales being described (e.g., height for \emph{tall}/\emph{short} vs.\text{~}happiness for \emph{happy}/\emph{unhappy}).
-Many adjective sets have both morphological and lexical antonyms (e.g., \emph{happy}/\emph{unhappy}/\emph{sad}).
-Here, we aim to replicate the previous findings using adjectives that describe the same semantic scales.
+%\text{Experiment$\thinspace$1} revealed an asymmetry: Lexical antonyms (e.g., \emph{short}) were distinguished from negated positives (e.g., \emph{not tall}), whereas morphological antonyms were not (e.g., \emph{unhappy} \(\approx\) \emph{not happy}).
+%In \text{Experiment$\thinspace$1}, our adjective sets varied both in terms of their antonym type (morphological vs.\text{~}lexical) as well as the actual degree scales being described (e.g., height for \emph{tall}/\emph{short} vs.\text{~}happiness for \emph{happy}/\emph{unhappy}).
+%Many adjective sets have both morphological and lexical antonyms (e.g., \emph{happy}/\emph{unhappy}/\emph{sad}).
+
+We aim to replicate the previous findings using adjectives that describe the same semantic scales (e.g.,  \emph{happy}~vs.~\emph{unhappy}~vs.~\emph{sad}).
 Also, we test our second prediction that hearing multiple utterances in the same context will produce the full ordering for morphological antonym sets (Fig.\(\thinspace\)\ref{fig:modelPredictions}).
 
 \subsection{Methods}
@@ -805,9 +824,9 @@ Ten out of the original 30 items were dropped for either not having such a well-
 \subsubsection{Procedure}\label{procedure-1}%}
 
 In the \emph{multiple utterances} conditions, participants rated all four adjective types simultaneously, each referring to a different person (Fig.$\thinspace$\ref{fig:experiment-slides}B), for a total of 12 trials.
-The \emph{single utterances} conditions were similar to that of \text{Expt.$\thinspace$1}: Participants rated one sentence at a time (e.g., \enquote{Greg is not unhappy}), each from a unique adjective set (e.g., never rated both \emph{unhappy} and \emph{not happy}), completing a total of 12 trials, with exactly 3 repetitions of each adjective type (positive, antonym, and their negations).
-In contrast to \text{Expt.$\thinspace$1}, \emph{antonym type} (morphological vs.\text{~}lexical) was a between-participants factor.
-In addition, the slider bar endpoints were relabeled to \enquote{the most \{\emph{positive}, \emph{negative}\} person \emph{in the world}}; without \enquote{in the world}, there is a salient interpretation of the endpoints indicating \enquote{the most \{\emph{positive}, \emph{negative}\} person (of these four)} in the multiple utterances conditions.
+The \emph{single utterances} conditions were similar to that of \text{Experiment$\thinspace$1}: Participants rated one sentence at a time (e.g., \enquote{Greg is not unhappy}), each from a unique adjective set (e.g., never rated both \emph{unhappy} and \emph{not happy}), completing a total of 12 trials, with exactly 3 repetitions of each adjective type (positive, antonym, and their negations).
+In contrast to \text{Experiment$\thinspace$1}, \emph{antonym type} (morphological vs.\text{~}lexical) was a between-participants factor.
+In addition, the slider bar endpoints were relabeled to \enquote{the most \{\emph{positive}, \emph{negative}\} person \emph{in the world}}; without \enquote{in the world}, there is a salient interpretation of the endpoints as \enquote{the most \{\emph{positive}, \emph{negative}\} person (of these four)} in the multiple utterances conditions.
 
 \begin{table}[h]
 \centering
@@ -846,18 +865,18 @@ affectionate & unaffectionate & cold \\
 \subsection{Results}\label{results-1}
 %}
 
-35 participants were excluded for self-reporting a native language other than English, leaving 715 participants for these analyses.
+Thirty-five participants were excluded for self-reporting a native language other than English, leaving 715 participants for these analyses.
 Results for each adjective type in each condition are shown in Fig.$\thinspace$\ref{fig:expt2-results}.
 
 
-\begin{figure*}[t]
-\centering \includegraphics[width=0.95\linewidth]{figs/expt2_directlabel} 
-\caption{Experiment 2 results. Empirical distributions of responses for adjective sets with morphological antonyms (e.g., ``unhappy'') and lexical antonyms (e.g., ``sad'') for the single utterance and multiple utterances conditions. Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. Width of white rectangles denotes bootstrapped 95\% confidence intervals for the means.}
+\begin{figure}[t]
+\centering \includegraphics[width=0.95\linewidth]{figs/expt2_directlabel_hist} 
+\caption{Experiment 2 results. Empirical histograms of responses for adjective sets with morphological antonyms (e.g., \emph{happy/unhappy}) and lexical antonyms (e.g., \emph{happy/sad}) for the single utterance and multiple utterances conditions. Dashed line indicates the midpoint of the scale. Width of white rectangles denotes bootstrapped 95\% confidence intervals for the means.}
 \label{fig:expt2-results}
-\end{figure*}
+\end{figure}
 
 
-As we did in \text{Expt.$\thinspace$1}, we evaluated our hypothesis that, in the \emph{single utterance condition}, morphological antonyms behave like the \emph{\ourmodel} model (i.e., show a partial ordering) while lexical antonyms show a true ordering (like \emph{bonafide contraries}).
+As we did in \text{Experiment$\thinspace$1}, we evaluated our hypothesis that, in the \emph{single utterance condition}, morphological antonyms behave like the \emph{\ourmodel} model (i.e., show a partial ordering) while lexical antonyms show a true ordering (like \emph{bonafide contraries}).
 We considered data only from the \emph{single utterances} conditions and built a linear mixed model predicting the raw ratings in terms of \emph{antonym type} (morphological vs.\text{~}lexical; dummy-coded with morphological as the base case), \emph{adjective type} (forward-difference coded in order: antonym, negated positive, negated antonym, positive) and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.
 Consistent with our hypothesis, the \emph{antonym} vs.\text{~}\emph{negated positive} difference was greater for lexical antonyms than morphological antonyms (i.e., an adjective type by antonym type interaction; \(\beta =  \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{Estimate}{3}
 \), t\(( \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{df}{0}) =  \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{t.value}{2}, p =  \rlgetnum{expt2_glmer_singleUtt.csv}{Rowname}{antonym_typelexant:adj_type1}{Pr...t..}{3}\)).
@@ -894,42 +913,54 @@ As an exploratory analysis, we examined these effects in a full three-way intera
 
 \section{Experiment 3: Flagrant Double Negatives}\label{experiment-3-notnot}
 
-In this paper, we propose that the logic of negated morphological antonyms (\emph{not unhappy}) proceeds via a listener reasoning about why a speaker used two distinct negation markers (\emph{not} \& \emph{un-}) and concluding that the speaker must have had different meanings in mind (contradiction and contrary, respectively) for the different negation markers.
-Yet, the production of a double negative doesn't require distinct negation markers: One can grammatically produce a double negative flagrantly using the same negation marker twice (e.g., \emph{not not happy}).\footnote{While the usage of the same negation marker twice (e.g., \emph{not not}) is not common, examples are easy to find on webpages and news articles, suggesting that speakers use this construction to achieve real communicative goals.}
-Is the inferential cognitive mechanism that produces meanings for negated antonyms like \emph{not unhappy} sufficiently flexible to accommodate double negations that rely upon the iterative application of the same logical word (\emph{not not})?
-If so, then we would expect flagrant double negatives like \emph{not not happy} to be interpreted in a way similar to more canonical double negatives like \emph{not unhappy}. 
-Such a finding would suggest that communicative reasoning can contort one of the basic logical structures in language.
+%We propose that the logic of negated morphological antonyms (\emph{not unhappy}) proceeds via a listener reasoning about why a speaker used two distinct negation markers (\emph{not} \& \emph{un-}) and concluding that the speaker must have had different meanings in mind (contradiction and contrary, respectively) for the different negation markers.
+%Yet, the production of a double negative doesn't require distinct negation markers: One can grammatically produce a double negative flagrantly using the same negation marker twice (e.g., \emph{not not happy}).\footnote{While the usage of the same negation marker twice (e.g., \emph{not not}) is not common, examples are easy to find on webpages and news articles, suggesting that speakers use this construction to achieve real communicative goals.}
+
+Is the inferential cognitive mechanism that produces meanings for negated antonyms specific to the usage of distinct negation markers (e.g., \emph{not} + \emph{un-}) or is it a more general mechanism that is triggered when two negatives are encountered?
+%sufficiently flexible to accommodate double negations that rely upon the iterative application of the same logical word (\emph{not not})?
+We investigate this question using flagrant double negatives like \emph{not not happy} in the \emph{multiple utterances} context from Experiment 2, with two different sets of alternative utterances. 
+%Such a finding would suggest that communicative reasoning can contort one of the basic logical structures in language.
 %The inference about the meaning of negation markers could be a general property of a speaker (i.e., this is how this speaker uses these negation markers) or may be a more specific inference about the particular usage of negation in context (i.e., in this moment, this is how this speaker intends to be understood when using negation). 
 %If the inference is a specific inference about the particular usage of a negation marker, then the deployment of the same negation marker twice (e.g., \emph{not not happy}) should result in a meaning similar to that of negated morphological antonyms (e.g., \emph{not unhappy}). 
 %Alternatively, if the inference occurs at the level of a particular speaker, the expression could only be a double contradiction and thus result in a meaning similar to that \emph{happy}. 
-In this experiment, we investigate interpretations of double ``not'' constructions using the \emph{multiple utterances} context from Experiment 2.
+%In this experiment, we investigate interpretations of double ``not'' constructions using the \emph{multiple utterances} context from Experiment 2.
 
 %Because we consider the status of negation markers to be \emph{a priori} uncertain, we use the \emph{multiple utterances} context from Experiment 2 to disambiguate the meaning of \emph{not} as conveying contradictory negation. 
 
-\subsection{Methods}
+\subsection{Experiment 3a: ``not not''}
 
-\subsubsection{Participants}\label{participants-3}
+In this experiment, we investigate the interpretation of a flagrantly double negative (e.g., \emph{not not happy}) when it appears in the same context as the other utterances from Expt.~2b: the positive adjective (e.g., \emph{happy}) and two negatives (e.g., \emph{not happy}, \emph{unhappy}).
+
+\subsubsection{Methods}
+
+\paragraph{Participants}\label{participants-3}
 
 We recruited 75 participants from MTurk to match the sample size of the same condition in Expt.~2.
 These numbers follow from the intention of getting approximately 45 ratings for each unique adjective in the experiment.
 The experiment took on average 5 minutes and participants were compensated \$0.90.
 Exclusion criterion, sample size, procedure, and the analysis described below were preregistered: \url{osf.io/vjhak}.
 
-\subsubsection{Materials and procedure}\label{materials-3}
+\paragraph{Materials and procedure}\label{materials-3}
 
-The materials and procedure were identical to that of the \emph{multiple utterances} condition of Expt.~2.
+The materials and procedure were identical to that of the \emph{multiple utterances} condition of Experiment~2.
 The main difference in this experiment is that participants are presented with the following alternatives: positives, negated positives, morphological antonyms, and negated negated positives (e.g., \emph{happy}, \emph{not happy}, \emph{unhappy}, \emph{not not happy}).
-This experiment was conducted eighteen months after Expt.~2, and due to concerns about recently declining data quality on MTurk, this experiment included an additional memory check wherein participants had to select all of the items that they recall being tested on from a list of 10 items (5 real and 5 distractor). 
+This experiment was conducted eighteen months after Experiment~2, and due to concerns about recently declining data quality on MTurk, this experiment included an additional memory check wherein participants had to select all of the items that they recall being tested on from a list of 10 items (5 real and 5 distractor). 
 We pre-registered the exclusion criterion of removing participants who failed to respond correctly to at least 7 of the 10 items. 
 
-\subsection{Results}
+\begin{figure}[h]
+\centering \includegraphics[width=0.75\linewidth]{figs/expt3_directlabel_hist} 
+\caption{Experiment 3 results. Dashed line indicates scale midpoint. White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt3-results}
+\end{figure}
 
-All participants self-reported only English as their native language. 5 participants were excluded for failing to respond correctly to at least 7 of the 10 memory check items, leaving 40 participants for these analyses.
-Results for each adjective type are shown in Figure \ref{fig:expt3-results}.
+
+\subsubsection{Results}
+
+All participants self-reported only English as their native language. Five participants were excluded for failing to respond correctly to at least 7 of the 10 memory check items, leaving 40 participants for these analyses.
+Figure \ref{fig:expt3-results} shows results for each adjective type.
 
 Our main hypothesis concerns the interpretation of flagrant double negative statements that use the same negation marker twice (\emph{not not happy}). 
 We built a mixed-effects regression model with random by-participant and by-item intercepts and slopes (where the slopes refer to the effect of the adjective type, forward-difference coded as before: happy vs.~not happy vs.~not not happy vs.~unhappy).
-As is visually apparent, the two negatives did not simply cancel to make a positive: \emph{not not happy} received a significantly more negative interpretation than \emph{happy} (\(\beta = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{Estimate}{3}\), t\((\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{df}{0}) = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{t.value}{2}, p < 0.001\)).
+The two negatives did not simply cancel to make a positive: \emph{not not happy} received a significantly more negative interpretation than \emph{happy} (\(\beta = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{Estimate}{3}\), t\((\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{df}{0}) = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{t.value}{2}, p < 0.001\)).
 This suggests that participants actively try to make sense of seemingly redundant, contradictory information in a way that would be informative for a speaker to produce. 
 In addition,  the result from Experiment 2 (multiple utterances condition) replicated for the morphological antonyms: \emph{not happy} and \emph{unhappy} were differentiated in meaning (\(\beta = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{Estimate}{3}\), t\((\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{df}{0}) = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{t.value}{2},  p =  \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{Pr...t..}{3}\)).
 Contrary to our hypothesis, however, we did not find evidence that the flagrant double negative \emph{not not happy} received on-average a positive interpretation (\(\beta = \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{Estimate}{3}\), t\((\rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{df}{0}) = \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{t.value}{2},  p =  \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{Pr...t..}{2}\)); inspection of the fitted random-effects suggested this was due to large subject-wise variation in the interpretation of these flagrant double negatives. 
@@ -939,11 +970,44 @@ We return to this observation in the General Discussion.
 
 %\mf{I don't think that we have to}
 
-\begin{figure*}[h]
-\centering \includegraphics[width=0.6\linewidth]{figs/expt3_directlabel} 
-\caption{Experiment 3 results. Dashed line indicates the midpoint of the scale. Dashes below density plots denote individual responses. White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt3-results}
-\end{figure*}
+\subsection{Experiment 3b: ``not not''~vs.~``not un-''}
 
+In Expt.~3b, we directly compare the interpretation of two double negatives when observed in the same context (e.g., \emph{not not happy}~vs.~\emph{not unhappy}).
+
+\subsubsection{Methods}
+
+\paragraph{Participants}\label{participants-3}
+
+We recruited 75 participants from MTurk to match the sample size of the same condition in Expt.~2 and Expt.~3a.
+These numbers follow from the intention of getting approximately 45 ratings for each unique adjective in the experiment.
+The experiment took on average 5 minutes and participants were compensated \$0.90.
+Exclusion criterion, sample size, procedure, and the analysis described below were preregistered: \red{XXX}.
+
+\paragraph{Materials and procedure}\label{materials-3}
+
+The materials and procedure were identical to that of the \emph{multiple utterances} condition of Experiment~2 and Experiment 3a.
+In this experiment, participants are presented with the following alternatives: positives, morphological antonyms, negated morphological antonyms, and negated negated positives (e.g., \emph{happy}, \emph{unhappy}, \emph{not unhappy}, \emph{not not happy}).
+As with Experiment 3a, this experiment included an additional memory check wherein participants had to select all of the items that they recall being tested on from a list of 10 items (5 real and 5 distractor). 
+We pre-registered the exclusion criterion of removing participants who failed to respond correctly to at least 7 of the 10 items. 
+
+\begin{figure}[h]
+\centering \includegraphics[width=0.75\linewidth]{figs/expt3_directlabel_hist} 
+\caption{Experiment 3 results. Dashed line indicates scale midpoint. White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt3-results}
+\end{figure}
+
+
+\subsubsection{Results}
+
+\red{XX} participants self-reported only English as their native language. 
+\red{XX} participants were excluded for failing to respond correctly to at least 7 of the 10 memory check items, leaving \red{XX} participants for these analyses.
+Figure \ref{fig:expt3-results}b shows results for each adjective type.
+
+Our main hypothesis concerns the interpretation of flagrant double negative statements that use the same negation marker twice (\emph{not not happy}). 
+We built a mixed-effects regression model with random by-participant and by-item intercepts and slopes (where the slopes refer to the effect of the adjective type, forward-difference coded as before: happy vs.~not happy vs.~not not happy vs.~unhappy).
+The two negatives did not simply cancel to make a positive: \emph{not not happy} received a significantly more negative interpretation than \emph{happy} (\(\beta = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{Estimate}{3}\), t\((\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{df}{0}) = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{t.value}{2}, p < 0.001\)).
+This suggests that participants actively try to make sense of seemingly redundant, contradictory information in a way that would be informative for a speaker to produce. 
+In addition,  the result from Experiment 2 (multiple utterances condition) replicated for the morphological antonyms: \emph{not happy} and \emph{unhappy} were differentiated in meaning (\(\beta = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{Estimate}{3}\), t\((\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{df}{0}) = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{t.value}{2},  p =  \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{Pr...t..}{3}\)).
+Contrary to our hypothesis, however, we did not find evidence that the flagrant double negative \emph{not not happy} received on-average a positive interpretation (\(\beta = \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{Estimate}{3}\), t\((\rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{df}{0}) = \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{t.value}{2},  p =  \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{Pr...t..}{2}\)); inspection of the fitted random-effects suggested this was due to large subject-wise variation in the interpretation of these flagrant double negatives. 
 
 %\hypertarget{discussion}{%
 \section{General Discussion}\label{discussion}
@@ -956,26 +1020,27 @@ We return to this observation in the General Discussion.
 %Instead, speakers can use modifiers and morphemes to carve more precise meanings from otherwise vague dimensions.
 %A person \emph{not unhappy} is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
 
-This paper provides a computational solution to an outstanding puzzle in natural language understanding: How to interpret double negatives \cite<e.g., \emph{not unhappy}; >{Horn1991:Duplex, Krifka2007:Negated-antonyms, Rett2014:eval}.
-We additionally discovered and confirmed a surprising empirical result: \emph{unhappy} (morphological antonyms) and \emph{not happy} (negated positives) are interpreted identically when presented in isolation, but are differentiated when presented in the same context.
-Our model that represents uncertainty about how to interpret overt negation markers (\emph{un-}, \emph{not}) predicts this very result, while alternative models that treat negation markers as only carrying a single possible meaning fall short.
+We provide a computational solution to an outstanding puzzle in natural language understanding: How to interpret double negatives \cite<e.g., \emph{not unhappy}; >{Horn1991:Duplex, Krifka2007:Negated-antonyms, Rett2014:eval}.
+We additionally discovered and confirmed a surprising empirical result: \emph{unhappy} (morphological antonyms) and \emph{not happy} (negated positives) are interpreted identically, except when heard in the same context.
+Our model that represents flexibility in how to interpret negation markers (\emph{un-}, \emph{not}) predicts this very result, while alternative models that treat negation markers as only carrying a single possible meaning fall short.
 
-Our work builds upon previous studies on the meanings of negated adjectives and negated antonyms.
-We've extended earlier work showing that negated lexical antonyms (e.g., \emph{not dull}) are distinct from positive adjectives (e.g., \emph{sharp}) when presented simultaneously \cite{giora2005negation} to both the case of morphological antonyms (e.g., \emph{not unhappy}) and when presented in isolation (single utterance conditions). 
-%ound that participants rate . 
-We also provide convergent evidence that supports the phenomenon of \emph{negative strengthening} or \emph{inference towards the antonym}, where negating an adjective (e.g., \emph{not intelligent}) can lead to the stronger interpretation than literally implied \cite<e.g.,  rather stupid;>{Ruytenbeek2017, Gotzner2018}. 
-%Not only do 
-Our empirical data further elucidate these phenomena with our straight-forward response measurements and comparisons to other adjective forms in different presentational contexts.%, our modeling approach provides an explanation for negative strengthening through uncertainty about the meaning of negation markers (i.e., \emph{not} could signal a contrary meaning). 
-%\mf{I feel iffy about the last sentence, and would even like to drop it. My understanding is that the reason why we predict a slightly positive interpretation of \emph{not short}, has nothing to do with flexibly uncertain negation. We predict it also for set-ups with only \emph{not} and no uncertainty at all, right? It's also dubious that what we predict is \emph{negative strengthening} which is bound to the negatively-connotated form. We predict the reversed pattern ``positive strengthening'' as well. But that actually shows that (i) we do not predict what the linguists call negative strengthening, and (ii) what looks like it is not predicted by the mechanism mentioned above.}
-
-It is noteworthy that we are able to recover, both in our model and empirically, the ordering predicted by \citeA{Krifka2007:Negated-antonyms} for morphological antonyms (\emph{unhappy} $<$ \emph{not happy} $<$ \emph{not unhappy} $<$ \emph{happy}), when a listener hears multiple adjectival utterances in the same context (Experiment 2; \emph{multiple utterances condition}).
-Other recent accounts derive similar predictions based on quite different kinds of assumptions \cite{Krifka2007:Negated-antonyms, Rett2014:eval, Cable2017}, but our formal modeling here makes further predictions about the context-dependence of these inferences.
+We predicted and observed empirically the ordering hypothesized by \citeA{Krifka2007:Negated-antonyms} for morphological antonyms (\emph{unhappy} $<$ \emph{not happy} $<$ \emph{not unhappy} $<$ \emph{happy}), when a listener hears multiple adjectival utterances in the same context (Experiment 2; \emph{multiple utterances condition}).
+Other accounts derive similar predictions based on different kinds of assumptions \cite{Krifka2007:Negated-antonyms, Rett2014:eval, Cable2017}, but only our model makes predictions about the context-dependence of these inferences.
 This work thus carries with it an account of a robust linguistic intuition: Potentially equivalent utterances receive differential interpretations when produced by the same speaker in close proximity, an instance of \emph{mutual exclusivity} reasoning \cite{Markman1989}. %\mht{are the other lexical uncertainty papers not an instance of this general point as well?}
 %\mf{I think so. But we do set ourselves off. Maybe like so: ""
 %More generally, the inferences modeled here can be seen as an instance of \emph{mutual exclusivity} \cite{Markman1989}, in which listeners resolve uncertainty about multiple elements of meaning simultaneously.
-Reasoning about multiple meanings for words, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings.
-In Experiment 3, we discovered that this inference goes beyond using distinct expressions for negation: Double negative statements that use the same negation marker twice (e.g., \emph{not not happy}) are interpreted in a similar way to negated morphological antonyms (e.g., \emph{not unhappy}), indicating the underlying cognitive mechanism used to make sense of seemingly redundant, contradictory content (\emph{not not}) is guided by a principled underlying logic: Two negatives can be coherently combined if one is a contradiction and the other is a contrary.
-This result also suggests a radical view of flexible communication with negation, wherein the same negation marker can be interpreted in two different ways within a single utterance.
+%Reasoning about multiple meanings for words, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings.
+In Experiment 3, we discovered that this inference goes beyond using distinct  negation markers: Expressions that use the same negation marker twice (e.g., \emph{not not happy}) are interpreted similarly to negated morphological antonyms (e.g., \emph{not unhappy}). 
+This result points to an underlying cognitive mechanism that flexibly allows for different meanings for the same negation marker within a single utterance, guided by a principled logic: A contradiction of a contrary is a pragmatically useful double negative. 
+
+We build upon previous studies on negated adjectives \cite<e.g., >{giora2005negation} with our straight-forward response measurements, comparison of morphological and lexical antonyms, and situation within different presentational contexts.
+%We extend earlier work showing that negated lexical antonyms (e.g., \emph{not dull}) are distinct from positive adjectives (e.g., \emph{sharp}) when presented simultaneously \cite{giora2005negation} to both the case of morphological antonyms (e.g., \emph{not unhappy}) and when presented in isolation (single utterance conditions). 
+%ound that participants rate . 
+We also provide convergent evidence that supports the phenomenon of \emph{negative strengthening} or \emph{inference towards the antonym}, where negating an adjective (e.g., \emph{not intelligent}) can lead to the stronger interpretation than literally implied \cite<e.g.,  rather stupid;>{Ruytenbeek2017, Gotzner2018}. 
+%Not only do 
+%Our empirical data further elucidate these phenomena with our straight-forward response measurements and comparisons to other adjective forms in different presentational contexts.%, our modeling approach provides an explanation for negative strengthening through uncertainty about the meaning of negation markers (i.e., \emph{not} could signal a contrary meaning). 
+%\mf{I feel iffy about the last sentence, and would even like to drop it. My understanding is that the reason why we predict a slightly positive interpretation of \emph{not short}, has nothing to do with flexibly uncertain negation. We predict it also for set-ups with only \emph{not} and no uncertainty at all, right? It's also dubious that what we predict is \emph{negative strengthening} which is bound to the negatively-connotated form. We predict the reversed pattern ``positive strengthening'' as well. But that actually shows that (i) we do not predict what the linguists call negative strengthening, and (ii) what looks like it is not predicted by the mechanism mentioned above.}
+
 
 %\mf{These last two sentences (and the whole framing and discussion of Exp 3 are problematic. My understanding of our account of the difference between \emph{unhappy} and \emph{happy} is that it hinges on observing the same speaker use \emph{not unhappy}, which is only rational for speakers with a \emph{\textbf{fixed (!!!)}} lexicon of allocations of negation markers to meanings. If we allow individual occurrences of negation markers to be interpreted individually, that explanation would break. --- It may be possible to explain the \emph{not not happy} case as a last resort: normally, we would assume that speakers use negation markers consistently, \emph{unless that assumption would blatantly violate rationality}, i.e., trying to express a meaning for which there is an equivalent but less costly form. But even in that case we have a problem: how do we account for the divergence of \emph{unhappy} and \emph{not happy} in the case where \emph{not unhappy} is not present, but \emph{not not happy} is?}
 
@@ -986,20 +1051,18 @@ This result also suggests a radical view of flexible communication with negation
 %%At the same time, expressions of double negation (\emph{not not}, \emph{not un-}) were not differentiated by listeners even when presented in the same context, suggesting that language understanding respects the logical possibilities that the rules of semantic opposition permit  \cite{Horn1989:Natural}.
 %These results suggest both a radical but bounded view of the uncertainty of linguistic expressions. 
 
-
-
-Our formalization of lexical uncertainty about the meaning of natural language negation builds on a growing movement to treat the combinatorial rules of grammar as not totally separable from the lexicon \cite<e.g., >{bybee2006usage, Odonnell2015productivity}.
-Recent psycholinguistic evidence supports the idea that utterances which are heavily used will be processed as unique lexical entries while less frequent phrases will be understood compositionally \cite{MorganLevy2016:binomials}.
+Our formalization of lexical uncertainty about the meaning of natural language negation adds to a growing movement to treat the combinatorial rules of grammar as not entirely separable from the lexicon \cite<e.g., >{bybee2006usage, Odonnell2015productivity}.
+Psycholinguistic evidence supports the idea that commonly used utterances are processed as unique lexical entries while less frequent phrases are interpreted compositionally \cite{MorganLevy2016:binomials}.
 The two types of negation meaning we considered---contrary and contradictory opposition---can be seen as a \emph{lexicalized} form of opposition and a \emph{compositional} rule, respectively.\footnote{
-Contraries act as lexicalized form of negation because their meanings refer to semantic variables distinct from the positive adjective (in particular, a different threshold; see SI), whereas contradictions refer to the same semantic variable as the positive adjective. 
+Contraries act as a lexicalized form of negation because their meanings refer to semantic variables distinct from the positive adjective (in particular, a different threshold; see SI), whereas contradictions refer to the same semantic variable as the positive adjective. 
 }
 In our modeling, we assumed all logically possible meanings for negation were equally likely \emph{a priori}: A further test of our negation uncertainty model would be to see if usage frequency can serve as a proxy for this prior over lexica.
 
-In this paper, we aimed to explain the modal interpretations of antonym pairs and their negations, but our empirical data suggest more nuance and variability in judgments, even in our minimal paradigms.
-While the modal response for negated antonyms was indicating a slightly positive state, there were consistent  responses indicating a slightly negative interpretation as well (e.g., the meaning expressed by ``he's not [un]reliable \emph{but he is kind of flaky}'', with prosodic focus on [un-]).
-This interpretation may be the result of participants attributing politeness to the speaker: \emph{Not unreliable} may be an indirect way of saying that a person is not reliable \cite{Yoon2017}.
-We also see a very slight hint of strongly negative interpretations (e.g., very unhappy) from the flagrant double negatives of Expt.~3 (\emph{not not happy}): The additivity of negations, or \emph{negative concord}, is not often associated with standard English, though it is relatively common cross-linguistically \cite<e.g., in Italian: \emph{non capisco niente}, literal translation: \emph{I don't understand nothing; }>{zeijlstra2004sentential} including in African American Vernacular English \cite<e.g., Mohammad Ali: ``Ain't never been another fighter like me''; >{labov1972negative, howe2005negation}.
-Finally, though we did not find any evidence of double negatives being interpreted as strong positives in the minimal contexts used in our experiments, double negatives  are employed in understatement \cite{bolinger1972degree}: In the appropriate context, ``I was not unaware of the problem'' could mean \emph{I was damn well aware of the problem}.
+Our model explains the modal interpretations of antonym pairs and their negations, but our empirical data suggest more nuance and variability in judgments, even in our minimal paradigms.
+While the modal response for negated antonyms was indicating a slightly positive state, there were consistent  responses indicating a slightly negative interpretation as well (e.g., the meaning expressed by ``he's not [un]reliable \emph{but he is kind of flaky}'', with prosodic focus on [un-]), potentially the result of politeness \cite{Yoon2017}.
+%This interpretation may be the result of participants attributing politeness to the speaker: \emph{Not unreliable} may be an indirect way of saying that a person is not reliable \cite{Yoon2017}.
+We also see a hint of strongly negative interpretations (e.g., very unhappy) from the flagrant double negatives of Experiment 3 (\emph{not not happy}): The additivity of negations, or \emph{negative concord}, is not often associated with standard English, though it is relatively common cross-linguistically \cite<e.g., in Italian: \emph{non capisco niente}, literal translation: \emph{I don't understand nothing; }>{zeijlstra2004sentential} including in African American Vernacular English \cite<e.g., Mohammad Ali: ``Ain't never been another fighter like me''; >{labov1972negative, howe2005negation}.
+%Finally, though we did not find evidence of double negatives being interpreted as strong positives in our minimal experimental contexts, double negatives  are employed in understatement \cite{bolinger1972degree}: In the appropriate context, ``I was not unaware of the problem'' could mean \emph{I was damn well aware}.
 %\red{[Horn ``not unaware'']}
 %\red{[midpoint responses? ]}
 %All our experiments involve utterances conveyed in text with minimal contexts;
@@ -1007,11 +1070,10 @@ Future work should investigate the relevant context and prosodic cues that can b
 Additionally, though our experiments are conducted in English, we expect these patterns to hold cross-linguistically for languages without negative concord and with the negation markers that can act as productively as English \emph{not} and \emph{un-}. 
 
 
-
-The fact that the meaning of explicit negation markers like \emph{not} and \emph{un-} is uncertain allows for an ambiguity that can be exploited by speakers.
-Our results suggest that if a speaker claims an individual is ``not not innocent'', the speaker could simultaneously convey that the person is innocent as well as that they are at least somewhat guilty.
-Such an obfuscation can lead to confusion within listeners or divergent beliefs across listeners, with some people believing in innocence and others in guilt as a kind of ``dog whistle''.
-It may as well impose gradability (e.g., degrees of guilt) onto what would typically be a binary distinction (i.e., innocent  or guilty). 
+The meaning of explicit negation markers like \emph{not} and \emph{un-} is flexible, allowing for an ambiguity that can be exploited by speakers.
+Our results suggest that if a speaker claims an individual is \emph{not not innocent}, the speaker could simultaneously convey that the person is innocent as well as at least somewhat guilty.
+Such obfuscation can lead to confusion within listeners or divergent beliefs across listeners, with some people believing in innocence and others in guilt as a kind of ``dog whistle''.
+It may as well impose gradability (e.g., degrees of guilt) onto what would typically be a binary distinction (i.e., innocent or guilty). 
 Understanding the psychological reality of this ambiguity will help us navigate the consequences of the plausibly deniable misinformation that lays in the language of negation.
 
 
