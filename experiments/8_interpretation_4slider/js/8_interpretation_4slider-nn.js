@@ -263,13 +263,13 @@ function make_slides(f) {
       console.log(stim)
       this.startTime = Date.now();
       this.sentence_order = _.shuffle(stim);
+      this.n_sliders = this.sentence_order.length;
 
       // FIX ME: many / few will need a special case
       var promptText = "For each of them, where would you place them on the following scale?"
 
-      $(".prompt").html("Imagine your friend tells you about four friends of theirs.<br> "+promptText);
+      $(".prompt").html("Imagine your friend tells you about "+ this.n_sliders +" friends of theirs.<br> "+promptText);
 
-      this.n_sliders = this.sentence_order.length;
       $(".slider_row").remove();
       $(".slider_center_target").remove();
       for (var i=0; i<this.n_sliders; i++) {
@@ -410,10 +410,10 @@ function init() {
   exp.antonym_type = "morphant";
 
   exp.adjective_type = [
-    "positive", "neg_positive", "antonym", "neg_neg_positive" //, "neither_pos_nor_ant"
+    "positive", "neg_positive", "antonym", "neg_neg_positive", "neg_antonym" //, "neither_pos_nor_ant"
   ];
   // exp.n_stims = 6;
-  exp.n_trials = 12;
+  exp.n_trials = 8;
   // exp.stimsForParticipant = _.shuffle(stimuli).slice(0, exp.n_stims);
 
   // exp.condition = _.sample(["all_four_sliders", "one_by_one"]);
