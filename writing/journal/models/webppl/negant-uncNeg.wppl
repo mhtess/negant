@@ -1,82 +1,21 @@
-var lowerBins = [
-	0,
-  0.01,
-  0.1,
-  0.2,
-  0.3,
-  0.4,
-  0.5,
-  0.6,
-  0.7,
-  0.8,
-  0.9,
-  0.99
-];
+var roundTo3 = function(x){
+  return Math.round(x * 10000) / 10000
+}
+var exp = function(x){ return Math.exp(x); };
 
-var upperBins = [
-  0.01,
-  0.1,
-  0.2,
-  0.3,
-  0.4,
-  0.5,
-  0.6,
-  0.7,
-  0.8,
-  0.9,
-  0.99,
-  1
-];
+var probability = function(Dist, x) {
+    return exp(Dist.score(x));
+}
 
-var lowerBinsFine = [
-	0,
-  0.01,
-  0.05,
-  0.1,
-  0.15,
-  0.2,
-  0.25,
-  0.3,
-  0.35,
-  0.4,
-  0.45,
-  0.5,
-  0.55,
-  0.6,
-  0.65,
-  0.7,
-  0.75,
-  0.8,
-  0.85,
-  0.9,
-  0.95,
-  0.99
-];
+// var lowerBins = map(roundTo3, _.range(0, 1, 0.02))
+// var upperBins = map(roundTo3, _.range(0.01, 1.01, 0.02))
 
-var upperBinsFine = [
-  0.01,
-  0.05,
-  0.1,
-  0.15,
-  0.2,
-  0.25,
-  0.3,
-  0.35,
-  0.4,
-  0.45,
-  0.5,
-  0.55,
-  0.6,
-  0.65,
-  0.7,
-  0.75,
-  0.8,
-  0.85,
-  0.9,
-  0.95,
-  0.99,
-  1
-];
+var lowerBins = map(roundTo3, _.range(0, 1, 0.1))
+var upperBins = map(roundTo3, _.range(0.01, 1.01, 0.1))
+
+var contains = function(lst, el){
+	lst.indexOf(el) > -1
+}
 
 var round = function(x){
   return Math.round(x*100)/100
@@ -96,9 +35,11 @@ var hasNegModifier = function(utt){
 var hasNegMorph = function(utt){
   return (utt.indexOf("un") > -1)
 };
-var roundTo3 = function(x){
-  return Math.round(x * 1000) / 1000
-}
+
+
+// var midBins = map2(function(b1,b2){
+//   return roundTo3((b2 - b1)/2 + b1)
+// }, lowerBinsFine, upperBinsFine)
 
 var midBins = map2(function(b1,b2){
   return roundTo3((b2 - b1)/2 + b1)
@@ -135,48 +76,99 @@ var DiscreteBeta = cache(function(a, b){
   }})
 })
 
-var possibleLexica = [
-	{
-		happy: function(state, thresholds){ return state > thresholds.happy },
-		not_happy: function(state, thresholds){ return !(state > thresholds.happy) },
-		un_happy: function(state, thresholds){ return !(state > thresholds.happy) },
-		not_un_happy: function(state, thresholds){ return !!(state > thresholds.happy) },
-		name: "both_contradictory"
-	},
-	{
-		happy: function(state, thresholds){ return state > thresholds.happy },
-		not_happy: function(state, thresholds){ return !(state > thresholds.happy) },
-		un_happy: function(state, thresholds){ return state < thresholds.un_happy },
-		not_un_happy: function(state, thresholds){ return !(state < thresholds.un_happy) },
-		name: "un_contrary"
-	},
+
+var georgeOrwellLexicon = {
+	happy: function(state, thresholds){ return state > thresholds.happy },
+	not_happy: function(state, thresholds){ return !(state > thresholds.happy) },
+	un_happy: function(state, thresholds){ return !(state > thresholds.happy) },
+	not_un_happy: function(state, thresholds){ return !!(state > thresholds.happy) },
+	not_not_happy: function(state, thresholds){ return !!(state > thresholds.happy) },
+	name: "both_contradictory"
+}
+
+var bonafideAntonymsLexicon = 	{
+	happy: function(state, thresholds){ return state > thresholds.happy },
+	not_happy: function(state, thresholds){ return !(state > thresholds.happy) },
+	un_happy: function(state, thresholds){ return state < thresholds.un_happy },
+	not_un_happy: function(state, thresholds){ return !(state < thresholds.un_happy) },
+	not_not_happy: function(state, thresholds){ return !!(state > thresholds.happy) },
+	name: "un_contrary"
+}
+
+
+var vanillaRSALexicon = {
+	happy: function(state, thresholds){ return state > 0.7 },
+	not_happy: function(state, thresholds){ return !(state > 0.7) },
+	un_happy: function(state, thresholds){ return state < 0.3 },
+	not_un_happy: function(state, thresholds){ return !(state < 0.3) },
+	name: "vanilla_RSA_lex"
+}
+
+
+var uncertainNegationLexica = [
+	georgeOrwellLexicon,
+	bonafideAntonymsLexicon,
 	{
 		happy: function(state, thresholds){ return state > thresholds.happy },
 		not_happy: function(state, thresholds){ return state < thresholds.not_happy },
 		un_happy: function(state, thresholds){ return !(state > thresholds.happy) },
-		// not_un_happy: function(state, thresholds){ return !!(state > thresholds.happy) },
-		not_un_happy: function(state, thresholds){ return !(state < thresholds.not_happy) },
+		not_un_happy: function(state, thresholds){ return  !!(state > thresholds.happy)}, // v1
+		// not_un_happy: function(state, thresholds){ return !(state < thresholds.not_happy) }, // v2
+		// not_not_happy: function(state, thresholds){ return !(state < thresholds.not_happy) },
+//		not_un_happy: function(state, thresholds){ return !!(state > thresholds.happy) },
 		name: "not_contrary"
 	},
 	{
 		happy: function(state, thresholds){ return state > thresholds.happy },
 		not_happy: function(state, thresholds){ return state < thresholds.not_happy },
 		un_happy: function(state, thresholds){ return state < thresholds.un_happy },
-		// not_un_happy: function(state, thresholds){ return !(state < thresholds.un_happy)  },
-		not_un_happy: function(state, thresholds){ return !!(state > thresholds.happy) },
+		not_un_happy: function(state, thresholds){ return !(state < thresholds.un_happy)  },
+		// not_not_happy: function(state, thresholds){ return !(state < thresholds.not_happy)  },
 		name: "both_contrary"
 	}
 ]
 
-// var meaningFn = function(words, state, thresholds, lexicon){
-//   words == "happy" ? state > thresholds.happy :
-//   words == "not_happy" ?  lexicon.contradictory_not ? !(state > thresholds.happy) :
-//       (state < thresholds.not_happy) :
-//   words == "un_happy" ? lexicon.contradictory_un ? !(state > thresholds.happy) :
-//       (state < thresholds.unhappy) :
-//   words == "not_un_happy" ?  lexicon.contradictory_un ? (state > thresholds.happy) : !(state < thresholds.unhappy) :
-//   true
-// };
+var uncertainNegationLexicaNoVagueness = [
+  {
+  	happy: function(state, thresholds){ return state > 0.7 },
+  	not_happy: function(state, thresholds){ return !(state > 0.7) },
+  	un_happy: function(state, thresholds){ return state < 0.3 },
+  	not_un_happy: function(state, thresholds){ return !(state < 0.3) },
+  	name: "un_contrary_fixed"
+  },
+  {
+  	happy: function(state, thresholds){ return state > 0.7 },
+  	not_happy: function(state, thresholds){ return !(state > 0.7) },
+  	un_happy: function(state, thresholds){ return  !(state > 0.7)},
+  	not_un_happy: function(state, thresholds){ return !!(state > 0.7) },
+  	name: "only_contradictions"
+  },
+  {
+  	happy: function(state, thresholds){ return state > 0.7 },
+  	not_happy: function(state, thresholds){ return state < 0.3 },
+  	un_happy: function(state, thresholds){ return !(state > 0.7) },
+  	not_un_happy: function(state, thresholds){ return !(state < 0.3) },
+  	name: "not_contrary_fixed"
+  },
+  {
+  	happy: function(state, thresholds){ return state > 0.7 },
+  	not_happy: function(state, thresholds){ return state < 0.3 },
+  	un_happy: function(state, thresholds){ return state < 0.3 },
+  	not_un_happy: function(state, thresholds){ return !(state < 0.3) },
+  	name: "both_contrary_fixed"
+  }
+]
+
+
+// displayObj(LexiconPrior)
+
+var modelLexicon = {
+	vanillaRSA: vanillaRSALexicon,
+	fixedLexUnc: uncertainNegationLexicaNoVagueness,
+	georgeOrwell: georgeOrwellLexicon,
+	bonafideAntonyms: bonafideAntonymsLexicon,
+	uncertainNegation: uncertainNegationLexica
+}
 
 var utteranceCost = function(u, cost_not, cost_un, multiplicative_cost) {
   var c0 = multiplicative_cost ? 1 : 0;
@@ -191,22 +183,34 @@ var utteranceCost = function(u, cost_not, cost_un, multiplicative_cost) {
 
 }
 
+//
+// {
+// 	georgeOrwell: Categorical({vs: possibleLexica, ps: [1, 0]}),
+// 	bonafideAntonyms: Categorical({vs: possibleLexica, ps: [0, 1]}),
+// 	uncertainNegation: Categorical({vs: possibleLexica, ps: [0.5, 0.5]})
+// }
 
 var alternatives =  ["happy", "un_happy", "not_happy", "not_un_happy"]
+// var five_utterances =  ["happy", "un_happy", "not_happy", "not_un_happy", "not_not_happy"]
+// var alternatives = five_utterances;
+
+// var cost_sets = {
+//   false: [0, 1, 2, 3],  // additive costs
+//   true: [1, 1.125, 1.25, 1.5, 2] // multiplicative costs
+// }
 
 var cost_sets = {
-  // false: [0, 1, 2, 3, 4],  // additive costs
-	false: [1, 2, 3],  // additive costs
+	// false: [1, 2, 3],  // additive costs
+	false: [2, 3],  // additive costs
   true: [1, 1.125, 1.25, 1.5, 2] // multiplicative costs
 }
+
 
 var listener0 = cache(function(utterance, thresholds, StatePrior, lexicon, modelName) {
   Infer({model: function(){
     var state = sample(StatePrior);
-		// display(state + )
 		var meaningFn = lexicon[utterance]
     var m = meaningFn(state, thresholds);
-		// display(state + " ---> " + m)
     condition(m);
     return state;
   }, method: "enumerate"})
@@ -215,9 +219,8 @@ var listener0 = cache(function(utterance, thresholds, StatePrior, lexicon, model
 var speaker1 = cache(function(state, thresholds, opts, StatePrior, lexicon, modelName) {
   Infer({model: function(){
     var utterance = uniformDraw(alternatives);
-		// display(state)
     // display(utterance)
-    var cost = utteranceCost(utterance, opts.cost_not, opts.cost_un, opts.multiplicative_cost)
+		var cost = utteranceCost(utterance, opts.cost_not, opts.cost_un, opts.multiplicative_cost)
     var L0 = listener0(utterance, thresholds, StatePrior, lexicon, modelName);
 		// JSON.stringify(utterance + thresholds + StatePrior + lexicon +modelName)
     var utility = opts.multiplicative_cost ? L0.score(state) * cost : L0.score(state) - cost;
@@ -227,32 +230,36 @@ var speaker1 = cache(function(state, thresholds, opts, StatePrior, lexicon, mode
   }, method: "enumerate"})
 }, 10000);
 
-var contains = function(lst, el){
-	lst.indexOf(el) > -1
-}
-
-var listener1 = cache(function(utterance, opts, StatePrior, modelName) {
+// var listener1 = cache(function(utterance, opts, StatePrior, modelName) {
+var listener1 = cache(function(list_of_utterances, opts, StatePrior, modelName) {
   Infer({model: function(){
     // display(utterance)
     // display(opts.alternative_utterances)
-		var lexicon = uniformDraw(possibleLexica)
-		// display(lexicon.name)
-		// display(JSON.stringify(lexicon.not_happy))
+		var lexicon = contains(["uncertainNegation", "fixedLexUnc"], modelName) ?
+		 uniformDraw(modelLexicon[modelName]) :
+		//categorical({vs: modelLexicon[modelName], ps: [0.1, 1, 1]}) : // make p(contrary) approx p(contradiction)
+		modelLexicon[modelName]
+
     // display(alt_utterances)
     // display(alt_utterances.indexOf("un_happy"))
-
-
     var thresholds = {
-      happy: uniformDraw(thetaBins),
-      un_happy: contains(["un_contrary", "both_contrary"], lexicon.name) ? 	uniformDraw(thetaBins) : "contradiction",
-			not_happy: contains(["not_contrary", "both_contrary"], lexicon.name) ? 	uniformDraw(thetaBins) : "contradiction",
+      happy: contains(["vanillaRSA", "fixedLexUnc"], modelName) ? null : uniformDraw(thetaBins),
+			un_happy: contains(["un_contrary", "both_contrary"], lexicon.name) ? 	uniformDraw(thetaBins) : "contradiction",
+			not_happy: contains(["not_contrary", "both_contrary"], lexicon.name) ? 	uniformDraw(thetaBins) : "contradiction"
     }
 		// display(JSON.stringify(thresholds))
-    var state = sample(StatePrior);
-		// display(state)
-    var S1 = speaker1(state, thresholds, opts, StatePrior, lexicon, modelName)
-    observe(S1, utterance)
-    return state
+    // var state = sample(StatePrior);
+		var state = repeat(list_of_utterances.length, function(){ sample(StatePrior) })
+
+		map2(function(u, s){
+			var S1 = speaker1(s, thresholds, opts, StatePrior, lexicon, modelName)
+      observe(S1, u)
+    }, list_of_utterances, state)
+
+    // var S1 = speaker1(state, thresholds, opts, StatePrior, lexicon, modelName)
+    // observe(S1, utterance)
+    return _.fromPairs(_.zip(list_of_utterances, state))
+		// return lexicon.name
   }, method: "enumerate"})
 }, 10000);
 
@@ -269,11 +276,25 @@ var prior_names = [
 ]
 
 var all_models = [
-	"uncertainNegation"
+//	"georgeOrwell",
+//	"vanillaRSA",
+//	"fixedLexUnc",
+	// "bonafideAntonyms"//,
+   "uncertainNegation"
 ]
 
+var utterance_conditions = [
+	"single_utterance",
+	// "five_utterances"
+	"multiple_utterances"
+//	"two_utterances",
+	// "three_utterances"
+]
+// var statePrior = both_state_priors["uniform"]
+// listener1(['not_un_happy'], {speaker_optimality:1, multiplicative_cost:false, cost_neg: 3}, statePrior, "uncertainNegation")
+// listener1(alternatives, {speaker_optimality:1, multiplicative_cost:false, cost_neg: 3}, statePrior, "uncertainNegation")
 
-_.flatten(_.flatten(_.flatten(_.flatten(_.flatten(
+_.flatten(_.flatten(_.flatten(_.flatten(_.flatten(_.flatten(
 	map(function(modelName){
 		display(JSON.stringify(modelName))
 
@@ -286,57 +307,109 @@ _.flatten(_.flatten(_.flatten(_.flatten(_.flatten(
 
 	      map(function(c1){
 					map(function(c2){
+						map(function(utterance_condition){
+							var listener_opts = extend(opts, {cost_not: c1, cost_un: c2} )
+							display(utterance_condition)
+							if (utterance_condition == "single_utterance") {
+								map(function(u){
+									var post = marginalize(listener1([u], listener_opts, statePrior, modelName), u)
+									map(function(s){
+										return extend(opts, {
+											modelName: modelName,
+											condition: utterance_condition,
+											prior: prior_name,
+											utterance: u,
+											state: s,
+											cost_not: c1,
+											cost_un: c2,
+											posterior_prob: Math.exp(post.score(s)),
+										})
+									}, sort(statePrior.support()))
+								}, all_utterances)
+							} else if  (utterance_condition == "two_utterances") {
+                var two_utterances = [ "un_happy", "not_happy"]
+								var post = listener1(two_utterances, listener_opts, statePrior, modelName)
+								map(function(u){
+									var marginalPost = marginalize(post, u)
+									map(function(s){
+										return extend(opts, {
+											modelName: modelName,
+											condition: utterance_condition,
+											prior: prior_name,
+											utterance: u,
+											state: s,
+											cost_not: c1,
+											cost_un: c2,
+											posterior_prob: Math.exp(marginalPost.score(s)),
+										})
+									}, sort(statePrior.support()))
+								}, two_utterances)
+							} else if  (utterance_condition == "three_utterances") {
+                var three_utterances = [ "happy", "un_happy", "not_happy"]
+                var post = listener1(three_utterances, listener_opts, statePrior, modelName)
+								map(function(u){
+									var marginalPost = marginalize(post, u)
+									map(function(s){
+										return extend(opts, {
+											modelName: modelName,
+											condition: utterance_condition,
+											prior: prior_name,
+											utterance: u,
+											state: s,
+											cost_not: c1,
+											cost_un: c2,
+											posterior_prob: Math.exp(marginalPost.score(s)),
+										})
+									}, sort(statePrior.support()))
+								}, three_utterances)
 
-		        map(function(u){
-							// display(u)
-		          var listener_opts = extend(opts, {cost_not: c1, cost_un: c2} )
-		          var post = listener1(u, listener_opts, statePrior, modelName)
-		          map(function(s){
-		            return extend(opts, {
-									modelName: modelName,
-									prior: prior_name,
-									utterance: u,
-									state: s,
-									cost_not: c1,
-									cost_un: c2,
-									posterior_prob: Math.exp(post.score(s)),
-								})
-		          }, sort(statePrior.support()))
+							} else if  (utterance_condition == "multiple_utterances") {
 
-		        }, all_utterances)
-					}, cost_levels)
-	      }, cost_levels)
+							  var post = listener1(all_utterances, listener_opts, statePrior, modelName)
+								map(function(u){
+									var marginalPost = marginalize(post, u)
+									map(function(s){
+										return extend(opts, {
+											modelName: modelName,
+											condition: utterance_condition,
+											prior: prior_name,
+											utterance: u,
+											state: s,
+											cost_not: c1,
+											cost_un: c2,
+											posterior_prob: Math.exp(marginalPost.score(s)),
+										})
+									}, sort(statePrior.support()))
+								}, all_utterances)
+
+							} else if  (utterance_condition == "five_utterances") {
+
+								var post = listener1(five_utterances, listener_opts, statePrior, modelName)
+								map(function(u){
+									var marginalPost = marginalize(post, u)
+									map(function(s){
+										return extend(opts, {
+											modelName: modelName,
+											condition: utterance_condition,
+											prior: prior_name,
+											utterance: u,
+											state: s,
+											cost_not: c1,
+											cost_un: c2,
+											posterior_prob: Math.exp(marginalPost.score(s)),
+										})
+									}, sort(statePrior.support()))
+								}, five_utterances)
+
+							}
+
+						}, utterance_conditions)
+
+	      	}, [2, 3])
+				}, [3])
+	      	// }, cost_levels)
+				// }, cost_levels)
 	    }, all_opts)
 	  }, prior_names)
 	}, all_models)
-)))))
-
-// var listener_opts = {"speaker_optimality":1,"multiplicative_cost":false, cost_not: 1, cost_un: 1}
-// var listener0 = cache(function(utterance, thresholds, StatePrior, lexicon, modelName) {
-// var thresholds = {
-// 	happy: _.min(thetaBins),
-// 	unhappy: _.min(thetaBins),
-// 	not_happy: _.min(thetaBins)
-// }
-// listener1("not_happy", listener_opts, DiscreteBeta(1, 1), "s")
-
-// var thresholds = {"happy":0.97,"unhappy":0.97,"not_happy":"contradiction"}
-// var state = 0.005
-
-
-// un_happy
-// var lexicon = {
-// 	happy: function(state, thresholds){ return state > thresholds.happy },
-// 	not_happy: function(state, thresholds){ return !(state > thresholds.happy) },
-// 	un_happy: function(state, thresholds){ return state < thresholds.un_happy },
-// 	not_un_happy: function(state, thresholds){ return !(state < thresholds.un_happy) },
-// 	name: "un_contrary"
-// }
-// speaker1(state, thresholds, listener_opts, DiscreteBeta(1, 1), lexicon, "m")
-
-
-// var fn = uniformDraw(possibleLexica)["not_happy"]
-
-// fn(0, {happy: 0.5, un_happy: 0.3, not_happy:0.7})
-// listener0("un_happy", thresholds, DiscreteBeta(1, 1), lexicon, 'h')
-// listener0(0.75,)
+))))))
