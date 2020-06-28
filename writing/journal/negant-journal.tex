@@ -123,6 +123,8 @@
 
 \newcommand{\brmresults}[2]{\(\beta = \rlgetnum{#1}{key}{#2}{mean}{3}\) (\rlgetnum{#1}{key}{#2}{l95}{3}, \rlgetnum{#1}{key}{#2}{u95}{3})}
 \newcommand{\brmresultsp}[2]{\(\beta = \rlgetnum{#1}{key}{#2}{mean}{3}\) [\rlgetnum{#1}{key}{#2}{l95}{3}, \rlgetnum{#1}{key}{#2}{u95}{3}]}
+\newcommand{\effsize}[2]{\(d = \rlgetnum{#1}{key}{#2}{mean}{2}\) [\rlgetnum{#1}{key}{#2}{l95}{2}, \rlgetnum{#1}{key}{#2}{u95}{2}]}
+
 
 
 
@@ -343,10 +345,10 @@ The fact that a speaker bothers to say that she's ``not happy''---and not, say, 
 On the other hand, a speaker could also say that she's ``unhappy'' (e.g., \citeNP{Krifka2007:Negated-antonyms}'s example above: ``I don't think I was \emph{unhappy}, just \emph{not happy}'').
 Theorizing about the meanings of negation must consider how the communicative context supports and potentially alters meanings, but heretofore no formal models have been proposed that can adequately address the semantic question while also accounting for pragmatic reasoning.
 
-We investigate the question of the meaning of natural language negation markers by formalizing the semantic proposals---Arsitotelean, Orwellean, \ourmodel---in models of pragmatic communication that assume listeners interpret utterances as rational social actions taken by speakers \cite{FrankGoodman2014:Inferring-word-,FrankeScholler2016:Semantic-values}. 
-Building on work in the Rational Speech Act framework, the basic architecture of these models is that a listener interprets an utterance like \emph{not unhappy} as being intentionally produced by a speaker trying to communicate a degree of, say, happiness to the listener  \cite{Franke2015a, Goodman2016:RSA}.
-The models spelled out in the SI conservatively combine previous ideas on the interpretation of gradable adjectives \cite{Kennedy2007, Lassiter2015}, ambiguity in the meanings of words \cite{Bergen2016}, and pragmatic reasoning \cite{Goodman2016:RSA}.
-Each model takes in an utterance (e.g., \emph{not happy}, \emph{not unhappy}) and returns a posterior distribution on belief states concerning the degree of happiness (Figure \ref{fig:modelPredictions}), which we then compare to empirical judgments in three experiments to determine which model most accurately characterizes the behavioral response patterns observed in human participants. 
+We investigate the question of the meaning of natural language negation markers by formalizing the semantic proposals---Arsitotelean, Orwellean, \ourmodel---in models of pragmatic communication that assume listeners interpret utterances as rational social actions taken by speakers \mht{are these the right cites??}\cite{FrankGoodman2014:Inferring-word-,FrankeScholler2016:Semantic-values}. 
+Building on work in the Rational Speech Act framework, the basic architecture of these models is that a listener interprets an utterance like \emph{not unhappy} as being intentionally produced by a speaker (who could have produced alternative utterances, e.g., \emph{happy}) trying to communicate a degree of, say, happiness to the listener  \cite{Franke2015a, Goodman2016:RSA}.
+These models combine previous, independently established modeling proposals on pragmatic reasoning \cite{Goodman2016:RSA}, the interpretation of gradable adjectives \cite<e.g., \emph{tall}, \emph{happy};>{Kennedy2007, Lassiter2015}, and ambiguity in the meanings of words \cite{Bergen2016}; the mathematical details of these models can be found in the SI. 
+Each model takes in an utterance (e.g., \emph{not happy}, \emph{not unhappy}) and returns a posterior distribution on belief states concerning the degree of happiness (Figure \ref{fig:modelPredictions}), which we then qualitatively compare to empirical judgments in three experiments to determine which model most accurately characterizes the behavioral response patterns observed in human participants. 
 
 Each model predicts a unique pattern of data (Figure \ref{fig:modelPredictions}).
 The \ourmodel model predicts that listeners interpret double negatives as distinct from simple positives not because the negation markers have \emph{a priori} different meanings (as the Aristotelean analysis supposes), but because pragmatic reasoning---why would a speaker bother to use two distinct forms of negation?---can help disambiguate what is otherwise an uncertain hypothesis space of logical possibilities (Figure \ref{fig:meanings}).
@@ -772,11 +774,11 @@ and their interaction; the model included a maximal random-effects structure wit
 %}
 Consistent with our predictions, the difference between the \emph{antonym} vs.~\emph{negated positive} 
 %\mf{this is comparing a factor to a factor level; we should say what the coding scheme is, if applicable what the default level is and then write something like \emph{lexical} vs~\emph{negated positive}, right?}
-levels of adjective type interacted with the morphological~vs.~lexical antonym type (posterior mean and 95\% Bayesian credible interval: \brmresultsp{expt1_brm_contrasts_10k.csv}{int_lex_morph_ant_v_negpos}).
+levels of adjective type interacted with the morphological~vs.~lexical antonym type (posterior mean and 95\% Bayesian credible interval: \brmresultsp{expt1_brm_contrasts_10k.csv}{int_lex_morph_ant_v_negpos}; Cohen's $d$ effect size: \effsize{expt1_brm_effsize_10k.csv}{int_lex_morph_ant_v_negpos}).\footnote{We compute effect sizes by following the Bayesian technique described in \cite{kruschke2014doing} Ch.~16. See SI for details.}.
 % (morphological vs. lexical; standardized regression coefficients \(\beta = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type1}{Estimate}{3}\), SE = 
 %\rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type1}{Std..Error}{3},
 %t\((\rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type1}{df}{0}) = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type1}{t.value}{2}, p = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type1}{Pr...t..}{3}\)) such that the difference between negated positives and antonyms was stronger for lexical antonyms than morphological antonyms.
-The negated positive vs. antonyms contrast (e.g., \emph{unhappy} vs. \emph{not happy}) was not appreciably different for the morphological antonyms (\brmresultsp{expt1_brm_contrasts_10k.csv}{morph_ant_v_negpos}), but with lexical antonyms (e.g., \emph{short} vs. \emph{not tall}), this difference was non-zero (\brmresultsp{expt1_brm_contrasts_10k.csv}{lex_ant_v_negpos}). %(e.g., \emph{unhappy} vs. \emph{not happy}; \(\beta = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type1}{Estimate}{3}\), SE = 
+The negated positive vs. antonyms contrast (e.g., \emph{unhappy} vs. \emph{not happy}) was not appreciably different for the morphological antonyms (\brmresultsp{expt1_brm_contrasts_10k.csv}{morph_ant_v_negpos}; \effsize{expt1_brm_effsize_10k.csv}{morph_ant_v_negpos}), but with lexical antonyms (e.g., \emph{short} vs. \emph{not tall}), this difference was non-zero (\brmresultsp{expt1_brm_contrasts_10k.csv}{lex_ant_v_negpos}; \effsize{expt1_brm_effsize_10k.csv}{lex_ant_v_negpos}). %(e.g., \emph{unhappy} vs. \emph{not happy}; \(\beta = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type1}{Estimate}{3}\), SE = 
 %\rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type1}{Std..Error}{3}, t\((\rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type1}{df}{0}) = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type1}{t.value}{2}, p = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type1}{Pr...t..}{3}\)).
 %Running the same model with the antonym type coded with lexical antonyms as the default level reveals that the negated positive vs. antonyms contrast was significantly different for the lexical antonyms (e.g., \emph{short} vs. \emph{not tall}; \(\beta = \rlgetnum{expt1_norm_helmert_summary_lexBase.csv}{Rowname}{adjective_type1}{Estimate}{3}\), SE = 
 %\rlgetnum{expt1_norm_helmert_summary_lexBase.csv}{Rowname}{adjective_type1}{Std..Error}{3}, t\((\rlgetnum{expt1_norm_helmert_summary_lexBase.csv}{Rowname}{adjective_type1}{df}{0}) = \rlgetnum{expt1_norm_helmert_summary_lexBase.csv}{Rowname}{adjective_type1}{t.value}{2}, p = \rlgetnum{expt1_norm_helmert_summary_lexBase.csv}{Rowname}{adjective_type1}{Pr...t..}{3}\)).
@@ -785,8 +787,8 @@ The negated positive vs. antonyms contrast (e.g., \emph{unhappy} vs. \emph{not h
 
 %","Estimate"],3)`$,  t$(`r round(rs1.expt1.coef["antonym_typelexical:st1","df"], 1)`) = `r round(rs1.expt1.coef["antonym_typelexical:st1","t value"],2)`, p = `r round(rs1.expt1.coef["antonym_typelexical:st1","Pr(>|t|)"], 3)`$).
 
-We observe further that negated morphological antonyms (e.g., \emph{not unhappy}) were rated differently and lower than positive adjectives (\brmresultsp{expt1_brm_contrasts_10k.csv}{lex_ant_v_negpos}). %(e.g., \emph{happy}; \(\beta = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type3}{Estimate}{3}\), SE =  \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type3}{Std..Error}{3}, t\((\rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type3}{df}{0}) = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type3}{t.value}{2}, p <0.001\)). 
-We additionally observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated overall lower than negated lexical antonyms (e.g., \emph{not tall}; Figure \ref{fig:expt1-results}), which manifested as an interaction in the negated antonym vs. positive contrast with the lexical vs. morphological items (\brmresultsp{expt1_brm_contrasts_10k.csv}{int_lex_morph_negant_v_pos}). 
+We observe further that negated morphological antonyms (e.g., \emph{not unhappy}) were rated differently and lower than positive adjectives (\brmresultsp{expt1_brm_contrasts_10k.csv}{lex_ant_v_negpos}; \effsize{expt1_brm_effsize_10k.csv}{lex_ant_v_negpos}). %(e.g., \emph{happy}; \(\beta = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type3}{Estimate}{3}\), SE =  \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type3}{Std..Error}{3}, t\((\rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type3}{df}{0}) = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{adjective_type3}{t.value}{2}, p <0.001\)). 
+We additionally observe that negated morphological antonyms (e.g., \emph{not unhappy}) were rated overall lower than negated lexical antonyms (e.g., \emph{not tall}; Figure \ref{fig:expt1-results}), which manifested as an interaction in the negated antonym vs. positive contrast with the lexical vs. morphological items (\brmresultsp{expt1_brm_contrasts_10k.csv}{int_lex_morph_negant_v_pos};  \effsize{expt1_brm_effsize_10k.csv}{int_lex_morph_negant_v_pos}). 
 %(\(\beta = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{Estimate}{3}\), SE = 
 %\rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{Std..Error}{3},  t\((\rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{df}{0}) = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{t.value}{2}, p = \rlgetnum{expt1_norm_helmert_summary.csv}{Rowname}{antonym_typelexical:adjective_type3}{Pr...t..}{3}\)).
 Negated antonyms received a distinct bimodal distribution wherein most ratings were slightly positive but a minority distribution of ratings were slightly negative (e.g., \emph{not dishonest} meaning \emph{not honest}).
@@ -844,6 +846,7 @@ In the \emph{multiple utterances} conditions, participants rated all four adject
 The \emph{single utterances} conditions were similar to that of \text{Experiment$\thinspace$1}: Participants rated one sentence at a time (e.g., \enquote{Greg is not unhappy}), each from a unique adjective set (e.g., never rated both \emph{unhappy} and \emph{not happy}), completing a total of 12 trials, with exactly 3 repetitions of each adjective type (positive, antonym, and their negations).
 In contrast to \text{Experiment$\thinspace$1}, \emph{antonym type} (morphological vs.\text{~}lexical) was a between-participants factor.
 In addition, the slider bar endpoints were relabeled to \enquote{the most \{\emph{positive}, \emph{negative}\} person \emph{in the world}}; without \enquote{in the world}, there is a salient interpretation of the endpoints as \enquote{the most \{\emph{positive}, \emph{negative}\} person (of these four)} in the multiple utterances conditions.
+We note that by labelling the endpoints in this more explicit manner, we potentially decrease the size of the effects we observe 
 
 \begin{table}[h]
 \centering
@@ -899,14 +902,14 @@ To test this, we built a Bayesian generalized linear mixed-effects model predict
 %We considered data only from the \emph{single utterances} conditions and built a linear mixed model predicting the ratings normalized by-participant in terms of \emph{antonym type} (morphological vs.\text{~}lexical; dummy-coded with morphological as the base case), \emph{adjective type} (forward-difference coded in order: antonym, negated positive, negated antonym, positive) and their interaction; the model also included random intercepts and random slopes of \emph{adjective type} by-participant and by-item.
 
 We predict that when heard in isolation, morphological antonyms will not show an interpretative difference between  \emph{antonyms} and \text{~}\emph{negated positives} (consistent with the \ourmodel model) while lexical antonyms will (consistent with the Aristotelean model).
-Consistent with this hypothesis, in the single utterance conditions, the \emph{antonym} vs.\text{~}\emph{negated positive} difference was greater for lexical antonyms than morphological antonyms (i.e., an adjective type by antonym type interaction; \brmresultsp{expt2_brm_contrasts_10k.csv}{single_int_lex_morph_negpos_v_ant}). 
-At the same time, the \emph{antonym} vs.\text{~}\emph{negated positive} difference for morphological antonyms (e.g., \emph{unhappy} vs. \emph{not happy}) was not different from zero (\brmresultsp{expt2_brm_contrasts_10k.csv}{morph_single_negpos_v_ant}), while the contrast for lexical antonyms (e.g., \emph{sad} vs. \emph{not happy}) was greater than zero (\brmresultsp{expt2_brm_contrasts_10k.csv}{lex_single_negpos_v_ant}).
+Consistent with this hypothesis, in the single utterance conditions, the \emph{antonym} vs.\text{~}\emph{negated positive} difference was greater for lexical antonyms than morphological antonyms (i.e., an adjective type by antonym type interaction; \brmresultsp{expt2_brm_helmert_contrasts_10k.csv}{single_int_lex_morph_ant_v_negpos}; \effsize{expt2_brm_effsize_10k.csv}{single_int_lex_morph_ant_v_negpos}). 
+At the same time, the \emph{antonym} vs.\text{~}\emph{negated positive} difference for morphological antonyms (e.g., \emph{unhappy} vs. \emph{not happy}) was not different from zero (\brmresultsp{expt2_brm_helmert_contrasts_10k.csv}{morph_single_ant_v_negpos}; \effsize{expt2_brm_effsize_10k.csv}{morph_single_ant_v_negpos}), while the contrast for lexical antonyms (e.g., \emph{sad} vs. \emph{not happy}) was greater than zero (\brmresultsp{expt2_brm_helmert_contrasts_10k.csv}{lex_single_ant_v_negpos}; \effsize{expt2_brm_effsize_10k.csv}{lex_single_ant_v_negpos}).
 
 Our second prediction is that morphological antonyms will be interpreted differently than negated positive adjectives when they are heard in the same context.
 %Our second main hypothesis is that context (single vs.\text{~}multiple utterances) modulates the interpretive difference between morphological antonyms and negated positives.
 Specifically, we predict that morphological antonyms will be interpreted more negatively than negated positives in a context with multiple adjectival utterances.
-Consistent with this prediction, the interpretative difference between morphological antonyms and negated positives varied as a function of context (i.e., an adjective type by context interaction; \brmresultsp{expt2_brm_contrasts_10k.csv}{morph_int_multi_single_negpos_v_ant}). 
-Morphological antonyms were not interpreted differently than negated positives when they were heard in isolation (single utterance condition; reported above), but they were interpreted differently when they were heard in the same context (multiple utterance condition; \brmresultsp{expt2_brm_contrasts_10k.csv}{morph_multi_negpos_v_ant}).
+Consistent with this prediction, the interpretative difference between morphological antonyms and negated positives varied as a function of context (i.e., an adjective type by context interaction; \brmresultsp{expt2_brm_helmert_contrasts_10k.csv}{morph_int_multi_single_ant_v_negpos}; \effsize{expt2_brm_effsize_10k.csv}{morph_int_multi_single_ant_v_negpos}). 
+Morphological antonyms were not interpreted differently than negated positives when they were heard in isolation (single utterance condition; reported above), but they were interpreted differently when they were heard in the same context (multiple utterance condition; \brmresultsp{expt2_brm_helmert_contrasts_10k.csv}{morph_multi_ant_v_negpos}; \effsize{expt2_brm_effsize_10k.csv}{morph_multi_ant_v_negpos}).
 
 %the \emph{antonym} vs.\text{~}\emph{negated positive} difference was greater for lexical antonyms than morphological antonyms (i.e., an adjective type by antonym type interaction; \brmresultsp{expt2_brm_contrasts_10k.csv}{single_int_lex_morph_negpos_v_ant}). 
 
@@ -952,7 +955,7 @@ The predictions of the \ourmodel model (aimed at explaining morphological antony
 On the one hand, for the \emph{antonym} vs.~\emph{negated positive} contrast, we predict an interpretative difference for morphological antonyms only when the alternatives are presented together, whereas the difference is expected to occur for lexical antonyms in both context conditions.
 On the other hand, pragmatics operates in both models (\ourmodel and Aristotle) to further differentiate the likely meaning of all of the adjectives as a result of being presented in the same context (i.e., all adjectives get more specific interpretations).
 Thus, it is not clear \emph{a priori} what the prediction should be for the existence of a three-way interaction nor the direction of the interaction.
-As an exploratory analysis, we examined the three-way interaction in our the regression model and found the relevant three-way interaction was in the direction of lexical antonyms showing a larger \emph{antonym} vs.~\emph{negated positive} difference in the multiple utterance condition \brmresults{expt2_brm_contrasts_10k.csv}{int_multi_single_v_lex_morph_v_negpos_ant}.%, though (\(\beta =  \rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{Estimate}{3}
+As an exploratory analysis, we examined the three-way interaction in our the regression model and found the relevant three-way interaction was in the direction of lexical antonyms showing a larger \emph{antonym} vs.~\emph{negated positive} difference in the multiple utterance condition (\brmresultsp{expt2_brm_helmert_contrasts_10k.csv}{int_multi_single_v_lex_morph_v_ant_negpos}; \effsize{expt2_brm_effsize_10k.csv}{int_multi_single_v_lex_morph_v_negpos_ant}). %, though (\(\beta =  \rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{Estimate}{3}
 %\), SE = 
 %\rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{Std..Error}{3}, t\(( \rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{df}{0}) =  \rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{t.value}{2}, p =  \rlgetnum{expt2_glmer_full3way.csv}{Rowname}{adj_type1:antonym_typelexant:conditionexplicit}{Pr...t..}{3}\)).
 %\mf{maybe this paragraph could, if absolutely necessary, be dropped to save space?}
@@ -1005,14 +1008,11 @@ All participants self-reported only English as their native language. Five parti
 Figure \ref{fig:expt3-results} shows results for each adjective type.
 
 Our main hypothesis concerns the interpretation of flagrant double negative statements that use the same negation marker twice (\emph{not not happy}). 
-We built a mixed-effects regression model with random by-participant and by-item intercepts and slopes (where the slopes refer to the effect of the adjective type, forward-difference coded as before: happy vs.~not happy vs.~not not happy vs.~unhappy).
-The two negatives did not simply cancel to make a positive: \emph{not not happy} received a significantly more negative interpretation than \emph{happy} (\(\beta = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{Estimate}{3}\), SE = 
-\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{Std..Error}{3}, t\((\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{df}{0}) = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{t.value}{2}, p < 0.001\)).
-This suggests that participants actively try to make sense of seemingly redundant, contradictory information in a way that would be informative for a speaker to produce. 
-In addition,  the result from Experiment 2 (multiple utterances condition) replicated for the morphological antonyms: \emph{not happy} and \emph{unhappy} were differentiated in meaning (\(\beta = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{Estimate}{3}\), SE = 
-\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{Std..Error}{3}, t\((\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{df}{0}) = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{t.value}{2},  p =  \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{Pr...t..}{3}\)).
-Contrary to our hypothesis, however, we did not find evidence that the flagrant double negative \emph{not not happy} received on-average a positive interpretation (\(\beta = \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{Estimate}{3}\), SE = 
-\rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{Std..Error}{3}, t\((\rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{df}{0}) = \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{t.value}{2},  p =  \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{Pr...t..}{2}\)); inspection of the fitted random-effects suggested this was due to large subject-wise variation in the interpretation of these flagrant double negatives. 
+We built a Bayesian mixed-effects regression model with random by-participant and by-item intercepts and slopes (where the slopes refer to the effect of the adjective type, forward-difference coded as before: happy vs.~not happy vs.~not not happy vs.~unhappy).
+The two negatives did not simply cancel to make a positive: \emph{not not happy} received a substantially more negative interpretation than \emph{happy} (\brmresultsp{expt3_brm_contrasts_10k.csv}{morph_negnegpos_v_pos}; \effsize{expt3_brm_effsize_10k.csv}{morph_negnegpos_v_pos}).
+This results suggests that participants actively try to make sense of seemingly redundant, contradictory information in a way that would be informative for a speaker to produce. 
+In addition, we replicate the result from Experiment 2 (multiple utterances condition) for the morphological antonyms vs. negated positives difference: \emph{not happy} and \emph{unhappy} were differentiated in meaning (\brmresultsp{expt3_brm_contrasts_10k.csv}{morph_ant_v_negpos}; \effsize{expt3_brm_effsize_10k.csv}{morph_ant_v_negpos}).
+Contrary to our hypothesis, however, we did not find evidence that the flagrant double negative \emph{not not happy} received on-average a positive interpretation \brmresults{expt3_brm_contrasts_10k.csv}{negnegpos}; inspection of the fitted random-effects suggested this was due to large subject-wise variation in the interpretation of these flagrant double negatives. 
 We return to this observation in the General Discussion. 
 
 %\mht{should we discuss the felicity of ``not not''? a google search reveals that people are using it...} 
@@ -1027,36 +1027,37 @@ In Expt.~3b, we directly compare the interpretation of two double negatives when
 
 \paragraph{Participants}\label{participants-3}
 
-We recruited 75 participants from MTurk to match the sample size of the same condition in Expt.~2 and Expt.~3a.
-These numbers follow from the intention of getting approximately 45 ratings for each unique adjective in the experiment.
-The experiment took on average 5 minutes and participants were compensated \$0.90.
-Exclusion criterion, sample size, procedure, and the analysis described below were preregistered: \red{XXX}.
+We recruited 50 participants from MTurk. 
+This number was arrived at with the intention of getting approximately 20 ratings for each unique item in the experiment.
+The experiment took on average 5 minutes and participants were compensated \$1.00.
+Exclusion criterion, sample size, procedure, and the analysis described below were preregistered: \url{https://osf.io/5zqd7}.
 
 \paragraph{Materials and procedure}\label{materials-3}
 
-The materials and procedure were identical to that of the \emph{multiple utterances} condition of Experiment~2 and Experiment 3a.
-In this experiment, participants are presented with the following alternatives: positives, morphological antonyms, negated morphological antonyms, and negated negated positives (e.g., \emph{happy}, \emph{unhappy}, \emph{not unhappy}, \emph{not not happy}).
+The materials and procedure were almost identical to that of the \emph{multiple utterances} condition of Experiment~2 and Experiment 3a.
+In this experiment, participants were presented with five  alternatives: positive adjectives, negated positives, morphological antonyms, negated morphological antonyms, and negated negated positives (e.g., \emph{happy}, \emph{not happy}, \emph{unhappy}, \emph{not unhappy}, \emph{not not happy}).
+Since we observed substantially greater participant-wise variability than item-wise variability in Expt.~3a, we decided to shorten the experiment so participants completed 8 trials instead of the 12 used in Experiment 3a.
 As with Experiment 3a, this experiment included an additional memory check wherein participants had to select all of the items that they recall being tested on from a list of 10 items (5 real and 5 distractor). 
 We pre-registered the exclusion criterion of removing participants who failed to respond correctly to at least 7 of the 10 items. 
 
 \begin{figure}[h]
-\centering \includegraphics[width=0.75\linewidth]{figs/expt3_directlabel_hist} 
-\caption{Experiment 3 results. Dashed line indicates scale midpoint. White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt3-results}
+\centering \includegraphics[width=\linewidth]{figs/expt3_directlabel_hist_ab} 
+\caption{Experiment 3 results. A: Experiment 3a in which the doubly-negated adjective is presented in the context of the positive adjective, the morphological antonym, and the negated adjective. B: Experiment 3b in which the doubly-negated adjective is presented in the context of the same alternatives and the negated morphological antonym. Dashed line indicates scale midpoint. White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt3-results}
 \end{figure}
 
 
 \subsubsection{Results}
 
-\red{XX} participants self-reported only English as their native language. 
-\red{XX} participants were excluded for failing to respond correctly to at least 7 of the 10 memory check items, leaving \red{XX} participants for these analyses.
+1 participant self-reported a language other than English as their native language. 
+An additional 12 participants were excluded for failing to respond correctly to at least 7 of the 10 memory check items, leaving 37 participants for these analyses.
 Figure \ref{fig:expt3-results}b shows results for each adjective type.
 
-Our main hypothesis concerns the interpretation of flagrant double negative statements that use the same negation marker twice (\emph{not not happy}). 
-We built a mixed-effects regression model with random by-participant and by-item intercepts and slopes (where the slopes refer to the effect of the adjective type, forward-difference coded as before: happy vs.~not happy vs.~not not happy vs.~unhappy).
-The two negatives did not simply cancel to make a positive: \emph{not not happy} received a significantly more negative interpretation than \emph{happy} (\(\beta = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{Estimate}{3}\), t\((\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{df}{0}) = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled3}{t.value}{2}, p < 0.001\)).
-This suggests that participants actively try to make sense of seemingly redundant, contradictory information in a way that would be informative for a speaker to produce. 
-In addition,  the result from Experiment 2 (multiple utterances condition) replicated for the morphological antonyms: \emph{not happy} and \emph{unhappy} were differentiated in meaning (\(\beta = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{Estimate}{3}\), t\((\rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{df}{0}) = \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{t.value}{2},  p =  \rlgetnum{expt3_glmer_adjective.csv}{Rowname}{adjective_type_rescaled1}{Pr...t..}{3}\)).
-Contrary to our hypothesis, however, we did not find evidence that the flagrant double negative \emph{not not happy} received on-average a positive interpretation (\(\beta = \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{Estimate}{3}\), t\((\rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{df}{0}) = \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{t.value}{2},  p =  \rlgetnum{expt3_notnot_vs_baseline.csv}{Rowname}{(Intercept)}{Pr...t..}{2}\)); inspection of the fitted random-effects suggested this was due to large subject-wise variation in the interpretation of these flagrant double negatives. 
+In this experiment, we are concerned with whether or not participants will draw an interpretative difference between negated morphological antonyms (e.g., \emph{not unhappy}) and doubly negated positives (e.g., \emph{not not happy}).
+We built a Bayesian mixed-effects regression model with random by-participant and by-item intercepts and slopes (where the slopes refer to the effect of the adjective type, forward-difference coded as before: happy vs.~not happy vs.~not not happy vs.~unhappy).
+As suggested by Experiment 3a in which the two double negatives are not presented in the same context, the doubly-negated positive adjective receives a lower overall rating than the negated morphological antonym (\brmresultsp{expt3b_brm_contrasts_10k.csv}{morph_negnegpos_v_negant}; \effsize{expt3b_brm_effsize_10k.csv}{morph_negnegpos_v_negant}).
+In addition, we replicate the previous results from Experiment 2 (multiple utterances condition) and Experiment 3a in which \emph{not happy} and \emph{unhappy} are subtly differentiated in meaning (\brmresultsp{expt3b_brm_contrasts_10k.csv}{morph_ant_v_negpos}; \effsize{expt3b_brm_effsize_10k.csv}{morph_ant_v_negpos}).
+
+
 
 %\hypertarget{discussion}{%
 \section{General Discussion}\label{discussion}
