@@ -996,11 +996,6 @@ The main difference in this experiment is that participants are presented with t
 This experiment was conducted eighteen months after Experiment~2, and due to concerns about recently declining data quality on MTurk, this experiment included an additional memory check wherein participants had to select all of the items that they recall being tested on from a list of 10 items (5 real and 5 distractor). 
 We pre-registered the exclusion criterion of removing participants who failed to respond correctly to at least 7 of the 10 items. 
 
-\begin{figure}[h]
-\centering \includegraphics[width=0.75\linewidth]{figs/expt3_directlabel_hist} 
-\caption{Experiment 3 results. Dashed line indicates scale midpoint. White bars denote bootstrapped 95\% confidence intervals for the means.}\label{fig:expt3-results}
-\end{figure}
-
 
 \subsubsection{Results}
 
@@ -1053,9 +1048,13 @@ An additional 12 participants were excluded for failing to respond correctly to 
 Figure \ref{fig:expt3-results}b shows results for each adjective type.
 
 In this experiment, we are concerned with whether or not participants will draw an interpretative difference between negated morphological antonyms (e.g., \emph{not unhappy}) and doubly negated positives (e.g., \emph{not not happy}).
-We built a Bayesian mixed-effects regression model with random by-participant and by-item intercepts and slopes (where the slopes refer to the effect of the adjective type, forward-difference coded as before: happy vs.~not happy vs.~not not happy vs.~unhappy).
+We built a Bayesian mixed-effects regression model with random by-participant and by-item intercepts and slopes (where the slopes refer to the effect of the adjective type).
 As suggested by Experiment 3a in which the two double negatives are not presented in the same context, the doubly-negated positive adjective receives a lower overall rating than the negated morphological antonym (\brmresultsp{expt3b_brm_contrasts_10k.csv}{morph_negnegpos_v_negant}; \effsize{expt3b_brm_effsize_10k.csv}{morph_negnegpos_v_negant}).
-In addition, we replicate the previous results from Experiment 2 (multiple utterances condition) and Experiment 3a in which \emph{not happy} and \emph{unhappy} are subtly differentiated in meaning (\brmresultsp{expt3b_brm_contrasts_10k.csv}{morph_ant_v_negpos}; \effsize{expt3b_brm_effsize_10k.csv}{morph_ant_v_negpos}).
+As in Experiment 3a, doubly-negated positive adjectives receive on average a rating not distinguished from the midpoint (\brmresultsp{expt3b_brm_contrasts_10k.csv}{negnegpos}; \effsize{expt3b_brm_effsize_10k.csv}{negnegpos}).
+
+Examining the distribution of responses for \emph{not not happy} vs. \emph{not unhappy}, we observe that the negated negated adjective (\emph{not not happy}) receives about twice as many negative responses (i.e., responses lower than the mid-point of the scale, assuming a 5-pt buffer on the 101-pt scale, or responses $< 0.45$ on the scale; 27\%~vs.~14\%) and about twice as many mid-point responses (assuming a 5-pt buffer; $0.45 <$ response $< 0.55$; 20\%~vs~11\%) than the negated morphological antonym (\emph{not unhappy}). This variability in responses suggests that listeners will try to rationalize a speaker who flagrantly contradicting themselves, and can use a variety of strategies to do so.
+
+Finally, we replicate the previous results from Experiment 2 (multiple utterances condition) and Experiment 3a in which \emph{not happy} and \emph{unhappy} are subtly differentiated in meaning (\brmresultsp{expt3b_brm_contrasts_10k.csv}{morph_ant_v_negpos}; \effsize{expt3b_brm_effsize_10k.csv}{morph_ant_v_negpos}).
 
 
 
@@ -1070,7 +1069,7 @@ In addition, we replicate the previous results from Experiment 2 (multiple utter
 %Instead, speakers can use modifiers and morphemes to carve more precise meanings from otherwise vague dimensions.
 %A person \emph{not unhappy} is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
 
-Understanding language is a terribly holistic process in which many factors---the meanings of words, uncertainty, the communicative process---come together to produce interpretations. Pragmatics (or, communicative reasoning), in particular, is a complicated, elusive, and often-ignored factor that is necessary to consider to understand how the meanings of words are computed in context. 
+Understanding language is a holistic process in which many factors---the meanings of words, uncertainty, the communicative process---come together to produce interpretations. Pragmatics (or, communicative reasoning), in particular, is a complicated, elusive, and often-ignored factor that is necessary to consider to understand how the meanings of words are computed in context. 
 Across three experiments using a straight-forward response measure, we find the interpretations of natural language negation can change based on the subtle contextual circumstance of the presence of other uses of negation in the same context.
 These findings highlight just how deep the flexibility and context-sensitivity of language run, and underscore the importance of discarding simplistic pictures of language understanding that assume transparent and static meanings of the words used in a sentence. 
 
