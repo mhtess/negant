@@ -199,7 +199,7 @@ Correspondence concerning this article should be addressed to Michael Henry Tess
 \abstract{
 Logic tells us that two negatives make a positive, but in language, things are not so black and white: A person \emph{not unhappy} may not be entirely \emph{happy}. We hypothesize that non-logical uses of double negatives like \emph{not unhappy} stem from listeners entertaining flexible meanings for negation markers like \emph{not} and \emph{un-}, which context can then help disambiguate. We formalize this hypothesis in a computational model of language understanding, which predicts that \emph{not unhappy} means something different than \emph{happy} while also entertaining that single negations (\emph{unhappy} and \emph{not happy}) can be interpreted identically when context does not suggest otherwise. 
 Across three experiments ($n= 995$), we confirm these predictions experimentally and further find that double negations that flagrantly use the same negation marker twice (e.g., \emph{not not happy}) can also be interpreted in subtle ways.  
-These findings argue against simplistic assumptions of language meanings---even logical elements in language---often used throughout psychological science.
+These findings suggest that even one of the most logical elements of language—negation—can mean many things at once.
 }
 
 \begin{document}
@@ -266,7 +266,7 @@ The interpretation of double negatives is important from a logical perspective \
 %Also,
 % insofar as novel meanings can be expressed through the iterative application of the same logical operation (i.e., two negatives), 
 Understanding why somebody would say a double negative like \emph{I'm not unhappy} could also provide a window into richer conceptual spaces like emotions \cite{Lindquist2015, Satpute2016}, where the usage of negation can modulate physiological responses \cite{Herbert2011}.
-More broadly, pinning down the meaning of such a logical element of language as negation is crucial for so much of psychological science that depends upon using linguistic information to convey task instructions and content.
+More broadly, pinning down the meaning of negation---one of the most logical elements of language---is crucial for so much of psychological science that depends upon using linguistic information to convey task instructions and task content.
 
 %Metaphoric language is an obvious example \cite<e.g.,>{lakoff2008}
 % \red{(something from the reference game using impoverished language / language evolution / convention formation literature?)}. 
@@ -1080,22 +1080,24 @@ Finally, we replicate the previous results from Experiment 2 (multiple utterance
 %A person \emph{not unhappy} is neither sad nor truly happy, but residing in some marginally positive state that is difficult to refer to because degrees of happiness lack precise units.
 
 Understanding language is a holistic process in which many factors---the meanings of words, uncertainty, the communicative process---come together to produce interpretations. Pragmatics (or, communicative reasoning), in particular, is a complicated, elusive, and often-ignored factor that is necessary to consider to understand how the meanings of words are computed in context. 
-Across three experiments, we find the interpretations of natural language negation can change based on subtle contextual circumstances like the presence of other uses of negation in the same context.
-These findings highlight just how deep the flexibility and context-sensitivity of language run, and underscore the importance of discarding simplistic pictures of language understanding that assume transparent and static meanings of the words---even logical words---used in a sentence. 
+Across three experiments, we find that the interpretations of natural language negation can change based on subtle contextual circumstances like the presence of other uses of negation in the same context.
+These findings highlight just how deep the flexibility and context-sensitivity of language run and underscore the importance of discarding simplistic pictures of language understanding that assume transparent and static meanings of the words---even logical words---used in a sentence. 
 
 %From the study of logical language in both experiments of human reasoning and naturalistic uses in legal contexts to any study that uses language to convey the instructions or experimental manipulations of a study, we must do away with simple pictures of language that would assume transparent and static meanings of the words used in a sentence. 
 
 In Experiments 1 \& 2, we discovered and confirmed a surprising empirical result: \emph{unhappy} (morphological antonyms) and \emph{not happy} (negated positives) are interpreted identically, except when heard in the same context.
-One explanation for this result is via a process known as \emph{negative strengthening}, where the negated positive adjectives (e.g., \emph{not intelligent}) receive a stronger interpretation than literally implied \cite<e.g.,  rather stupid;>{Horn1989:Natural, Ruytenbeek2017, Gotzner2018}. 
-If this were so, one might expect that the presence of the morphological antonym in the same context (i.e., our \emph{multiple utterances} condition of Expt.~2) would weaken the interpretation of the negated positive.
-In fact, we observe the opposite in our data: When presented with multiple utterances, it is the morphological antonym that tends to be strengthened; the interpretation of the negated positive adjective remains unchanged. 
-Furthermore, it is not clear how pragmatically this negative strengthening explanation should account for the pattern of data we observe.
+One explanation for this result is via a process known as \emph{negative strengthening}, where a negated positive adjective receives a stronger interpretation than literally implied \cite<e.g., \emph{not intelligent} $\rightarrow$ rather stupid;>{Horn1989:Natural, Ruytenbeek2017, Gotzner2018}. 
+Under this explanation, however, one might expect that the presence of the morphological antonym in the same context (i.e., our \emph{multiple utterances} condition of Expt.~2) would weaken the interpretation of the negated positive, but in fact, we observe the opposite in our data: When presented with multiple utterances, it is the morphological antonym that tends to be strengthened; the interpretation of the negated positive adjective remains unchanged, suggesting that in the absence of further context, morphological antonyms like \emph{unhappy} are interpreted more like simple contradictions.
+Furthermore, this pragmatic, negative strengthening explanation has never been articulated formally and so it  is not clear what pragmatic components are necessary to derive this inference. 
 This account is often presented via alternative-based pragmatic reasoning: A speaker could have they are ``fine'' and the fact that they chose to say they not ``not good'' implies that they are rather bad \cite{Horn1989:Natural}. 
-Including ``fine'' into alternative set of a comparable RSA model to the ones we present does not capture the key behavioral patterns we observe (see SI). 
+In the SI, we present two versions of a pragmatic reasoning model that introduces competition with a neutral utterance (``fine'') and find that it does not capture the key behavioral patterns we observe.
+
+
+
 
 
 %Our model that represents flexibility in how to interpret negation markers (\emph{un-}, \emph{not}) predicts this very result, while alternative models that treat negation markers as only carrying a single possible meaning fall short.
-We provided a computational solution to an outstanding puzzle in natural language understanding: How to interpret double negatives \cite<e.g., \emph{not unhappy}; >{Horn1991:Duplex, Krifka2007:Negated-antonyms, Rett2014:eval}.
+We provided a computational solution to an age-old problem in natural language understanding: How to interpret double negatives \cite<e.g., \emph{not unhappy}; >{Horn1991:Duplex, Krifka2007:Negated-antonyms, Rett2014:eval}.
 We predicted and observed empirically the ordering hypothesized by \citeA{Krifka2007:Negated-antonyms} for morphological antonyms (\emph{unhappy} $<$ \emph{not happy} $<$ \emph{not unhappy} $<$ \emph{happy}), when a listener hears multiple adjectival utterances in the same context (Experiment 2; \emph{multiple utterances condition}).
 Other accounts derive similar predictions based on different kinds of assumptions \cite{Krifka2007:Negated-antonyms, Rett2014:eval, Cable2017}, but only our model makes predictions about the context-dependence of these inferences.
 This work thus carries with it an account of a robust linguistic intuition: Potentially equivalent utterances receive differential interpretations when produced by the same speaker in close proximity, an instance of \emph{mutual exclusivity} reasoning \cite{Markman1989}. %\mht{are the other lexical uncertainty papers not an instance of this general point as well?}
@@ -1106,17 +1108,18 @@ In Experiment 3, we discovered that this inference goes beyond using distinct  n
 This result points to an underlying cognitive mechanism that flexibly allows for different meanings for the same negation marker within a single utterance, guided by a principled logic: A contradiction of a contrary is a pragmatically useful double negative. 
 
 
-Our model explains the interpretations of antonym pairs and their negations by assuming the speaker's utterances are chosen to convey information about the underlying degree (e.g., how happy is John?). This assumption about the speaker's communicative goal defines an implicit \emph{Question under Discussion} (or, \emph{QUD}), which can easily change and complicate the picture presented here even more \cite{roberts2012information, beaver2017questions}. For example, utterances involving particle negation (e.g., \emph{not happy}) could be produced to address a polar question (e.g., \emph{Is she happy?}), which could result in different interpretations than the degree-based question. 
-This simplistic model for the relationship between QUDs and speaker production rules does not account for our findings, however: The interpretation of ``not unhappy'' becomes almost identical with that of ``happy'' (see SI).
-\mht{verify this modeling result. why is ``not unhappy'' so strong if it is likely a response to a polar QUD? one possibility: with polar QUD, you get interpretation by reasoning about only 2 utterances... no competition with ``happy''...}
-The modeling approach we present here can be naturally be extended to elaborate more complex relationships between the QUD and utterances involving negation, which we hope will provide more insight into the complexities of understanding negation. 
+Our model explains the interpretations of antonym pairs and their negations by assuming the speaker's utterances are chosen to convey information about the underlying degree (e.g., \emph{how happy is John?}). This assumption about the speaker's communicative goal defines an implicit \emph{Question under Discussion} (or, \emph{QUD}), which can easily change and complicate the picture presented here  \cite{roberts2012information, beaver2017questions}. For example, utterances involving particle negation (e.g., \emph{not happy}) could be produced to address a polar question (e.g., \emph{Is John happy?}), which could result in different interpretations than the degree-based question. 
+In the SI, we have articulated a simple hypothesis concerning how reasoning about the QUD could change interpretations of negation. 
+The simple assumption that negation particles (``not'') are more likely under polar QUDs (\emph{is John happy?}) introduces another problem: why is ``not unhappy'' compete with ``happy''? Without this competition,  ``not unhappy'' receives an interpretation that is almost identical with that of ``happy'' (see SI).
+Of course, QUDs likely play a role in understanding negation and the modeling approach we present here provides a framework for elaborating more complex hypothesis about the relationship between the QUD and utterances involving negation.
 
 %The QUD itself can be a function of prosodic stress, which we assume participants must be constructing in our text-based experimental protocol, but which we do not have access to. We note that a straight-forward QUD-based model also does not account for the patterns we observe here, instead 
 %
 %Seems like what it does it wash out “not happy” and stick “not_un_happy” closer to “happy”. This is probably the result of the QUD inference being asymmetric: Given “not unhappy”, listener infers qud is “unhappy?” with 90% while given “not happy”, there’s only a 45% probability that the qud is “happy?”
 
 Our models aim to explain the modal interpretations for antonym pairs and their negations, but the empirical data is more nuanced and flexible than even our \ourmodel model can account for. 
-The interpretations we observe empirically for negated antonyms on average indicate a slightly positive state, but there were consistent  responses indicating a slightly negative interpretation as well (e.g., the meaning expressed by ``he's not [un]reliable \emph{but he is kind of flaky}'', with prosodic focus on [un-]), potentially the result of politeness \cite{Yoon2017}.
+The interpretations we observe empirically for negated antonyms on average indicate a slightly positive state, but we observe consistent  responses indicating a slightly negative interpretation as well (e.g., the meaning expressed by ``he's not [un]reliable \emph{but he is kind of flaky}'', with prosodic focus on [un-]), potentially the result of politeness \cite{Yoon2017}.
+This flexibility in interpretation is potentially supporting by our text-based experiment; prosodic focus can more strongly guide this interpretation, which will be important to clarify using speech-based experiments. 
 We also see evidence for strongly negative interpretations (e.g., very unhappy) from the flagrant double negatives of Experiment 3 (\emph{not not happy}): The additivity of negations, or \emph{negative concord}, is not often associated with standard English, though it is relatively common cross-linguistically \cite<e.g., in Italian: \emph{non capisco niente}, literal translation: \emph{I don't understand nothing; }>{zeijlstra2004sentential} including in African American Vernacular English \cite<e.g., Mohammad Ali: ``Ain't never been another fighter like me''; >{labov1972negative, howe2005negation}, which suggests that it could be a logical possibility that listeners entertain in their hypothesis space of meanings.
 %Finally, though we did not find evidence of double negatives being interpreted as strong positives in our minimal experimental contexts, double negatives  are employed in understatement \cite{bolinger1972degree}: In the appropriate context, ``I was not unaware of the problem'' could mean \emph{I was damn well aware}.
 %\red{[Horn ``not unaware'']}
@@ -1128,6 +1131,7 @@ We also see evidence for strongly negative interpretations (e.g., very unhappy) 
 
 We build upon previous studies on negated adjectives \cite<e.g., >{giora2005negation} with our straight-forward response measurements, comparison of morphological and lexical antonyms, and situation within different presentational contexts.
 Our results are consistent with a recent electrophysiological processing study which found that negated antonyms (e.g., \emph{not impossible}) were processed more easily than positive adjectives (e.g., \emph{possible}) when participants had prior expectations that the degree was low \cite<e.g., something was very likely to difficulty;>{schiller2017solving}.
+\mht{not sure about this paragraph... perhaps it should be merged with the empirical half of the negative strengthening paragraph, and carve off the modeling explanation as a separate paragraph}
 %We extend earlier work showing that negated lexical antonyms (e.g., \emph{not dull}) are distinct from positive adjectives (e.g., \emph{sharp}) when presented simultaneously \cite{giora2005negation} to both the case of morphological antonyms (e.g., \emph{not unhappy}) and when presented in isolation (single utterance conditions). 
 %ound that participants rate . 
 %Not only do 
@@ -1151,16 +1155,21 @@ Our results are consistent with a recent electrophysiological processing study w
 %}
 %In our modeling, we assumed all logically possible meanings for negation were equally likely \emph{a priori}: A further test of our negation uncertainty model would be to see if usage frequency can serve as a proxy for this prior over lexica.
 
-The meaning of explicit negation markers like \emph{not} and \emph{un-} is flexible, allowing for an ambiguity that can be exploited by speakers (e.g., to obfuscate the truth, ``He's not not guilty'') and actively read into by listeners. 
-This ambiguity 
+%The meaning of explicit negation markers like \emph{not} and \emph{un-} is flexible, allowing for an ambiguity that can be exploited by speakers (e.g., to obfuscate the truth, ``He's not not guilty'') and actively read into by listeners. 
+%This ambiguity 
 
-Our results suggest that if a speaker claims an individual is \emph{not not innocent}, the speaker could simultaneously convey that the person is innocent as well as at least somewhat guilty.
+%Our results suggest that if a speaker claims an individual is \emph{not not innocent}, the speaker could simultaneously convey that the person is innocent as well as at least somewhat guilty.
 
-Our findings and modeling suggest that even seemingly rigid logical elements like negation may have some kind of ambiguity or meaning nuances. For one, this can be exploited by speakers in very subtle ways giving rise to phenomena as dog whistles. For another, this could lead to confusion in situations where speakers are not trying to exploit ambiguity but listener's reason about it. 
-
-Such obfuscation can lead to confusion within listeners or divergent beliefs across listeners, with some people believing in innocence and others in guilt as a kind of ``dog whistle''.
-It may as well impose gradability (e.g., degrees of guilt) onto what would typically be a binary distinction (i.e., innocent or guilty). 
+Our findings and modeling suggest that even seemingly rigid linguistic elements like negation may have some kind of ambiguity or nuance to their meaning.
+Such an ambiguity can be exploited by speakers in very subtle ways (e.g., as a kind of ``dog whistle'', in which a speaker wishes to say two things at once). 
+Intentions need not be nefarious, however, to lead to confusion: Listeners may reason about the ambiguity of negation even when speakers do not intend.
 Understanding the psychological reality of this ambiguity will help us navigate the consequences of the plausibly deniable misinformation that lays in the language of negation.
+\mht{last sentence needs work}
+
+%his could lead to confusion in situations where speakers are not trying to exploit ambiguity but listener's reason about it. 
+%
+%Such obfuscation can lead to confusion within listeners or divergent beliefs across listeners, with some people believing in innocence and others in guilt as a kind of ``dog whistle''.
+%It may as well impose gradability (e.g., degrees of guilt) onto what would typically be a binary distinction (i.e., innocent or guilty). 
 
 
 %To negate is to make true false, but for statements that are truly vague, the behavior of negation is not so obvious.
