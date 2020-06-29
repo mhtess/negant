@@ -292,90 +292,51 @@ $$
 %Applying predicate-forming, information-discarding contrary negation to anything else than an unmodified expression would incur spurious computation which is eventually spurious.
 %We therefore assume that contrary negation $\tilde{}$ is distributionally restricted not to take scope over any other negation operator, including itself, so that $\tilde{\tilde{H}}$ is not a logical possibility \cite{Horn1989:Natural}. 
 
-Contrary negation as a predicate-forming operation discards information the original threshold $\theta$ of the embedding predicate (e.g., if \emph{unhappy} is a contrary, it receives a different, independent threshold from that of \emph{happy}).
-This fact has important consequences for considerations of efficient semantic representations.
-In particular, it leads to the following distributional restriction.
-Let $\tilde{}$ the be contrary negation operator.
-Let $\phi$ be an expression, possibly containing a negation operator. 
-Since contrary negation is predicate-forming, the meaning of $\tilde{\phi}$ is independent of the (potentially compositional) meaning of $\phi$.
-This means that, no matter how complex $\phi$ and how many of the negation operators occurring in $\phi$ are interpreted, the semantic meaning of $\tilde{phi}$ is either that of `happy` (a single free threshold parameter giving the lower bound on the degree scale) or that of $\tilde{\textrm{`happy'}}$ (a single free threshold parameter giving the upper bound on the degree scale).
-In other words, $\tilde{}$, unlike logical contradictory negation, is an operator that basically discards all information from previous compositional meaning computation.
-For representational efficiency, we therefore assume that contrary negation $\tilde{}$ is distributionally restricted not to take scope over any other negation operator, including itself, as the resulting semantic meaning could always be expressed more economically. 
-Consequently, $\tilde{\tilde{H}}$ is not a logical possibility \cite{Horn1989:Natural} and so, whenever a negation operator takes scope over another, the scope-taking operator cannot be contrary negation.
-
 
 \subsection{Semantic hypotheses}
 
 The distinction between contrary and contradictory opposition was introduced by Aristotle and we articulate a hypothesis assuming ``un-'' denotes contrary negation and ``not'' denotes contradictory negation, as defined in the section above.
 We additionally articulate a hypothesis wherein only contradictory opposition exists (espoused famously by George Orwell, in the quotation at the beginning of the main text of the paper) and in which two negatives simply cancel out. 
-
-Our \ourmodel hypothesis is a kind of middle-ground between the two, where listeners represent a hypothesis space of possible meanings for the various negation markers (\emph{un-}, \emph{not}).
-We assume a relatively symmetric hypothesis space 
-
-
-All three of these models assume vagueness in the meaning of the gradable adjective (e.g., \emph{happy} means the degree of happiness is greater than some uncertain, contextually-determined threshold $\theta$, inferred by the listener).
-We additionally compare these models to two other simpler alternatives in which there is no vagueness about the meaning of the adjective (i.e., there is a strict cut-off for someone being \emph{happy}). 
-The first is an Aristotelean model that assumes lexical meanings of contraries and contradictions for \emph{un-} and \emph{not}, respectively, but which hard-codes the semantic thresholds for each:  \emph{happy} means \(>70\%\) on the happiness scale; \emph{unhappy} means \(<30\%\).
-The second is a kind of a \ourmodel model without vagueness. 
-This model has the same fixed threshold meanings for the adjectival utterances as the Aristotelean (no vagueness) model, but has uncertainty as to whether or not ``un'' and ``not'' convey contradictory~vs.~contrary negation. 
-We omit the predictions of the logically possible \emph{George Orwell} (no vagueness) model, because they are not qualitatively different from the George Orwell model with vagueness.
+Our \ourmodel hypothesis represents a kind of middle-ground between the two, where listeners represent a hypothesis space of possible meanings for the various negation markers (\emph{un-}, \emph{not}).
 The semantic choices are summarized in Table \ref{tab:sem}.
-
-
-%The first of these alternatives is a ``Vanilla RSA'' model which has neither lexical uncertainty about negation nor vagueness in the meaning of the adjective \cite{Frank2012}; we assume for this model an Aristotelean analysis of the negation markers (\emph{not} means contradiction; \emph{un-} means contrary) operating over fixed threshold meanings:
-%We call this model \emph{Aristotle no vagueness}.
-
-
-
-
-
 
 \subsection{Pragmatics model}
 
-According to the \ourmodel model, listeners are uncertain about how \emph{not} and \emph{un-} map onto these logical meanings, and therefore negated positives like \emph{not happy} and morphological antonyms like \emph{unhappy} could in principle take either meaning. 
-The hypothesis space of meanings for negated antonyms like \emph{not unhappy}, however, is constrained by the fact that contraries do not iterate; thus, negated antonyms either correspond to a double application of contradictory negation or a contradiction of a contrary.
-\mht{there is a still a question of here of what to do with ``not un-'' when un- is contradiction and not is contrary. V1: commutative -- flip order of un- and not and get a contradiction of contrary. V2: order-dependent but outer ``not'' always takes contradiction regardless if there is an inner negation}.
-% \footnote{``not un-H'' can then be either \(\neg \neg H\) or \(\neg (\tilde{H})\). Cashing these meanings out in terms of scalar adjectives, the order of operations need not matter: \(\neg (\tilde{H})\) $= \tilde{(\neg H)}$ , because both imply two sign-changes and one tokenization of a new threshold.}
+We embed the different semantic hypotheses as literal meanings that define a lexicon $\mathcal{L}$ to be used inside of a probabilistic model of pragmatics, wherein a pragmatic listener $L_1$ resolves the meaning of an utterance $u$ by reasoning about why a rational speaker $S_1$ would have bothered to produce said utterance.
+This same pragmatics machinery is used for the Aristotelean and Orwellian hypotheses. 
+A generalization of this model (described below) is used for the \ourmodel hypothesis. 
 
+Eqs.~\ref{eq:L0}--\ref{eq:L1} describe a recursive Bayesian model in the Rational Speech Act tradition \cite{Franke2015a, Goodman2016:RSA}, 
+which takes into account the vagueness of scalar adjectives using the technique proposed by \citeA{Lassiter2015} to derive thresholds \(\theta\) for interpreting vague adjectives (e.g., happy) in context:
 
-
-
-%The act of producing a negated antonym (\enquote{not unhappy}) can then act as a signal towards the kinds of oppositions that the speaker had in mind (e.g., that the speaker intends to convey a contradictory negation of a contrary opposite).
-%\mht{i think this point could be moved to a model implementation appendix or footnote}
-
-%\red{Contradictory opposition can be iterated (\(\neg \neg Hx\)) but contrary opposition cannot \cite{Horn1989:Natural}.
-%As a result, a single negative (\enquote{not happy} and \enquote{unhappy}) can mean either \(\neg happy\) or \(\tilde{happy}\), while double negatives (\enquote{not unhappy}) may mean \(\neg \neg happy\) or \(\neg \tilde{happy}\) (Fig.\(\thinspace\)\ref{fig:lexicon-model}).}
-
-%In order to generate predictions, 
-We embed these literal meanings in a probabilistic model of pragmatic reasoning, wherein a pragmatic listener $L_1$ resolves the meaning of an utterance $u$ by reasoning about why a rational speaker $S_1$ would have bothered to produce said utterance.
-Eqs.~\ref{eq:L0}--\ref{eq:L1} describe a recursive Bayesian model in the Rational Speech Act tradition \cite{Franke2015a, Goodman2016:RSA}, in which the listener  has additional uncertainty about how their interlocutor (speaker $S_1$) uses negation markers to convey contradictory~vs.~contrary negations \cite{Bergen2016}.
-We additionally take into account the vagueness of scalar adjectives using the technique proposed by \citeA{Lassiter2015} to derive thresholds \(\theta\) for interpreting vague adjectives (e.g., happy) in context:
-
-%We formalize this as a prior distribution over possible lexica for the speaker $P(\mathcal{L})$.
-%This model also takes into account the fact the scalar adjectives like \emph{happy} or \emph{tall} exhibit vagueness; i.e., there is no single, fixed $\theta$ beyond which the adjective is true. 
-%---couched i---also a recursive reasoning model wherein a pragmatic listener \(L_{1}\) tries to resolve the intended meaning of an utterance \(u\) (e.g., \enquote{Jones is not unhappy}) by combining its prior beliefs about the degree of Jones' happiness \(P(x)\) with the Gricean assumption that speakers are generally cooperative \(S_1\) (Eqs.\(\thinspace\)\ref{eq:L1}-\ref{eq:L0}):
-%Listener uncertainty about the interpretation of negation markers is modeled as uncertainty about the speaker's lexicon \(\mathcal{L}\) \cite{Bergen2016}.
-
-\vspace*{-0.5cm}
+%\vspace*{-0.5cm}
 
 \begin{align}
 L_{0}(x \mid u, \theta, \mathcal{L}) &\propto \mathcal{L}(u, x, \theta) \cdot P(x) \label{eq:L0} \\
 S_{1}(u \mid x, \theta, \mathcal{L}) &\propto \exp{(\alpha \cdot \ln {L_{0}(x \mid u, \theta, \mathcal{L})} - \text{cost}(u))} \label{eq:S1}\\
-L_{1}(x, \theta, \mathcal{L} \mid u) &\propto S_{1}(u \mid x, \theta, \mathcal{L}) \cdot P(x) \cdot  P(\theta) \cdot P(\mathcal{L}) \label{eq:L1}
+L_{1}(x, \theta \mid u,  \mathcal{L}) &\propto S_{1}(u \mid x, \theta, \mathcal{L}) \cdot P(x) \cdot  P(\theta) \label{eq:L1}
 \end{align}
 
+%\vspace*{-0.5cm}
+
 The literal listener \(L_0\) (Eq. \ref{eq:L0}) updates their prior beliefs over the degree \(P(x)\) via an utterance's literal meaning in lexicon \(\mathcal{L}\),
-where \(\mathcal{L}(u, x, \theta)\) gives the truth-value of the utterance \(u\) in lexicon \(\mathcal{L}\) when applied to degree \(x\) (e.g., for $u= $\emph{happy}, $\mathcal{L}$ returns a 1 when $x>\theta$ and a 0 when  $x\leq\theta$).
-The representation of prior beliefs $P(x)$ encodes prior expectations about the degree (e.g., how happy people are likely to be), which we assume for simplicity to be a uniform distribution. 
-The speaker (Eq.~\ref{eq:S1}) is a soft-max rational agent (with degree of rationality  $\alpha$) who aims to act in accordance with a standard, information-theoretic utility function that tracks how well an utterance conveys the speaker's intended meaning $x$ (i.e., the degree of happiness) to this literal listener---$\ln {L_{0}(x \mid u, \theta, \mathcal{L}}$)---while taking into account the cost of the utterance---$\text{cost}(u)$.
-We assume that negation created by morphology (e.g., ``un-'' + happy) adds cost to the utterance as does creating a negation using the particle ``not'', and that the cost of ``un-'' is less than the cost of ``not''.\footnote{The \ourmodel model's qualitative predictions are sensitive to the exact values of the parameters. The predictions we show are invariant to cost so long as $\text{cost}(un) \leq \text{cost}(not)$ and $\alpha$ is relatively small. Our goal is to show, under intuitively plausible parameter values consistent with the literature using Rational Speech Act models, that the \ourmodel model has the capacity to the make the predictions we describe; none of the alternative models we articulate have the capacity to make the unique predictions of the \ourmodel model.}
+where \(\mathcal{L}(u, x, \theta)\) gives the truth-value of the utterance \(u\) in lexicon \(\mathcal{L}\) when applied to degree \(x\) (e.g., for $u= $ \emph{happy}, $\mathcal{L}$ returns a 1 when $x>\theta$ and a 0 when  $x\leq\theta$).
+The details of this lexicon is what differs between  the Aristotelean model and the Orwellian model (and the \ourmodel model, described below).
+
+The representation of prior beliefs $P(x)$ encodes prior expectations about the degree (e.g., how happy people are likely to be), which we assume for simplicity to be a uniform distribution over the unit-interval [0, 1]. \footnote{All qualitative patterns reported replicate when this uniform prior is replaced with a Gaussian prior $\mathcal{N}(0.5, 0.5)$ and a U-shaped Beta prior: $\text{Beta}(0.5, 0.5)$.
+}
+The speaker (Eq.~\ref{eq:S1}) is a soft-max rational agent (with degree of rationality  $\alpha$) who aims to act in accordance with a standard, information-theoretic utility function that tracks how well an utterance conveys the speaker's intended meaning $x$ (i.e., the degree of happiness; or, the Question Under Discussion is ``how happy is the referent?'') to this literal listener---$\ln {L_{0}(x \mid u, \theta, \mathcal{L}}$)---while taking into account the cost of the utterance---$\text{cost}(u)$.
 The intended meaning in this model is the value along a dimension referenced by an adjective (e.g., a degree of happiness).\footnote{
 	This meaning is a special case of modeling meaning as a probability distribution over degrees of happiness (e.g., the speaker has only a rough sense of the relevant degree of happiness), in which case the speaker's utility would be a function of the KL divergence between the literal listener's prior and posterior distributions over the degree given the utterance. 
 }
-The pragmatic listener (Eq.~\ref{eq:L1}) interprets an utterance by reasoning about three variables: the intended meaning or degree $x$, the threshold beyond which a scalar adjective is literally true  $\theta$, and the speaker's lexicon \(\mathcal{L}\) describing how the speaker uses negation. 
+Following \citeA{Lassiter2015}, the prior distribution on thresholds is defined to be a uniform distribution over the unit interval $P(\theta) = \text{Uniform}(0, 1)$. 
+The pragmatic listener (Eq.~\ref{eq:L1}) interprets an utterance by reasoning about two variables: the intended meaning or degree $x$ and the threshold beyond which a scalar adjective is literally true  $\theta$. 
+ \citeA{Lassiter2015} showed how this model can derive vague, context-sensitive interpretations of gradable adjectives (e.g., ``a tall boy''~vs.~``a tall basketball player'').
+For the Aristotelean model, the pragmatic listener reasons about two thresholds: $\theta$ for the positive adjective (e.g., ``happy'') and $\theta'$ for the contrary (e.g., ``sad'').
+
+
 %, and the likelihood \(S_1(u \mid x, \theta, \mathcal{L})\) that a cooperative information-maximizing speaker would utter the adjective given a degree \(x\), threshold \(\theta\), and lexicon \(\mathcal{L}\).
 %The speaker model \(S_1\) (Eq.\ref{eq:S1}) describes an approximately rational agent (with degree of rationality \(\alpha\)) trying to inform a naive listener \(L_0\) about the degree \(x\).
-
 
 %\begin{figure}
 %\centering
@@ -423,7 +384,86 @@ George Orwell with Vagueness                                                 & $
 
 %{]}
 %--\textgreater{}
+\subsubsection{Flexible Negation extension}
 
+We extend the model described by Eqs.~\ref{eq:L0}-\ref{eq:L1} by introducing uncertainty into the pragmatic listener about how their interlocutor (speaker $S_1$) uses negation markers to convey contradictory~vs.~contrary negations \cite{Bergen2016}.
+This uncertainty takes the form of a prior distribution over lexica: $P(\mathcal{L})$.
+
+\begin{align}
+L_{1}(x, \theta, \mathcal{L} \mid u) &\propto S_{1}(u \mid x, \theta, \mathcal{L}) \cdot P(x) \cdot  P(\theta) \cdot P(\mathcal{L}) \label{eq:L1a}
+\end{align}
+
+The other components of the model ($S_1$ and $L_0$) are the same as Eqs.~\ref{eq:L0} \& \ref{eq:S1}.
+
+\paragraph{Lexicon prior}
+%
+Contrary negation as a predicate-forming operation discards information the original threshold $\theta$ of the embedding predicate (e.g., if \emph{unhappy} is a contrary, it receives a different, independent threshold from that of \emph{happy}).
+This fact has important consequences for considerations of efficient semantic representations.
+In particular, it leads to the following distributional restriction.
+Let $\tilde{}$ the be contrary negation operator.
+Let $\phi$ be an expression, possibly containing a negation operator. 
+Since contrary negation is predicate-forming, the meaning of $\tilde{\phi}$ is independent of the (potentially compositional) meaning of $\phi$.
+This means that, no matter how complex $\phi$ and how many of the negation operators occurring in $\phi$ are interpreted, the semantic meaning of $\tilde{phi}$ is either that of `happy` (a single free threshold parameter giving the lower bound on the degree scale) or that of $\tilde{\textrm{`happy'}}$ (a single free threshold parameter giving the upper bound on the degree scale).
+In other words, $\tilde{}$, unlike logical contradictory negation, is an operator that basically discards all information from previous compositional meaning computation.
+For representational efficiency, we therefore assume that contrary negation $\tilde{}$ is distributionally restricted to not take scope over any other negation operator, including itself, as the resulting semantic meaning could always be expressed more economically. 
+Consequently, $\tilde{\tilde{H}}$ is not a logical possibility \cite{Horn1989:Natural} and so, whenever a negation operator takes scope over another, the scope-taking operator cannot be contrary negation.
+
+
+We assume a relatively symmetric hypothesis space, wherein either \emph{un-} or \emph{not} could express contraries or contradictions. 
+That is, there are four logically possible lexica: both are contradictory negation (George Orwell), \emph{un-} is a contrary and \emph{not} is a contradiction (Aristotle), \emph{not} is a contrary and \emph{un-} is a contradiction, and both are contraries. 
+We assume that negating morphological antonyms is a possibility (i.e., \emph{not un-} is a possible utterance) though there is no corresponding morphological antonym of a particle negation (i.e., there is no \emph{un- not}). 
+Including the negated morphological antonym (\emph{not un-}) introduces an issue when (the outer negation) \emph{not} is a contrary because the distributional restriction described above would render this utterance impossible. 
+We thus constrain the lexicon in these cases to not allow for the \emph{not un-} utterance for lexica involving \emph{not} as a contrary. 
+We implemented this restriction by making the \emph{not un-} utterance vacuously true for lexica wherein \emph{not} is a contrary.\footnote{We decide to operationalize the restriction via a semantic vacuity as opposed to simply removing the utterance from lexicon because the latter move results in certain states (i.e., degrees, e.g., degrees of happiness) being unreferrable by all utterances under certain values of the thresholds (i.e., under certain, logically possible regimes of threshold values, all utterances are false for certain states). }
+With these assumptions, the model derives the key ordinal predictions when the cost of morphological negation is less than the cost of particle negation \red{(see Figure X)}.
+
+\paragraph{Symmetry breaking}
+%
+The symmetry of morphological vs. particle negation introduced by the \ourmodel model can be broken via either via cost asymmetry (as we report in the main text) or the structure of the lexicon prior. 
+In particular, removing the ``both contraries'' lexicon from the hypothesis space of lexica (i.e., you can have either \emph{not} or \emph{un-} as contraries or they may both be contradictions), which could be motivated by the distributional restriction imposed by the fact that contraries cannot iterate, results in symmetry-breaking even when there are symmetric costs between morphology and particle negation. 
+In this version of the model, we also make the assumption that under the lexicon where ``not'' is a contrary, ``not'' can be coerced to be a contradiction when it appears as the second negation in an utterance (as in, ``not unhappy''). 
+
+
+
+We assume that negation created by morphology (e.g., ``un-'' + happy) adds cost to the utterance as does creating a negation using the particle ``not'', and that the cost of ``un-'' is less than the cost of ``not''.
+The \ourmodel model's qualitative predictions are sensitive to the exact values of the parameters. The predictions we show are invariant to cost so long as $\text{cost}(un) \leq \text{cost}(not)$ and $\alpha$ is relatively small. Our goal is to show, under intuitively plausible parameter values consistent with the literature using Rational Speech Act models, that the \ourmodel model has the capacity to the make the predictions we describe; none of the alternative models we articulate have the capacity to make the unique predictions of the \ourmodel model.
+
+
+
+
+
+
+
+%The first of these alternatives is a ``Vanilla RSA'' model which has neither lexical uncertainty about negation nor vagueness in the meaning of the adjective \cite{Frank2012}; we assume for this model an Aristotelean analysis of the negation markers (\emph{not} means contradiction; \emph{un-} means contrary) operating over fixed threshold meanings:
+%We call this model \emph{Aristotle no vagueness}.
+
+
+
+\subsection{Alternative semantic models}
+
+The \ourmodel as well as the Aristotelean and Orwellian models assume vagueness in the meaning of the gradable adjective (e.g., \emph{happy} means the degree of happiness is greater than some uncertain, contextually-determined threshold $\theta$, inferred by the listener).
+We additionally compare these models to two other simpler alternatives in which there is no vagueness about the meaning of the adjective (i.e., there is a strict cut-off for someone being \emph{happy}). 
+The first is an Aristotelean model that assumes lexical meanings of contraries and contradictions for \emph{un-} and \emph{not}, respectively, but which hard-codes the semantic thresholds for each:  \emph{happy} means \(>70\%\) on the happiness scale; \emph{unhappy} means \(<30\%\).
+The second is a kind of a \ourmodel model without vagueness. 
+This model has the same fixed threshold meanings for the adjectival utterances as the Aristotelean (no vagueness) model, but has uncertainty as to whether or not ``un'' and ``not'' convey contradictory~vs.~contrary negation. 
+We omit the predictions of the logically possible \emph{George Orwell} (no vagueness) model, because they are not qualitatively different from the George Orwell model with vagueness.
+
+
+%According to the \ourmodel model, listeners are uncertain about how \emph{not} and \emph{un-} map onto these logical meanings, and therefore negated positives like \emph{not happy} and morphological antonyms like \emph{unhappy} could in principle take either meaning. 
+%The hypothesis space of meanings for negated antonyms like \emph{not unhappy}, however, is constrained by the fact that contraries do not iterate; thus, negated antonyms either correspond to a double application of contradictory negation or a contradiction of a contrary.
+%\mht{there is a still a question of here of what to do with ``not un-'' when un- is contradiction and not is contrary. V1: commutative -- flip order of un- and not and get a contradiction of contrary. V2: order-dependent but outer ``not'' always takes contradiction regardless if there is an inner negation}.
+% \footnote{``not un-H'' can then be either \(\neg \neg H\) or \(\neg (\tilde{H})\). Cashing these meanings out in terms of scalar adjectives, the order of operations need not matter: \(\neg (\tilde{H})\) $= \tilde{(\neg H)}$ , because both imply two sign-changes and one tokenization of a new threshold.}
+
+
+
+
+%The act of producing a negated antonym (\enquote{not unhappy}) can then act as a signal towards the kinds of oppositions that the speaker had in mind (e.g., that the speaker intends to convey a contradictory negation of a contrary opposite).
+%\mht{i think this point could be moved to a model implementation appendix or footnote}
+
+%\red{Contradictory opposition can be iterated (\(\neg \neg Hx\)) but contrary opposition cannot \cite{Horn1989:Natural}.
+%As a result, a single negative (\enquote{not happy} and \enquote{unhappy}) can mean either \(\neg happy\) or \(\tilde{happy}\), while double negatives (\enquote{not unhappy}) may mean \(\neg \neg happy\) or \(\neg \tilde{happy}\) (Fig.\(\thinspace\)\ref{fig:lexicon-model}).}
+
+%In order to generate predictions, 
 \subsection{Model predictions}
 
 A unique pattern of data is predicted by each model.
@@ -448,6 +488,11 @@ The models that do account for the vagueness of predicates derive more extreme d
 This inference results from the fact that the listener has more evidence that the speaker intends different meanings for the different linguistic messages by virtue of the fact that the speaker used different messages.
 Crucially, this inference results in the \emph{\ourmodel} model predicting a meaning difference between \emph{unhappy} and \emph{not happy}: \emph{unhappy} is more sad than \emph{not happy}, producing the ordering hypothesized by \citeA{Krifka2007:Negated-antonyms} when both are used in the same context.
 %All models have more extreme interpretations when they condition on multiple utterances.
+
+\subsection{Alternative pragmatic hypotheses}
+
+Here we describe two families of alternative pragmatic hypotheses. Both of these use the Aristotelean semantics. 
+The first alternative is a version of a model proposed by \citeA{Horn1989:Natural} (Ch.~5), which was developed to explain why the Aristotelean-hypothesis contradictory meaning of ``not'' gets strengthened to a polar-opposite contrary
 
 \section{Supplementary data analysis}
 
