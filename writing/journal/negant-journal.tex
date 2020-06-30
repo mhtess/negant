@@ -986,64 +986,54 @@ We investigate this question using flagrant double negatives like \emph{not not 
 
 %Because we consider the status of negation markers to be \emph{a priori} uncertain, we use the \emph{multiple utterances} context from Experiment 2 to disambiguate the meaning of \emph{not} as conveying contradictory negation. 
 
-\subsection{Experiment 3a: ``not not''}
 
-In this experiment, we investigate the interpretation of a flagrantly double negative (e.g., \emph{not not happy}) when it appears in the same context as the other utterances from Expt.~2b: the positive adjective (e.g., \emph{happy}) and two negatives (e.g., \emph{not happy}, \emph{unhappy}).
 
-\subsubsection{Methods}
+\subsection{Methods Experiment~3a}
+
+Experiment~3a, investigated the interpretation of a flagrantly double negative (e.g., \emph{not not happy}) when it appears in the same context as the other utterances from Experiment~2b: the positive adjective (e.g., \emph{happy}) and two negatives (e.g., \emph{not happy}, \emph{unhappy}).
+
 
 \paragraph{Participants}\label{participants-3}
-
-We recruited 75 participants from MTurk to match the sample size of the same condition in Expt.~2.
+We recruited 75 participants from MTurk to match the sample size of the same condition in Experiment~2.
 These numbers follow from the intention of getting approximately 45 ratings for each unique adjective in the experiment.
 The experiment took on average 5 minutes and participants were compensated \$0.90.
 Exclusion criterion, sample size, procedure, and the analysis described below were preregistered: \url{osf.io/vjhak}.
 
 \paragraph{Materials and procedure}\label{materials-3}
-
 The materials and procedure were identical to that of the \emph{multiple utterances} condition of Experiment~2.
 The main difference in this experiment is that participants are presented with the following alternatives: positives, negated positives, morphological antonyms, and negated negated positives (e.g., \emph{happy}, \emph{not happy}, \emph{unhappy}, \emph{not not happy}).
-This experiment was conducted eighteen months after Experiment~2, and due to concerns about recently declining data quality on MTurk, this experiment included an additional memory check wherein participants had to select all of the items that they recall being tested on from a list of 10 items (5 real and 5 distractor). 
-We pre-registered the exclusion criterion of removing participants who failed to respond correctly to at least 7 of the 10 items. 
 
 
-\subsubsection{Results}
+\subsection{Results Experiment~3a}
 
-All participants self-reported only English as their native language. Five participants were excluded for failing to respond correctly to at least 7 of the 10 memory check items, leaving 40 participants for these analyses.
+All participants self-reported only English as their native language. Five participants were excluded for failing to respond correctly to at least 7 of the 10 memory check items, leaving 40 participants for these analyses.\footnote{This experiment was conducted eighteen months after Experiment~2, and due to concerns about recently declining data quality on MTurk, this experiment included an additional memory check wherein participants had to select all of the items that they recall being tested on from a list of 10 items (5 real and 5 distractor). 
+We pre-registered the exclusion criterion of removing participants who failed to respond correctly to at least 7 of the 10 items. \mf{I moved this from main text to footnote; maybe shorten footnote?}}
 Figure \ref{fig:expt3-results} shows results for each adjective type.
 
 Our main hypothesis concerns the interpretation of flagrant double negative statements that use the same negation marker twice (\emph{not not happy}). 
 We built a Bayesian mixed-effects regression model with random by-participant and by-item intercepts and slopes (where the slopes refer to the effect of the adjective type, forward-difference coded as before: happy vs.~not happy vs.~not not happy vs.~unhappy).
 The two negatives did not simply cancel to make a positive: \emph{not not happy} received a substantially more negative interpretation than \emph{happy} (\brmresultsp{expt3_brm_contrasts_10k.csv}{morph_negnegpos_v_pos}; \effsize{expt3_brm_effsize_10k.csv}{morph_negnegpos_v_pos}).
-This results suggests that participants actively try to make sense of seemingly redundant, contradictory information in a way that would be informative for a speaker to produce. 
+This suggests that participants actively try to make sense of seemingly redundant linguistic material in a way that would be informative for a speaker to produce. 
 In addition, we replicate the result from Experiment 2 (multiple utterances condition) for the morphological antonyms vs. negated positives difference: \emph{not happy} and \emph{unhappy} were differentiated in meaning (\brmresultsp{expt3_brm_contrasts_10k.csv}{morph_ant_v_negpos}; \effsize{expt3_brm_effsize_10k.csv}{morph_ant_v_negpos}).
 Contrary to our hypothesis, however, we did not find evidence that the flagrant double negative \emph{not not happy} received on-average a positive interpretation \brmresults{expt3_brm_contrasts_10k.csv}{negnegpos}; inspection of the fitted random-effects suggested this was due to large subject-wise variation in the interpretation of these flagrant double negatives. 
 We return to this observation in the General Discussion. 
 
-%\mht{should we discuss the felicity of ``not not''? a google search reveals that people are using it...} 
+%%%%%%%%%% EXP 3b
 
-%\mf{I don't think that we have to}
+\subsection{Methods Experiment~3b}
 
-\subsection{Experiment 3b: ``not not''~vs.~``not un-''}
+Experiment~3b directly compared the interpretation of two double negatives when observed in the same context (e.g., \emph{not not happy}~vs.~\emph{not unhappy}).
 
-In Expt.~3b, we directly compare the interpretation of two double negatives when observed in the same context (e.g., \emph{not not happy}~vs.~\emph{not unhappy}).
-
-\subsubsection{Methods}
-
-\paragraph{Participants}\label{participants-3}
-
+\paragraph{Participants}\label{participants-3b}
 We recruited 50 participants from MTurk. 
 This number was arrived at with the intention of getting approximately 20 ratings for each unique item in the experiment.
 The experiment took on average 5 minutes and participants were compensated \$1.00.
 Exclusion criterion, sample size, procedure, and the analysis described below were preregistered: \url{https://osf.io/5zqd7}.
 
-\paragraph{Materials and procedure}\label{materials-3}
-
+\paragraph{Materials and procedure}\label{materials-3b}
 The materials and procedure were almost identical to that of the \emph{multiple utterances} condition of Experiment~2 and Experiment 3a.
 In this experiment, participants were presented with five  alternatives: positive adjectives, negated positives, morphological antonyms, negated morphological antonyms, and negated negated positives (e.g., \emph{happy}, \emph{not happy}, \emph{unhappy}, \emph{not unhappy}, \emph{not not happy}).
-Since we observed substantially greater participant-wise variability than item-wise variability in Expt.~3a, we decided to shorten the experiment so participants completed 8 trials instead of the 12 used in Experiment 3a.
-As with Experiment 3a, this experiment included an additional memory check wherein participants had to select all of the items that they recall being tested on from a list of 10 items (5 real and 5 distractor). 
-We pre-registered the exclusion criterion of removing participants who failed to respond correctly to at least 7 of the 10 items. 
+Since we observed substantially greater participant-wise variability than item-wise variability in Experiment~3a, we decided to shorten the experiment so participants completed 8 trials instead of the 12 used in Experiment 3a.
 
 \begin{figure}[h]
 \centering \includegraphics[width=\linewidth]{figs/expt3_directlabel_hist_ab} 
@@ -1051,10 +1041,10 @@ We pre-registered the exclusion criterion of removing participants who failed to
 \end{figure}
 
 
-\subsubsection{Results}
+\subsection{Results Experiment~3b}
 
 1 participant self-reported a language other than English as their native language. 
-An additional 12 participants were excluded for failing to respond correctly to at least 7 of the 10 memory check items, leaving 37 participants for these analyses.
+An additional 12 participants were excluded for failing to respond correctly to at least 7 of the 10 memory check items (see Experiment 3a), leaving 37 participants for these analyses.
 Figure \ref{fig:expt3-results}b shows results for each adjective type.
 
 In this experiment, we are concerned with whether or not participants will draw an interpretative difference between negated morphological antonyms (e.g., \emph{not unhappy}) and doubly negated positives (e.g., \emph{not not happy}).
@@ -1062,7 +1052,7 @@ We built a Bayesian mixed-effects regression model with random by-participant an
 As suggested by Experiment 3a in which the two double negatives are not presented in the same context, the doubly-negated positive adjective receives a lower overall rating than the negated morphological antonym (\brmresultsp{expt3b_brm_contrasts_10k.csv}{morph_negnegpos_v_negant}; \effsize{expt3b_brm_effsize_10k.csv}{morph_negnegpos_v_negant}).
 As in Experiment 3a, doubly-negated positive adjectives receive on average a rating not distinguished from the midpoint (\brmresultsp{expt3b_brm_contrasts_10k.csv}{negnegpos}; \effsize{expt3b_brm_effsize_10k.csv}{negnegpos}).
 
-Examining the distribution of responses for \emph{not not happy} vs. \emph{not unhappy}, we observe that the negated negated adjective (\emph{not not happy}) receives about twice as many negative responses (i.e., responses lower than the mid-point of the scale, assuming a 5-pt buffer on the 101-pt scale, or responses $< 0.45$ on the scale; 27\%~vs.~14\%) and about twice as many mid-point responses (assuming a 5-pt buffer; $0.45 <$ response $< 0.55$; 20\%~vs~11\%) than the negated morphological antonym (\emph{not unhappy}). This variability in responses suggests that listeners will try to rationalize a speaker who flagrantly contradicting themselves, and can use a variety of strategies to do so.
+Examining the distribution of responses for \emph{not not happy} vs. \emph{not unhappy}, we observe that the negated negated adjective (\emph{not not happy}) receives about twice as many negative responses (i.e., responses lower than the mid-point of the scale, assuming a 5-pt buffer on the 101-pt scale, or responses $< 0.45$ on the scale; 27\%~vs.~14\%) and about twice as many mid-point responses (assuming a 5-pt buffer; $0.45 <$ response $< 0.55$; 20\%~vs~11\%) than the negated morphological antonym (\emph{not unhappy}). This variability in responses suggests that listeners will try to rationalize seemingly redundant linguistic material that they might use a variety of strategies to do so (see General Discussion).
 
 Finally, we replicate the previous results from Experiment 2 (multiple utterances condition) and Experiment 3a in which \emph{not happy} and \emph{unhappy} are subtly differentiated in meaning (\brmresultsp{expt3b_brm_contrasts_10k.csv}{morph_ant_v_negpos}; \effsize{expt3b_brm_effsize_10k.csv}{morph_ant_v_negpos}).
 
@@ -1126,8 +1116,8 @@ We also see evidence for strongly negative interpretations (e.g., very unhappy) 
 
 
 We build upon previous studies on negated adjectives \cite<e.g., >{giora2005negation} with our straight-forward response measurements, comparison of morphological and lexical antonyms, and situation within different presentational contexts.
-Considerable empirical work on negation has focused on \emph{negative strengthening} \cite{Ruytenbeek2017, Gotzner2018}, and indeed we find convergent evidence in Expt.~2 (single utterances) that negated positives and morphological antonyms are interpreted similarly. H
-owever, one might expect that the presence of the morphological antonym in the same context (i.e., our \emph{multiple utterances} condition of Expt.~2) would weaken the interpretation of the negated positive, but in fact, we observe the opposite in our data: When presented with multiple utterances, it is the morphological antonym that tends to be strengthened; the interpretation of the negated positive adjective remains unchanged, suggesting that in the absence of further context, morphological antonyms like \emph{unhappy} are interpreted more like simple contradictions.
+Considerable empirical work on negation has focused on \emph{negative strengthening} \cite{Ruytenbeek2017, Gotzner2018}, and indeed we find convergent evidence in Experiment~2 (single utterances) that negated positives and morphological antonyms are interpreted similarly. H
+owever, one might expect that the presence of the morphological antonym in the same context (i.e., our \emph{multiple utterances} condition of Experiment~2) would weaken the interpretation of the negated positive, but in fact, we observe the opposite in our data: When presented with multiple utterances, it is the morphological antonym that tends to be strengthened; the interpretation of the negated positive adjective remains unchanged, suggesting that in the absence of further context, morphological antonyms like \emph{unhappy} are interpreted more like simple contradictions.
 Our results are also consistent with a recent electrophysiological processing study which found that negated antonyms (e.g., \emph{not impossible}) were processed more easily than positive adjectives (e.g., \emph{possible}) when participants had prior expectations that the degree was low \cite<e.g., something was very likely to difficulty;>{schiller2017solving}.
 %\mht{not sure about this paragraph... perhaps it should be merged with the empirical half of the negative strengthening paragraph, and carve off the modeling explanation as a separate paragraph}
 %We extend earlier work showing that negated lexical antonyms (e.g., \emph{not dull}) are distinct from positive adjectives (e.g., \emph{sharp}) when presented simultaneously \cite{giora2005negation} to both the case of morphological antonyms (e.g., \emph{not unhappy}) and when presented in isolation (single utterance conditions). 
