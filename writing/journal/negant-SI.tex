@@ -515,7 +515,42 @@ The second is a model that treats certain utterances as more likely to be produc
 
 \subsubsection{Varying alternatives model (\emph{a la} Horn, 1989)}
 
-\subsubsection{QUD inference model}
+
+%\begin{figure}[t]
+%\centering \includegraphics{figs/hornModels.pdf} 
+%\caption{Varying alternatives-based models inspired by Horn (1989).}.\label{fig:horn}
+%\end{figure}
+
+\subsubsection{QUD-based models}
+
+The interpretation of negated utterances often hinges critically on contextually available alternative utterances that can define the ``Question Under Discussion'' (or, QUD), the implicit communicative goal that the speaker is trying to achieve. 
+For example, if a speaker asks, ``How is Mary doing?'' and you reply that she is ``not unhappy'', the intended meaning might be different than if the speaker asks ``Is Mary unhappy?'' and you give the same reply.
+Expressions involving negation might be preferentially deployed when addressing Polar QUDs.
+In all of  our models, we have assumed a ``state'' QUD (analogous to the first question: ``How is Mary doing?''). 
+However, since we do not control the prosodic stress placed on utterances in our study (because they are text-based studies) and stress can modulate the QUD, it remains a possibility that some kind of QUD-inference could be occurring that would lead to the pattern of results we observe in our experiments. 
+
+We present four QUD-based models.
+Three of these simply look at the effect of QUDs on the model.
+The fourth articulates a generative model of speaker utterances based on different QUDs and formalizes how a listener should invert this generative model to simultaneously infer the QUD as well as report on the state (e.g., the degree of happiness). 
+
+For the first three, we stipulate that hearing a negation particle (``not'') changes the QUD to a polar QUD (e.g., hearing ``not happy'' causes the listener to believes that QUD is \emph{Is John happy?}). 
+The first of these models assumes this occurs in a strict, deterministic manner, whereas the other two encode this relationship in a probabilistic manner.
+The probabilistic versions differ in whether utterances with~vs.~without negation have symmetric vs. asymmetric contingencies with the polar~vs.~state QUDs.
+The asymmetric version assumes the following probabilities:  $not \rightarrow P(\text{polar QUD}) = 0.8$ otherwise, $P(\text{polar QUD}) = 0.5$. 
+The asymmetric version assumes:  $not \rightarrow P(\text{polar QUD}) = 0.8$ otherwise, $P(\text{polar QUD}) = 0.2$. 
+
+%One of the soft versions provides a symmetric relationship between P(polar QUD | “not”) and P(state QUD | no “not”) and the other provides an asymmetric relationship (eg.,  “Not” --> P(polar QUD) = 0.8. “Happy” --> P(state QUD) = 0.5).
+
+The QUD inference model is more elaborate and one perhaps that will serve as a starting point for future research on this topic. This model assumes if a speaker is trying to address a polar QUD, they will only say effectively “yes” or “no” (e.g., “Is John happy?”... speaker can say “happy” or “not happy”). The pragmatic listener reasons about the QUD by considering this model of speaker behavior; thus, when they hear “John is not happy”, they are more likely to believe the question was in response to a polar QUD (Is John happy?). 
+This model is styled after the QUD inference model introduced by Kao et al. (2014) but goes beyond it in articulating how the QUD changes the alternative utterances available to the speaker. 
+
+
+
+
+\begin{figure}[t]
+\centering \includegraphics{figs/qudModels.pdf} 
+\caption{QUD based models for the single utterance regime.}.\label{fig:qud}
+\end{figure}
 
 
 \section{Supplementary data analysis}
