@@ -551,15 +551,53 @@ The cost-based predictions are invariant to the exact values of cost so long as 
 Here we describe two families of alternative pragmatic hypotheses. Both of these use the Aristotelean semantics. 
 The first alternative is a version of a model proposed by \citeA{Horn1989:Natural} (Ch.~5), which was developed to explain why the Aristotelean-hypothesis contradictory meaning of ``not'' gets strengthened to a polar-opposite contrary.
 The second is a model that treats certain utterances as more likely to be produced by speakers when a certain \emph{Question Under Discussion} is being addressed; a listener then jointly infers the QUD along with the degree that is the conveyed by the adjectival utterance.
+We articulate these models in order the demonstrate the difficulty of predicting the empirical patterns of data we observe. 
+We think that both of these proposals are plausible and could be further developed in future research.
 
 
 \subsubsection{The effect of a mid-point denoting alternative (inspired by Horn, 1989)}
 
+The idea that negated positives (``not happy'') and morphological antonyms (``unhappy'') can be interpreted similarly dates back at least to \citeA{Horn1989:Natural}. 
+The mechanism proposed for why these get interpreted similarly is known as \emph{negative strengthening}, where pragmatic reasoning strengthens the negated positive (``not happy'') to be interpreted more similarly to the antonym.
+Roughly, a listener who hears ``William is not happy'' might wonder why the speaker would go to the trouble of telling them William is ``not happy'' if the speaker didn’t believe that William’s happiness was relatively low.
+This reasoning, it is supposed, can all unfold within the semantics of Aristotle, where ``not'' indicates a contradiction and ``un'' a contrary. 
+Without a formal model, however, it is not really clear what components  are be necessary for this computation and if the components would really add up in the right way to produce the symmetry of interpretation between ``not happy'' and ``unhappy'' while also maintaining the asymmetry between ``not unhappy'' and ``happy''.
+
+Here, we take a first attempt at modifying the Aristotelean model to encoded reasoning more in line with the idea of negative strengthening. 
+In particular, we explore the effects of including a mid-point denoting alternative utterance like ``fine/ok/content''. 
+We formalize the mid-point alternative using an interval semantics, where the utterance is true if the degree of happiness is within a certain range $\theta^*$ of the midpoint (assumed to be 0.5). The formal semantics of the midpoint denoting alternative are given by: 
+
+\begin{equation}
+\mbox{ $[\![fine]\!]$}(x, \theta^*): 0.5-  \theta^* < x < 0.5  + \theta^* \label{sem:fine}
+\end{equation} 
+
+We add this semantics to the Aristotelean lexicon and embed it within the same pragmatics model given by Equation \ref{eq:L1aris}.
+The listener now jointly infers the midpoint interval width ($theta^*$) using the same pragmatic machinery as we do for other adjective threshold variables.\footnote{The prior distribution for $\theta^*$ cannot be defined over the range [0, 1] as we did for the other threshold variables. Instead, the prior for $\theta^*$ is $P(\theta^*) = \text{Uniform}(0, 0.5)$.}
+We test this modified Aristotelean model  under two different set of assumptions: (1) including ``fine'' as an alternative utterance for all utterances and (2) including  ``fine''  as an alternative only for the negated positive adjective (“not happy”). 
+We thought that (2) would give the highest chance of success, though the model is itself question-begging (why should only ``not happy'' have the neutral alternative)?  
+The results for a range of cost parameter values (speaker optimality and cost) are shown in Figure \ref{fig:horn}. 
+
+Our top-line conclusion from the inclusion of this interval, mid-point denoting alternative is that it does not play nice with the uncertain threshold semantics we use to model adjective meaning. 
+In the first version of the model (``fine'' added to alternative set for interpreting all utterances), the midpoint alternative affects both of the negated utterances in a relatively symmetric way.
+That is, the more that ``fine'' pushes ``not happy'' into the unhappy region of the space, it also pushes ``not unhappy'' into the ``happy'' region of the space. 
 
 \begin{figure}[t]
 \centering \includegraphics{figs/horn_models.pdf} 
 \caption{Varying alternatives-based models inspired by Horn (1989).}.\label{fig:horn}
 \end{figure}
+
+
+This symmetry can be broken by by removing ``fine'' as an alternative utterance for ``not unhappy'' (in a post-hoc, question-begging way), but the interval utterance has a second problem with it. 
+Because the thresholds for both contraries (``unhappy'', ``happy'') as well as the interval utterance (``fine'') are \emph{a priori} uncertain (to account for the vagueness, see above), the model discovers some regions of the threshold parameter space that it thinks are quite reasonable but that seem off. 
+In particular, the competition with the midpoint alternative introduces a bimodality into the interpretation for ``not happy'', wherein some probability is placed in the positive region of the space (i.e, \emph{rather happy}).
+This second mode emerges because it is possible (and the model thinks, informative) for the threshold for ``happy'' to be very high and the interval denoting ``fine'' relatively narrow; in this case, there is room in between ``happy'' and ``fine'' where ``not happy'' is the best utterance (an interpretation like: \emph{not extremely happy but also not just fine}, perhaps conveyed with prosodic stress ``I'm not HAPPY''). 
+
+This kind of bimodal interpretation is not necessarily wrong. Multimodality is a feature in our empirical data and there are a variety of interpretations of antonyms and their negations having to do with prosodic stress and issues concerning the Question Under Discussion (see below). 
+The presence of multimodality in the interpretations of the revised Aristotelean model, however, could be more artifactual than explanatory. 
+We might prefer from a theoretical perspective to explain this kind of multimodality via other mechanisms (e.g., politeness, an idea also suggested by \citeNP{Horn1989:Natural}). 
+
+To conclude, we believe the idea of negative strengthening of the negated positive adjective is intuitive, but the most natural way of implementing this phenomenon does not easily explain the empirically observed data. We believe that the jury is out as to how to implement the Aristotle+Horn approach in a manner consistent with our empirical findings. 
+
 
 \subsubsection{QUD-based models}
 
@@ -579,13 +617,13 @@ We assume there are three possible QUDs: $Q_{state}(x) = x$, $Q_{happy}(x, \thet
 To understand how QUDs might influence the interpretation of antonyms pairs and their negations, we formalize a generative model of speaker utterances based on different QUDs and describe how a listener should invert this generative model to simultaneously infer the QUD as well as report on the state (e.g., the degree of happiness). 
 Our hope is that this model will serve as a starting point for future research on the influence of QUDs on negation interpretation. 
 The QUD inference model extension of the Aristotelean semantics model is given by: 
-
+%
 \begin{align}
 L_{0}(\mathcal{Q}(x) \mid u, \theta, \mathcal{L}_{aristotle}, \mathcal{Q}) &\propto \mathcal{L}_{aristotle}(u, x, \theta) \cdot P(x) \label{eq:L0q} \\
 S_{1}(u \mid x, \theta, \mathcal{L}_{aristotle}, \mathcal{Q}) &\propto \exp{(\alpha \cdot \ln {L_{0}(\mathcal{Q}(x) \mid u, \theta, \mathcal{L}_{aristotle}, \mathcal{Q})} - \text{cost}(u))} \label{eq:S1q}\\
 L_{1}(x, \theta, \mathcal{Q} \mid u,  \mathcal{L}_{aristotle}) &\propto S_{1}(u \mid x, \theta, \mathcal{L}_{aristotle}, \mathcal{Q}) \cdot P(\mathcal{Q}) \cdot P(x) \cdot  P(\theta) \label{eq:L1q}
 \end{align}
-
+%
 This model assumes that if a speaker is trying to address a polar QUD, they will only say ``yes'' or ``no'' (e.g., to address the question ``Is John happy?'', the speaker will say ``happy'' or ``not happy''). 
 The pragmatic listener reasons about the QUD by considering this model of speaker behavior; thus, when they hear ``John is not happy'', they should be more likely to believe the utterance was in response to a polar QUD (\emph{is John happy?}). 
 This model is styled after the QUD inference model introduced by \citeA{kao2014nonliteral} and further developed by \citeA{hawkins2015you, hawkins_goodman_2017}.
