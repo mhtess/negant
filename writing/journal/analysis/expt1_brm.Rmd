@@ -1,0 +1,178 @@
+---
+title: "Bayesian regression models for Expt. 1"
+author: "MH Tessler"
+date: "Jun 24 2020"
+output: github_document
+---
+
+```{r libraries}
+library(tidyverse)
+library(brms)
+library(tidybayes)
+library(feather)
+# library(modelr)
+```
+
+```{r load data}
+df.e1 <- read_csv("../data/expt1/expt1-filtered.csv") %>%
+  rename(item = positive) %>%
+  mutate(adjective_type = factor(adjective_type,
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_antonym", 
+                                      "positive")),
+          antonym_type = factor(antonym_type,
+                                levels = c("morphological", "lexical")),
+         item = factor(item)
+  )
+
+
+glimpse(df.e1)
+```
+
+```{r regression model}
+contrasts(df.e1$adjective_type) 
+# assigning the forward difference coding to adjective_type
+contrasts(df.e1$adjective_type) = matrix(c(
+  3/4, -1/4, -1/4, -1/4, 
+  1/2, 1/2, -1/2, -1/2, 
+  1/4, 1/4, 1/4, -3/4), 
+  ncol = 3)
+
+contrasts(df.e1$antonym_type)
+contrasts(df.e1$adjective_type) 
+
+rs.brm.e1.zoib <- brm(
+  response ~ antonym_type * adjective_type + 
+    (1 + adjective_type + antonym_type + antonym_type:adjective_type || workerid) + 
+    (1 + adjective_type + antonym_type + antonym_type:adjective_type || item),
+  data = df.e1,
+  iter = 10000, chain = 4, cores = 4,
+  family = zero_one_inflated_beta(),
+  control = list(adapt_delta = 0.9)
+)
+
+# saveRDS(rs.brm.e1.zoib, file = '../cached_results/rs_brm_e1_zoib.RDS')
+```
+
+```{r samples and contrasts}
+rs.brm.e1.zoib.betas.samples <- brms::posterior_samples(rs.brm.e1.zoib, add_chain = T) %>% 
+  select(starts_with("b_")) %>%
+  rename(
+    morph_ant_v_negpos = b_adjective_type1,
+    morph_negpos_v_negant = b_adjective_type2,
+    morph_negant_v_pos = b_adjective_type3,
+    int_lex_morph_ant_v_negpos = `b_antonym_typelexical:adjective_type1`,
+    int_lex_morph_negpos_v_negant = `b_antonym_typelexical:adjective_type2`,
+    int_lex_morph_negant_v_pos = `b_antonym_typelexical:adjective_type3`
+  ) %>%
+  mutate(
+    lex_ant_v_negpos = morph_ant_v_negpos + int_lex_morph_ant_v_negpos,
+    lex_negpos_v_negant = morph_negpos_v_negant + int_lex_morph_negpos_v_negant,
+    lex_negant_v_pos = morph_negant_v_pos + int_lex_morph_negant_v_pos,
+  )
+
+# write_csv(rs.brm.e1.zoib.betas.samples, 
+#           path = "../cached_results/rs_brm_e1_zoib_betas_samples.csv")
+
+rs.brm.e1.zoib.betas.samples %>%
+  gather(key, val) %>% 
+  group_by(key) %>%
+  summarize(
+    'l95' = quantile(val, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(val),
+    'u95' = quantile(val, probs = c(0.025, 0.975))[[2]],
+    prob_gt_0 = mean(val > 0)*100,
+    prob_lt_0 = mean(val < 0)*100
+  ) -> rs.brm.e1.zoib.full.contrasts
+
+
+write_csv(rs.brm.e1.zoib.full.contrasts, 
+          path = "../csv_data_4_tex/expt1_brm_contrasts_10k.csv")
+```
+
+# Effect size
+
+```{r}
+df.e1.standard <- df.e1 %>%
+  ungroup() %>%
+  mutate(
+    standardized_response = 
+      (response - mean(response)) / sd(response)
+    )
+contrasts(df.e1.standard$adjective_type)
+contrasts(df.e1.standard$antonym_type)
+
+ggplot(df.e1.standard, aes(x = standardized_response))+
+  geom_histogram()+
+  facet_wrap(~adjective_type+antonym_type)
+
+rs.brm.e1.standardized <- brm(
+  standardized_response ~ antonym_type * adjective_type + 
+    (1 + adjective_type + antonym_type + antonym_type:adjective_type || workerid) + 
+    (1 + adjective_type + antonym_type + antonym_type:adjective_type || item),
+  data = df.e1.standard,
+  iter = 10000, chain = 4, cores = 4,
+  control = list(adapt_delta = 0.9),
+  file = "rs_brm_e1_standard_helmert_10k"
+)
+```
+
+## Get Samples
+
+```{r}
+rs.brm.e1.standardized.samples <- brms::posterior_samples(
+  rs.brm.e1.standardized, add_chain = T
+  ) %>% 
+  select(starts_with("b_"), sigma) %>%
+  rename(
+    morph_ant_v_negpos = b_adjective_type1,
+    morph_negpos_v_negant = b_adjective_type2,
+    morph_negant_v_pos = b_adjective_type3,
+    int_lex_morph_ant_v_negpos = `b_antonym_typelexical:adjective_type1`,
+    int_lex_morph_negpos_v_negant = `b_antonym_typelexical:adjective_type2`,
+    int_lex_morph_negant_v_pos = `b_antonym_typelexical:adjective_type3`
+  ) %>%
+  mutate(
+    lex_ant_v_negpos = morph_ant_v_negpos + int_lex_morph_ant_v_negpos,
+    lex_negpos_v_negant = morph_negpos_v_negant + int_lex_morph_negpos_v_negant,
+    lex_negant_v_pos = morph_negant_v_pos + int_lex_morph_negant_v_pos,
+  )
+
+write_csv(rs.brm.e1.standardized.samples,
+          path = "../cached_results/rs_brm_e1_standard_samples.csv")
+
+rs.brm.e1.standardized.samples %>%
+  gather(key, val) %>% 
+  group_by(key) %>%
+  summarize(
+    'l95' = quantile(val, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(val),
+    'u95' = quantile(val, probs = c(0.025, 0.975))[[2]],
+    prob_gt_0 = mean(val > 0)*100,
+    prob_lt_0 = mean(val < 0)*100
+  ) -> rs.brm.e1.standard.full.contrasts
+
+```
+
+## Compute effect size
+
+```{r}
+rs.brm.e1.standardized.samples %>%
+  gather(key, val, -sigma) %>% 
+  mutate(standardized_val = val / sigma) %>%
+  group_by(key) %>%
+  summarize(
+    'l95' = quantile(standardized_val, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(standardized_val),
+    'u95' = quantile(standardized_val, probs = c(0.025, 0.975))[[2]],
+    prob_gt_0 = mean(standardized_val > 0)*100,
+    prob_lt_0 = mean(standardized_val < 0)*100
+  ) -> rs.brm.e1.effectsizes
+
+write_csv(rs.brm.e1.effectsizes, 
+          path = "../csv_data_4_tex/expt1_brm_effsize_10k.csv")
+```
+
+
+

@@ -72,6 +72,8 @@ d.l1.natEng <- left_join(
 
 ## check that i've done the filtering correctly
 length(unique(d.l1.natEng$workerid))
+
+# write_csv(d.l1.natEng, "../data/expt1/expt1-filtered.csv")
 ```
 
 
@@ -144,19 +146,26 @@ ggplot(., aes( x = response, y = adjective_type, fill = ..x..))+
   #scale_color_viridis(option = "C", limits = c(0, 1))+
   guides(fill = F, color = F)+
   ylab("")+
-  scale_x_continuous(limits = c(0, 1), breaks = c(0, 1),
+  scale_x_continuous(limits = c(-0.05, 1.05), breaks = c(0, 1),
                      expand = c(0.01, 0))+
   scale_y_discrete(expand = expand_scale(mult = c(0.05, .30)))+
   xlab("slider ratings")
 # 
 # ggsave(paste(
-#   "~/projects/negant/writing/journal/figs/expt1_ridges_wCIs.pdf", sep = ""),
+#   "~/projects/negant/writing/journal/figs/expt1_ridges_wCIs_hist.pdf", sep = ""),
 #        width = 6, height = 3)
 
 ```
 
 
 # Regression models
+
+```{r}
+d.l1.natEng %>% 
+  ggplot(., aes(x = response))+
+  geom_histogram()
+```
+
 
 Forward difference coding, maximal model, and model comparison to simpler model.
 
@@ -343,9 +352,12 @@ Also add the presentation number (trial order)
 ```{r}
 d.l1.natEng <- d.l1.natEng %>%
     group_by(workerid) %>%
-    mutate(sdRating = sd(response)) %>%
+    mutate(
+      mRating = mean(response), 
+      sdRating = sd(response)
+      ) %>%
     ungroup() %>%
-    mutate(normalizedResponse = response / sdRating) %>%
+    mutate(normalizedResponse = (response - mRating) / sdRating) %>%
   group_by(workerid, antonym_type, adjective_type) %>%
   arrange(trial_num) %>%
   mutate(presentation_num = ave(adjective_type==adjective_type,
@@ -354,6 +366,11 @@ d.l1.natEng <- d.l1.natEng %>%
   rowwise() %>%
   mutate(splitHalf = ifelse(trial_num <= 8, "first", "second"))
   
+
+d.l1.natEng %>%
+  ungroup() %>%
+  summarize(m = mean(normalizedResponse), stdev = sd(normalizedResponse))
+
 ```
 
 ```{r}
@@ -363,6 +380,90 @@ d.l1.natEng %>%
   group_by(antonym_type, adjective_type, n) %>%
   count() %>%
   kable()
+```
+
+### Regression models on normalized ratings
+
+```{r}
+my.forward.diff = matrix(c(
+  3/4, -1/4, -1/4, -1/4, 
+  1/2, 1/2, -1/2, -1/2, 
+  1/4, 1/4, 1/4, -3/4), 
+  ncol = 3)
+
+#assigning the forward difference coding to adjective_type
+contrasts(d.l1.natEng$adjective_type) = my.forward.diff
+
+
+# my.contrast = contr.sum(2)/2
+
+
+d.l1.natEng <- d.l1.natEng %>% 
+  mutate(antonym_type = factor(antonym_type, 
+                           levels = c("morphological", "lexical")))
+
+#assigning the contrast coding to antonym_type
+# contrasts(d.l1.natEng$antonym_type) = my.contrast
+contrasts(d.l1.natEng$antonym_type) 
+# maximal model
+## (adding + antonym_type by item fails to converge)
+rs.7.helmert.norm <- lmer(normalizedResponse ~ antonym_type * adjective_type + 
+                       (1 + adjective_type  || workerid) + 
+                       (1 + adjective_type || positive),
+                     data = d.l1.natEng)
+
+
+rs1.expt1.helmert.norm.summary <- summary(rs.7.helmert.norm)
+
+rs1.expt1.norm.coef <- rs1.expt1.helmert.norm.summary[["coefficients"]]
+
+write_csv(data.frame(rs1.expt1.norm.coef) %>% mutate(Rowname = row.names(.)), path = "../../journal/csv_data_4_tex/expt1_norm_helmert_summary.csv")
+
+rs1.expt1.helmert.norm.summary
+```
+
+Recode with lexical antonyms as the base case
+
+```{r}
+
+d.l1.natEng <- d.l1.natEng %>% 
+  mutate(antonym_type = factor(antonym_type, 
+                           levels = c("lexical", "morphological")))
+
+contrasts(d.l1.natEng$antonym_type) 
+# maximal model
+## (adding + antonym_type by item fails to converge)
+rs.7.helmert.norm2 <- lmer(normalizedResponse ~ antonym_type * adjective_type + 
+                       (0 + adjective_type || workerid) + 
+                       (1 + adjective_type || positive),
+                     data = d.l1.natEng)
+
+
+rs1.expt1.helmert.norm.2.summary <- summary(rs.7.helmert.norm2)
+
+rs1.expt1.norm.coef2 <- rs1.expt1.helmert.norm.2.summary[["coefficients"]]
+
+write_csv(data.frame(rs1.expt1.norm.coef2) %>% mutate(Rowname = row.names(.)), path = "../../journal/csv_data_4_tex/expt1_norm_helmert_summary_lexBase.csv")
+
+rs1.expt1.helmert.norm.2.summary
+```
+
+
+```{r}
+## more limited random effects structure
+rs.7.helmert.0 <- lmer(response ~ antonym_type * adjective_type + 
+                       (1 + adjective_type | workerid) + 
+                       (1  | positive),
+                     data = d.l1.natEng)
+# extra random effect of sentence_type by item accounts for significantly more variance
+anova(rs.7.helmert.0, rs.7.helmert)
+```
+
+Examine residuals
+
+```{r}
+plot(rs.7.helmert)
+qqnorm(residuals(rs.7.helmert))
 ```
 
 

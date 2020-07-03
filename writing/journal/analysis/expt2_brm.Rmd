@@ -1,0 +1,297 @@
+---
+title: "Bayesian regression models for Expt. 1"
+author: "MH Tessler"
+date: "Jun 24 2020"
+output: github_document
+---
+
+```{r libraries}
+library(tidyverse)
+library(brms)
+library(tidybayes)
+# library(modelr)
+```
+
+```{r load data}
+df.e2 <- read_csv("../data/expt2/expt2-filtered.csv") %>%
+  rename(adj_type = adjective_type_rescaled) %>%
+  mutate(adj_type = factor(adj_type,
+                           levels = c("antonym", "neg_positive",
+                                      "neg_antonym", "positive")),
+        antonym_type = factor(antonym_type,
+                              levels = c("morphant", "lexant")),
+         condition = factor(condition, levels = c("implicit", "explicit")),
+         item = factor(item),
+        positive = factor(positive)
+  )
+
+glimpse(df.e2)
+```
+
+```{r regression model}
+contrasts(df.e2$adj_type) 
+# assigning the forward difference coding to adjective_type
+contrasts(df.e2$adj_type) = matrix(c(
+  3/4, -1/4, -1/4, -1/4, 
+  1/2, 1/2, -1/2, -1/2, 
+  1/4, 1/4, 1/4, -3/4), 
+  ncol = 3)
+
+contrasts(df.e2$antonym_type)
+contrasts(df.e2$condition)
+levels(df.e2$positive)
+contrasts(df.e2$adj_type) 
+# 10000 will take 6 hours
+
+rs.brm.e2.3way.zoib <- brm(
+  response ~ antonym_type * adj_type * condition + 
+    (1 + adj_type || workerid) + 
+    (1 + adj_type + antonym_type + condition + 
+       antonym_type:adj_type + antonym_type:condition + adj_type:condition +
+       antonym_type:adj_type:condition || positive),
+  data = df.e2,
+  iter = 10000, chain = 4, cores = 4,
+  family = zero_one_inflated_beta(),
+  control = list(adapt_delta = 0.9),
+  file = "rs_brm_e2_3way_zoib_helmert"
+)
+
+
+
+# rs.brm.e2.3way.zoib.corr <- brm(
+#   response ~ antonym_type * adj_type * condition + 
+#     (1 + adj_type | workerid) + 
+#     (1 + adj_type + antonym_type + condition + 
+#        antonym_type:adj_type + antonym_type:condition + adj_type:condition +
+#        antonym_type:adj_type:condition | positive),
+#   data = df.e2,
+#   iter = 10000, chain = 4, cores = 4,
+#   family = zero_one_inflated_beta(),
+#   control = list(adapt_delta = 0.9),
+#   file = "rs_brm_e2_3way_zoib_helmert_corr"
+# )
+
+# saveRDS(rs.brm.e2.3way.zoib, file = '../cached_results/rs_brm_e2_zoib.RDS')
+```
+
+```{r samples and contrasts}
+rs.brm.e2.3way.zoib.betas.samples <- brms::posterior_samples(
+  rs.brm.e2.3way.zoib, add_chain = T
+  ) %>% 
+  select(starts_with("b_")) %>%
+  rename(
+    morph_single_ant_v_negpos = b_adj_type1,
+    morph_single_negpos_v_negant = b_adj_type2,
+    morph_single_negant_v_pos = b_adj_type3,
+    single_int_lex_morph_ant_v_negpos = `b_antonym_typelexant:adj_type1`,
+    single_int_lex_morph_negpos_v_negant = `b_antonym_typelexant:adj_type2`,
+    single_int_lex_morph_negant_v_pos = `b_antonym_typelexant:adj_type3`,
+    morph_int_multi_single_ant_v_negpos = `b_adj_type1:conditionexplicit`,
+    morph_int_multi_single_negpos_v_negant = `b_adj_type2:conditionexplicit`,
+    morph_int_multi_single_negant_v_pos = `b_adj_type3:conditionexplicit`,
+    int_multi_single_v_lex_morph_v_ant_negpos = `b_antonym_typelexant:adj_type1:conditionexplicit`,
+    int_multi_single_v_lex_morph_v_negpos_negant = `b_antonym_typelexant:adj_type2:conditionexplicit`,
+    int_multi_single_v_lex_morph_v_negant_pos = `b_antonym_typelexant:adj_type3:conditionexplicit`
+  ) %>%
+  mutate(
+    lex_single_ant_v_negpos = morph_single_ant_v_negpos + single_int_lex_morph_ant_v_negpos,
+    lex_single_negant_v_pos = morph_single_negant_v_pos + single_int_lex_morph_negant_v_pos,
+    morph_multi_ant_v_negpos = morph_single_ant_v_negpos + morph_int_multi_single_ant_v_negpos,
+    morph_ant_multi_v_single = b_conditionexplicit +
+      0.75 * morph_int_multi_single_ant_v_negpos  + 
+      0.5 * morph_int_multi_single_negpos_v_negant + 
+      0.25 * morph_int_multi_single_negant_v_pos,
+    morph_negpos_multi_v_single = b_conditionexplicit -
+      0.25 * morph_int_multi_single_ant_v_negpos  + 
+      0.5 * morph_int_multi_single_negpos_v_negant + 
+      0.25 * morph_int_multi_single_negant_v_pos,
+    multi_morph_negant = b_Intercept - 
+      0.25 * morph_single_ant_v_negpos - 
+      0.5 * morph_single_negpos_v_negant + 
+      0.25 * morph_single_negant_v_pos + 
+      b_conditionexplicit -
+      0.25 * morph_int_multi_single_ant_v_negpos - 
+      0.5 * morph_int_multi_single_negpos_v_negant + 
+      0.25 * morph_int_multi_single_negant_v_pos
+    # morph_single_negant = b_Intercept + morph_single_negant_v_ant,
+    # morph_multi_negant = b_Intercept + morph_single_negant_v_ant + 
+    #   b_conditionexplicit + morph_int_multi_single_negant_v_ant
+  )
+
+
+
+write_csv(rs.brm.e2.3way.zoib.betas.samples,
+          path = "../cached_results/rs_brm_e2_zoib_3way_betas_helmert_samples.csv")
+
+rs.brm.e2.3way.zoib.betas.samples %>%
+  gather(key, val) %>% 
+  # mutate(val = plogis(val)) %>%
+  group_by(key) %>%
+  summarize(
+    'l95' = quantile(val, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(val),
+    'u95' = quantile(val, probs = c(0.025, 0.975))[[2]],
+    prob_gt_0 = mean(val > 0)*100,
+    prob_lt_0 = mean(val < 0)*100
+  ) -> rs.brm.e2.3way.zoib.full.contrasts
+
+write_csv(rs.brm.e2.3way.zoib.full.contrasts, 
+          path = "../csv_data_4_tex/expt2_brm_helmert_contrasts_10k.csv")
+```
+
+
+
+
+# Effect size
+
+```{r}
+df.e2.standard <- df.e2 %>%
+  ungroup() %>%
+  mutate(
+    standardized_response = 
+      (response - mean(response)) / sd(response)
+    )
+
+ggplot(df.e2.standard, aes(x = standardized_response))+
+  geom_histogram()+
+  facet_wrap(~adj_type+condition+antonym_type)
+
+contrasts(df.e2.standard$adj_type)
+contrasts(df.e2.standard$antonym_type)
+contrasts(df.e2.standard$condition)
+
+rs.brm.e2.standardized <- brm(
+  standardized_response ~ antonym_type * adj_type * condition + 
+    (1 + adj_type || workerid) + 
+    (1 + adj_type + antonym_type + condition + 
+       antonym_type:adj_type + antonym_type:condition + adj_type:condition +
+       antonym_type:adj_type:condition || positive),
+  data = df.e2.standard,
+  iter = 10000, chain = 4, cores = 4,
+  control = list(adapt_delta = 0.9),
+  file = "rs_brm_e2_3way_standardized_helmert"
+)
+```
+
+## Get Samples
+
+```{r}
+rs.brm.e2.standardized.samples <- brms::posterior_samples(
+  rs.brm.e2.standardized, add_chain = T
+  ) %>% 
+  select(starts_with("b_"), sigma) %>%
+  rename(
+    morph_single_ant_v_negpos = b_adj_type1,
+    morph_single_negpos_v_negant = b_adj_type2,
+    morph_single_negant_v_pos = b_adj_type3,
+    single_int_lex_morph_ant_v_negpos = `b_antonym_typelexant:adj_type1`,
+    single_int_lex_morph_negpos_v_negant = `b_antonym_typelexant:adj_type2`,
+    single_int_lex_morph_negant_v_pos = `b_antonym_typelexant:adj_type3`,
+    morph_int_multi_single_ant_v_negpos = `b_adj_type1:conditionexplicit`,
+    morph_int_multi_single_negpos_v_negant = `b_adj_type2:conditionexplicit`,
+    morph_int_multi_single_negant_v_pos = `b_adj_type3:conditionexplicit`,
+    int_multi_single_v_lex_morph_v_negpos_ant = `b_antonym_typelexant:adj_type1:conditionexplicit`
+  )  %>%
+  mutate(
+    lex_single_ant_v_negpos = morph_single_ant_v_negpos + single_int_lex_morph_ant_v_negpos,
+    lex_single_negant_v_pos = morph_single_negant_v_pos + single_int_lex_morph_negant_v_pos,
+    morph_multi_ant_v_negpos = morph_single_ant_v_negpos + morph_int_multi_single_ant_v_negpos,
+    morph_ant_multi_v_single = b_conditionexplicit +
+      0.75 * morph_int_multi_single_ant_v_negpos  + 
+      0.5 * morph_int_multi_single_negpos_v_negant + 
+      0.25 * morph_int_multi_single_negant_v_pos,
+    morph_negpos_multi_v_single = b_conditionexplicit -
+      0.25 * morph_int_multi_single_ant_v_negpos  + 
+      0.5 * morph_int_multi_single_negpos_v_negant + 
+      0.25 * morph_int_multi_single_negant_v_pos,
+    multi_morph_negant = b_Intercept - 
+      0.25 * morph_single_ant_v_negpos - 
+      0.5 * morph_single_negpos_v_negant + 
+      0.25 * morph_single_negant_v_pos + 
+      b_conditionexplicit -
+      0.25 * morph_int_multi_single_ant_v_negpos - 
+      0.5 * morph_int_multi_single_negpos_v_negant + 
+      0.25 * morph_int_multi_single_negant_v_pos
+    )
+    
+    
+# write_csv(rs.brm.e2.standardized.samples,
+#           path = "../cached_results/rs_brm_e2_standard_3way_samples.csv")
+
+
+rs.brm.e2.standardized.samples %>%
+  gather(key, val) %>% 
+  group_by(key) %>%
+  summarize(
+    'l95' = quantile(val, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(val),
+    'u95' = quantile(val, probs = c(0.025, 0.975))[[2]],
+    prob_gt_0 = mean(val > 0)*100,
+    prob_lt_0 = mean(val < 0)*100
+  ) -> rs.brm.e2.stanard.full.contrasts
+
+```
+
+## Compute effect size
+
+```{r}
+rs.brm.e2.standardized.samples %>%
+  gather(key, val, -sigma) %>% 
+  mutate(standardized_val = val / sigma) %>%
+  group_by(key) %>%
+  summarize(
+    'l95' = quantile(standardized_val, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(standardized_val),
+    'u95' = quantile(standardized_val, probs = c(0.025, 0.975))[[2]],
+    prob_gt_0 = mean(standardized_val > 0)*100,
+    prob_lt_0 = mean(standardized_val < 0)*100
+  ) -> rs.brm.e2.effectsizes
+
+write_csv(rs.brm.e2.effectsizes, 
+          path = "../csv_data_4_tex/expt2_brm_effsize_10k.csv")
+```
+
+
+# _depracated_
+
+```{r samples and contrasts dummy coded, eval = F}
+rs.brm.e2.3way.zoib.betas.samples <- brms::posterior_samples(rs.brm.e2.3way.zoib, add_chain = T) %>% 
+  select(starts_with("b_")) %>%
+  rename(
+    morph_single_negpos_v_ant = b_adj_typeneg_positive,
+    morph_single_negant_v_ant = b_adj_typeneg_antonym,
+    morph_single_pos_v_ant = b_adj_typepositive,
+    single_int_lex_morph_negpos_v_ant = `b_antonym_typelexant:adj_typeneg_positive`,
+    single_int_lex_morph_negant_v_ant = `b_antonym_typelexant:adj_typeneg_antonym`,
+    single_int_lex_morph_pos_v_ant = `b_antonym_typelexant:adj_typepositive`,
+    morph_int_multi_single_negpos_v_ant = `b_adj_typeneg_positive:conditionexplicit`,
+    morph_int_multi_single_negant_v_ant = `b_adj_typeneg_antonym:conditionexplicit`,
+    int_multi_single_v_lex_morph_v_negpos_ant = `b_antonym_typelexant:adj_typeneg_positive:conditionexplicit`
+  ) %>%
+  mutate(
+    lex_single_negpos_v_ant = morph_single_negpos_v_ant + single_int_lex_morph_negpos_v_ant,
+    morph_multi_negpos_v_ant = morph_single_negpos_v_ant + morph_int_multi_single_negpos_v_ant,
+    morph_single_negant = b_Intercept + morph_single_negant_v_ant,
+    morph_multi_negant = b_Intercept + morph_single_negant_v_ant + 
+      b_conditionexplicit + morph_int_multi_single_negant_v_ant
+  )
+
+# write_csv(rs.brm.e2.3way.zoib.betas.samples,
+#           path = "../cached_results/rs_brm_e2_zoib_3way_betas_samples.csv")
+
+rs.brm.e2.3way.zoib.betas.samples %>%
+  gather(key, val) %>% 
+  group_by(key) %>%
+  summarize(
+    'l95' = quantile(val, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(val),
+    'u95' = quantile(val, probs = c(0.025, 0.975))[[2]],
+    prob_gt_0 = mean(val > 0)*100,
+    prob_lt_0 = mean(val < 0)*100
+  ) -> rs.brm.e2.3way.zoib.full.contrasts
+
+# write_csv(rs.brm.e2.3way.zoib.full.contrasts, 
+#           path = "../csv_data_4_tex/expt2_brm_contrasts_10k.csv")
+```
+
+

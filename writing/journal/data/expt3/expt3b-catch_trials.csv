@@ -1,0 +1,501 @@
+condition,check_index,property,tested_on,response,correct,exptid,workerid
+memory_check,0,Eric is not not patriotic,1,0,0,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,1,Alexander is tolerant,1,1,1,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,2,Louis is athletic,0,0,1,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,3,Jamar is not unexpected,0,1,0,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,4,Lucas is not unkind,1,0,0,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,5,Steve is short,0,0,1,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,6,Michael is nerdy,0,1,0,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,7,Casey is studious,0,0,1,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,8,Cameron is not ambitious,1,0,0,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,9,Brooke is not impolite,1,0,0,NA,f5f636d9e25af37fe60056f67d1b9720
+memory_check,0,Michelle is forgiving,1,1,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,1,Michael is nerdy,0,0,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,2,Gabriel is not affectionate,1,1,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,3,Louis is athletic,0,0,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,4,Jamar is not unexpected,0,0,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,5,Sophia is kind,1,1,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,6,Daniel is resourceful,1,1,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,7,Steve is short,0,0,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,8,Casey is studious,0,0,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,9,Kathleen is not immature,1,1,1,NA,1a3d63a540c5d1a40171fbe4f511838c
+memory_check,0,Jamar is not unexpected,0,0,1,NA,495e666beca342982532fcb8be98055a
+memory_check,1,Michael is nerdy,0,0,1,NA,495e666beca342982532fcb8be98055a
+memory_check,2,Casey is studious,0,0,1,NA,495e666beca342982532fcb8be98055a
+memory_check,3,Dylan is not not educated,1,1,1,NA,495e666beca342982532fcb8be98055a
+memory_check,4,Diana is not immature,1,1,1,NA,495e666beca342982532fcb8be98055a
+memory_check,5,Nicole is not not friendly,1,1,1,NA,495e666beca342982532fcb8be98055a
+memory_check,6,Louis is athletic,0,0,1,NA,495e666beca342982532fcb8be98055a
+memory_check,7,David is not resourceful,1,0,0,NA,495e666beca342982532fcb8be98055a
+memory_check,8,Michelle is dishonest,1,1,1,NA,495e666beca342982532fcb8be98055a
+memory_check,9,Steve is short,0,0,1,NA,495e666beca342982532fcb8be98055a
+memory_check,0,Jamar is not unexpected,0,0,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,1,Melinda is not not honest,1,1,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,2,Casey is studious,0,0,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,3,Tom is not mature,1,1,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,4,Michael is nerdy,0,0,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,5,Louis is athletic,0,0,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,6,Alison is not tolerant,1,1,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,7,Greg is not unkind,1,1,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,8,Steve is short,0,0,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,9,Julia is unhappy,1,1,1,NA,4d12f3a971d5f4e8c09b506a3fc46c07
+memory_check,0,Casey is studious,0,0,1,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,1,Anthony is intelligent,1,0,0,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,2,Amber is not not rational,1,1,1,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,3,Jamar is not unexpected,0,0,1,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,4,Steve is short,0,0,1,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,5,Michael is nerdy,0,0,1,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,6,Emma is not not generous,1,0,0,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,7,Angela is ambitious,1,0,0,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,8,Louis is athletic,0,0,1,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,9,Dylan is not uneducated,1,0,0,NA,4a69034f7408ce8a7929016fb08cb869
+memory_check,0,Nicole is immature,1,0,0,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,1,Jamar is not unexpected,0,0,1,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,2,Louis is athletic,0,0,1,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,3,Lucas is resourceful,1,1,1,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,4,Casey is studious,0,0,1,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,5,Michael is nerdy,0,0,1,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,6,William is not kind,1,0,0,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,7,Steve is short,0,0,1,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,8,Stephen is interesting,1,0,0,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,9,Claire is not not affectionate,1,0,0,NA,1da1dcc927f5b0b16dda50ecda696a7f
+memory_check,0,Stephen is not educated,1,0,0,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,1,Andrew is mature,1,1,1,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,2,Casey is studious,0,0,1,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,3,Angela is happy,1,1,1,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,4,Steve is short,0,0,1,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,5,Lucas is not not polite,1,1,1,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,6,Jamar is not unexpected,0,0,1,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,7,Louis is athletic,0,0,1,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,8,Kathleen is not generous,1,1,1,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,9,Michael is nerdy,0,1,0,NA,cfd5adac125eaf5d7105b4c6688e7965
+memory_check,0,Casey is studious,0,0,1,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,1,Jackie is not not reliable,1,1,1,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,2,Amber is not uneducated,1,1,1,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,3,Lucas is not not mature,1,0,0,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,4,Greg is not unresourceful,1,0,0,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,5,Louis is athletic,0,0,1,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,6,Michael is nerdy,0,0,1,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,7,Jamar is not unexpected,0,0,1,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,8,Steve is short,0,0,1,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,9,Maya is not not tolerant,1,1,1,NA,64cde64385e29419acd0332fa9d00fd2
+memory_check,0,Greg is not ungenerous,1,1,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,1,Samuel is unhappy,1,1,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,2,Michael is nerdy,0,0,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,3,Steve is short,0,0,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,4,Jackie is not not kind,1,1,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,5,Casey is studious,0,0,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,6,Michelle is not not polite,1,1,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,7,Louis is athletic,0,0,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,8,Jamar is not unexpected,0,0,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,9,Kathleen is not not sincere,1,1,1,NA,ddd51b66bf66fe2828c8a86d59403c49
+memory_check,0,Steve is short,0,0,1,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,1,Casey is studious,0,1,0,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,2,Charles is not not affectionate,1,1,1,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,3,Alexander is not not interesting,1,1,1,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,4,Mason is not immature,1,1,1,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,5,Michael is uneducated,1,0,0,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,6,Jamar is not unexpected,0,0,1,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,7,Louis is athletic,0,0,1,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,8,Andrew is not tolerant,1,0,0,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,9,Michael is nerdy,0,0,1,NA,d0f133c5ca6fb4aaba09109030e15d39
+memory_check,0,John is unattractive,1,1,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,1,Mason is generous,1,1,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,2,Charles is mature,1,1,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,3,Michael is nerdy,0,0,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,4,Steve is short,0,0,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,5,Anthony is unpatriotic,1,1,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,6,Louis is athletic,0,0,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,7,Jamar is not unexpected,0,0,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,8,Casey is studious,0,0,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,9,Stephen is resourceful,1,1,1,NA,ce666cbe476651fafc4bc0503ad627aa
+memory_check,0,Steve is short,0,0,1,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,1,Louis is athletic,0,0,1,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,2,Jamar is not unexpected,0,0,1,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,3,Greg is patriotic,1,0,0,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,4,Casey is studious,0,0,1,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,5,Diana is not not sincere,1,1,1,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,6,Andrew is unresourceful,1,1,1,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,7,Kathleen is not tolerant,1,0,0,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,8,Noah is not unambitious,1,0,0,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,9,Michael is nerdy,0,0,1,NA,04988b31e4d50881ec1e06096bf67884
+memory_check,0,Jamar is not unexpected,0,1,0,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,1,Tom is generous,1,1,1,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,2,Louis is athletic,0,0,1,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,3,Veronica is attractive,1,1,1,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,4,Jeremy is intelligent,1,1,1,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,5,Casey is studious,0,0,1,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,6,Michael is nerdy,0,0,1,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,7,Michael is not not interesting,1,1,1,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,8,Steve is short,0,0,1,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,9,Cameron is reliable,1,1,1,NA,c9df6c176e926e25f7531845919f8f0e
+memory_check,0,Louis is athletic,0,0,1,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,1,Amber is kind,1,1,1,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,2,Tom is not tolerant,1,1,1,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,3,Dylan is unresourceful,1,0,0,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,4,Steve is short,0,0,1,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,5,Maya is not ungenerous,1,1,1,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,6,Jamar is not unexpected,0,0,1,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,7,Casey is studious,0,0,1,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,8,John is not unfriendly,1,1,1,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,9,Michael is nerdy,0,0,1,NA,4aadb85109fc687a34c1a38407d57b8c
+memory_check,0,Jackie is not mature,1,1,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,1,Melinda is not not polite,1,1,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,2,Louis is athletic,0,0,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,3,Michael is nerdy,0,0,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,4,Jennifer is not dishonest,1,1,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,5,Julia is unfriendly,1,1,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,6,Steve is short,0,0,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,7,Greg is not not kind,1,1,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,8,Casey is studious,0,0,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,9,Jamar is not unexpected,0,0,1,NA,6435756c61d829b05d6ec7b6d5dbdbaf
+memory_check,0,Jamar is not unexpected,0,1,0,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,1,Michael is nerdy,0,1,0,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,2,Casey is studious,0,0,1,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,3,Diana is immature,1,0,0,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,4,Steve is short,0,0,1,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,5,Tom is not not rational,1,0,0,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,6,Louis is athletic,0,0,1,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,7,Veronica is not dishonest,1,0,0,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,8,Mia is not not generous,1,0,0,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,9,David is not unambitious,1,0,0,NA,8f094cb0387783aa582e5492258b2f09
+memory_check,0,Jamar is not unexpected,0,0,1,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,1,Louis is athletic,0,0,1,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,2,Michael is nerdy,0,0,1,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,3,Casey is studious,0,0,1,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,4,Laura is not not reliable,1,1,1,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,5,Alison is not not polite,1,0,0,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,6,Steve is short,0,0,1,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,7,John is not not rational,1,1,1,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,8,Liam is not sincere,1,1,1,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,9,Jacob is not interesting,1,1,1,NA,5de9976c6f386ee69830d2bf68ab157a
+memory_check,0,Liam is not not tolerant,1,0,0,NA,09adb547b3364c927160ce7277a18da0
+memory_check,1,Michael is nerdy,0,0,1,NA,09adb547b3364c927160ce7277a18da0
+memory_check,2,Jamar is not unexpected,0,0,1,NA,09adb547b3364c927160ce7277a18da0
+memory_check,3,Stephen is not reliable,1,1,1,NA,09adb547b3364c927160ce7277a18da0
+memory_check,4,Samuel is not not generous,1,1,1,NA,09adb547b3364c927160ce7277a18da0
+memory_check,5,Jennifer is unattractive,1,1,1,NA,09adb547b3364c927160ce7277a18da0
+memory_check,6,Steve is short,0,0,1,NA,09adb547b3364c927160ce7277a18da0
+memory_check,7,Anthony is not forgiving,1,0,0,NA,09adb547b3364c927160ce7277a18da0
+memory_check,8,Louis is athletic,0,0,1,NA,09adb547b3364c927160ce7277a18da0
+memory_check,9,Casey is studious,0,0,1,NA,09adb547b3364c927160ce7277a18da0
+memory_check,0,Louis is athletic,0,0,1,NA,1847216991273f0e415fa659930ab8b1
+memory_check,1,Kathleen is not unintelligent,1,1,1,NA,1847216991273f0e415fa659930ab8b1
+memory_check,2,Stephen is not polite,1,0,0,NA,1847216991273f0e415fa659930ab8b1
+memory_check,3,Michael is nerdy,0,0,1,NA,1847216991273f0e415fa659930ab8b1
+memory_check,4,Jamar is not unexpected,0,0,1,NA,1847216991273f0e415fa659930ab8b1
+memory_check,5,Emma is not patriotic,1,0,0,NA,1847216991273f0e415fa659930ab8b1
+memory_check,6,Casey is studious,0,0,1,NA,1847216991273f0e415fa659930ab8b1
+memory_check,7,Steve is short,0,0,1,NA,1847216991273f0e415fa659930ab8b1
+memory_check,8,Dylan is unforgiving,1,1,1,NA,1847216991273f0e415fa659930ab8b1
+memory_check,9,Greg is happy,1,0,0,NA,1847216991273f0e415fa659930ab8b1
+memory_check,0,Veronica is not interesting,1,1,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,1,Louis is athletic,0,0,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,2,Daniel is not unaffectionate,1,1,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,3,Charles is not happy,1,1,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,4,Casey is studious,0,0,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,5,Liam is not not resourceful,1,1,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,6,Eric is intelligent,1,1,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,7,Jamar is not unexpected,0,0,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,8,Michael is nerdy,0,0,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,9,Steve is short,0,0,1,NA,bff1bf326a27627672e08aa22ec1fb20
+memory_check,0,Tom is not sincere,1,0,0,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,1,Steve is short,0,1,0,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,2,Michelle is not rational,1,1,1,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,3,Liam is not ungenerous,1,0,0,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,4,Sasha is not uneducated,1,1,1,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,5,Casey is studious,0,0,1,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,6,Lee is not unresourceful,1,0,0,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,7,Jamar is not unexpected,0,0,1,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,8,Michael is nerdy,0,0,1,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,9,Louis is athletic,0,0,1,NA,ab9e3f46bab6e5de856fefaeb7c5024f
+memory_check,0,Jamar is not unexpected,0,0,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,1,Michael is not not patriotic,1,1,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,2,Louis is athletic,0,0,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,3,Tom is not kind,1,1,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,4,Sophia is not not intelligent,1,1,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,5,Maya is dishonest,1,1,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,6,Steve is short,0,0,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,7,Michael is nerdy,0,0,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,8,Michelle is not uneducated,1,1,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,9,Casey is studious,0,0,1,NA,f00419d672bfcb6c889dd10f5cf3b137
+memory_check,0,Emma is dishonest,1,1,1,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,1,Jennifer is happy,1,1,1,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,2,Lucas is not sincere,1,0,0,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,3,Steve is short,0,1,0,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,4,Charles is not tolerant,1,0,0,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,5,Jamar is not unexpected,0,0,1,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,6,Michael is nerdy,0,1,0,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,7,Casey is studious,0,0,1,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,8,Louis is athletic,0,1,0,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,9,Amber is not not attractive,1,1,1,NA,f5116a9797f0bac99051db5cec1cf6f7
+memory_check,0,Casey is studious,0,0,1,NA,4fb496df3978366d2a40fc49265449af
+memory_check,1,Steve is short,0,0,1,NA,4fb496df3978366d2a40fc49265449af
+memory_check,2,Jeremy is not unambitious,1,1,1,NA,4fb496df3978366d2a40fc49265449af
+memory_check,3,Michael is nerdy,0,0,1,NA,4fb496df3978366d2a40fc49265449af
+memory_check,4,Emma is not not intelligent,1,1,1,NA,4fb496df3978366d2a40fc49265449af
+memory_check,5,Liam is unforgiving,1,0,0,NA,4fb496df3978366d2a40fc49265449af
+memory_check,6,Louis is athletic,0,0,1,NA,4fb496df3978366d2a40fc49265449af
+memory_check,7,Stephen is not not mature,1,0,0,NA,4fb496df3978366d2a40fc49265449af
+memory_check,8,Jamar is not unexpected,0,0,1,NA,4fb496df3978366d2a40fc49265449af
+memory_check,9,Laura is reliable,1,0,0,NA,4fb496df3978366d2a40fc49265449af
+memory_check,0,Liam is unpatriotic,1,1,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,1,Steve is short,0,0,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,2,Emma is not reliable,1,1,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,3,Louis is athletic,0,0,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,4,Jennifer is not not polite,1,1,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,5,Alexander is unfriendly,1,1,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,6,Alison is not not affectionate,1,1,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,7,Michael is nerdy,0,0,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,8,Casey is studious,0,0,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,9,Jamar is not unexpected,0,0,1,NA,40edbf390bc4bfaddbb390fb25188950
+memory_check,0,Louis is athletic,0,0,1,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,1,Steve is short,0,0,1,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,2,Stephen is not polite,1,1,1,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,3,Jamar is not unexpected,0,0,1,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,4,Anthony is patriotic,1,1,1,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,5,Amber is not ambitious,1,1,1,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,6,Jeremy is happy,1,1,1,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,7,Casey is studious,0,0,1,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,8,Diana is unkind,1,0,0,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,9,Michael is nerdy,0,0,1,NA,ec53e54fcd4b532c707957791b344df5
+memory_check,0,Jacob is happy,1,1,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,1,Maya is not kind,1,1,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,2,Michael is nerdy,0,0,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,3,Kathleen is not not tolerant,1,1,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,4,Dylan is not irrational,1,1,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,5,Steve is short,0,0,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,6,Louis is athletic,0,0,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,7,Casey is studious,0,0,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,8,Jamar is not unexpected,0,0,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,9,Mason is uneducated,1,1,1,NA,4a2e9055f9a89b424494c0acaab59112
+memory_check,0,Liam is not unhappy,1,1,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,1,Jamar is not unexpected,0,0,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,2,Laura is not ungenerous,1,1,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,3,Louis is athletic,0,0,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,4,Michael is not unkind,1,1,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,5,Veronica is friendly,1,1,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,6,Michael is nerdy,0,0,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,7,Casey is studious,0,0,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,8,Alicia is not intelligent,1,1,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,9,Steve is short,0,0,1,NA,7cdf7c6fa0cd12d92fb630832cb45bac
+memory_check,0,Michael is nerdy,0,0,1,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,1,Maya is not unkind,1,1,1,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,2,Casey is studious,0,0,1,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,3,Louis is athletic,0,0,1,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,4,Sasha is unpatriotic,1,1,1,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,5,Andrew is not not generous,1,0,0,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,6,Stephen is not irrational,1,1,1,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,7,Steve is short,0,0,1,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,8,Jamar is not unexpected,0,0,1,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,9,Nicole is not resourceful,1,1,1,NA,94b1d8dc1c19f4872472d3fd66a4fdc9
+memory_check,0,Steve is short,0,0,1,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,1,Louis is athletic,0,1,0,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,2,David is not uninteresting,1,0,0,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,3,Michael is nerdy,0,0,1,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,4,Gabriel is not not polite,1,1,1,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,5,Eric is not not reliable,1,0,0,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,6,Stephen is not ungenerous,1,0,0,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,7,Sasha is not unhappy,1,1,1,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,8,Jamar is not unexpected,0,0,1,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,9,Casey is studious,0,1,0,NA,682ebb5449ce20e3dd86cdf17cfb81b1
+memory_check,0,Michael is nerdy,0,0,1,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,1,Jackie is attractive,1,1,1,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,2,Emma is not not reliable,1,0,0,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,3,Steve is short,0,0,1,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,4,Casey is studious,0,0,1,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,5,Amber is mature,1,0,0,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,6,Jamar is not unexpected,0,0,1,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,7,Alexander is ungenerous,1,0,0,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,8,Louis is athletic,0,0,1,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,9,Dylan is not not interesting,1,0,0,NA,6abb7b2f9964bf8a887b7eb184661f87
+memory_check,0,Sophia is intelligent,1,1,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,1,Anthony is not not patriotic,1,1,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,2,Jamar is not unexpected,0,0,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,3,Steve is short,0,0,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,4,Louis is athletic,0,0,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,5,Michael is nerdy,0,0,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,6,Sasha is not unfriendly,1,1,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,7,Casey is studious,0,0,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,8,Mia is uneducated,1,1,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,9,John is resourceful,1,1,1,NA,f10422a3398b576e61e88b0845da1db8
+memory_check,0,Jamar is not unexpected,0,0,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,1,Jacob is not happy,1,1,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,2,Amber is uneducated,1,1,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,3,Alison is reliable,1,1,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,4,Louis is athletic,0,0,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,5,Alicia is not dishonest,1,1,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,6,Michael is nerdy,0,0,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,7,Casey is studious,0,0,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,8,Steve is short,0,0,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,9,Michelle is not forgiving,1,1,1,NA,9c5dfb663213803525bf4b35cb3461bc
+memory_check,0,Sasha is not impolite,1,1,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,1,Louis is athletic,0,0,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,2,Nicole is resourceful,1,1,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,3,Daniel is generous,1,1,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,4,Stephen is not educated,1,1,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,5,Michael is nerdy,0,0,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,6,Steve is short,0,0,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,7,Casey is studious,0,0,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,8,Alison is rational,1,1,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,9,Jamar is not unexpected,0,0,1,NA,817d275bf8220a4e63e2892f0faf1d8c
+memory_check,0,Casey is studious,0,1,0,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,1,Dylan is tolerant,1,1,1,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,2,Michael is nerdy,0,1,0,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,3,Mason is not intelligent,1,0,0,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,4,Michael is not not attractive,1,0,0,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,5,Anthony is dishonest,1,0,0,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,6,Steve is short,0,1,0,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,7,Louis is athletic,0,1,0,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,8,Jamar is not unexpected,0,0,1,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,9,John is unpatriotic,1,1,1,NA,5140b27a41df06c3b74c2adae3a666b8
+memory_check,0,Steve is short,0,0,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,1,Casey is studious,0,0,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,2,Jamar is not unexpected,0,0,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,3,Stephanie is not happy,1,1,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,4,Louis is athletic,0,0,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,5,Kim is not polite,1,1,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,6,Alison is not intolerant,1,1,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,7,Dylan is not educated,1,1,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,8,Michael is nerdy,0,0,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,9,Alicia is ambitious,1,1,1,NA,527479df7ef0926d66b5b846400d51e6
+memory_check,0,Casey is studious,0,0,1,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,1,Sophia is not uneducated,1,1,1,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,2,Liam is not not ambitious,1,1,1,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,3,Mason is not sincere,1,1,1,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,4,Michael is nerdy,0,1,0,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,5,Sasha is not unforgiving,1,0,0,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,6,Jamar is not unexpected,0,1,0,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,7,Claire is not not interesting,1,1,1,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,8,Louis is athletic,0,0,1,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,9,Steve is short,0,0,1,NA,3af637b8d78dbe5621babbcf170392a8
+memory_check,0,Nicole is tolerant,1,1,1,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,1,Casey is studious,0,0,1,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,2,Michael is nerdy,0,0,1,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,3,Julia is not not educated,1,1,1,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,4,Louis is athletic,0,0,1,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,5,Jamar is not unexpected,0,1,0,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,6,Steve is short,0,0,1,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,7,Andrew is not happy,1,0,0,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,8,Alicia is patriotic,1,0,0,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,9,Mason is unforgiving,1,0,0,NA,d929a7cb639de7577eebb0b3b8bd9abf
+memory_check,0,Monica is not educated,1,1,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,1,David is not unkind,1,1,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,2,Louis is athletic,0,0,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,3,Melinda is not unpatriotic,1,1,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,4,Laura is unforgiving,1,1,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,5,Steve is short,0,0,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,6,Eric is generous,1,1,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,7,Casey is studious,0,0,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,8,Jamar is not unexpected,0,0,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,9,Michael is nerdy,0,0,1,NA,c70176030722cc57d57eb448ba0207d8
+memory_check,0,Jamar is not unexpected,0,1,0,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,1,Casey is studious,0,0,1,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,2,Alexander is rational,1,1,1,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,3,Steve is short,0,0,1,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,4,Michael is nerdy,0,0,1,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,5,Louis is athletic,0,0,1,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,6,Jacob is uninteresting,1,0,0,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,7,Sophia is not unresourceful,1,1,1,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,8,Cameron is not not intelligent,1,1,1,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,9,Lee is not not kind,1,1,1,NA,abbf1ee9ebb4f8c792f62d81eb682bd0
+memory_check,0,Steve is short,0,0,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,1,Michael is nerdy,0,0,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,2,Nicole is not impolite,1,1,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,3,Casey is studious,0,0,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,4,Gabriel is not tolerant,1,1,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,5,Kathleen is immature,1,1,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,6,Jackie is not forgiving,1,1,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,7,Jeremy is not affectionate,1,1,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,8,Louis is athletic,0,0,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,9,Jamar is not unexpected,0,0,1,NA,57b015493a3bbb59dccf2f2938efeb46
+memory_check,0,Noah is ungenerous,1,1,1,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,1,Louis is athletic,0,0,1,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,2,Sophia is not not resourceful,1,1,1,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,3,Jamar is not unexpected,0,0,1,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,4,Steve is short,0,0,1,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,5,Samuel is not unreliable,1,1,1,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,6,Michael is nerdy,0,0,1,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,7,Lee is not unforgiving,1,1,1,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,8,Casey is studious,0,0,1,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,9,Amber is not not polite,1,0,0,NA,c6cf63262f9166a9d362c16c9a5470a2
+memory_check,0,Jamar is not unexpected,0,0,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,1,Dylan is forgiving,1,1,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,2,Anthony is immature,1,1,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,3,Kathleen is not friendly,1,1,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,4,Steve is short,0,0,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,5,Michael is nerdy,0,0,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,6,Louis is athletic,0,0,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,7,Gabriel is not unattractive,1,1,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,8,Casey is studious,0,0,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,9,Greg is ungenerous,1,1,1,NA,9af2998f6b4f2d569048463f3b67a263
+memory_check,0,Steve is short,0,0,1,NA,47724d8cbabf50a162f6669321388435
+memory_check,1,Casey is studious,0,0,1,NA,47724d8cbabf50a162f6669321388435
+memory_check,2,Louis is athletic,0,0,1,NA,47724d8cbabf50a162f6669321388435
+memory_check,3,Michael is impolite,1,0,0,NA,47724d8cbabf50a162f6669321388435
+memory_check,4,Alicia is not unambitious,1,1,1,NA,47724d8cbabf50a162f6669321388435
+memory_check,5,John is not tolerant,1,1,1,NA,47724d8cbabf50a162f6669321388435
+memory_check,6,Michael is nerdy,0,0,1,NA,47724d8cbabf50a162f6669321388435
+memory_check,7,Greg is unpatriotic,1,1,1,NA,47724d8cbabf50a162f6669321388435
+memory_check,8,Daniel is not unfriendly,1,0,0,NA,47724d8cbabf50a162f6669321388435
+memory_check,9,Jamar is not unexpected,0,0,1,NA,47724d8cbabf50a162f6669321388435
+memory_check,0,Jamar is not unexpected,0,0,1,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,1,Casey is studious,0,0,1,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,2,John is not not polite,1,1,1,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,3,Alicia is unresourceful,1,1,1,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,4,Louis is athletic,0,0,1,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,5,Nicole is not not reliable,1,0,0,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,6,Jackie is affectionate,1,0,0,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,7,Michael is nerdy,0,0,1,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,8,Gabriel is uninteresting,1,0,0,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,9,Steve is short,0,0,1,NA,6b18e9c5d3abc7f56b821fa24a5f592e
+memory_check,0,Jamar is not unexpected,0,0,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,1,Michael is generous,1,1,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,2,Louis is athletic,0,0,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,3,Michael is nerdy,0,0,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,4,Steve is short,0,0,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,5,Stephen is not not mature,1,1,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,6,John is not not happy,1,1,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,7,Alexander is unintelligent,1,1,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,8,Casey is studious,0,0,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,9,Sasha is not not attractive,1,1,1,NA,019e327da42ec41270d2a629990fecbd
+memory_check,0,Anthony is irrational,1,0,0,NA,e88eada215fcc83de6327091fafc624a
+memory_check,1,Steve is short,0,1,0,NA,e88eada215fcc83de6327091fafc624a
+memory_check,2,Jamar is not unexpected,0,0,1,NA,e88eada215fcc83de6327091fafc624a
+memory_check,3,Stephanie is not resourceful,1,0,0,NA,e88eada215fcc83de6327091fafc624a
+memory_check,4,Casey is studious,0,1,0,NA,e88eada215fcc83de6327091fafc624a
+memory_check,5,Sasha is tolerant,1,1,1,NA,e88eada215fcc83de6327091fafc624a
+memory_check,6,Eric is forgiving,1,0,0,NA,e88eada215fcc83de6327091fafc624a
+memory_check,7,Kim is intelligent,1,0,0,NA,e88eada215fcc83de6327091fafc624a
+memory_check,8,Louis is athletic,0,0,1,NA,e88eada215fcc83de6327091fafc624a
+memory_check,9,Michael is nerdy,0,0,1,NA,e88eada215fcc83de6327091fafc624a
+memory_check,0,Julia is not not generous,1,0,0,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,1,Jamar is not unexpected,0,0,1,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,2,Michael is nerdy,0,1,0,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,3,Tom is not not happy,1,0,0,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,4,Steve is short,0,0,1,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,5,Louis is athletic,0,0,1,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,6,Michelle is mature,1,1,1,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,7,Amber is not not sincere,1,0,0,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,8,Noah is friendly,1,0,0,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,9,Casey is studious,0,0,1,NA,b4c4dda1aa81b71df1c080c31e247149
+memory_check,0,Gabriel is attractive,1,0,0,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,1,Michael is nerdy,0,0,1,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,2,Amber is intelligent,1,1,1,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,3,John is not generous,1,1,1,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,4,Lucas is unresourceful,1,0,0,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,5,Samuel is not not reliable,1,0,0,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,6,Steve is short,0,0,1,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,7,Casey is studious,0,0,1,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,8,Louis is athletic,0,0,1,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,9,Jamar is not unexpected,0,0,1,NA,ee732972e70fbc39f70ef8481b2bc8fe
+memory_check,0,Lucas is not not attractive,1,1,1,NA,8e64425392485d3cc2d0d134066598ea
+memory_check,1,Michael is nerdy,0,0,1,NA,8e64425392485d3cc2d0d134066598ea
+memory_check,2,Jamar is not unexpected,0,0,1,NA,8e64425392485d3cc2d0d134066598ea
+memory_check,3,Sasha is happy,1,0,0,NA,8e64425392485d3cc2d0d134066598ea
+memory_check,4,Sophia is not not mature,1,0,0,NA,8e64425392485d3cc2d0d134066598ea
+memory_check,5,Jeremy is not uneducated,1,1,1,NA,8e64425392485d3cc2d0d134066598ea
+memory_check,6,Casey is studious,0,0,1,NA,8e64425392485d3cc2d0d134066598ea
+memory_check,7,Louis is athletic,0,0,1,NA,8e64425392485d3cc2d0d134066598ea
+memory_check,8,Steve is short,0,0,1,NA,8e64425392485d3cc2d0d134066598ea
+memory_check,9,Noah is not not ambitious,1,1,1,NA,8e64425392485d3cc2d0d134066598ea

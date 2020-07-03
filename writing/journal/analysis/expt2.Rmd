@@ -25,19 +25,19 @@ project.prefix.4slider.lex <- "8_4slider_lex"
 #fig.path <- "~/Documents/talks/laangcog-0219/figs/"
 fig.path <- "~/projects/negant/writing/journal/figs/"
 loadData <- function(project.prefix){
-  read.csv(paste("../data/",project.prefix,
+  read.csv(paste("../../../data/",project.prefix,
         "/",project.prefix,"-trials.csv", 
         sep = ""))
 }
 
 loadTime <-  function(project.prefix){
-  read.csv(paste("../data/", project.prefix,
+  read.csv(paste("../../../data/", project.prefix,
                  "/",project.prefix,"-time.csv", 
                  sep = ""))
 }
 
 loadSubjComments <- function(project.prefix){
-    read.csv(paste("../data/", project.prefix,
+    read.csv(paste("../../../data/", project.prefix,
                    "/",project.prefix,
                  "-subject_information.csv", sep = "")) %>%
     mutate(age = as.numeric(as.character(age)))
@@ -159,6 +159,8 @@ d.full.natEng <- left_join(
 
 ## check that i've done the filtering correctly
 length(unique(d.full.natEng$workerid))
+
+write_csv(d.full.natEng, "../data/expt2/expt2-filtered.csv")
 ```
 
 # Plots
@@ -234,8 +236,419 @@ ggplot(., aes( x = response, y = adjective_type_rescaled, fill = ..x..))+
 # 
 
 # ggsave(paste(fig.path,
-#              "expt2_ridges_wCIs.pdf", sep = ""),
+#              "expt2_ridges_wCIs_hist.pdf", sep = ""),
 #        width = 8, height = 5)
+```
+
+# Regression models: Standardized units
+
+Technique: Helmert coding, maximal model, and model comparison to simpler model.
+
+#### Hypothesis 1: When alternatives are implicit, morphological antonyms ("unhappy") do not show difference from negated positives ("not happy"), while lexical antonyms ("sad") do.
+
+
+```{r}
+d.full.natEng %>%
+  ungroup() %>%
+  summarize( m = mean(normalizedResponse),
+             stdev = sd(normalizedResponse))
+```
+
+
+```{r regression1}
+# Helmert coding to compare Negated Positive with Antonym
+# 
+# d.full.natEng.rescaled <- within(d.full.natEng, {
+#   adj_type <- C(adjective_type_rescaled, helmert, 3)
+#   print(attributes(adj_type))
+# }) %>% select(-item) %>% rename(item = positive) %>%
+#   mutate(
+#     antonym_type = factor(antonym_type, levels = c( "morphant", "lexant"))
+#     )
+
+my.forward.diff = matrix(c(
+  3/4, -1/4, -1/4, -1/4, 
+  1/2, 1/2, -1/2, -1/2, 
+  1/4, 1/4, 1/4, -3/4), 
+  ncol = 3)
+
+#assigning the forward difference coding to adjective_type
+d.full.natEng.rescaled <- d.full.natEng %>% select(-item) %>% 
+  rename(item = positive,
+         adj_type = adjective_type_rescaled) %>% 
+  mutate(
+    antonym_type = factor(antonym_type, levels = c( "morphant", "lexant"))
+    )
+
+contrasts(d.full.natEng.rescaled$adj_type) = my.forward.diff
+
+contrasts(d.full.natEng.rescaled$adj_type)
+
+# maximal model (adding "+ antonym_type" by item fails to converge)
+rs1.helmert.norm.implicit <- lmer(normalizedResponse ~ antonym_type * adj_type + 
+                       (1 | workerid) + 
+                       (1 | item),
+                     data = d.full.natEng.rescaled %>% filter(condition == "implicit"))
+
+rs1.helmert.implicit.norm.summary <- summary(rs1.helmert.norm.implicit)
+
+#load("../cached_results/regression_antTypeXadjType_implicitCond.RData")
+# save(rs1.helmert.implicit.summary, file =
+#        "../cached_results/regression_antTypeXadjType_implicitCond.RData")
+rs1.implicit.norm.coef <- rs1.helmert.implicit.norm.summary[["coefficients"]]
+
+data.frame(rs1.implicit.norm.coef) %>%
+  mutate(Rowname = row.names(.)) %>%
+  write_csv(., path = '../../journal/csv_data_4_tex/expt2_norm_glmer_singleUtt.csv')
+```
+
+does the maximal model account for significantly more variance than simpler models?
+
+```{r}
+rs1.helmert.implicit.norm.complex<- lmer(normalizedResponse ~ antonym_type * adj_type + 
+                       (0 + adj_type | workerid) + 
+                       (1 | item),
+                     data = d.full.natEng.rescaled %>% filter(condition == "implicit"))
+
+rs1.helmert.implicit.norm.complex.noItem <- lmer(normalizedResponse ~ antonym_type * adj_type + 
+                       (0 + adj_type | workerid),
+                     data = d.full.natEng.rescaled %>% filter(condition == "implicit"))
+
+
+tt <- getME(rs1.helmert.implicit.norm.complex,"theta")
+ll <- getME(rs1.helmert.implicit.norm.complex,"lower")
+min(tt[ll==0])
+
+
+rs1.helmert.implicit.norm.complex2 <- lmer(normalizedResponse ~ antonym_type * adj_type + 
+                       (0 + antonym_type | workerid) + 
+                       (1 | item),
+                     data = d.full.natEng.rescaled %>% filter(condition == "implicit"))
+
+rs1.helmert.implicit.norm.complex3 <- lmer(normalizedResponse ~ antonym_type * adj_type + 
+                       (0 + antonym_type | workerid) + 
+                       (1 + adj_type || item),
+                     data = d.full.natEng.rescaled %>% filter(condition == "implicit"))
+
+rs1.helmert.implicit.norm.complex4 <- lmer(normalizedResponse ~ antonym_type * adj_type + 
+                       (0 + antonym_type || workerid) + 
+                       (1 + adj_type || item),
+                     data = d.full.natEng.rescaled %>% filter(condition == "implicit"))
+
+rs1.helmert.implicit.norm.complex5 <- lmer(normalizedResponse ~ antonym_type * adj_type + 
+                       (0 + antonym_type + adj_type || workerid) + 
+                       (1 + adj_type + antonym_type || item),
+                     data = d.full.natEng.rescaled %>% filter(condition == "implicit"))
+
+
+
+
+anova(rs1.helmert.implicit.norm.complex, rs1.helmert.implicit.norm.complex5)
+# extra random effect of adjective_type by item accounts for significantly more variance
+
+## model with alternative random effects structure fails to converge
+# rs1.helmert.implicit.simpler2 <- lmer(response ~ antonym_type * adj_type + 
+#                        (1 | workerid) + 
+#                        (1 + adj_type | item),
+#                      data = d.full.natEng %>% filter(condition == "implicit"))
+```
+
+recoded with Lexant as the base case
+
+```{r}
+#assigning the forward difference coding to adjective_type
+d.full.natEng.rescaled <- d.full.natEng %>% select(-item) %>% 
+  rename(item = positive,
+         adj_type = adjective_type_rescaled) %>% 
+  mutate(
+    antonym_type = factor(antonym_type, levels = c("lexant", "morphant"))
+    )
+
+contrasts(d.full.natEng.rescaled$adj_type) = my.forward.diff
+
+contrasts(d.full.natEng.rescaled$adj_type)
+
+# maximal model (adding "+ antonym_type" by item fails to converge)
+rs1.helmert.implicit2.norm <- lmer(normalizedResponse ~ antonym_type * adj_type + 
+                       (0 + adj_type || workerid) + 
+                       (1 |item),
+                     data = d.full.natEng.rescaled %>% 
+                       filter(condition == "implicit"))
+
+rs2.helmert.implicit.norm.summary <- summary(rs1.helmert.implicit2.norm)
+
+#load("../cached_results/regression_antTypeXadjType_implicitCond.RData")
+# save(rs1.helmert.implicit.summary, file =
+#        "../cached_results/regression_antTypeXadjType_implicitCond.RData")
+rs2.implicit.norm.coef <- rs2.helmert.implicit.norm.summary[["coefficients"]]
+
+data.frame(rs2.implicit.norm.coef) %>%
+  mutate(Rowname = row.names(.)) %>%
+  write_csv(., path = '../../journal/csv_data_4_tex/expt2_norm_lmer_singleUtt_lexBase.csv')
+```
+
+
+#### Hypothesis 2: Within morphological antonyms ("unhappy"), is there a difference between antonyms ("unhappy") and negated positives ("not happy") when alternatives are implicit vs. explicit?
+
+```{r regression2}
+d.full.natEng.rescaled <- d.full.natEng.rescaled %>%
+  mutate(condition = factor(condition, levels = c("explicit", "implicit")))
+
+## testing for interaction within morphological
+rs2.helmert.norm.morph <- lmer(
+  normalizedResponse ~ condition * adj_type + 
+           (0 + adj_type | workerid) + 
+           (1  | item),
+         data = d.full.natEng.rescaled %>% filter(antonym_type == "morphant")
+)
+
+rs2.helmert.norm.morph.summary <- summary(rs2.helmert.norm.morph)
+#save(rs2.helmert.morph.summary, file =
+       #"../cached_results/regression_adjTypeXcontext_morph.RData")
+
+
+summary(rs2.helmert.norm.morph.summary)
+
+rs2.norm.morph.coef <- rs2.helmert.norm.morph.summary[["coefficients"]]
+rs2.norm.morph.coef
+
+
+rs2.norm.morph.coef %>%
+  data.frame(.) %>%
+  mutate(Rowname = row.names(.)) %>%
+  write_csv(., path = '../../journal/csv_data_4_tex/expt2_norm_lmer_morphological.csv')
+
+```
+
+does the maximal model account for significantly more variance than simpler models?
+
+```{r}
+rs2.helmert.morph.simpler1 <- lmer(normalizedResponse ~ condition * adj_type + 
+                       (1 | workerid) + 
+                       (1 | item),
+          data = d.full.natEng.rescaled %>% filter(antonym_type == "morphant")
+)
+
+
+
+
+anova(rs2.helmert.morph.simpler1, rs2.helmert.morph)
+# extra random effect of adjective_type by item accounts for significantly more variance
+```
+
+
+## Secondary analyses
+
+### 3-way interaction
+
+```{r regression_3ways}
+
+rs.helmert.3way <- lmer(
+  normalizedResponse ~ adj_type   * antonym_type * condition + 
+           (0 + adj_type || workerid) + 
+           (1 + condition || item),
+         data = d.full.natEng.rescaled
+)
+
+rs.helmert.3way.2 <- lmer(
+  normalizedResponse ~ adj_type   * antonym_type * condition + 
+           (0 + adj_type || workerid) + 
+           (0 + antonym_type || item),
+         data = d.full.natEng.rescaled
+)
+
+rs.helmert.3way.3 <- lmer(
+  normalizedResponse ~ adj_type   * antonym_type * condition + 
+           (0 + adj_type || workerid) + 
+           (1 | item),
+         data = d.full.natEng.rescaled
+)
+
+
+# rs.helmert.3way.3 <- lmer(
+#   normalizedResponse ~ adj_type   * antonym_type * condition + 
+#            (0 + adj_type || workerid) + 
+#            (1 + antonym_type || item),
+#          data = d.full.natEng.rescaled
+# )
+# 
+# 
+# 
+# rs.helmert.3way.4 <- lmer(
+#   normalizedResponse ~ -1 + adj_type * antonym_type * condition + 
+#            (1 + adj_type | workerid) + 
+#            (1 + adj_type | item),
+#          data = d.full.natEng.rescaled
+# )
+# 
+# rs.helmert.3way.4a <- lmer(
+#   normalizedResponse ~ adj_type * antonym_type * condition + 
+#            (1 + adj_type | workerid) + 
+#            (1 + condition | item),
+#          data = d.full.natEng.rescaled
+# )
+# 
+# rs.helmert.3way.4b <- lmer(
+#   normalizedResponse ~ adj_type * antonym_type * condition + 
+#            (1 + adj_type | workerid) + 
+#            (1 + antonym_type | item),
+#          data = d.full.natEng.rescaled
+# )
+# 
+# rs.helmert.3way.5 <- lmer(
+#   normalizedResponse ~ adj_type * antonym_type * condition + 
+#            (1 + adj_type | workerid) + 
+#            (1 + adj_type + condition | item),
+#          data = d.full.natEng.rescaled
+# )
+# 
+# rs.helmert.3way.6 <- lmer(
+#   normalizedResponse ~ adj_type * antonym_type * condition + 
+#            (1 + adj_type | workerid) + 
+#            (1 + adj_type + condition + antonym_type | item),
+#          data = d.full.natEng.rescaled
+# )
+
+# no difference
+anova(rs.helmert.3way.2, rs.helmert.3way)
+
+# no difference
+anova(rs.helmert.3way.3, rs.helmert.3way)
+
+anova(rs.helmert.3way.5, rs.helmert.3way.4)
+# 3way.5 not significantly better than 3way.4
+anova(rs.helmert.3way.4, rs.helmert.3way.3)
+# 3way.4 significantly better than 3way.3
+
+summary(rs.helmert.3way.4)
+summary(rs.helmert.3way.4a)
+summary(rs.helmert.3way.4b)
+
+rs3.3way.norm.summary <- summary(rs.helmert.3way)
+#save(rs3.3way.summary, file =
+#       "../cached_results/regression_antTypeXadjTypeXcontext.RData")
+rs3.3way.norm.coef <- rs3.3way.norm.summary[["coefficients"]]
+
+
+rs3.3way.norm.coef %>%
+  data.frame(.) %>%
+  mutate(Rowname = row.names(.)) %>%
+  write_csv(., path = '../../journal/csv_data_4_tex/expt2_norm_glmer_full3way.csv')
+```
+
+```{r regression_3wayTests}
+# maximal model
+## (adding +st by item fails to converge)
+
+rs.5.helmert.0 <- lmer(response ~ antonym_type * adj_type +
+                       (1 | workerid) +
+                       (1 | item),
+                     data = d.full.natEng)
+
+# extra random effect of sentence_type by participant accounts for significantly more variance
+anova(rs.5.helmert.0, rs.5.helmert.3)
+
+summary(rs.5.helmert.3)
+```
+
+###  Simple effects
+
+Testing for "simple effects"
+
+```{r reg.simple.morph.implicit}
+rs1.helmert.implicit.simple.morph <- lmer(response ~ adj_type + 
+                       (1 + adj_type | workerid) + 
+                       (1 + adj_type | item),
+                     data = d.full.natEng %>%
+                       filter(antonym_type == "morphant",
+                              condition == "implicit")
+                     )
+
+rs1.simple.morph.implicit.summary <- summary(rs1.helmert.implicit.simple.morph)
+
+#save(rs1.simple.morph.implicit.summary, file =
+#       "../cached_results/regression_simple_adjType_morph_implicit.RData")
+
+rs1.implicit.simple.morph.coef <- rs1.simple.morph.implicit.summary[["coefficients"]]
+data.frame(rs1.implicit.simple.morph.coef) %>%
+  mutate(Rowname = row.names(.)) %>%
+  write_csv(., path = 'csv_data_4_tex/expt2_glmer_singleUtt_morphological.csv')
+
+rs1.simple.morph.implicit.summary
+```
+
+```{r reg.simple.lex.implicit}
+rs1.helmert.implicit.simple.lex <- lmer(response ~ adj_type + 
+                       (1 + adj_type | workerid) + 
+                       (1  | item),
+                     data = d.full.natEng %>%
+                       filter(antonym_type == "lexant",
+                              condition == "implicit")
+                     )
+
+rs1.simple.lex.implicit.summary <- summary(rs1.helmert.implicit.simple.lex)
+
+#save(rs1.simple.lex.implicit.summary, file =
+       #"../cached_results/regression_simple_adjType_lex_implicit.RData")
+
+rs1.implicit.simple.lex.coef <- rs1.simple.lex.implicit.summary[["coefficients"]]
+
+rs1.implicit.simple.lex.coef %>%
+  data.frame(.) %>%
+  mutate(Rowname = row.names(.)) %>%
+  write_csv(., path = 'csv_data_4_tex/expt2_glmer_singleUtt_lexical.csv')
+
+rs1.simple.lex.implicit.summary
+```
+
+```{r reg.simple.morph.explicit}
+
+rs.5.helmert.0.simple <- lmer(response ~ adj_type + 
+                       (1 + adj_type | workerid) + 
+                       (1 | item),
+                     data = d.full.natEng %>% 
+                       filter(antonym_type == "morphant")
+                     )
+
+summary(rs.5.helmert.0.simple)
+```
+
+```{r reg.simple.lex.explicit}
+rs.5.helmert.0.simple.lex <- lmer(response ~ adj_type + 
+                       (1 + adj_type | workerid) + 
+                       (1 + adj_type | item),
+                     data = d.full.natEng %>% 
+                       filter(antonym_type == "lexant")
+                     )
+
+summary(rs.4.helmert.0.simple.lex)
+```
+
+
+```{r}
+rs.5.morph.simple.implicit.negant <- lmer(response ~ 1 + 
+                       (1  | workerid) + 
+                       (1  | positive),
+                     data = d.full.natEng %>%
+                       filter(antonym_type == "morphant", adjective_type == "neg_morphant", 
+                              condition == "implicit") %>%
+                       mutate(response = response - 0.5)
+                     )
+
+summary(rs.5.morph.simple.implicit.negant)
+```
+
+```{r}
+rs.5.morph.simple.explicit.negant <- lmer(response ~ 1 + 
+                       (1  | workerid) + 
+                       (1  | positive),
+                     data = d.full.natEng %>%
+                       filter(antonym_type == "morphant", adjective_type == "neg_morphant", 
+                              condition == "explicit") %>%
+                       mutate(response = response - 0.5)
+                     )
+
+summary(rs.5.morph.simple.explicit.negant)
 ```
 
 
@@ -276,8 +689,10 @@ contrasts(d.full.natEng.rescaled$adj_type)
 
 # maximal model (adding "+ antonym_type" by item fails to converge)
 rs1.helmert.implicit <- lmer(response ~ antonym_type * adj_type + 
-                       (1 + adj_type | workerid) + 
-                       (1 + adj_type | item),
+                       (1 | workerid) + 
+                       (1 | item),
+                       #REML = FALSE, 
+                      #control = lmerControl(optimizer ="Nelder_Mead"),
                      data = d.full.natEng.rescaled %>% filter(condition == "implicit"))
 
 rs1.helmert.implicit.summary <- summary(rs1.helmert.implicit)
@@ -595,53 +1010,6 @@ rs.5.morph.simple.explicit.negant <- lmer(response ~ 1 +
 summary(rs.5.morph.simple.explicit.negant)
 ```
 
-## Bayesian regression models (not used)
-
-
-```{r}
-rs.brm.implicit <- brm(response ~  adj_type * antonym_type + 
-                       (1 + adj_type | workerid) + 
-                       (1 + adj_type + antonym_type | item),
-    data = d.full.natEng %>% filter(condition == "implicit"),
-    iter = 2000, warmup = 1000, chains = 3, cores = 3)
-
-summary(rs.brm.implicit)
-```
-
-```{r}
-rs.brm.implicit.pres <- brm(response ~  presentation_num*antonym_type + 
-                       (1 + presentation_num | workerid) + 
-                       (1 + presentation_num | item),
-    data = d.full.natEng %>% filter(condition == "explicit", 
-                                    adj_type == "neg_antonym"),
-    iter = 2000, warmup = 1000, chains = 3, cores = 3)
-
-summary(rs.brm.implicit.pres)
-```
-
-```{r}
-d.full.natEng %>% filter(condition == "implicit", antonym_type == "lexant",
-                                    adj_type == "neg_antonym") %>%
-  ggplot(.,aes (x = response))+
-  geom_histogram()+
-  facet_grid(presentation_num~.)
-
-d.full.natEng %>% filter(condition == "implicit", antonym_type == "lexant",
-                                    adj_type == "neg_antonym")  %>%
-  group_by(presentation_num) %>%
-  summarize(mean(response))
-```
-
-
-```{r}
-rs.brm.full3way <- brm(response ~  adj_type * antonym_type * condition + 
-                       (1 + adj_type | workerid) + 
-                       (1 + adj_type + antonym_type | item),
-    data = d.full.natEng,
-    iter = 2000, warmup = 1000, nchains = 3, cores = 3)
-
-
-```
 # Other
 
 #### Table of items
@@ -1339,4 +1707,51 @@ ggsave(paste(
 ```
 
 
+## Bayesian regression models (not used)
+
+
+```{r}
+rs.brm.implicit <- brm(response ~  adj_type * antonym_type + 
+                       (1 + adj_type | workerid) + 
+                       (1 + adj_type + antonym_type | item),
+    data = d.full.natEng %>% filter(condition == "implicit"),
+    iter = 2000, warmup = 1000, chains = 3, cores = 3)
+
+summary(rs.brm.implicit)
+```
+
+```{r}
+rs.brm.implicit.pres <- brm(response ~  presentation_num*antonym_type + 
+                       (1 + presentation_num | workerid) + 
+                       (1 + presentation_num | item),
+    data = d.full.natEng %>% filter(condition == "explicit", 
+                                    adj_type == "neg_antonym"),
+    iter = 2000, warmup = 1000, chains = 3, cores = 3)
+
+summary(rs.brm.implicit.pres)
+```
+
+```{r}
+d.full.natEng %>% filter(condition == "implicit", antonym_type == "lexant",
+                                    adj_type == "neg_antonym") %>%
+  ggplot(.,aes (x = response))+
+  geom_histogram()+
+  facet_grid(presentation_num~.)
+
+d.full.natEng %>% filter(condition == "implicit", antonym_type == "lexant",
+                                    adj_type == "neg_antonym")  %>%
+  group_by(presentation_num) %>%
+  summarize(mean(response))
+```
+
+
+```{r}
+rs.brm.full3way <- brm(response ~  adj_type * antonym_type * condition + 
+                       (1 + adj_type | workerid) + 
+                       (1 + adj_type + antonym_type | item),
+    data = d.full.natEng,
+    iter = 2000, warmup = 1000, nchains = 3, cores = 3)
+
+
+```
 

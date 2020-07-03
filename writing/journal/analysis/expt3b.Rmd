@@ -1,0 +1,337 @@
+---
+title: "expt3b"
+author: "MH Tessler"
+date: "8/9/2019"
+output: html_document
+---
+
+
+
+```{r}
+library(tidyverse)
+library(jsonlite)
+library(tidyboot)
+library(brms)
+library(knitr)
+library(ggstance)
+library(ggridges)
+library(viridis)
+```
+
+
+```{r load.data, eval = F}
+data.path <- c("../../../mturk/8_4slider_nn-prereg/production-results/")
+
+df.subject <- data.frame()
+df.trials <- data.frame()
+df.attention <- data.frame()
+
+for (data.path in data.paths){
+  result.files <- list.files(data.path, pattern="json")
+
+  expt.id <- match(data.path, data.paths)
+  for (result_file in result.files) {
+    result_json = fromJSON(paste(data.path, result_file, sep ="/"))
+    worker.id = result_json$WorkerId
+    condition = result_json$answers$condition
+    
+    df.attention = bind_rows(
+      df.attention, 
+      data.frame(result_json$answers$catch_trials) %>%
+        mutate(exptid = expt.id,
+               workerid = worker.id,
+               tested_on = as.character(tested_on),
+               response = as.character(response))
+    )
+      
+    df.subject = bind_rows(
+      df.subject, 
+      data.frame(result_json$answers$subject_information) %>% 
+        mutate(
+          exptid = expt.id,
+          workerid = worker.id,
+          language = gsub("\"", "", language),
+          enjoyment = gsub("\"", "", enjoyment),
+          age = gsub("\"", "", age),
+          gender = gsub("\"", "", gender),
+          problems = gsub("\"", "", problems),
+          comments = gsub("\"", "", comments)
+        ) 
+    )
+    
+    data.worker <- data.frame(result_json$answers$trials)
+
+    df.trials = bind_rows(
+      df.trials, data.worker %>%
+        mutate(exptid = expt.id,
+               workerid = worker.id)
+    )
+  }
+}
+write_csv(df.trials, "../data/expt3-trials.csv")
+write_csv(df.subject, "../data/expt3-subjInfo.csv")
+write_csv(df.attention, "../data/expt3-catch_trials.csv")
+```
+
+```{r load data}
+df.trials <- read_csv("../data/expt3/expt3b-trials.csv")
+df.subject <- read_csv("../data/expt3/expt3b-subjInfo.csv")
+df.attention <- read_csv("../data/expt3/expt3b-catch_trials.csv")
+```
+
+
+# Memory check
+
+
+```{r}
+
+d.5s.nn.catch.summary <- df.attention %>%
+  group_by(workerid) %>%
+  summarize(n_correct = sum(correct)) 
+
+d.5s.nn.catch.summary  %>%
+  ggplot(., aes(x = n_correct))+
+  geom_bar()
+```
+
+
+```{r}
+d.5s.nn.filtered <- left_join(
+  df.trials, 
+  d.5s.nn.catch.summary
+) %>%
+  filter(n_correct >= 7)
+```
+
+```{r}
+length(unique(d.5s.nn.filtered$workerid))
+
+length(unique(df.trials$workerid))
+```
+
+
+
+
+##### Self-reported native language
+
+```{r selfReportEnglishNative}
+d.full.nativeEnglish <- df.subject %>% 
+  select(workerid ,language) %>% 
+  mutate(englishNative = grepl("eng", tolower(language)))
+
+#save(d.full.nativeEnglish, file = "../cached_results/english_summary.RData")
+
+table(d.full.nativeEnglish$englishNative)
+
+# what do people report for native english that is not english?
+d.full.nativeEnglish %>%
+  filter(!englishNative) %>%
+  select(language) %>%
+  kable(.)
+```
+
+Remove participants who do not self-report English as native language
+
+```{r filterNonNativeEnglish}
+d.5s.full.natEng <- left_join(
+  d.5s.nn.filtered, 
+  d.full.nativeEnglish
+) %>%
+  filter(englishNative) %>%
+  mutate(
+    trial_type = gsub("\"", "", trial_type),
+    lexant = gsub("\"", "", lexant),
+    morphant = gsub("\"", "", morphant),
+    adjective = gsub("\"", "", adjective),
+    adjective_type = gsub("\"", "", adjective_type),
+    antonym_type = gsub("\"", "", antonym_type),
+    positive = gsub("\"", "", positive)
+  )
+
+
+## check that i've done the filtering correctly
+length(unique(d.5s.full.natEng$workerid))
+```
+
+# Trials
+
+#### Normalize ratings (by subject, subject off mean and divide by SD)
+
+Also recode antonyms (in dataframe, morph antonyms and lexical antonyms are coded as two different types). Here, we recode them to be the same level of a factor (but with different levels of a differnt factor: antonym_type)
+
+
+```{r filterNonNativeEnglish}
+d.5s.full.natEng <- d.5s.full.natEng %>%
+    group_by(workerid) %>%
+    mutate(meanRating = mean(response),
+            sdRating = sd(response)) %>%
+    ungroup() %>%
+    mutate(normalizedResponse = (response - meanRating) / sdRating) %>%
+  #Code antonyms (morpholoigical & lexical) as antonyms (rather than two distinct categories)
+  mutate(adjective_type = as.character(adjective_type),
+         adjective_type_rescaled = ifelse( 
+           adjective_type %in% c("lexant", "morphant"), "antonym", 
+           ifelse( 
+             adjective_type %in% c("neg_lexant", "neg_morphant"), "neg_antonym",
+             adjective_type)
+           ),
+         adjective_type_rescaled = factor(adjective_type_rescaled,
+                                     levels = c( "antonym","neg_positive",
+                                                "neg_neg_positive",
+                                                "neg_antonym",
+                                                "positive")),
+        antonym_type = factor(antonym_type, levels = c("morphant", "lexant"))
+    ) %>%
+    group_by(workerid, antonym_type, adjective_type) %>%
+  arrange(trial_num) %>%
+  mutate(presentation_num = ave(adjective_type==adjective_type, adjective_type, FUN=cumsum)) %>%
+  ungroup() %>%
+  rowwise() %>%
+  mutate(splitHalf = ifelse(trial_num <= 8, "first", "second"))
+
+
+
+## check that i've done the filtering correctly
+length(unique(d.5s.full.natEng$workerid))
+
+#write_csv(d.full.natEng, "../data/expt3/expt3b-filtered.csv")
+
+```
+
+
+
+
+```{r}
+d.5s.full.natEng %>%
+  group_by(workerid, antonym_type, adjective_type_rescaled) %>%
+  count() %>%
+  group_by(antonym_type, adjective_type_rescaled, n) %>%
+  count() %>%
+  kable()
+```
+
+
+### Raw histograms
+
+
+```{r}
+d.5s.boot.pres <- d.5s.full.natEng %>%
+  #filter(condition == "implicit") %>%
+  mutate(adjective_type_rescaled = factor(adjective_type_rescaled, 
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_neg_positive", 
+                                      "neg_antonym",
+                                      "positive"),
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated negated positive",
+                                      "Negated antonym",
+                                      "Positive"))) %>%
+  group_by(antonym_type, adjective_type_rescaled) %>%
+  #group_by(antonym_type, adjective_type, splitHalf) %>%
+  tidyboot_mean(column = response)
+```
+
+
+```{r fig_histograms}
+d.5s.full.natEng %>%  
+  mutate(adjective_type_rescaled = factor(adjective_type_rescaled, 
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_neg_positive", 
+                                      "neg_antonym",
+                                      "positive"),
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated negated positive",
+                                      "Negated antonym",
+                                      "Positive"))) %>%
+ggplot(., 
+         aes( x = response, y = adjective_type_rescaled, fill = ..x..))+
+  #geom_histogram(position = position_dodge(), bins = 25)+
+  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5)+
+  geom_density_ridges_gradient(
+    jittered_points = T,  scale = 0.85,
+    #position = position_points_jitter(width = 0.01, height = 0),
+    #point_shape = '|', point_size = 2.5, point_alpha = 0.3,
+    rel_min_height = 0.01, gradient_lwd = 1,
+    stat = 'binline', bins = 25, draw_baseline = F
+  ) +
+  geom_linerangeh(data = d.5s.boot.pres,
+    inherit.aes = F,
+    aes(xmin = ci_lower, xmax = ci_upper, 
+        y = as.numeric(adjective_type_rescaled)+0.15),
+    size = 1.25, color = 'white')+
+  geom_point(data = d.5s.boot.pres,
+    inherit.aes = F,
+    aes(x = mean,
+        y = as.numeric(adjective_type_rescaled)+0.15),
+    size = 2, color = 'white', shape = 3)+
+  #facet_grid(condition~antonym_type)+
+  scale_fill_viridis(option = "E")+
+  #scale_color_viridis(option = "C", limits = c(0, 1))+
+  guides(fill = F, color = F)+
+  ylab("")+
+  scale_x_continuous(limits = c(0, 1), breaks = c(0, 1),
+                     expand = c(0.01, 0))+
+  scale_y_discrete(expand = expand_scale(mult = c(0.05, .30)))+
+  xlab("slider ratings")+
+  theme(strip.text.y = element_text(angle = 0))
+
+# ggsave(paste(fig.path, project.prefix, "_empiricalDensity_expt3b_raw.pdf", sep = ""),
+#        width = 5, height = 3)
+```
+
+
+
+
+#### Exploratory: by item facets of bootstrapped CIs
+
+```{r explore_byItem95CIs}
+d.5s.full.natEng %>% 
+  mutate(adjective_type_rescaled = factor(adjective_type_rescaled, 
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_neg_positive", 
+                                      "neg_antonym",
+                                      "positive"),
+                           labels = c("Antonym",
+                                      "Negated positive",
+                                      "Negated negated positive",
+                                      "Negated antonym",
+                                      "Positive")),
+            pos_ant = paste(morphant, " -- ", positive, "  ", sep = "")) %>%
+ggplot(., aes( x = response, y = adjective_type_rescaled, fill = ..x..))+
+  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5)+
+  geom_density_ridges_gradient(
+    jittered_points = T, alpha = 0.8, scale = 0.7,
+    position = position_points_jitter(width = 0.01, height = 0),
+    point_shape = '|', point_size = 2.5, point_alpha = 0.4,
+    rel_min_height = 0.01, gradient_lwd = 1,
+        quantile_lines= T, quantiles = 2
+    )+
+  # geom_linerangeh(data = d.full.boot.item %>% filter(condition == "implicit", antonym_type == "morphant"),
+  #   inherit.aes = F,
+  #   aes(xmin = ci_lower, xmax = ci_upper, y = adjective_type_rescaled),
+  #   size = 1.25, color = 'white')+
+  facet_wrap(~pos_ant)+
+  scale_fill_viridis(option = "C")+
+  #scale_color_viridis(option = "C", limits = c(0, 1))+
+  guides(fill = F, color = F)+
+  ylab("")+
+  scale_x_continuous(limits = c(0, 1), breaks = c(0, 1),
+                     expand = c(0.01, 0))+
+  scale_y_discrete(expand = expand_scale(mult = c(0.05, .30)))+
+  xlab("slider ratings")+
+  theme(strip.text.y = element_text(angle = 0))
+# 
+
+
+
+ggsave(paste(
+  "~/projects/negant/writing/journal/figs/expt3b_byItem_densities.pdf", sep = ""),
+       width = 12, height = 8)
+```
+
+

@@ -20,11 +20,12 @@ library(viridis)
 
 
 ```{r load.data, eval = F}
-data.paths <- c("../../../mturk/8_4slider_nn-prereg/production-results/")
+data.path <- c("../../../mturk/8_4slider_nn-prereg/production-results/")
 
 df.subject <- data.frame()
 df.trials <- data.frame()
 df.attention <- data.frame()
+
 for (data.path in data.paths){
   result.files <- list.files(data.path, pattern="json")
 
@@ -148,7 +149,7 @@ d.full.natEng <- left_join(
                                             "neg_neg_positive",
                                             "positive")),
     antonym_type = factor(antonym_type, levels = c("morphant", "lexant")),
-    condition = factor(condition, levels = c("implicit", "explicit")),
+    #condition = factor(condition, levels = c("implicit", "explicit")),
     item = ifelse(antonym_type == "lexant",
                  paste(lexant, "--", positive, sep = ""),
                  paste(morphant, "--", positive, sep = "")),
@@ -166,6 +167,9 @@ d.full.natEng <- left_join(
 
 ## check that i've done the filtering correctly
 length(unique(d.full.natEng$workerid))
+
+write_csv(d.full.natEng, "../data/expt3/expt3-filtered.csv")
+
 ```
 
 
@@ -246,9 +250,9 @@ d.full.natEng.refactor <- d.full.natEng %>%
 # ggsave(paste(fig.path, project.prefix, "_empiricalDensity_expt3_raw.pdf", sep = ""),
 #        width = 7, height = 4)
 
-# ggsave(paste(
-#   "~/projects/negant/writing/journal/figs/expt3_ridges_wCIs.pdf", sep = ""),
-#        width = 5, height = 3)
+ggsave(paste(
+  "~/projects/negant/writing/journal/figs/expt3_ridges_wCIs_hist.pdf", sep = ""),
+       width = 5, height = 3)
 ```
 
 

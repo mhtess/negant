@@ -1,0 +1,215 @@
+---
+title: "Bayesian regression models for Expt. 3"
+author: "MH Tessler"
+date: "Jun 24 2020"
+output: github_document
+---
+
+```{r libraries}
+library(tidyverse)
+library(brms)
+library(tidybayes)
+library(feather)
+# library(modelr)
+```
+
+```{r load data}
+df.e3 <- read_csv("../data/expt3/expt3-filtered.csv") %>%
+    mutate(adj_type = factor(adjective_type_rescaled, 
+                           levels = c("antonym",
+                                      "neg_positive",
+                                      "neg_neg_positive", 
+                                      "positive")),
+           positive = factor(positive))
+
+
+glimpse(df.e3)
+```
+
+```{r regression model}
+contrasts(df.e3$adj_type) 
+# assigning the forward difference coding to adjective_type
+contrasts(df.e3$adj_type) = matrix(c(
+  3/4, -1/4, -1/4, -1/4, 
+  1/2, 1/2, -1/2, -1/2, 
+  1/4, 1/4, 1/4, -3/4), 
+  ncol = 3)
+
+contrasts(df.e3$adj_type) 
+
+rs.brm.e3.zoib <- brm(
+  response ~ adj_type + 
+    (1 + adj_type | workerid) + 
+    (1 + adj_type | positive),
+  data = df.e3,
+  iter = 10000, chain = 4, cores = 4,
+  family = zero_one_inflated_beta(),
+  control = list(adapt_delta = 0.9),
+  file = "rs_brm_e3_zoib_10k"
+)
+
+# saveRDS(rs.brm.e3.zoib, file = '../cached_results/rs_brm_e3_zoib_10k.rds')
+```
+
+
+```{r samples and contrasts}
+rs.brm.e3.zoib.betas.samples <- brms::posterior_samples(rs.brm.e3.zoib, add_chain = T) %>% 
+  select(starts_with("b_")) %>%
+  rename(
+    morph_ant_v_negpos = b_adj_type1,
+    morph_negpos_v_neganegpos = b_adj_type2,
+    morph_negnegpos_v_pos = b_adj_type3
+  ) %>%
+  mutate(
+    negnegpos = b_Intercept - 0.25 * morph_ant_v_negpos - 
+      0.5 * morph_negpos_v_neganegpos + 0.25 * morph_negnegpos_v_pos
+  )
+
+# write_csv(rs.brm.e1.zoib.betas.samples, 
+#           path = "../cached_results/rs_brm_e1_zoib_betas_samples.csv")
+
+rs.brm.e3.zoib.betas.samples %>%
+  gather(key, val) %>% 
+  group_by(key) %>%
+  summarize(
+    'l95' = quantile(val, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(val),
+    'u95' = quantile(val, probs = c(0.025, 0.975))[[2]],
+    prob_gt_0 = mean(val > 0)*100,
+    prob_lt_0 = mean(val < 0)*100
+  ) -> rs.brm.e3.zoib.full.contrasts
+
+
+write_csv(rs.brm.e3.zoib.full.contrasts, 
+          path = "../csv_data_4_tex/expt3_brm_contrasts_10k.csv")
+```
+
+
+Add predicted draws
+
+```{r}
+df.e3 %>%
+  modelr::data_grid(adj_type) %>%
+  add_predicted_draws(rs.brm.e3.zoib, 
+                      re_formula  = NA) -> pp.brm.e3.zoib
+
+pp.brm.e3.zoib %>%
+  group_by(adj_type) %>%
+    summarize(
+    'l95' = quantile(.prediction, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(.prediction),
+    'u95' = quantile(.prediction, probs = c(0.025, 0.975))[[2]],
+    prob_gt_50 = mean(.prediction > 0.5)*100,
+    prob_lt_50 = mean(.prediction < 0.5)*100
+  ) -> pp.brm.e3.zoib.summary
+
+pp.brm.e3.zoib %>%
+  ggplot(aes(x = .prediction, y = adj_type)) +
+  ggdist::stat_slab(alpha = 1)+
+  ggdist::stat_slab(data = df.e3,
+                  aes( x = response, y = adj_type), 
+                  inherit.aes = F, fill = 'red', 
+                  alpha = 0.3, slab_type = "histogram")
+
+```
+
+Add fitted draws
+
+```{r}
+df.e3 %>%
+  modelr::data_grid(adj_type) %>%
+  add_fitted_draws(rs.brm.e3.zoib, 
+                      re_formula  = NA) -> param.brm.e3.zoib
+
+param.brm.e3.zoib %>%
+  group_by(adj_type) %>%
+    summarize(
+    'l95' = quantile(.value, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(.value),
+    'u95' = quantile(.value, probs = c(0.025, 0.975))[[2]],
+    prob_gt_50 = mean(.value > 0.5)*100,
+    prob_lt_50 = mean(.value < 0.5)*100
+  ) -> param.brm.e3.zoib.summary
+
+param.brm.e3.zoib %>%
+  ggplot(aes(x = .value, y = adj_type)) +
+  ggdist::stat_slab(alpha = 1)+
+  ggdist::stat_slab(data = df.e3,
+                  aes( x = response, y = adj_type), 
+                  inherit.aes = F, fill = 'red', 
+                  alpha = 0.3, slab_type = "histogram")
+
+```
+
+# Compare with "not unhappy" from multi-utterance of Expt. 2
+
+```{r}
+rs.brm.e2.3way.zoib.full.contrasts <- read_csv("../csv_data_4_tex/expt2_brm_contrasts_10k.csv")
+
+rs.brm.e3.zoib.full.contrasts %>%
+  filter(key == "negnegpos") %>%
+  bind_rows(
+    rs.brm.e2.3way.zoib.full.contrasts %>%
+      filter(key == "morph_multi_negant")
+  )
+```
+
+# Effect size
+
+```{r}
+df.e3.standard <- df.e3 %>%
+  ungroup() %>%
+  mutate(
+    standardized_response = 
+      (response - mean(response)) / sd(response)
+    )
+contrasts(df.e3.standard$adj_type)
+ggplot(df.e3.standard, aes(x = standardized_response))+
+  geom_histogram()+
+  facet_wrap(~adj_type)
+
+rs.brm.e3.standardized <- brm(
+  standardized_response ~ adj_type + 
+    (1 + adj_type | workerid) + 
+    (1 + adj_type | positive),
+  data = df.e3.standard,
+  iter = 10000, chain = 4, cores = 4,
+  control = list(adapt_delta = 0.9),
+  file = "rs_brm_e3_standard_helmert_10k"
+)
+```
+
+
+```{r}
+rs.brm.e3.standard.samples <- brms::posterior_samples(
+  rs.brm.e3.standardized, add_chain = T
+  ) %>% 
+  select(starts_with("b_"), sigma) %>%
+  rename(
+    morph_ant_v_negpos = b_adj_type1,
+    morph_negpos_v_neganegpos = b_adj_type2,
+    morph_negnegpos_v_pos = b_adj_type3
+  ) %>%
+  mutate(
+    negnegpos = b_Intercept - 0.25 * morph_ant_v_negpos - 
+      0.5 * morph_negpos_v_neganegpos + 0.25 * morph_negnegpos_v_pos
+  )
+
+
+rs.brm.e3.standard.samples %>%
+  gather(key, val, -sigma) %>% 
+  mutate(standardized_val = val / sigma) %>%
+  group_by(key) %>%
+  summarize(
+    'l95' = quantile(standardized_val, probs = c(0.025, 0.975))[[1]],
+    'mean'  = mean(standardized_val),
+    'u95' = quantile(standardized_val, probs = c(0.025, 0.975))[[2]],
+    prob_gt_0 = mean(standardized_val > 0)*100,
+    prob_lt_0 = mean(standardized_val < 0)*100
+  ) -> rs.brm.e3.effectsizes
+
+write_csv(rs.brm.e3.effectsizes, 
+          path = "../csv_data_4_tex/expt3_brm_effsize_10k.csv")
+
+```
+
