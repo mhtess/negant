@@ -1,4 +1,4 @@
-\documentclass[floatsintext,man]{apa6}
+\documentclass[floatsintext,doc]{apa6}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -135,12 +135,15 @@
 \title{Not unreasonable: Why two negatives don't make a positive}
     \author{Michael Henry Tessler\textsuperscript{1,3}~\& Michael Franke\textsuperscript{2}}
     \date{}
+%      \author{blinded for review}
   
 \shorttitle{Flexible negation in language}
+%\affiliation{blinded for review}
 \affiliation{
 \vspace{0.5cm}
-\textsuperscript{1} Massachusetts Institute of Technology, Department of Brain and Cognitive Sciences\\\textsuperscript{2} University of Osnabr\"{u}ck, Department of Cognitive Science\\\textsuperscript{3} Stanford University, Department of Psychology}
-\keywords{language; pragmatics; negation; Bayesian cognitive model; Rational Speech Act  \newline\indent Word count: 7228}
+\textsuperscript{1} Massachusetts Institute of Technology, Department of Brain and Cognitive Sciences\\\textsuperscript{2} University of Osnabr\"{u}ck, Department of Cognitive Science\\\textsuperscript{3} Stanford University, Department of Psychology
+}
+\keywords{language; pragmatics; negation; Bayesian cognitive model; Rational Speech Act  \newline\indent Word count: 5808}
 \usepackage{csquotes}
 \usepackage{upgreek}
 \captionsetup{font=singlespacing,justification=justified}
@@ -180,10 +183,11 @@
 \newcommand{\ourmodel}{Flexible Negation\xspace}
 
 
-\authornote{This work was supported in part by NSF Graduate Research Fellowship DGE-114747 to MHT.
+%\authornote{This work was supported in part by NSF Graduate Research Fellowship DGE-114747 to MHT.
+%Correspondence concerning this article should be addressed to Michael Henry Tessler, 43 Vassar St, Cambridge, MA 02139. E-mail: \url{tessler@mit.edu}}
 
-Correspondence concerning this article should be addressed to Michael Henry Tessler, 43 Vassar St, Cambridge, MA 02139. E-mail: \url{tessler@mit.edu}}
-
+%\authornote{Blinded for review}
+\authornote{manuscript under review.}
 %\abstract{
 %Logic tells us that two negatives make a positive, but in natural language, things are not so black and white: A person \emph{not unhappy} may not be entirely \emph{happy}.
 %We hypothesize that innovative uses of double negatives like \emph{not unhappy} stem from listeners entertaining multiple meanings for negation markers like \emph{not} and \emph{un-}, which context can then help disambiguate. 
@@ -257,8 +261,7 @@ These findings suggest that even one of the most logical elements of language—
 \section{Introduction}\label{introduction}%}
 
 For the most part, language reliably conveys our thoughts.
-When subtle feelings arise that are more difficult to express in common speech, speakers may
-resort to creative language \cite<e.g., metaphors;>{lakoff2008} or uncommon, perhaps novel terms like being ``plateaued'' \cite{bardwick1986plateauing} or residing in a ``zone of indifference'' \cite{sapir1944grading}.
+When common speech is sufficient to express subtle feelings, speakers resort to creative language \cite<e.g., metaphors;>{lakoff2008} or uncommon, perhaps novel terms like being ``plateaued'' \cite{bardwick1986plateauing} or residing in a ``zone of indifference'' \cite{sapir1944grading}.
 There are systematic ways of expressing subtle gradations as well, such as with constructions involving double negations: A person \emph{not unhappy} is probably not entirely happy.
 The interpretation of double negatives, in particular, is important from a logical perspective \cite{Horn1989:Natural, Krifka2007:Negated-antonyms} as well as a legal one, where such constructions are surprisingly common \cite{tiersma1999legal}.
 %Also,
@@ -343,7 +346,7 @@ A double contradiction  $\neg \neg H$  is pragmatically unlikely, because the sa
 \label{fig:meanings}
 \end{figure}
 
-Ambiguity is ubiquitous in natural language, but seldom harms communication.
+Ambiguity is ubiquitous in natural language and seldom harms communication.
 Interlocutors rely on context to reason about each others' beliefs and goals to retrieve the intended meaning of underspecified words \cite{Grice1975, clark1996using, levinson2000presumptive}.
 % The fact that a speaker bothers to say that she's ``not happy''---and not, say, ``fine''---could imply that the speaker feels rather unhappy
 % %, a phenomenon referred to as \emph{negative strengthening} 
@@ -352,9 +355,69 @@ Interlocutors rely on context to reason about each others' beliefs and goals to 
 Theorizing about the meanings of negation must consider how the communicative context supports and potentially alters meanings, but heretofore no formal models have been developed that can adequately address the puzzles of double negatives while also accounting for pragmatic reasoning.
 %
 We therefore investigate the question of the meaning of natural language negation by formalizing the semantic proposals---Aristotelean, Orwellian, \ourmodel---in models of pragmatic communication that assume listeners interpret utterances as rational social actions. 
+
+The different semantic hypotheses define a lexicon $\mathcal{L}$ to be used inside of a probabilistic model of pragmatic reasoning, wherein a pragmatic listener $L_1$ resolves the meaning of an utterance $u$ by reasoning about why a rational speaker $S_1$ would have bothered to produce said utterance.
+We take the Rational Speech Act framework as a common, pragmatic reasoning core to relate the different semantic proposals to pragmatically-enriched interpretations that can be compared to human behavioral data \cite{Franke2015a, Goodman2016:RSA, problang}.
+Formally, a scalar adjective $H$ (e.g., \emph{happy}) is literally true when the degree associated with that adjective \(x\) (e.g., the degree of happiness) is greater than some contextually-determined threshold \(\theta\) \cite{Kennedy2007}: $\mbox{ $[\![H]\!]$}(x, \theta): x > \theta$.
+Contradictory negation is the truth-value swapping operation well-known from classical logic: $\mbox{ $[\![\neg H]\!]$}(x, \theta): x \leq \theta$.
+Contrary negation, on the other hand, is a predicate-forming operation that introduces a new distinct threshold \(\theta'\): $\mbox{ $[\![ \tilde{H} ]\!]$}(x, \theta'): x < \theta'$.
+
+Pragmatic reasoning about the truth-conditional threshold $\theta$ can be used to derive vague, context-sensitive, intuitively plausible interpretations of gradable adjectives (e.g., ``a tall boy''~vs.~``a tall basketball player'') \cite{Lassiter2015}.
+Our Aristotelean model extends this basic idea by assuming that \emph{happy} and \emph{unhappy} are contraries , whose thresholds $\theta$ and $\theta'$ are jointly inferred. 
+The probabilistic pragmatics model of Aristotelean contraries is given by:
+%
+\begin{align}
+L_{1}(x, \theta, \theta' \mid u,  \mathcal{L}) &\propto S_{1}(u \mid x, \theta, \theta', \mathcal{L}) \cdot P(x) \cdot  P(\theta)  \cdot  P(\theta') \label{eq:L1aris} \\
+S_{1}(u \mid x, \theta, \mathcal{L}) &\propto \exp{(\alpha \cdot \ln {L_{0}(x \mid u, \theta, \mathcal{L})} - \text{cost}(u))} \label{eq:S1}\\
+L_{0}(x \mid u, \theta, \mathcal{L}) &\propto \mathcal{L}(u, x, \theta) \cdot P(x) \label{eq:L0}
+\end{align}
+%
+%Both thresholds are drawn from uniform prior distributions. The only thing that distinguishes the thresholds is that one corresponds to a lower-bound (for \emph{happy}; Eq.~\ref{sem:pos}) and the other corresponds to an upper bound (for \emph{unhappy}; Eq.~\ref{sem:ant}). 
+
+The pragmatic listener (Eq.~\ref{eq:L1aris}) interprets an utterance $u$ by reasoning about two variables: the intended meaning (or, degree of happiness) $x$ and the truth-conditional thresholds $\theta$ and $\theta'$.  
+The representation of prior beliefs $P(x)$ encodes prior expectations about the degree (e.g., how happy people are likely to be), which we assume for simplicity to be a uniform distribution over the unit-interval [0, 1].\footnote{All qualitative patterns reported replicate when this uniform prior is replaced with a Gaussian prior $\mathcal{N}(0.5, 0.5)$ and a U-shaped Beta prior: $\text{Beta}(0.5, 0.5)$.
+}
+Following \citeA{Lassiter2015}, the prior distribution on thresholds is also defined to be a uniform distribution over the unit interval $P(\theta) = \text{Uniform}(0, 1)$. 
+The listener resolves their uncertainty by reasoning about the behavior of a speaker (Eq.~\ref{eq:S1}), a soft-max rational agent (with degree of rationality  $\alpha$) who aims to act in accordance with a standard, information-theoretic utility function that tracks how well an utterance conveys the speaker's intended meaning $x$ (i.e., the degree of happiness) to this literal listener---$\ln {L_{0}(x \mid u, \theta, \mathcal{L}}$)---while taking into account the cost of the utterance---$\text{cost}(u)$.
+The normalization in Eq.~\ref{eq:S1} implies a normalization over a set of alternative utterances (which potentially differ in their cost). 
+We assume in our models that the set of alternative utterances is the positive adjective, the antonym, and their corresponding particle negations (e.g., happy, unhappy, not happy, not unhappy). 
+We further assume the cost of morphological negation is less than the cost of particle negation (i.e., $cost(un) < cost(not)$) and that costs are additive (i.e., $cost(not\text{ }un) = cost(un) + cost(not)$), though we examine model predictions under different assumptions of cost in the SI.
+The literal listener \(L_0\) (Eq. \ref{eq:L0}) updates their prior beliefs over the degree \(P(x)\) via an utterance's literal meaning in lexicon \(\mathcal{L}\),
+where \(\mathcal{L}(u, x, \theta)\) gives the truth-value of the utterance \(u\) in lexicon \(\mathcal{L}\) when applied to degree \(x\) (e.g., for $u= $ \emph{happy}, $\mathcal{L}$ returns a 1 when $x>\theta$ and a 0 when  $x\leq\theta$).
+The details of this lexicon is what differs between the models.
+
+The \ourmodel model extends the Aristotelean model  by introducing uncertainty into the pragmatic listener about how their interlocutor (speaker $S_1$) uses negation markers (``not'', ``un-'') to convey contradictory~vs.~contrary negations \cite{Bergen2016}.
+This uncertainty takes the form of a prior distribution over lexica: $P(\mathcal{L})$.
+%
+\begin{align}
+L_{1}(x, [\theta], \mathcal{L} \mid u) &\propto S_{1}(u \mid x, [\theta], \mathcal{L}) \cdot P(x) \cdot  P([\theta]) \cdot P(\mathcal{L}) \label{eq:L1a}
+\end{align}
+% 
+where $[\theta]$ could represent a vector of thresholds (e.g., $[\theta, \theta']$), if the lexicon $\mathcal{L}$ contains contraries.
+The other components of the model ($S_1$ and $L_0$) are the same as Eqs.~\ref{eq:S1} \& \ref{eq:L0}.
+The Orwellian model is given by a simplified form of Eq.~\ref{eq:L1aris}, which omits representations of $\theta'$ since all negations are assumed to be contradictions; this model is useful to isolate the impact of pragmatic reasoning on vague adjective interpretations under a strict model of negation (only contradictions). 
+
+
+
+
+%
+%The thresholds are determined via pragmatic reasoning in the very same way as they are for the simple case of a positive adjective: ``happy'' ends up meaning \emph{significantly happier than you might expect} and its antonym (``unhappy'') means \emph{significantly less happy that you might expect}. 
+%The contradictory negations of the polar contraries then pick out the complement set of what is referred to by the embedded adjectival predicate, but because of pragmatic competition with the other alternative utterances, the negated utterances end up carving up the intermediate zone of degrees. 
+
+
+
+
 % Building on work in the Rational Speech Act framework, the basic architecture of these models is that a listener interprets an utterance like \emph{not unhappy} as being intentionally produced by a speaker (who could have produced alternative utterances, e.g., \emph{happy}) trying to communicate a degree of, say, happiness to the listener  .
-Our models combine previous, independently established modeling proposals on pragmatic reasoning \cite{Franke2015a, Goodman2016:RSA, problang}, the interpretation of gradable adjectives \cite<e.g., \emph{tall}, \emph{happy};>{Kennedy2007, Lassiter2015}, and ambiguity in the meanings of words \cite{Bergen2016}. 
-Our models are of listeners who hear utterances (e.g., \emph{not unhappy}) and compute a posterior distribution over degrees of happiness, representing predictions about the interpretation of an utterance (Figure \ref{fig:modelPredictions}; see SI for mathematical details of each model), which we test in the experiments that follow.
+%Our models combine previous, independently established modeling proposals on pragmatic reasoning \cite{Franke2015a, Goodman2016:RSA, problang}, the interpretation of gradable adjectives \cite<e.g., \emph{tall}, \emph{happy};>{Kennedy2007, Lassiter2015}, and ambiguity in the meanings of words \cite{Bergen2016}. 
+%
+%
+%
+%
+%This same pragmatics machinery is used for the Aristotelean and Orwellian hypotheses. 
+%A generalization of this model (described below) is used for the \ourmodel hypothesis. 
+%
+%Our models are of listeners who hear utterances (e.g., \emph{not unhappy}) and compute a posterior distribution over degrees of happiness, representing predictions about the interpretation of an utterance (Figure \ref{fig:modelPredictions}), which we test in the experiments that follow.
+
 %We compare these distributions from each model to empirical judgments in three experiments.
 
 %We describe the key differences of these hypotheses that lead to different predictions, but each hypothesis is supported by a completely formalized computational model that can be found in the SI. 
@@ -766,6 +829,8 @@ Participants rated one sentence at a time and saw items from both antonym types 
 Each participant completed a total of 16 trials, with exactly 2 repetitions of each adjective type for each antonym type.
 No participant saw two instances from the same adjective set.
 
+All data, analysis script, experimental materials, and models can be found at \texttt{blinded for review}.
+%\url{https://osf.io/4gsmd/}. 
 
 \begin{figure}[bt]
 {\centering \includegraphics[width=0.7\linewidth]{figs/experiment-slides-1} 
@@ -1113,7 +1178,7 @@ Other accounts derive similar predictions based on different kinds of assumption
 %\mf{I think so. But we do set ourselves off. Maybe like so: ""
 %More generally, the inferences modeled here can be seen as an instance of \emph{mutual exclusivity} \cite{Markman1989}, in which listeners resolve uncertainty about multiple elements of meaning simultaneously.
 %Reasoning about multiple meanings for words, listeners conclude that a choice of different expressions may be most likely for a speaker who differentiates meanings.
-In Experiment 3, we saw that this inference goes beyond using distinct negation markers: Expressions that use the same negation marker twice (e.g., \emph{not not happy}) are interpreted in a manner distinct from that of positive adjectives (e.g., \emph{happy}) and that of negated antonyms (e.g., \emph{not unhappy}). 
+In Experiment 3, we saw that flexible pragmatic interpretation goes beyond using distinct negation markers: Expressions that use the same negation marker twice (e.g., \emph{not not happy}) are interpreted in a manner distinct from that of positive adjectives (e.g., \emph{happy}) and that of negated antonyms (e.g., \emph{not unhappy}). 
 This result points to an underlying cognitive mechanism that flexibly allows for different meanings for the same negation marker within a single utterance.
 
 Our work builds upon previous studies on negated adjectives \cite<e.g.,>{giora2005negation} with our straight-forward response measurements, comparison of morphological and lexical antonyms, and situation within different presentational contexts.
