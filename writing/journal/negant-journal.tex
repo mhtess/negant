@@ -356,8 +356,8 @@ Theorizing about the meanings of negation must consider how the communicative co
 %
 We therefore investigate the question of the meaning of natural language negation by formalizing the semantic proposals---Aristotelean, Orwellian, \ourmodel---in models of pragmatic communication that assume listeners interpret utterances as rational social actions. 
 
-The different semantic hypotheses define a lexicon $\mathcal{L}$ to be used inside of a probabilistic model of pragmatic reasoning, wherein a pragmatic listener $L_1$ resolves the meaning of an utterance $u$ by reasoning about why a rational speaker $S_1$ would have bothered to produce said utterance.
 We take the Rational Speech Act framework as a common, pragmatic reasoning core to relate the different semantic proposals to pragmatically-enriched interpretations that can be compared to human behavioral data \cite{Franke2015a, Goodman2016:RSA, problang}.
+The different semantic hypotheses define a lexicon $\mathcal{L}$ to be used inside of a probabilistic model of pragmatic reasoning, wherein a pragmatic listener $L_1$ resolves the meaning of an utterance $u$ by reasoning about why a rational speaker $S_1$ would have bothered to produce said utterance.
 Formally, a scalar adjective $H$ (e.g., \emph{happy}) is literally true when the degree associated with that adjective \(x\) (e.g., the degree of happiness) is greater than some contextually-determined threshold \(\theta\) \cite{Kennedy2007}: $\mbox{ $[\![H]\!]$}(x, \theta): x > \theta$.
 Contradictory negation is the truth-value swapping operation well-known from classical logic: $\mbox{ $[\![\neg H]\!]$}(x, \theta): x \leq \theta$.
 Contrary negation, on the other hand, is a predicate-forming operation that introduces a new distinct threshold \(\theta'\): $\mbox{ $[\![ \tilde{H} ]\!]$}(x, \theta'): x < \theta'$.
@@ -380,11 +380,21 @@ The representation of prior beliefs $P(x)$ encodes prior expectations about the 
 Following \citeA{Lassiter2015}, the prior distribution on thresholds is also defined to be a uniform distribution over the unit interval $P(\theta) = \text{Uniform}(0, 1)$. 
 The listener resolves their uncertainty by reasoning about the behavior of a speaker (Eq.~\ref{eq:S1}), a soft-max rational agent (with degree of rationality  $\alpha$) who aims to act in accordance with a standard, information-theoretic utility function that tracks how well an utterance conveys the speaker's intended meaning $x$ (i.e., the degree of happiness) to this literal listener---$\ln {L_{0}(x \mid u, \theta, \mathcal{L}}$)---while taking into account the cost of the utterance---$\text{cost}(u)$.
 The normalization in Eq.~\ref{eq:S1} implies a normalization over a set of alternative utterances (which potentially differ in their cost). 
-We assume in our models that the set of alternative utterances is the positive adjective, the antonym, and their corresponding particle negations (e.g., happy, unhappy, not happy, not unhappy). 
+We assume in our models that the set of alternative utterances contains the positive adjective, the antonym, and their corresponding particle negations (e.g., happy, unhappy, not happy, not unhappy). 
 We further assume the cost of morphological negation is less than the cost of particle negation (i.e., $cost(un) < cost(not)$) and that costs are additive (i.e., $cost(not\text{ }un) = cost(un) + cost(not)$), though we examine model predictions under different assumptions of cost in the SI.
 The literal listener \(L_0\) (Eq. \ref{eq:L0}) updates their prior beliefs over the degree \(P(x)\) via an utterance's literal meaning in lexicon \(\mathcal{L}\),
 where \(\mathcal{L}(u, x, \theta)\) gives the truth-value of the utterance \(u\) in lexicon \(\mathcal{L}\) when applied to degree \(x\) (e.g., for $u= $ \emph{happy}, $\mathcal{L}$ returns a 1 when $x>\theta$ and a 0 when  $x\leq\theta$).
-The details of this lexicon is what differs between the models.
+
+The Aristotelean model produces the intuitive ordering of interpretations hypothesized by \citeNP{Krifka2007:Negated-antonyms} and others: A person \emph{unhappy} is less happy than someone (merely) \emph{not happy}; someone \emph{not unhappy} is in a slightly positive state, above the midpoint of happiness but below that of \emph{happy}  (Figure \ref{fig:modelPredictions}).
+These predictions result from the semantics of contraries~vs.~contradictions and their interaction with the vagueness of gradable adjectives: these predictions do not result from a model of pragmatics that operates over only contradictory negations (the George Orwell model) nor from an Aristotelean model in which the predicates have fixed, not vague, meanings (see SI). 
+The ordering (\emph{unhappy} $<$ \emph{not happy} $<$ \emph{not unhappy} $<$ \emph{happy}), while intuitive, has not been empirically validated, and some theorists attest to only a partial ordering wherein  \emph{not happy} $\approx$ \emph{unhappy} \cite{Jespersen1917:Negation, Blutner2004:pragmatics}. Thus, we develop an alternative hypothesis by introducing flexibility into what negation operators can mean.
+
+%Some argue that single negations have the same meaning \cite<e.g., \emph{not happy} = \emph{unhappy};>{Jespersen1917:Negation, Blutner2004:pragmatics},
+
+
+
+%The Orwellian model is given by a simplified form of Eq.~\ref{eq:L1aris}, which omits representations of $\theta'$ since all negations are assumed to be contradictions; this model is useful to isolate the impact of pragmatic reasoning on vague adjective interpretations under a strict model of negation (only contradictions). 
+%The details of this lexicon is what differs between the models.
 
 The \ourmodel model extends the Aristotelean model  by introducing uncertainty into the pragmatic listener about how their interlocutor (speaker $S_1$) uses negation markers (``not'', ``un-'') to convey contradictory~vs.~contrary negations \cite{Bergen2016}.
 This uncertainty takes the form of a prior distribution over lexica: $P(\mathcal{L})$.
@@ -395,17 +405,26 @@ L_{1}(x, [\theta], \mathcal{L} \mid u) &\propto S_{1}(u \mid x, [\theta], \mathc
 % 
 where $[\theta]$ could represent a vector of thresholds (e.g., $[\theta, \theta']$), if the lexicon $\mathcal{L}$ contains contraries.
 The other components of the model ($S_1$ and $L_0$) are the same as Eqs.~\ref{eq:S1} \& \ref{eq:L0}.
-The Orwellian model is given by a simplified form of Eq.~\ref{eq:L1aris}, which omits representations of $\theta'$ since all negations are assumed to be contradictions; this model is useful to isolate the impact of pragmatic reasoning on vague adjective interpretations under a strict model of negation (only contradictions). 
 
 
+The \ourmodel model predicts a pattern of data that is unique from that of the Aristotelean and Orwellian models (Figure \ref{fig:modelPredictions}).
+When utterances involving a single negation marker are heard in isolation (e.g., \emph{not happy} or \emph{unhappy}), they are interpreted identically because of the ambiguity in whether each maps onto a contrary or contradiction (Figure \ref{fig:meanings}).  
+If the listener encounters a double negation (e.g., \emph{not unhappy}), however, pragmatic reasoning helps disambiguate that the speaker likely intended a contradiction of a contrary (\emph{a la} the Aristotelean account) because it would otherwise be a very costly manner of expressing the same meaning as the positive adjective (\emph{happy}), which would result if both negation markers conveyed contradictions. % from a double contradiction.
+
+The disambiguating power of hearing multiple negations (\emph{[not] [un-]happy}) can also be observed for single negations (\emph{not happy}, \emph{unhappy}) if the listener hears (or, intuitively considers) multiple distinct utterances in the same context (e.g., \citeNP{Krifka2007:Negated-antonyms}'s example, or simply: ``She's not happy. He's unhappy.''; Figure \ref{fig:modelPredictions}).
+These predictions are generated by conditioning each model on the observation of a speaker using all four adjective alternatives $u'$ to describe different referents $x'$ (e.g., \emph{Sue is happy. Steve is not happy. Bill is unhappy. Barb is not unhappy.}; Figure \ref{fig:modelPredictions}, \emph{multiple utterances}):
+%
+\begin{align}
+L_{1}([x], [\theta], \mathcal{L} \mid [u]) &\propto \prod_{{u', x'} \in \{[x],[u]\}} S_{1}(u' \mid x', [\theta], \mathcal{L}) \cdot P(x') \cdot  P([\theta]) \cdot P(\mathcal{L}) \label{eq:L1multi}
+\end{align}
+%
+These indirectly contrastive inferences result from the fact that the listener has more evidence that the speaker associates different meanings with the different negation markers.
+The \ourmodel model interprets the morphological antonym (\emph{unhappy}) as more strongly negative than the utterance involving a negation particle (\emph{not happy}) as a result of a cost difference between morphological and particle negation (e.g., with a word-based cost function: morphological markers do not add a new word to the utterance whereas negation particles do;  see SI for further discussion of modeling assumptions).
 
 
 %
 %The thresholds are determined via pragmatic reasoning in the very same way as they are for the simple case of a positive adjective: ``happy'' ends up meaning \emph{significantly happier than you might expect} and its antonym (``unhappy'') means \emph{significantly less happy that you might expect}. 
 %The contradictory negations of the polar contraries then pick out the complement set of what is referred to by the embedded adjectival predicate, but because of pragmatic competition with the other alternative utterances, the negated utterances end up carving up the intermediate zone of degrees. 
-
-
-
 
 % Building on work in the Rational Speech Act framework, the basic architecture of these models is that a listener interprets an utterance like \emph{not unhappy} as being intentionally produced by a speaker (who could have produced alternative utterances, e.g., \emph{happy}) trying to communicate a degree of, say, happiness to the listener  .
 %Our models combine previous, independently established modeling proposals on pragmatic reasoning \cite{Franke2015a, Goodman2016:RSA, problang}, the interpretation of gradable adjectives \cite<e.g., \emph{tall}, \emph{happy};>{Kennedy2007, Lassiter2015}, and ambiguity in the meanings of words \cite{Bergen2016}. 
@@ -422,11 +441,7 @@ The Orwellian model is given by a simplified form of Eq.~\ref{eq:L1aris}, which 
 
 %We describe the key differences of these hypotheses that lead to different predictions, but each hypothesis is supported by a completely formalized computational model that can be found in the SI. 
 
-The \ourmodel model predicts a pattern of data that is unique from that of the Aristotelean and Orwellian models (Figure \ref{fig:modelPredictions}).
-When utterances involving a single negation marker are heard in isolation (e.g., \emph{not happy} or \emph{unhappy}), they are interpreted identically because of the ambiguity in whether each maps onto a contrary or contradiction (Figure \ref{fig:meanings}).  
-If the listener encounters a double negation (e.g., \emph{not unhappy}), however, pragmatic reasoning helps disambiguate that the speaker likely intended a contradiction of a contrary (\emph{a la} the Aristotelean account) because it would otherwise be a very costly manner of expressing the same meaning as the positive adjective (\emph{happy}), which  results from a double contradiction.
-The disambiguating power of hearing multiple negations (\emph{[not] [un-]happy}) can also be observed for single negations (\emph{not happy}, \emph{unhappy}) if the listener hears multiple distinct utterances in the same context (e.g., \citeNP{Krifka2007:Negated-antonyms}'s example, or simply: ``She's not happy. He's unhappy.''; Figure \ref{fig:modelPredictions}, \emph{multiple utterances}). These indirectly contrastive inferences result from the fact that the listener has more evidence that the speaker associates different meanings with the different negation markers.
-The \ourmodel model interprets the morphological antonym (\emph{unhappy}) as more strongly negative than the utterance involving a negation particle (\emph{not happy}) as a result of a cost difference between morphological and particle negation (e.g., with a word-based cost function: morphological markers do not add a new word to the utterance whereas negation particles do;  see SI for further discussion of modeling assumptions).
+
 
 We test these predictions in Experiments 1 \& 2.
 % Our \ourmodel hypothesis is not just an account of a few particular linguistic puzzles, but is a case study in how language users contort language to navigate and communicate the gradations of their conceptual landscape.
